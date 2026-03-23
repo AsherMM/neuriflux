@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: "https://neuriflux.com",
+  siteUrl: "https://www.neuriflux.com",
   generateRobotsTxt: true,
   generateIndexSitemap: false,
   changefreq: "weekly",

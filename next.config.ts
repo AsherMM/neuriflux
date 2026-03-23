@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Optimisation des images
   images: {
     remotePatterns: [
       {
@@ -16,13 +15,9 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
   },
 
-  // SEO — URLs sans slash final
   trailingSlash: false,
-
-  // Compression automatique
   compress: true,
 
-  // Headers SEO et sécurité
   async headers() {
     return [
       {
@@ -37,7 +32,6 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // Cache long pour les assets statiques
       {
         source: "/(.*)\\.(ico|jpg|jpeg|png|svg|webp|avif|woff2)",
         headers: [
@@ -46,19 +40,6 @@ const nextConfig: NextConfig = {
             value: "public, max-age=31536000, immutable",
           },
         ],
-      },
-    ];
-  },
-
-  // Redirections utiles
-  async redirects() {
-    return [
-      // Redirige www vers non-www
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "www.neuriflux.com" }],
-        destination: "https://neuriflux.com/:path*",
-        permanent: true,
       },
     ];
   },
