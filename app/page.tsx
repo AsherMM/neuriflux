@@ -113,7 +113,7 @@ const translations = {
       links: {
         produit: {
           title: "Contenu",
-          items: ["Blog", "Comparatifs", "Outils IA", "Newsletter"],
+          items: ["Blog", "Comparatifs", "Newsletter"],
         },
         legal: {
           title: "Légal",
@@ -232,7 +232,7 @@ const translations = {
       links: {
         produit: {
           title: "Content",
-          items: ["Blog", "Comparisons", "AI Tools", "Newsletter"],
+          items: ["Blog", "Comparisons", "Newsletter"],
         },
         legal: {
           title: "Legal",
@@ -1071,7 +1071,6 @@ export default function HomePage() {
         <ul className={`nav-links${menuOpen ? " open" : ""}`}>
           <li><a href="/blog">{t.nav.blog}</a></li>
           <li><a href="/comparatifs">{t.nav.comparatifs}</a></li>
-          <li><a href="/outils">{t.nav.outils}</a></li>
           <li><a href="/newsletter">{t.nav.newsletter}</a></li>
         </ul>
 
@@ -1139,24 +1138,6 @@ export default function HomePage() {
       </div>
 
       {/* CATEGORIES */}
-      <section>
-        <div className="section-header">
-          <div className="section-tag">{lang === "fr" ? "Catégories" : "Categories"}</div>
-          <h2 className="section-title">{t.categories.title}</h2>
-          <p className="section-subtitle">{t.categories.subtitle}</p>
-        </div>
-
-        <div className="categories-grid">
-          {t.categories.items.map((cat, i) => (
-            <a key={i} href={cat.href} className="category-card">
-              <span className="category-icon">{cat.icon}</span>
-              <div className="category-title">{cat.title}</div>
-              <div className="category-desc">{cat.desc}</div>
-              <span className="category-count">{cat.count}</span>
-            </a>
-          ))}
-        </div>
-      </section>
 
       {/* FEATURED */}
       <section>
