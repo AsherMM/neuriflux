@@ -4,17 +4,17 @@
 
 export interface ToolScore {
   name: string;
-  logo: string; // emoji ou initiales
+  logo: string;
   color: string;
   globalScore: number; // /10
-  scores: { label: string; value: number }[]; // /10 chacun
+  scores: { fr: string; en: string; value: number }[]; // label bilingue + valeur
   price: string;
   priceFull: { fr: string; en: string };
   pros: { fr: string[]; en: string[] };
   cons: { fr: string[]; en: string[] };
   verdict: { fr: string; en: string };
-  affiliate?: string; // lien affiliation
-  badge?: { fr: string; en: string }; // ex: "Meilleur rapport qualité/prix"
+  affiliate?: string;
+  badge?: { fr: string; en: string };
 }
 
 export interface ComparatifLang {
@@ -33,8 +33,8 @@ export interface Comparatif {
   date: { fr: string; en: string };
   featured?: boolean;
   tools: ToolScore[];
-  criteria: string[];
-  winner: string; // nom du tool gagnant
+  criteria: { fr: string[]; en: string[] }; // ← bilingue
+  winner: string;
   fr: ComparatifLang;
   en: ComparatifLang;
 }
@@ -48,7 +48,10 @@ export const COMPARATIFS: Comparatif[] = [
     date: { fr: "18 mars 2026", en: "March 18, 2026" },
     featured: true,
     winner: "Claude",
-    criteria: ["Rédaction", "Code", "Analyse", "Rapidité", "Prix", "Contexte"],
+    criteria: {
+      fr: ["Rédaction", "Code", "Analyse", "Rapidité", "Prix", "Contexte"],
+      en: ["Writing", "Code", "Analysis", "Speed", "Price", "Context"],
+    },
     tools: [
       {
         name: "ChatGPT",
@@ -56,12 +59,12 @@ export const COMPARATIFS: Comparatif[] = [
         color: "#10a37f",
         globalScore: 8.5,
         scores: [
-          { label: "Rédaction", value: 8 },
-          { label: "Code", value: 9.5 },
-          { label: "Analyse", value: 8 },
-          { label: "Rapidité", value: 9 },
-          { label: "Prix", value: 7 },
-          { label: "Contexte", value: 7 },
+          { fr: "Rédaction", en: "Writing", value: 8 },
+          { fr: "Code", en: "Code", value: 9.5 },
+          { fr: "Analyse", en: "Analysis", value: 8 },
+          { fr: "Rapidité", en: "Speed", value: 9 },
+          { fr: "Prix", en: "Price", value: 7 },
+          { fr: "Contexte", en: "Context", value: 7 },
         ],
         price: "20$/mois",
         priceFull: { fr: "20$/mois (version gratuite disponible)", en: "$20/month (free tier available)" },
@@ -77,12 +80,12 @@ export const COMPARATIFS: Comparatif[] = [
         color: "#cc785c",
         globalScore: 9.2,
         scores: [
-          { label: "Rédaction", value: 9.5 },
-          { label: "Code", value: 8.5 },
-          { label: "Analyse", value: 9.5 },
-          { label: "Rapidité", value: 8.5 },
-          { label: "Prix", value: 7 },
-          { label: "Contexte", value: 9 },
+          { fr: "Rédaction", en: "Writing", value: 9.5 },
+          { fr: "Code", en: "Code", value: 8.5 },
+          { fr: "Analyse", en: "Analysis", value: 9.5 },
+          { fr: "Rapidité", en: "Speed", value: 8.5 },
+          { fr: "Prix", en: "Price", value: 7 },
+          { fr: "Contexte", en: "Context", value: 9 },
         ],
         price: "20$/mois",
         priceFull: { fr: "20$/mois (version gratuite disponible)", en: "$20/month (free tier available)" },
@@ -98,18 +101,18 @@ export const COMPARATIFS: Comparatif[] = [
         color: "#4285f4",
         globalScore: 7.8,
         scores: [
-          { label: "Rédaction", value: 7 },
-          { label: "Code", value: 8 },
-          { label: "Analyse", value: 8 },
-          { label: "Rapidité", value: 8.5 },
-          { label: "Prix", value: 9.5 },
-          { label: "Contexte", value: 10 },
+          { fr: "Rédaction", en: "Writing", value: 7 },
+          { fr: "Code", en: "Code", value: 8 },
+          { fr: "Analyse", en: "Analysis", value: 8 },
+          { fr: "Rapidité", en: "Speed", value: 8.5 },
+          { fr: "Prix", en: "Price", value: 9.5 },
+          { fr: "Contexte", en: "Context", value: 10 },
         ],
         price: "Gratuit / 19.99$/mois",
         priceFull: { fr: "Gratuit ou 19.99$/mois (Gemini Advanced)", en: "Free or $19.99/month (Gemini Advanced)" },
         pros: { fr: ["Contexte 1M tokens", "Intégration Google Workspace", "Version gratuite généreuse", "Génération d'images Imagen 3"], en: ["1M token context", "Google Workspace integration", "Generous free tier", "Imagen 3 image generation"] },
         cons: { fr: ["Créativité en retrait", "Interface moins soignée", "Moins fiable sur les tâches nuancées"], en: ["Creativity lags behind", "Less polished interface", "Less reliable on nuanced tasks"] },
-        verdict: { fr: "Idéal pour les utilisateurs Google et ceux qui analysent de très gros documents. La version gratuite est la meilleure du marché.", en: "Ideal for Google users and those analyzing very large documents. The best free tier on the market." },
+        verdict: { fr: "Idéal pour les utilisateurs Google et ceux qui analysent de très gros documents.", en: "Ideal for Google users and those analyzing very large documents." },
         affiliate: "https://gemini.google.com",
         badge: { fr: "Meilleure version gratuite", en: "Best free tier" },
       },
@@ -132,15 +135,15 @@ Claude produit systématiquement les textes les plus naturels et les mieux struc
 
 ## Code & Développement (ChatGPT gagne)
 
-Sur les tâches de développement, ChatGPT tire légèrement devant grâce à son écosystème de plugins et ses outils d'exécution de code. Claude n'est pas loin, notamment sur les refactorisations complexes. Gemini performe bien sur du code Python standard.
+Sur les tâches de développement, ChatGPT tire légèrement devant grâce à son écosystème de plugins et ses outils d'exécution de code. Claude n'est pas loin, notamment sur les refactorisations complexes.
 
 ## Analyse de documents (Claude gagne)
 
-La fenêtre de 200k tokens de Claude fait la différence ici. Sur des PDF de 100+ pages, Claude maintient la cohérence là où ChatGPT commence à "oublier" des informations du début du document. Gemini avec son contexte d'1M tokens est théoriquement le plus fort, mais son analyse qualitative reste moins précise.
+La fenêtre de 200k tokens de Claude fait la différence ici. Sur des PDF de 100+ pages, Claude maintient la cohérence là où ChatGPT commence à "oublier" des informations du début du document.
 
 ## Rapport qualité/prix (Gemini gagne)
 
-Gemini offre la version gratuite la plus généreuse. Pour les utilisateurs qui ne veulent pas payer, c'est le choix évident. ChatGPT et Claude sont à 20$/mois avec des versions gratuites plus limitées.
+Gemini offre la version gratuite la plus généreuse. Pour les utilisateurs qui ne veulent pas payer, c'est le choix évident.
 
 ## Notre recommandation finale
 
@@ -164,19 +167,19 @@ For this comparison, we tested ChatGPT 4o, Claude 3.5 Sonnet and Gemini Ultra on
 
 ## Writing & Content (Claude wins)
 
-Claude consistently produces the most natural and well-structured text. Across 20 writing exercises (emails, articles, scripts), Claude was preferred in 15 cases. ChatGPT is solid but tends to be verbose. Gemini is the least creative of the three.
+Claude consistently produces the most natural and well-structured text. Across 20 writing exercises (emails, articles, scripts), Claude was preferred in 15 cases. ChatGPT is solid but tends to be verbose.
 
 ## Code & Development (ChatGPT wins)
 
-On development tasks, ChatGPT edges ahead thanks to its plugin ecosystem and code execution tools. Claude isn't far behind, especially on complex refactoring. Gemini performs well on standard Python code.
+On development tasks, ChatGPT edges ahead thanks to its plugin ecosystem and code execution tools. Claude isn't far behind, especially on complex refactoring.
 
 ## Document Analysis (Claude wins)
 
-Claude's 200k token window makes the difference here. On 100+ page PDFs, Claude maintains coherence where ChatGPT starts "forgetting" information from earlier in the document. Gemini with its 1M token context is theoretically the strongest, but its qualitative analysis remains less precise.
+Claude's 200k token window makes the difference here. On 100+ page PDFs, Claude maintains coherence where ChatGPT starts "forgetting" earlier content.
 
 ## Value for money (Gemini wins)
 
-Gemini offers the most generous free tier. For users who don't want to pay, it's the obvious choice. ChatGPT and Claude are $20/month with more limited free tiers.
+Gemini offers the most generous free tier. For users who don't want to pay, it's the obvious choice.
 
 ## Our final recommendation
 
@@ -195,7 +198,10 @@ Gemini offers the most generous free tier. For users who don't want to pay, it's
     date: { fr: "14 mars 2026", en: "March 14, 2026" },
     featured: true,
     winner: "Cursor",
-    criteria: ["Autocomplétion", "Chat IA", "Contexte projet", "Vitesse", "Prix", "Support IDE"],
+    criteria: {
+      fr: ["Autocomplétion", "Chat IA", "Contexte projet", "Vitesse", "Prix", "Support IDE"],
+      en: ["Autocomplete", "AI Chat", "Project context", "Speed", "Price", "IDE support"],
+    },
     tools: [
       {
         name: "Cursor",
@@ -203,12 +209,12 @@ Gemini offers the most generous free tier. For users who don't want to pay, it's
         color: "#00e6be",
         globalScore: 9.4,
         scores: [
-          { label: "Autocomplétion", value: 9.5 },
-          { label: "Chat IA", value: 9.5 },
-          { label: "Contexte projet", value: 9.5 },
-          { label: "Vitesse", value: 8.5 },
-          { label: "Prix", value: 7 },
-          { label: "Support IDE", value: 8 },
+          { fr: "Autocomplétion", en: "Autocomplete", value: 9.5 },
+          { fr: "Chat IA", en: "AI Chat", value: 9.5 },
+          { fr: "Contexte projet", en: "Project context", value: 9.5 },
+          { fr: "Vitesse", en: "Speed", value: 8.5 },
+          { fr: "Prix", en: "Price", value: 7 },
+          { fr: "Support IDE", en: "IDE support", value: 8 },
         ],
         price: "Gratuit / 20$/mois",
         priceFull: { fr: "Gratuit (limité) ou 20$/mois Pro", en: "Free (limited) or $20/month Pro" },
@@ -224,12 +230,12 @@ Gemini offers the most generous free tier. For users who don't want to pay, it's
         color: "#f0f6ff",
         globalScore: 8.2,
         scores: [
-          { label: "Autocomplétion", value: 9 },
-          { label: "Chat IA", value: 8.5 },
-          { label: "Contexte projet", value: 8 },
-          { label: "Vitesse", value: 9 },
-          { label: "Prix", value: 8.5 },
-          { label: "Support IDE", value: 9.5 },
+          { fr: "Autocomplétion", en: "Autocomplete", value: 9 },
+          { fr: "Chat IA", en: "AI Chat", value: 8.5 },
+          { fr: "Contexte projet", en: "Project context", value: 8 },
+          { fr: "Vitesse", en: "Speed", value: 9 },
+          { fr: "Prix", en: "Price", value: 8.5 },
+          { fr: "Support IDE", en: "IDE support", value: 9.5 },
         ],
         price: "10$/mois",
         priceFull: { fr: "10$/mois (Individual) ou 19$/utilisateur/mois (Business)", en: "$10/month (Individual) or $19/user/month (Business)" },
@@ -245,12 +251,12 @@ Gemini offers the most generous free tier. For users who don't want to pay, it's
         color: "#09b6a2",
         globalScore: 7.5,
         scores: [
-          { label: "Autocomplétion", value: 8 },
-          { label: "Chat IA", value: 7.5 },
-          { label: "Contexte projet", value: 7 },
-          { label: "Vitesse", value: 9 },
-          { label: "Prix", value: 10 },
-          { label: "Support IDE", value: 9.5 },
+          { fr: "Autocomplétion", en: "Autocomplete", value: 8 },
+          { fr: "Chat IA", en: "AI Chat", value: 7.5 },
+          { fr: "Contexte projet", en: "Project context", value: 7 },
+          { fr: "Vitesse", en: "Speed", value: 9 },
+          { fr: "Prix", en: "Price", value: 10 },
+          { fr: "Support IDE", en: "IDE support", value: 9.5 },
         ],
         price: "Gratuit",
         priceFull: { fr: "Gratuit (individuel) ou 15$/utilisateur/mois (Teams)", en: "Free (individual) or $15/user/month (Teams)" },
@@ -277,17 +283,9 @@ En 2026, ces trois assistants représentent les trois catégories du marché : l
 
 Sur les suggestions ligne par ligne et bloc par bloc, Cursor et Copilot sont au coude à coude. Les deux utilisent des modèles de pointe (GPT-4o, Claude 3.5) et prédisent correctement le code dans 80-90% des cas sur du code standard.
 
-Codeium surprend par sa rapidité — ses suggestions apparaissent plus vite, même si elles sont légèrement moins pertinentes sur les patterns complexes.
-
 ## Contexte projet : l'avantage décisif de Cursor
 
-C'est là que Cursor prend une longueur d'avance significative. Son indexation complète du codebase permet au modèle de comprendre votre architecture, vos conventions, vos dépendances. Résultat : les suggestions sont cohérentes avec votre projet, pas génériques.
-
-Copilot commence à rattraper ce retard avec ses récentes mises à jour, mais reste en retrait sur les projets de taille moyenne à grande.
-
-## Composer vs Chat : des paradigmes différents
-
-La fonctionnalité Composer de Cursor n'a pas d'équivalent : décrire une feature, valider un diff multi-fichiers, c'est un changement de paradigme. Copilot et Codeium proposent des chats compétents mais qui travaillent fichier par fichier.
+Son indexation complète du codebase permet au modèle de comprendre votre architecture, vos conventions, vos dépendances. Résultat : les suggestions sont cohérentes avec votre projet, pas génériques.
 
 ## Notre recommandation
 
@@ -310,15 +308,11 @@ In 2026, these three assistants represent the three market categories: the premi
 
 ## Autocomplete: Cursor and Copilot neck and neck
 
-On line-by-line and block-by-block suggestions, Cursor and Copilot are neck and neck. Both use top-tier models (GPT-4o, Claude 3.5) and correctly predict code 80-90% of the time on standard code.
-
-Codeium surprises with its speed — suggestions appear faster, even if slightly less relevant on complex patterns.
+Both use top-tier models (GPT-4o, Claude 3.5) and correctly predict code 80-90% of the time on standard code. Codeium surprises with its speed — suggestions appear faster, even if slightly less relevant on complex patterns.
 
 ## Project context: Cursor's decisive advantage
 
-This is where Cursor pulls significantly ahead. Its complete codebase indexing allows the model to understand your architecture, conventions, dependencies. Result: suggestions are coherent with your project, not generic.
-
-Copilot is starting to close this gap with recent updates, but still lags on medium to large projects.
+Its complete codebase indexing allows the model to understand your architecture, conventions, dependencies. Result: suggestions are coherent with your project, not generic.
 
 ## Our recommendation
 
@@ -336,7 +330,10 @@ Copilot is starting to close this gap with recent updates, but still lags on med
     date: { fr: "10 mars 2026", en: "March 10, 2026" },
     featured: true,
     winner: "Midjourney",
-    criteria: ["Qualité artistique", "Réalisme", "Suivi instructions", "Facilité", "Prix", "Liberté créative"],
+    criteria: {
+      fr: ["Qualité artistique", "Réalisme", "Suivi instructions", "Facilité", "Prix", "Liberté créative"],
+      en: ["Artistic quality", "Realism", "Instruction following", "Ease of use", "Price", "Creative freedom"],
+    },
     tools: [
       {
         name: "Midjourney",
@@ -344,12 +341,12 @@ Copilot is starting to close this gap with recent updates, but still lags on med
         color: "#7c3aed",
         globalScore: 9.1,
         scores: [
-          { label: "Qualité artistique", value: 9.5 },
-          { label: "Réalisme", value: 8.5 },
-          { label: "Suivi instructions", value: 7 },
-          { label: "Facilité", value: 6 },
-          { label: "Prix", value: 7 },
-          { label: "Liberté créative", value: 9 },
+          { fr: "Qualité artistique", en: "Artistic quality", value: 9.5 },
+          { fr: "Réalisme", en: "Realism", value: 8.5 },
+          { fr: "Suivi instructions", en: "Instruction following", value: 7 },
+          { fr: "Facilité", en: "Ease of use", value: 6 },
+          { fr: "Prix", en: "Price", value: 7 },
+          { fr: "Liberté créative", en: "Creative freedom", value: 9 },
         ],
         price: "10-60$/mois",
         priceFull: { fr: "De 10$/mois (Basic) à 60$/mois (Pro)", en: "From $10/month (Basic) to $60/month (Pro)" },
@@ -365,12 +362,12 @@ Copilot is starting to close this gap with recent updates, but still lags on med
         color: "#10a37f",
         globalScore: 8.0,
         scores: [
-          { label: "Qualité artistique", value: 7.5 },
-          { label: "Réalisme", value: 8 },
-          { label: "Suivi instructions", value: 9.5 },
-          { label: "Facilité", value: 9.5 },
-          { label: "Prix", value: 7.5 },
-          { label: "Liberté créative", value: 7 },
+          { fr: "Qualité artistique", en: "Artistic quality", value: 7.5 },
+          { fr: "Réalisme", en: "Realism", value: 8 },
+          { fr: "Suivi instructions", en: "Instruction following", value: 9.5 },
+          { fr: "Facilité", en: "Ease of use", value: 9.5 },
+          { fr: "Prix", en: "Price", value: 7.5 },
+          { fr: "Liberté créative", en: "Creative freedom", value: 7 },
         ],
         price: "Inclus dans ChatGPT Plus (20$/mois)",
         priceFull: { fr: "Inclus dans ChatGPT Plus à 20$/mois", en: "Included in ChatGPT Plus at $20/month" },
@@ -386,12 +383,12 @@ Copilot is starting to close this gap with recent updates, but still lags on med
         color: "#f59e0b",
         globalScore: 7.8,
         scores: [
-          { label: "Qualité artistique", value: 8.5 },
-          { label: "Réalisme", value: 8 },
-          { label: "Suivi instructions", value: 7 },
-          { label: "Facilité", value: 4 },
-          { label: "Prix", value: 10 },
-          { label: "Liberté créative", value: 10 },
+          { fr: "Qualité artistique", en: "Artistic quality", value: 8.5 },
+          { fr: "Réalisme", en: "Realism", value: 8 },
+          { fr: "Suivi instructions", en: "Instruction following", value: 7 },
+          { fr: "Facilité", en: "Ease of use", value: 4 },
+          { fr: "Prix", en: "Price", value: 10 },
+          { fr: "Liberté créative", en: "Creative freedom", value: 10 },
         ],
         price: "Gratuit (open source)",
         priceFull: { fr: "100% gratuit et open source (coût GPU si local)", en: "100% free and open source (GPU cost if local)" },
@@ -420,11 +417,7 @@ Sur les portraits, les paysages et les illustrations stylisées, Midjourney V7 e
 
 ## Suivi des instructions : DALL-E 3 domine
 
-Si vous avez besoin qu'une image respecte un brief précis — inclure du texte, respecter une composition, représenter un concept spécifique — DALL-E 3 est de loin le meilleur. Son intégration ChatGPT permet aussi de dialoguer pour affiner l'image.
-
-## Liberté créative : Stable Diffusion unique
-
-Avec les milliers de modèles communautaires disponibles sur Civitai, Stable Diffusion permet de créer des styles qu'aucun service cloud n'autorise. Pas de censure, pas de limites de style.
+Si vous avez besoin qu'une image respecte un brief précis, DALL-E 3 est de loin le meilleur. Son intégration ChatGPT permet aussi de dialoguer pour affiner l'image.
 
 ## Notre recommandation
 
@@ -447,11 +440,11 @@ Midjourney is a premium cloud service focused on beauty. DALL-E 3 is integrated 
 
 ## Artistic quality: Midjourney no contest
 
-On portraits, landscapes and stylized illustrations, Midjourney V7 is in a category of its own. Its images have an aesthetic consistency and render quality that no other tool has yet matched.
+On portraits, landscapes and stylized illustrations, Midjourney V7 is in a category of its own.
 
 ## Instruction following: DALL-E 3 dominates
 
-If you need an image to follow a precise brief — include text, respect a composition, represent a specific concept — DALL-E 3 is by far the best. Its ChatGPT integration also allows dialogue to refine the image.
+If you need an image to follow a precise brief, DALL-E 3 is by far the best. Its ChatGPT integration also allows dialogue to refine the image.
 
 ## Our recommendation
 
@@ -469,7 +462,10 @@ If you need an image to follow a precise brief — include text, respect a compo
     date: { fr: "5 mars 2026", en: "March 5, 2026" },
     featured: false,
     winner: "Claude",
-    criteria: ["Qualité rédaction", "Templates", "SEO", "Workflow", "Prix", "Facilité"],
+    criteria: {
+      fr: ["Qualité rédaction", "Templates", "SEO", "Workflow", "Prix", "Facilité"],
+      en: ["Writing quality", "Templates", "SEO", "Workflow", "Price", "Ease of use"],
+    },
     tools: [
       {
         name: "Jasper",
@@ -477,12 +473,12 @@ If you need an image to follow a precise brief — include text, respect a compo
         color: "#ff6b35",
         globalScore: 7.5,
         scores: [
-          { label: "Qualité rédaction", value: 7.5 },
-          { label: "Templates", value: 9.5 },
-          { label: "SEO", value: 9 },
-          { label: "Workflow", value: 8.5 },
-          { label: "Prix", value: 5 },
-          { label: "Facilité", value: 8.5 },
+          { fr: "Qualité rédaction", en: "Writing quality", value: 7.5 },
+          { fr: "Templates", en: "Templates", value: 9.5 },
+          { fr: "SEO", en: "SEO", value: 9 },
+          { fr: "Workflow", en: "Workflow", value: 8.5 },
+          { fr: "Prix", en: "Price", value: 5 },
+          { fr: "Facilité", en: "Ease of use", value: 8.5 },
         ],
         price: "49$/mois",
         priceFull: { fr: "À partir de 49$/mois (Creator)", en: "From $49/month (Creator)" },
@@ -498,12 +494,12 @@ If you need an image to follow a precise brief — include text, respect a compo
         color: "#6366f1",
         globalScore: 7.2,
         scores: [
-          { label: "Qualité rédaction", value: 7 },
-          { label: "Templates", value: 8 },
-          { label: "SEO", value: 6.5 },
-          { label: "Workflow", value: 8 },
-          { label: "Prix", value: 8 },
-          { label: "Facilité", value: 9 },
+          { fr: "Qualité rédaction", en: "Writing quality", value: 7 },
+          { fr: "Templates", en: "Templates", value: 8 },
+          { fr: "SEO", en: "SEO", value: 6.5 },
+          { fr: "Workflow", en: "Workflow", value: 8 },
+          { fr: "Prix", en: "Price", value: 8 },
+          { fr: "Facilité", en: "Ease of use", value: 9 },
         ],
         price: "Gratuit / 36$/mois",
         priceFull: { fr: "Gratuit ou 36$/mois (Pro)", en: "Free or $36/month (Pro)" },
@@ -519,18 +515,18 @@ If you need an image to follow a precise brief — include text, respect a compo
         color: "#cc785c",
         globalScore: 9.0,
         scores: [
-          { label: "Qualité rédaction", value: 9.5 },
-          { label: "Templates", value: 5 },
-          { label: "SEO", value: 6 },
-          { label: "Workflow", value: 6 },
-          { label: "Prix", value: 7 },
-          { label: "Facilité", value: 7.5 },
+          { fr: "Qualité rédaction", en: "Writing quality", value: 9.5 },
+          { fr: "Templates", en: "Templates", value: 5 },
+          { fr: "SEO", en: "SEO", value: 6 },
+          { fr: "Workflow", en: "Workflow", value: 6 },
+          { fr: "Prix", en: "Price", value: 7 },
+          { fr: "Facilité", en: "Ease of use", value: 7.5 },
         ],
         price: "20$/mois",
         priceFull: { fr: "20$/mois ou version gratuite limitée", en: "$20/month or limited free tier" },
         pros: { fr: ["Meilleure qualité de rédaction du marché", "Contexte 200k tokens", "Suit les instructions complexes", "Textes naturels non détectables comme IA"], en: ["Best writing quality on the market", "200k token context", "Follows complex instructions", "Natural texts undetectable as AI"] },
         cons: { fr: ["Pas de templates ni de workflows intégrés", "Pas d'intégration SEO native", "Nécessite de savoir prompter"], en: ["No built-in templates or workflows", "No native SEO integration", "Requires prompting knowledge"] },
-        verdict: { fr: "La meilleure qualité de texte, mais sans les outils marketing de Jasper. Pour ceux qui savent ce qu'ils font.", en: "Best text quality, but without Jasper's marketing tools. For those who know what they're doing." },
+        verdict: { fr: "La meilleure qualité de texte, mais sans les outils marketing de Jasper.", en: "Best text quality, but without Jasper's marketing tools." },
         affiliate: "https://claude.ai",
         badge: { fr: "🏆 Meilleure qualité", en: "🏆 Best quality" },
       },
@@ -545,21 +541,13 @@ If you need an image to follow a precise brief — include text, respect a compo
       content: `
 ## La vraie question à se poser
 
-Avant de choisir, demandez-vous : cherchez-vous un **outil de workflow** (templates, intégrations, automatisations) ou un **outil de qualité** (le meilleur texte possible) ?
+Cherchez-vous un **outil de workflow** (templates, intégrations) ou un **outil de qualité** (le meilleur texte possible) ?
 
 Si c'est la qualité pure → Claude. Si c'est le workflow → Jasper ou Copy.ai.
 
 ## Qualité de rédaction : Claude gagne haut la main
 
-Sur 20 exercices de rédaction (articles, emails, fiches produits, posts LinkedIn), Claude a été jugé supérieur dans 16 cas. Ses textes sont plus naturels, mieux structurés, et moins détectables comme générés par IA.
-
-## Templates et workflows : Jasper domine
-
-Jasper brille par son écosystème de templates et ses intégrations (notamment Surfer SEO). Pour une équipe marketing qui veut standardiser sa production de contenu, c'est l'outil le plus complet.
-
-## Rapport qualité/prix : Copy.ai surprend
-
-Copy.ai propose un plan gratuit généreux et un plan Pro à 36$/mois — bien moins cher que Jasper. Pour les solopreneurs et petites équipes, c'est le meilleur point d'entrée.
+Sur 20 exercices de rédaction, Claude a été jugé supérieur dans 16 cas. Ses textes sont plus naturels, mieux structurés, et moins détectables comme générés par IA.
 
 ## Notre recommandation
 
@@ -578,13 +566,13 @@ Copy.ai propose un plan gratuit généreux et un plan Pro à 36$/mois — bien m
       content: `
 ## The real question to ask yourself
 
-Before choosing, ask yourself: are you looking for a **workflow tool** (templates, integrations, automations) or a **quality tool** (the best possible text)?
+Are you looking for a **workflow tool** (templates, integrations) or a **quality tool** (the best possible text)?
 
 If it's pure quality → Claude. If it's workflow → Jasper or Copy.ai.
 
 ## Writing quality: Claude wins hands down
 
-Across 20 writing exercises (articles, emails, product descriptions, LinkedIn posts), Claude was judged superior in 16 cases. Its texts are more natural, better structured, and less detectable as AI-generated.
+Across 20 writing exercises, Claude was judged superior in 16 cases. Its texts are more natural, better structured, and less detectable as AI-generated.
 
 ## Our recommendation
 
@@ -602,7 +590,10 @@ Across 20 writing exercises (articles, emails, product descriptions, LinkedIn po
     date: { fr: "28 fév. 2026", en: "Feb 28, 2026" },
     featured: false,
     winner: "ElevenLabs",
-    criteria: ["Qualité vocale", "Naturalisme", "Clonage", "API", "Prix", "Latence"],
+    criteria: {
+      fr: ["Qualité vocale", "Naturalisme", "Clonage", "API", "Prix", "Latence"],
+      en: ["Voice quality", "Naturalness", "Cloning", "API", "Price", "Latency"],
+    },
     tools: [
       {
         name: "ElevenLabs",
@@ -610,12 +601,12 @@ Across 20 writing exercises (articles, emails, product descriptions, LinkedIn po
         color: "#ff6b35",
         globalScore: 9.0,
         scores: [
-          { label: "Qualité vocale", value: 9.5 },
-          { label: "Naturalisme", value: 9.5 },
-          { label: "Clonage", value: 9.5 },
-          { label: "API", value: 8.5 },
-          { label: "Prix", value: 6 },
-          { label: "Latence", value: 7.5 },
+          { fr: "Qualité vocale", en: "Voice quality", value: 9.5 },
+          { fr: "Naturalisme", en: "Naturalness", value: 9.5 },
+          { fr: "Clonage", en: "Cloning", value: 9.5 },
+          { fr: "API", en: "API", value: 8.5 },
+          { fr: "Prix", en: "Price", value: 6 },
+          { fr: "Latence", en: "Latency", value: 7.5 },
         ],
         price: "5-99$/mois",
         priceFull: { fr: "De 5$/mois (Starter) à 99$/mois (Pro)", en: "From $5/month (Starter) to $99/month (Pro)" },
@@ -631,12 +622,12 @@ Across 20 writing exercises (articles, emails, product descriptions, LinkedIn po
         color: "#10a37f",
         globalScore: 8.0,
         scores: [
-          { label: "Qualité vocale", value: 8.5 },
-          { label: "Naturalisme", value: 8 },
-          { label: "Clonage", value: 0 },
-          { label: "API", value: 9.5 },
-          { label: "Prix", value: 9 },
-          { label: "Latence", value: 9.5 },
+          { fr: "Qualité vocale", en: "Voice quality", value: 8.5 },
+          { fr: "Naturalisme", en: "Naturalness", value: 8 },
+          { fr: "Clonage", en: "Cloning", value: 0 },
+          { fr: "API", en: "API", value: 9.5 },
+          { fr: "Prix", en: "Price", value: 9 },
+          { fr: "Latence", en: "Latency", value: 9.5 },
         ],
         price: "0.015$/1000 caractères",
         priceFull: { fr: "0.015$ par 1000 caractères (pay-as-you-go)", en: "$0.015 per 1000 characters (pay-as-you-go)" },
@@ -652,12 +643,12 @@ Across 20 writing exercises (articles, emails, product descriptions, LinkedIn po
         color: "#8b5cf6",
         globalScore: 7.8,
         scores: [
-          { label: "Qualité vocale", value: 8 },
-          { label: "Naturalisme", value: 8 },
-          { label: "Clonage", value: 8.5 },
-          { label: "API", value: 8 },
-          { label: "Prix", value: 7.5 },
-          { label: "Latence", value: 8 },
+          { fr: "Qualité vocale", en: "Voice quality", value: 8 },
+          { fr: "Naturalisme", en: "Naturalness", value: 8 },
+          { fr: "Clonage", en: "Cloning", value: 8.5 },
+          { fr: "API", en: "API", value: 8 },
+          { fr: "Prix", en: "Price", value: 7.5 },
+          { fr: "Latence", en: "Latency", value: 8 },
         ],
         price: "31-99$/mois",
         priceFull: { fr: "De 31$/mois à 99$/mois selon le plan", en: "From $31/month to $99/month by plan" },
@@ -678,15 +669,15 @@ Across 20 writing exercises (articles, emails, product descriptions, LinkedIn po
       content: `
 ## Pourquoi ce comparatif ?
 
-En 2026, la synthèse vocale IA est devenue une brique essentielle pour les créateurs de contenu (podcasts, vidéos), les développeurs (assistants vocaux, audiobooks) et les entreprises (IVR, voix-off).
+En 2026, la synthèse vocale IA est devenue une brique essentielle pour les créateurs de contenu, les développeurs et les entreprises.
 
 ## Qualité vocale : ElevenLabs intouchable
 
-Sur des extraits de 30 secondes, ElevenLabs reste le plus difficile à distinguer d'une vraie voix humaine. L'intonation, les pauses naturelles et la gestion des émotions sont dans une catégorie à part.
+Sur des extraits de 30 secondes, ElevenLabs reste le plus difficile à distinguer d'une vraie voix humaine.
 
 ## Pour les développeurs : OpenAI TTS imbattable
 
-L'API OpenAI TTS est la plus simple à intégrer, la moins chère et offre une latence excellente. Pour des projets qui nécessitent de la synthèse vocale en temps réel ou à grand volume, c'est le choix évident.
+L'API OpenAI TTS est la plus simple à intégrer, la moins chère et offre une latence excellente.
 
 ## Notre recommandation
 
@@ -705,15 +696,15 @@ L'API OpenAI TTS est la plus simple à intégrer, la moins chère et offre une l
       content: `
 ## Why this comparison?
 
-In 2026, AI voice synthesis has become an essential building block for content creators (podcasts, videos), developers (voice assistants, audiobooks) and businesses (IVR, voiceovers).
+In 2026, AI voice synthesis has become an essential building block for content creators, developers and businesses.
 
 ## Voice quality: ElevenLabs untouchable
 
-On 30-second excerpts, ElevenLabs remains the hardest to distinguish from a real human voice. Intonation, natural pauses and emotion handling are in a category of their own.
+On 30-second excerpts, ElevenLabs remains the hardest to distinguish from a real human voice.
 
 ## For developers: OpenAI TTS unbeatable
 
-The OpenAI TTS API is the simplest to integrate, cheapest and offers excellent latency. For projects requiring real-time or high-volume voice synthesis, it's the obvious choice.
+The OpenAI TTS API is the simplest to integrate, cheapest and offers excellent latency.
 
 ## Our recommendation
 

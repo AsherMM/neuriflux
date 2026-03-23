@@ -6,7 +6,7 @@ module.exports = {
   changefreq: "weekly",
   transform: async (config, path) => {
     // Homepage
-    if (path === "/") {
+    if (path === "[lang]/") {
       return { loc: path, priority: 1.0, changefreq: "daily" }
     }
     // Comparatifs = pages qui convertissent → priorité max

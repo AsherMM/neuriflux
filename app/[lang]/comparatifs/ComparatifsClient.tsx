@@ -1,11 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { COMPARATIFS, getAllComparatifTags, type Comparatif } from "../lib/comparatifs";
+
+type Lang = "fr" | "en";
 
 const T = {
   fr: {
-    nav: { blog: "Blog", comparatifs: "Comparatifs", outils: "Outils IA", newsletter: "Newsletter" },
+    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter" },
     badge: "Comparatifs & Benchmarks",
     title: "Comparatifs", accent: "IA",
     subtitle: "Des comparatifs honnêtes basés sur des tests réels. Scores détaillés, verdicts clairs, sans bullshit.",
@@ -17,12 +20,9 @@ const T = {
     winner: "Gagnant",
     see: "Voir le comparatif →",
     noResults: "Aucun comparatif trouvé.",
-    tools: "outils testés",
-    criteria: "critères",
-    score: "Score global",
   },
   en: {
-    nav: { blog: "Blog", comparatifs: "Comparisons", outils: "AI Tools", newsletter: "Newsletter" },
+    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter" },
     badge: "Comparisons & Benchmarks",
     title: "AI", accent: "Comparisons",
     subtitle: "Honest comparisons based on real tests. Detailed scores, clear verdicts, no bullshit.",
@@ -34,9 +34,6 @@ const T = {
     winner: "Winner",
     see: "See comparison →",
     noResults: "No comparisons found.",
-    tools: "tools tested",
-    criteria: "criteria",
-    score: "Overall score",
   },
 };
 
@@ -56,30 +53,29 @@ function ScorePill({ score }: { score: number }) {
   );
 }
 
-function ComparatifCard({ c, lang, t }: { c: Comparatif; lang: "fr" | "en"; t: typeof T["fr"] }) {
+function ComparatifCard({ c, lang, t, l }: {
+  c: Comparatif; lang: Lang; t: typeof T["fr"]; l: (p: string) => string;
+}) {
   const [hov, setHov] = useState(false);
   const cl = c[lang];
   const tagColor = gc(c.tag);
   const winner = c.tools.find(tool => tool.name === c.winner);
 
   return (
-    <a href={`/comparatifs/${c.slug}`}
+    <a
+      href={l(`/comparatifs/${c.slug}`)}
       style={{ background: "var(--bg2)", border: `1px solid ${hov ? "rgba(0,230,190,0.25)" : "var(--border)"}`, borderRadius: 16, padding: "1.75rem", display: "flex", flexDirection: "column", gap: "1.25rem", textDecoration: "none", transition: "all 0.25s", transform: hov ? "translateY(-3px)" : "none", boxShadow: hov ? "0 16px 50px rgba(0,0,0,0.5)" : "none", position: "relative", overflow: "hidden" }}
       onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
     >
-      {/* Top bar */}
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${tagColor}, transparent)`, opacity: hov ? 1 : 0.5, transition: "opacity 0.3s" }} />
 
-      {/* Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "0.5rem" }}>
         <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, color: tagColor, fontWeight: 500, background: `${tagColor}18`, border: `1px solid ${tagColor}30`, padding: "3px 10px", borderRadius: 100 }}>{c.tag}</span>
         <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "var(--text-dim)" }}>{c.date[lang]}</span>
       </div>
 
-      {/* Title */}
       <div style={{ fontSize: "1.05rem", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.3, color: "var(--text)", fontFamily: "var(--font-display)" }}>{cl.title}</div>
 
-      {/* Tools compared */}
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
         {c.tools.map((tool, i) => (
           <span key={tool.name} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
@@ -91,7 +87,6 @@ function ComparatifCard({ c, lang, t }: { c: Comparatif; lang: "fr" | "en"; t: t
         ))}
       </div>
 
-      {/* Scores preview */}
       <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
         {c.tools.map(tool => (
           <div key={tool.name} style={{ display: "flex", flexDirection: "column", gap: "0.3rem", alignItems: "center" }}>
@@ -101,7 +96,6 @@ function ComparatifCard({ c, lang, t }: { c: Comparatif; lang: "fr" | "en"; t: t
         ))}
       </div>
 
-      {/* Winner + CTA */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "1rem", borderTop: "1px solid var(--border)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "var(--text-dim)", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>{t.winner}</span>
@@ -115,16 +109,21 @@ function ComparatifCard({ c, lang, t }: { c: Comparatif; lang: "fr" | "en"; t: t
   );
 }
 
-export default function ComparatifsPage() {
-  const [lang, setLang] = useState<"fr" | "en">("fr");
+export default function ComparatifsClient({ lang }: { lang: Lang }) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [activeTag, setActiveTag] = useState("all");
   const [search, setSearch] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => { setLang(navigator.language.toLowerCase().startsWith("fr") ? "fr" : "en"); }, []);
-
   const t = T[lang];
   const tags = getAllComparatifTags();
+
+  const l = (path: string) => `/${lang}${path}`;
+  const switchLang = (next: Lang) => {
+    if (next === lang) return;
+    router.push(pathname.replace(/^\/(fr|en)/, `/${next}`));
+  };
 
   const filtered = COMPARATIFS.filter(c => {
     const matchTag = activeTag === "all" || c.tag === activeTag;
@@ -187,17 +186,16 @@ export default function ComparatifsPage() {
       <div className="grid-bg" /><div className="glow" />
 
       <nav>
-        <a href="/" className="logo"><div className="dot" />Neuri<span>flux</span></a>
+        <a href={l("")} className="logo"><div className="dot" />Neuri<span>flux</span></a>
         <ul className={`nav-links${menuOpen ? " open" : ""}`}>
-          <li><a href="/blog">{t.nav.blog}</a></li>
-          <li><a href="/comparatifs" className="active">{t.nav.comparatifs}</a></li>
-          <li><a href="/outils">{t.nav.outils}</a></li>
-          <li><a href="/newsletter">{t.nav.newsletter}</a></li>
+          <li><a href={l("/blog")}>{t.nav.blog}</a></li>
+          <li><a href={l("/comparatifs")} className="active">{t.nav.comparatifs}</a></li>
+          <li><a href={l("/newsletter")}>{t.nav.newsletter}</a></li>
         </ul>
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
           <div className="lt">
-            <button className={`lb${lang === "fr" ? " active" : ""}`} onClick={() => setLang("fr")}>FR</button>
-            <button className={`lb${lang === "en" ? " active" : ""}`} onClick={() => setLang("en")}>EN</button>
+            <button className={`lb${lang === "fr" ? " active" : ""}`} onClick={() => switchLang("fr")}>FR</button>
+            <button className={`lb${lang === "en" ? " active" : ""}`} onClick={() => switchLang("en")}>EN</button>
           </div>
           <button className="hb" onClick={() => setMenuOpen(!menuOpen)}><span /><span /><span /></button>
         </div>
@@ -220,22 +218,26 @@ export default function ComparatifsPage() {
           </div>
           <div className="filters">
             <button className={`ft${activeTag === "all" ? " active" : ""}`} onClick={() => setActiveTag("all")}>{t.all}</button>
-            {tags.map(tag => <button key={tag} className={`ft${activeTag === tag ? " active" : ""}`} onClick={() => setActiveTag(tag)}>{tag}</button>)}
+            {tags.map(tag => (
+              <button key={tag} className={`ft${activeTag === tag ? " active" : ""}`} onClick={() => setActiveTag(tag)}>{tag}</button>
+            ))}
           </div>
         </div>
 
-        {filtered.length === 0 ? <div className="nr">{t.noResults}</div> : (
+        {filtered.length === 0 ? (
+          <div className="nr">{t.noResults}</div>
+        ) : (
           <>
             {featured.length > 0 && (
               <div>
                 <div className="stag">{t.featured}</div>
-                <div className="gf">{featured.map(c => <ComparatifCard key={c.slug} c={c} lang={lang} t={t} />)}</div>
+                <div className="gf">{featured.map(c => <ComparatifCard key={c.slug} c={c} lang={lang} t={t} l={l} />)}</div>
               </div>
             )}
             {rest.length > 0 && (
               <div>
                 {featured.length > 0 && <div className="stag">{t.allLabel}</div>}
-                <div className="ga">{rest.map(c => <ComparatifCard key={c.slug} c={c} lang={lang} t={t} />)}</div>
+                <div className="ga">{rest.map(c => <ComparatifCard key={c.slug} c={c} lang={lang} t={t} l={l} />)}</div>
               </div>
             )}
           </>

@@ -1,11 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { ARTICLES, getAllTags, type Article } from "../lib/articles";
 
-const translations = {
+type Lang = "fr" | "en";
+
+const T = {
   fr: {
-    nav: { blog: "Blog", comparatifs: "Comparatifs", outils: "Outils IA", newsletter: "Newsletter" },
+    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter" },
     hero: { badge: "Articles & Analyses", title: "Le blog", accent: "Neuriflux", subtitle: "Tests approfondis, analyses honnêtes et guides pratiques sur les meilleurs outils IA du marché." },
     filters: { all: "Tous" },
     search: "Rechercher un article...",
@@ -16,7 +19,7 @@ const translations = {
     noResults: "Aucun article trouvé.",
   },
   en: {
-    nav: { blog: "Blog", comparatifs: "Comparisons", outils: "AI Tools", newsletter: "Newsletter" },
+    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter" },
     hero: { badge: "Articles & Analysis", title: "The", accent: "Neuriflux Blog", subtitle: "In-depth reviews, honest analysis and practical guides on the best AI tools on the market." },
     filters: { all: "All" },
     search: "Search articles...",
@@ -36,12 +39,18 @@ const TAG_COLORS: Record<string, string> = {
 
 function getColor(tag: string) { return TAG_COLORS[tag] || "#00e6be"; }
 
-function Card({ article, lang, readMore, readTime }: { article: Article; lang: "fr" | "en"; readMore: string; readTime: string }) {
+function Card({ article, lang, readMore, readTime, l }: {
+  article: Article; lang: Lang; readMore: string; readTime: string; l: (p: string) => string;
+}) {
   const a = article[lang];
   const color = getColor(article.tag);
   const [hovered, setHovered] = useState(false);
   return (
-    <a href={`/blog/${article.slug}`} style={{ background: "var(--bg2)", border: `1px solid ${hovered ? "rgba(0,230,190,0.25)" : "var(--border)"}`, borderRadius: 12, padding: "1.75rem", display: "flex", flexDirection: "column", gap: "0.75rem", textDecoration: "none", transition: "all 0.25s", transform: hovered ? "translateY(-3px)" : "none", boxShadow: hovered ? "0 12px 40px rgba(0,0,0,0.4)" : "none", position: "relative", overflow: "hidden" }} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+    <a
+      href={l(`/blog/${article.slug}`)}
+      style={{ background: "var(--bg2)", border: `1px solid ${hovered ? "rgba(0,230,190,0.25)" : "var(--border)"}`, borderRadius: 12, padding: "1.75rem", display: "flex", flexDirection: "column", gap: "0.75rem", textDecoration: "none", transition: "all 0.25s", transform: hovered ? "translateY(-3px)" : "none", boxShadow: hovered ? "0 12px 40px rgba(0,0,0,0.4)" : "none", position: "relative", overflow: "hidden" }}
+      onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
+    >
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: color, opacity: hovered ? 1 : 0.4, transition: "opacity 0.3s" }} />
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
         <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, color, fontWeight: 500, background: `${color}18`, border: `1px solid ${color}30`, padding: "3px 10px", borderRadius: 100 }}>{article.tag}</span>
@@ -57,16 +66,25 @@ function Card({ article, lang, readMore, readTime }: { article: Article; lang: "
   );
 }
 
-export default function BlogPage() {
-  const [lang, setLang] = useState<"fr" | "en">("fr");
+export default function BlogClient({ lang }: { lang: Lang }) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [activeTag, setActiveTag] = useState("all");
   const [search, setSearch] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => { setLang(navigator.language.toLowerCase().startsWith("fr") ? "fr" : "en"); }, []);
-
-  const t = translations[lang];
+  const t = T[lang];
   const tags = getAllTags();
+
+  // Préfixe les liens avec /fr ou /en
+  const l = (path: string) => `/${lang}${path}`;
+
+  // Switch de langue
+  const switchLang = (next: Lang) => {
+    if (next === lang) return;
+    router.push(pathname.replace(/^\/(fr|en)/, `/${next}`));
+  };
+
   const filtered = ARTICLES.filter(a => {
     const matchTag = activeTag === "all" || a.tag === activeTag;
     const s = search.toLowerCase();
@@ -82,7 +100,8 @@ export default function BlogPage() {
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         :root{--bg:#080c10;--bg2:#0d1117;--bg3:#111820;--border:rgba(255,255,255,0.07);--border-glow:rgba(0,230,190,0.25);--cyan:#00e6be;--cyan-dim:rgba(0,230,190,0.12);--text:#f0f4f8;--text-muted:#6b7a8d;--text-dim:#3d4f61;--font-display:'Syne',sans-serif;--font-mono:'JetBrains Mono',monospace}
-        html{scroll-behavior:smooth}body{background:var(--bg);color:var(--text);font-family:var(--font-display);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+        html{scroll-behavior:smooth}
+        body{background:var(--bg);color:var(--text);font-family:var(--font-display);-webkit-font-smoothing:antialiased;overflow-x:hidden}
         .grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,230,190,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,190,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
         .glow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(0,230,190,0.07) 0%,transparent 70%);pointer-events:none;z-index:0}
         nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(8,12,16,0.85);border-bottom:1px solid var(--border);padding:0 clamp(1.5rem,5vw,4rem);height:64px;display:flex;align-items:center;justify-content:space-between}
@@ -124,18 +143,18 @@ export default function BlogPage() {
       `}</style>
 
       <div className="grid-bg" /><div className="glow" />
+
       <nav>
-        <a href="/" className="logo"><div className="dot" />Neuri<span>flux</span></a>
+        <a href={l("")} className="logo"><div className="dot" />Neuri<span>flux</span></a>
         <ul className={`nav-links${menuOpen ? " open" : ""}`}>
-          <li><a href="/blog" className="active">{t.nav.blog}</a></li>
-          <li><a href="/comparatifs">{t.nav.comparatifs}</a></li>
-          <li><a href="/outils">{t.nav.outils}</a></li>
-          <li><a href="/newsletter">{t.nav.newsletter}</a></li>
+          <li><a href={l("/blog")} className="active">{t.nav.blog}</a></li>
+          <li><a href={l("/comparatifs")}>{t.nav.comparatifs}</a></li>
+          <li><a href={l("/newsletter")}>{t.nav.newsletter}</a></li>
         </ul>
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
           <div className="lang-toggle">
-            <button className={`lb${lang === "fr" ? " active" : ""}`} onClick={() => setLang("fr")}>FR</button>
-            <button className={`lb${lang === "en" ? " active" : ""}`} onClick={() => setLang("en")}>EN</button>
+            <button className={`lb${lang === "fr" ? " active" : ""}`} onClick={() => switchLang("fr")}>FR</button>
+            <button className={`lb${lang === "en" ? " active" : ""}`} onClick={() => switchLang("en")}>EN</button>
           </div>
           <button className="hb" onClick={() => setMenuOpen(!menuOpen)}><span /><span /><span /></button>
         </div>
@@ -143,25 +162,51 @@ export default function BlogPage() {
 
       <div className="wrap">
         <div className="hero">
-          <div className="badge"><span style={{ width: 6, height: 6, background: "var(--cyan)", borderRadius: "50%", display: "inline-block" }} />{t.hero.badge}</div>
+          <div className="badge">
+            <span style={{ width: 6, height: 6, background: "var(--cyan)", borderRadius: "50%", display: "inline-block" }} />
+            {t.hero.badge}
+          </div>
           <h1>{t.hero.title} <span className="accent">{t.hero.accent}</span></h1>
           <p className="sub">{t.hero.subtitle}</p>
         </div>
+
         <div className="toolbar">
-          <div className="sw"><span className="si">🔍</span><input className="sinput" type="text" placeholder={t.search} value={search} onChange={e => setSearch(e.target.value)} /></div>
+          <div className="sw">
+            <span className="si">🔍</span>
+            <input className="sinput" type="text" placeholder={t.search} value={search} onChange={e => setSearch(e.target.value)} />
+          </div>
           <div className="filters">
             <button className={`ft${activeTag === "all" ? " active" : ""}`} onClick={() => setActiveTag("all")}>{t.filters.all}</button>
-            {tags.map(tag => <button key={tag} className={`ft${activeTag === tag ? " active" : ""}`} onClick={() => setActiveTag(tag)}>{tag}</button>)}
+            {tags.map(tag => (
+              <button key={tag} className={`ft${activeTag === tag ? " active" : ""}`} onClick={() => setActiveTag(tag)}>{tag}</button>
+            ))}
           </div>
         </div>
 
-        {filtered.length === 0 ? <div className="nr">{t.noResults}</div> : (
+        {filtered.length === 0 ? (
+          <div className="nr">{t.noResults}</div>
+        ) : (
           <>
-            {featured.length > 0 && <div><div className="stag">{t.featured}</div><div className="gf">{featured.map(a => <Card key={a.slug} article={a} lang={lang} readMore={t.readMore} readTime={t.readTime} />)}</div></div>}
-            {rest.length > 0 && <div>{featured.length > 0 && <div className="stag">{t.all}</div>}<div className="ga">{rest.map(a => <Card key={a.slug} article={a} lang={lang} readMore={t.readMore} readTime={t.readTime} />)}</div></div>}
+            {featured.length > 0 && (
+              <div>
+                <div className="stag">{t.featured}</div>
+                <div className="gf">
+                  {featured.map(a => <Card key={a.slug} article={a} lang={lang} readMore={t.readMore} readTime={t.readTime} l={l} />)}
+                </div>
+              </div>
+            )}
+            {rest.length > 0 && (
+              <div>
+                {featured.length > 0 && <div className="stag">{t.all}</div>}
+                <div className="ga">
+                  {rest.map(a => <Card key={a.slug} article={a} lang={lang} readMore={t.readMore} readTime={t.readTime} l={l} />)}
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>
+
       <footer>
         <p className="cp">© 2026 <span>Neuriflux</span>. {lang === "fr" ? "Tous droits réservés." : "All rights reserved."}</p>
         <p className="cp">{lang === "fr" ? "Fait avec" : "Made with"} <span>♥</span> {lang === "fr" ? "en France" : "in France"}</p>
