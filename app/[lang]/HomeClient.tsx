@@ -108,7 +108,7 @@ const TAG_COLORS: Record<string, string> = {
 };
 
 function AnimatedCounter({ value }: { value: string }) {
-  const [display, setDisplay] = useState("0");
+  const [display, setDisplay] = useState(value);
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
     const num = parseInt(value.replace(/\D/g, ""));

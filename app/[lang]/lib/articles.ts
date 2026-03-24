@@ -33,7 +33,7 @@ export const ARTICLES: Article[] = [
 // ─── Jasper AI Review 2026 ──────────────────────────────────────────────────
   {
     slug: "jasper-ai-review-2026",
-    tag: "Rédaction",
+    tag: "Writing",
     date: { fr: "24 mars 2026", en: "March 24, 2026" },
     timeMin: "10",
     featured: true,
@@ -961,7 +961,7 @@ Codeium is free for individual developers — and that's its main strength. Sugg
   // ─── 6. Notion AI ───────────────────────────────────────────────────────────
   {
     slug: "notion-ai-review",
-    tag: "Productivité",
+    tag: "Productivity",    
     date: { fr: "28 fév. 2026", en: "Feb 28, 2026" },
     timeMin: "8",
     fr: {
@@ -1185,7 +1185,7 @@ We tested the platform for 3 weeks for AI voice.
   // ─── 8. Jasper vs Copy.ai ───────────────────────────────────────────────────
   {
     slug: "jasper-vs-copyai",
-    tag: "Rédaction",
+    tag: "Writing",
     date: { fr: "20 fév. 2026", en: "Feb 20, 2026" },
     timeMin: "9",
     fr: {

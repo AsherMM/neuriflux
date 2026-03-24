@@ -3,10 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 
-export async function generateStaticParams() {
-  return [{ lang: "fr" }, { lang: "en" }];
-}
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -18,26 +14,27 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  // ─── Titre & Description ───────────────────────────────────────────────────
+  // ─── Titre & Description (EN par défaut) ──────────────────────────────────
+  // Le [lang]/layout.tsx overridera avec les bonnes valeurs FR/EN par page
   title: {
-    default: "Neuriflux — Comparatifs honnêtes d'outils IA",
+    default: "Neuriflux — Honest AI Tools Comparisons",
     template: "%s | Neuriflux",
   },
   description:
-    "Neuriflux teste et compare les meilleurs outils IA du marché. Comparatifs honnêtes, scores détaillés, verdicts clairs — sans bullshit.",
+    "Neuriflux tests and compares the best AI tools on the market. Honest comparisons, detailed scores, clear verdicts — no bullshit.",
 
   // ─── Mots-clés ─────────────────────────────────────────────────────────────
   keywords: [
-    "outils IA",
-    "comparatif IA",
+    "AI tools",
+    "AI comparison",
     "ChatGPT",
     "Claude",
     "Gemini",
     "Cursor AI",
-    "intelligence artificielle",
-    "AI tools",
-    "AI comparison",
-    "meilleur outil IA",
+    "artificial intelligence",
+    "best AI tool",
+    "outils IA",
+    "comparatif IA",
   ],
 
   // ─── Auteur & Editeur ──────────────────────────────────────────────────────
@@ -49,18 +46,18 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Neuriflux",
-    title: "Neuriflux — Comparatifs honnêtes d'outils IA",
+    title: "Neuriflux — Honest AI Tools Comparisons",
     description:
-      "Neuriflux teste et compare les meilleurs outils IA du marché. Comparatifs honnêtes, scores détaillés, verdicts clairs.",
+      "Neuriflux tests and compares the best AI tools. Honest comparisons, detailed scores, clear verdicts.",
     url: "https://neuriflux.com",
-    locale: "fr_FR",
-    alternateLocale: "en_US",
+    locale: "en_US",
+    alternateLocale: "fr_FR",
     images: [
       {
         url: "https://neuriflux.com/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Neuriflux — Comparatifs honnêtes d'outils IA",
+        alt: "Neuriflux — Honest AI Tools Comparisons",
       },
     ],
   },
@@ -70,9 +67,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@neuriflux",
     creator: "@neuriflux",
-    title: "Neuriflux — Comparatifs honnêtes d'outils IA",
+    title: "Neuriflux — Honest AI Tools Comparisons",
     description:
-      "Comparatifs honnêtes, scores détaillés, verdicts clairs sur les meilleurs outils IA.",
+      "Honest comparisons, detailed scores, clear verdicts on the best AI tools.",
     images: ["https://neuriflux.com/og-image.png"],
   },
 
@@ -88,14 +85,14 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  
+
   // ─── Canonique & hreflang ──────────────────────────────────────────────────
   alternates: {
-    canonical: "https://neuriflux.com",
+    canonical: "https://neuriflux.com/en",
     languages: {
-      "fr": "https://neuriflux.com/fr",
-      "en": "https://neuriflux.com/en",
-      "x-default": "https://neuriflux.com",
+      fr: "https://neuriflux.com/fr",
+      en: "https://neuriflux.com/en",
+      "x-default": "https://neuriflux.com/en", // EN comme langue principale
     },
   },
 
@@ -112,13 +109,11 @@ export const metadata: Metadata = {
   // ─── Manifest ──────────────────────────────────────────────────────────────
   manifest: "/site.webmanifest",
 
-  // ─── Verification ──────────────────────────────────────────────────────────
-  // À remplir quand tu auras vérifié dans Google Search Console
+  // ─── Google Search Console — décommenter après vérification ───────────────
   // verification: {
   //   google: "VOTRE_CODE_GOOGLE",
   // },
 
-  // ─── Métadonnées supplémentaires ───────────────────────────────────────────
   category: "technology",
 };
 
@@ -128,12 +123,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // lang="en" par défaut — le [lang]/layout.tsx overridera dynamiquement
     <html
-      lang="fr"
+      lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        {/* Schema.org JSON-LD — Organisation */}
+        {/* Schema.org — Organisation */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -144,14 +140,12 @@ export default function RootLayout({
               url: "https://neuriflux.com",
               logo: "https://neuriflux.com/logo.png",
               description:
-                "Média indépendant qui teste et compare les meilleurs outils IA du marché.",
-              sameAs: [
-                "https://twitter.com/neuriflux",
-              ],
+                "Independent media testing and comparing the best AI tools on the market.",
+              sameAs: ["https://twitter.com/neuriflux"],
             }),
           }}
         />
-        {/* Schema.org JSON-LD — WebSite + SearchAction */}
+        {/* Schema.org — WebSite + SearchAction */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -165,7 +159,7 @@ export default function RootLayout({
                 target: {
                   "@type": "EntryPoint",
                   urlTemplate:
-                    "https://neuriflux.com/fr/blog?q={search_term_string}",
+                    "https://neuriflux.com/en/blog?q={search_term_string}",
                 },
                 "query-input": "required name=search_term_string",
               },
