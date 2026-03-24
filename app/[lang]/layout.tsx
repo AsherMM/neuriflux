@@ -3,6 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 
+export async function generateStaticParams() {
+  return [{ lang: "fr" }, { lang: "en" }];
+}
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -84,7 +88,7 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-
+  
   // ─── Canonique & hreflang ──────────────────────────────────────────────────
   alternates: {
     canonical: "https://neuriflux.com",

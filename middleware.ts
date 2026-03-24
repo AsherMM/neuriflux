@@ -13,8 +13,8 @@ export function middleware(request: NextRequest) {
 
   // ─── 2. Détecter la langue préférée du navigateur ─────────────────────────
   const acceptLang = request.headers.get("accept-language") ?? "";
-  const lang = acceptLang.toLowerCase().startsWith("fr") ? "fr" : "en";
-
+  const lang = "en";
+  
   // ─── 3. Rediriger vers /fr/... ou /en/... ─────────────────────────────────
   const url = request.nextUrl.clone();
   url.pathname = pathname === "/" ? `/${lang}` : `/${lang}${pathname}`;
