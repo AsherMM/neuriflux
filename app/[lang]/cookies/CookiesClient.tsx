@@ -7,7 +7,7 @@ type Lang = "fr" | "en";
 
 const T = {
   fr: {
-    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter" },
+    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", about: "A propos" },
     back: "← Retour",
     title: "Politique de cookies",
     updated: "Dernière mise à jour : mars 2026",
@@ -67,7 +67,7 @@ contact@neuriflux.com`,
     ],
   },
   en: {
-    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter" },
+    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", about: "About" },
     back: "← Back",
     title: "Cookie Policy",
     updated: "Last updated: March 2026",
@@ -187,6 +187,7 @@ export default function CookiesClient({ lang }: { lang: Lang }) {
           <li><a href={l("/blog")}>{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")}>{t.nav.comparatifs}</a></li>
           <li><a href={l("/newsletter")}>{t.nav.newsletter}</a></li>
+          <li><a href={l("/about")}>{t.nav.about}</a></li>
         </ul>
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <div className="lang-toggle">

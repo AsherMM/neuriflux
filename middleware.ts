@@ -25,7 +25,10 @@ export function middleware(request: NextRequest) {
 export const config = {
   // Intercepte tout SAUF :
   // - les fichiers _next (build assets)
-  // - les fichiers avec extension (.ico, .png, .jpg, .svg, .css, .js...)
   // - les routes api
-  matcher: ["/((?!_next/static|_next/image|api|favicon\\.ico|.*\\.[a-z]{2,4}$).*)"],
+  // - les fichiers SEO : sitemap.xml, robots.txt, site.webmanifest
+  // - les fichiers avec extension (.ico, .png, .jpg, .svg, .css, .js, .xml, .txt...)
+  matcher: [
+    "/((?!_next/static|_next/image|api|favicon\\.ico|sitemap\\.xml|robots\\.txt|site\\.webmanifest|.*\\.[a-z]{2,4}$).*)",
+  ],
 };

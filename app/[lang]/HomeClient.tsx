@@ -8,7 +8,7 @@ type Lang = "fr" | "en";
 
 const translations = {
   fr: {
-    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter" },
+    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", about: "A propos" },
     hero: {
       badge: "Média indépendant · Tests réels",
       title1: "Les meilleurs", title2: "outils IA", title3: "enfin comparés honnêtement.",
@@ -55,7 +55,7 @@ const translations = {
     },
   },
   en: {
-    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter" },
+    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", about: "About" },
     hero: {
       badge: "Independent media · Real tests",
       title1: "The best", title2: "AI tools", title3: "finally compared honestly.",
@@ -255,6 +255,7 @@ export default function HomeClient({ lang }: { lang: Lang }) {
           <li><a href={l("/blog")}>{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")}>{t.nav.comparatifs}</a></li>
           <li><a href={l("/newsletter")}>{t.nav.newsletter}</a></li>
+          <li><a href={l("/about")}>{t.nav.about}</a></li>
         </ul>
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <div className="lang-toggle">

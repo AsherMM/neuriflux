@@ -213,6 +213,7 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
           <li><a href={l("/blog")}>{lang === "fr" ? "Blog" : "Blog"}</a></li>
           <li><a href={l("/comparatifs")}>{lang === "fr" ? "Comparatifs" : "Comparisons"}</a></li>
           <li><a href={l("/newsletter")}>Newsletter</a></li>
+          <li><a href={l("/about")}>{lang === "fr" ? "A propos" : "About"}</a></li>
         </ul>
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
           <div className="lang-toggle">

@@ -1,0 +1,33 @@
+# *
+User-agent: *
+Allow: /
+
+# GPTBot
+User-agent: GPTBot
+Disallow: /
+
+# CCBot
+User-agent: CCBot
+Disallow: /
+
+# anthropic-ai
+User-agent: anthropic-ai
+Disallow: /
+
+# Google-Extended
+User-agent: Google-Extended
+Disallow: /
+
+# ChatGPT-User
+User-agent: ChatGPT-User
+Disallow: /
+
+# Omgilibot
+User-agent: Omgilibot
+Disallow: /
+
+# Host
+Host: https://neuriflux.com
+
+# Sitemaps
+Sitemap: https://neuriflux.com/sitemap.xml

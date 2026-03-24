@@ -8,7 +8,7 @@ type Lang = "fr" | "en";
 
 const T = {
   fr: {
-    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter" },
+    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", about: "A propos" },
     badge: "Comparatifs & Benchmarks",
     title: "Comparatifs", accent: "IA",
     subtitle: "Des comparatifs honnêtes basés sur des tests réels. Scores détaillés, verdicts clairs, sans bullshit.",
@@ -22,7 +22,7 @@ const T = {
     noResults: "Aucun comparatif trouvé.",
   },
   en: {
-    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter" },
+    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", about: "About" },
     badge: "Comparisons & Benchmarks",
     title: "AI", accent: "Comparisons",
     subtitle: "Honest comparisons based on real tests. Detailed scores, clear verdicts, no bullshit.",
@@ -191,6 +191,7 @@ export default function ComparatifsClient({ lang }: { lang: Lang }) {
           <li><a href={l("/blog")}>{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")} className="active">{t.nav.comparatifs}</a></li>
           <li><a href={l("/newsletter")}>{t.nav.newsletter}</a></li>
+          <li><a href={l("/about")}>{t.nav.about}</a></li>
         </ul>
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
           <div className="lt">

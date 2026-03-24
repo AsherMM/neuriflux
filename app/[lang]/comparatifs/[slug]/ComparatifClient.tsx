@@ -326,6 +326,8 @@ useEffect(() => {
           <li><a href={l("/blog")}>{lang === "fr" ? "Blog" : "Blog"}</a></li>
           <li><a href={l("/comparatifs")} className="active">{lang === "fr" ? "Comparatifs" : "Comparisons"}</a></li>
           <li><a href={l("/newsletter")}>Newsletter</a></li>
+          <li><a href={l("/about")}>{lang === "fr" ? "A propos" : "About"}</a></li>
+
         </ul>
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <div className="lt">

@@ -8,7 +8,7 @@ type Lang = "fr" | "en";
 
 const T = {
   fr: {
-    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter" },
+    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", about: "A propos" },
     hero: { badge: "Articles & Analyses", title: "Le blog", accent: "Neuriflux", subtitle: "Tests approfondis, analyses honnêtes et guides pratiques sur les meilleurs outils IA du marché." },
     filters: { all: "Tous" },
     search: "Rechercher un article...",
@@ -19,7 +19,7 @@ const T = {
     noResults: "Aucun article trouvé.",
   },
   en: {
-    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter" },
+    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", about: "About" },
     hero: { badge: "Articles & Analysis", title: "The", accent: "Neuriflux Blog", subtitle: "In-depth reviews, honest analysis and practical guides on the best AI tools on the market." },
     filters: { all: "All" },
     search: "Search articles...",
@@ -150,6 +150,7 @@ export default function BlogClient({ lang }: { lang: Lang }) {
           <li><a href={l("/blog")} className="active">{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")}>{t.nav.comparatifs}</a></li>
           <li><a href={l("/newsletter")}>{t.nav.newsletter}</a></li>
+          <li><a href={l("/about")}>{t.nav.about}</a></li>
         </ul>
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
           <div className="lang-toggle">
