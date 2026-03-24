@@ -4,31 +4,58 @@ module.exports = {
   generateRobotsTxt: true,
   generateIndexSitemap: false,
   changefreq: "weekly",
+
   transform: async (config, path) => {
-    // Homepage
-    if (path === "[lang]/") {
-      return { loc: path, priority: 1.0, changefreq: "daily" }
+    // Homepages FR/EN
+    if (path === "/fr" || path === "/en") {
+      return {
+        loc: path,
+        priority: 1.0,
+        changefreq: "daily",
+      };
     }
-    // Comparatifs = pages qui convertissent → priorité max
-    if (path.startsWith("/comparatifs/")) {
-      return { loc: path, priority: 0.9, changefreq: "monthly" }
+
+    // Comparatifs FR/EN
+    if (
+      path.startsWith("/fr/comparatifs/") ||
+      path.startsWith("/en/comparatifs/")
+    ) {
+      return {
+        loc: path,
+        priority: 0.9,
+        changefreq: "monthly",
+      };
     }
-    // Articles blog
-    if (path.startsWith("/blog/")) {
-      return { loc: path, priority: 0.8, changefreq: "weekly" }
+
+    // Blog FR/EN
+    if (
+      path.startsWith("/fr/blog/") ||
+      path.startsWith("/en/blog/")
+    ) {
+      return {
+        loc: path,
+        priority: 0.8,
+        changefreq: "weekly",
+      };
     }
+
     // Reste
-    return { loc: path, priority: 0.5, changefreq: "monthly" }
+    return {
+      loc: path,
+      priority: 0.5,
+      changefreq: "monthly",
+    };
   },
+
   robotsTxtOptions: {
     policies: [
       { userAgent: "*", allow: "/" },
-      { userAgent: "GPTBot", disallow: "/" },        // Bloque OpenAI
-      { userAgent: "CCBot", disallow: "/" },          // Bloque Common Crawl
-      { userAgent: "anthropic-ai", disallow: "/" },   // Bloque Anthropic 😄
+      { userAgent: "GPTBot", disallow: "/" },
+      { userAgent: "CCBot", disallow: "/" },
+      { userAgent: "anthropic-ai", disallow: "/" },
     ],
     additionalSitemaps: [
-      "https://neuriflux.com/sitemap.xml",
+      "https://www.neuriflux.com/sitemap.xml",
     ],
   },
 };
