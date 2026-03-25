@@ -1,13 +1,13 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 type Lang = "fr" | "en";
 
 const T = {
   fr: {
-    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", about: "A propos" },
+    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", about: "À propos" },
     badge: "À propos de Neuriflux",
     title: "On teste.",
     titleAccent: "Vous choisissez.",
@@ -39,10 +39,19 @@ const T = {
     },
     stats: [
       { value: "120+", label: "Outils testés" },
-      { value: "5", label: "Comparatifs publiés" },
-      { value: "100%", label: "Indépendant" },
+      { value: "9", label: "Articles publiés" },
+      { value: "3 200+", label: "Lecteurs newsletter" },
       { value: "2026", label: "Lancé en" },
     ],
+    howWeWork: {
+      label: "Comment on travaille",
+      steps: [
+        { num: "01", title: "On sélectionne", text: "On choisit les outils qui font vraiment parler d'eux — nouveautés, mises à jour majeures, tendances du marché." },
+        { num: "02", title: "On teste en conditions réelles", text: "Plusieurs semaines d'utilisation intensive sur des projets concrets. Pas de démo, pas de press kit." },
+        { num: "03", title: "On score objectivement", text: "Grille d'évaluation fixe sur des critères précis : qualité, prix, ergonomie, support, évolutivité." },
+        { num: "04", title: "On publie sans filtre", text: "Verdict honnête, points forts ET faiblesses. Si l'outil est surévalué, on le dit clairement." },
+      ],
+    },
     mission: {
       label: "Notre mission",
       title: "Rendre l'IA accessible à tous",
@@ -59,7 +68,17 @@ const T = {
       label: "Le radar IA",
       title: "Chaque lundi dans votre boîte",
       text: "Les meilleurs outils IA, les comparatifs qui comptent, les deals à ne pas rater. Gratuit, sans spam.",
-      cta: "S'abonner →",
+      cta: "S'abonner gratuitement →",
+    },
+    footer: {
+      rights: "Tous droits réservés.",
+      madeWith: "Fait avec",
+      inFrance: "en France",
+      links: [
+        { label: "Mentions légales", href: "/legal" },
+        { label: "Confidentialité", href: "/privacy" },
+        { label: "Cookies", href: "/cookies" },
+      ],
     },
   },
   en: {
@@ -95,10 +114,19 @@ const T = {
     },
     stats: [
       { value: "120+", label: "Tools tested" },
-      { value: "5", label: "Comparisons published" },
-      { value: "100%", label: "Independent" },
+      { value: "9", label: "Articles published" },
+      { value: "3,200+", label: "Newsletter readers" },
       { value: "2026", label: "Launched in" },
     ],
+    howWeWork: {
+      label: "How we work",
+      steps: [
+        { num: "01", title: "We select", text: "We choose tools that are genuinely making waves — new releases, major updates, market trends." },
+        { num: "02", title: "We test in real conditions", text: "Several weeks of intensive use on concrete projects. No demo, no press kit." },
+        { num: "03", title: "We score objectively", text: "Fixed evaluation grid on precise criteria: quality, price, UX, support, scalability." },
+        { num: "04", title: "We publish unfiltered", text: "Honest verdict, strengths AND weaknesses. If a tool is overrated, we say it clearly." },
+      ],
+    },
     mission: {
       label: "Our mission",
       title: "Making AI accessible to everyone",
@@ -115,10 +143,43 @@ const T = {
       label: "The AI radar",
       title: "Every Monday in your inbox",
       text: "The best AI tools, the comparisons that matter, the deals you don't want to miss. Free, no spam.",
-      cta: "Subscribe →",
+      cta: "Subscribe for free →",
+    },
+    footer: {
+      rights: "All rights reserved.",
+      madeWith: "Made with",
+      inFrance: "in France",
+      links: [
+        { label: "Legal notice", href: "/legal" },
+        { label: "Privacy", href: "/privacy" },
+        { label: "Cookies", href: "/cookies" },
+      ],
     },
   },
 };
+
+// ─── Animated counter ─────────────────────────────────────────────────────────
+function AnimatedCounter({ value }: { value: string }) {
+  const [display, setDisplay] = useState(value);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const num = parseInt(value.replace(/\D/g, ""));
+    const suffix = value.replace(/[0-9]/g, "");
+    if (isNaN(num)) { setDisplay(value); return; }
+    const duration = 1400;
+    const step = (ts: number, t0: number) => {
+      const p = Math.min((ts - t0) / duration, 1);
+      setDisplay(Math.floor((1 - Math.pow(1 - p, 3)) * num) + suffix);
+      if (p < 1) requestAnimationFrame((t) => step(t, t0));
+    };
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { requestAnimationFrame((t) => step(t, t)); obs.disconnect(); }
+    }, { threshold: 0.3 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [value]);
+  return <div ref={ref} className="stat-val">{display}</div>;
+}
 
 export default function AboutClient({ lang }: { lang: Lang }) {
   const router = useRouter();
@@ -141,6 +202,7 @@ export default function AboutClient({ lang }: { lang: Lang }) {
         html{scroll-behavior:smooth}body{background:var(--bg);color:var(--text);font-family:var(--font-display);-webkit-font-smoothing:antialiased;overflow-x:hidden}
         .grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,230,190,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,190,0.02) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
         .glow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(0,230,190,0.06) 0%,transparent 70%);pointer-events:none;z-index:0}
+
         nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(8,12,16,0.85);border-bottom:1px solid var(--border);padding:0 clamp(1.5rem,5vw,4rem);height:64px;display:flex;align-items:center;justify-content:space-between}
         .logo{font-family:var(--font-display);font-weight:800;font-size:1.2rem;letter-spacing:-0.02em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.5rem}
         .logo span{color:var(--cyan)}
@@ -149,7 +211,7 @@ export default function AboutClient({ lang }: { lang: Lang }) {
         .nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
         @media(max-width:768px){.nav-links{display:none}.nav-links.open{display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);padding:1.5rem 2rem;gap:1.2rem}}
         .nav-links a{font-family:var(--font-mono);font-size:.78rem;color:var(--text-muted);text-decoration:none;letter-spacing:.04em;transition:color .2s}
-        .nav-links a:hover{color:var(--cyan)}
+        .nav-links a:hover,.nav-links a.active{color:var(--cyan)}
         .lang-toggle{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px;display:flex;gap:2px}
         .lb{font-family:var(--font-mono);font-size:.7rem;padding:4px 10px;border-radius:4px;border:none;cursor:pointer;transition:all .2s;background:transparent;color:var(--text-muted)}
         .lb.active{background:var(--cyan);color:var(--bg);font-weight:600}
@@ -167,7 +229,8 @@ export default function AboutClient({ lang }: { lang: Lang }) {
         /* STATS */
         .stats{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem) clamp(3rem,6vw,5rem);display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden}
         @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
-        .stat-box{background:var(--bg2);padding:2rem 1.5rem;text-align:center}
+        .stat-box{background:var(--bg2);padding:2rem 1.5rem;text-align:center;transition:background .2s}
+        .stat-box:hover{background:var(--bg3)}
         .stat-val{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;letter-spacing:-.04em;color:var(--cyan);font-family:var(--font-display)}
         .stat-lbl{font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;margin-top:.3rem}
 
@@ -178,11 +241,23 @@ export default function AboutClient({ lang }: { lang: Lang }) {
 
         /* MANIFESTO */
         .manifesto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin-top:2.5rem}
-        .manifesto-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem;transition:border-color .2s}
-        .manifesto-card:hover{border-color:var(--border-glow)}
+        .manifesto-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem;transition:all .2s;position:relative;overflow:hidden}
+        .manifesto-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+        .manifesto-card:hover{border-color:var(--border-glow);transform:translateY(-2px)}
+        .manifesto-card:hover::before{transform:scaleX(1)}
         .manifesto-icon{font-size:2rem;margin-bottom:1.25rem;display:block}
         .manifesto-title{font-size:1.05rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.75rem;color:var(--text)}
         .manifesto-text{font-family:var(--font-body);font-size:.9rem;line-height:1.75;color:#d4dde8}
+
+        /* HOW WE WORK — timeline */
+        .timeline{margin-top:2.5rem;display:flex;flex-direction:column;gap:0}
+        .timeline-step{display:grid;grid-template-columns:60px 1fr;gap:1.5rem;position:relative}
+        .timeline-step:not(:last-child)::after{content:'';position:absolute;left:29px;top:52px;bottom:-1px;width:2px;background:var(--border)}
+        .timeline-num{width:44px;height:44px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.72rem;font-weight:600;color:var(--cyan);flex-shrink:0;position:relative;z-index:1;transition:all .2s}
+        .timeline-step:hover .timeline-num{background:var(--cyan-dim);border-color:var(--border-glow)}
+        .timeline-content{padding:0 0 2.5rem}
+        .timeline-title{font-size:1.05rem;font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:.5rem}
+        .timeline-text{font-family:var(--font-body);font-size:.9rem;color:#d4dde8;line-height:1.7}
 
         /* MISSION */
         .mission-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:clamp(2rem,4vw,3.5rem);position:relative;overflow:hidden}
@@ -199,13 +274,17 @@ export default function AboutClient({ lang }: { lang: Lang }) {
         .bottom-card-label{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:1rem}
         .bottom-card-title{font-size:1.1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.75rem;color:var(--text)}
         .bottom-card-text{font-family:var(--font-mono);font-size:.8rem;color:var(--text-muted);line-height:1.6;font-weight:300;margin-bottom:1.5rem}
-        .btn-cyan{display:inline-flex;align-items:center;gap:.4rem;background:var(--cyan);color:var(--bg);font-family:var(--font-display);font-weight:700;font-size:.85rem;padding:10px 20px;border-radius:8px;text-decoration:none;transition:all .2s;letter-spacing:-.01em;border:none;cursor:pointer}
+        .btn-cyan{display:inline-flex;align-items:center;gap:.4rem;background:var(--cyan);color:var(--bg);font-family:var(--font-display);font-weight:700;font-size:.85rem;padding:10px 20px;border-radius:8px;text-decoration:none;transition:all .2s;letter-spacing:-.01em}
         .btn-cyan:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--cyan-glow)}
         .btn-outline{display:inline-flex;align-items:center;gap:.4rem;background:transparent;color:var(--cyan);font-family:var(--font-display);font-weight:700;font-size:.85rem;padding:10px 20px;border-radius:8px;text-decoration:none;transition:all .2s;letter-spacing:-.01em;border:1px solid var(--border-glow)}
-        .btn-outline:hover{background:var(--cyan-dim)}
+        .btn-outline:hover{background:var(--cyan-dim);transform:translateY(-1px)}
 
-        footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem clamp(1.5rem,5vw,4rem);max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+        footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem clamp(1.5rem,5vw,4rem);max-width:1000px;margin:0 auto}
+        .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
         .cp{font-family:var(--font-mono);font-size:.7rem;color:var(--text-dim)}.cp span{color:var(--cyan)}
+        .footer-links{display:flex;gap:1.5rem;flex-wrap:wrap}
+        .footer-links a{font-family:var(--font-mono);font-size:.68rem;color:var(--text-dim);text-decoration:none;transition:color .2s}
+        .footer-links a:hover{color:var(--cyan)}
       `}</style>
 
       <div className="grid-bg" /><div className="glow" />
@@ -216,7 +295,7 @@ export default function AboutClient({ lang }: { lang: Lang }) {
           <li><a href={l("/blog")}>{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")}>{t.nav.comparatifs}</a></li>
           <li><a href={l("/newsletter")}>{t.nav.newsletter}</a></li>
-          <li><a href={l("/about")}>{t.nav.about}</a></li>
+          <li><a href={l("/about")} className="active">{t.nav.about}</a></li>
         </ul>
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <div className="lang-toggle">
@@ -227,7 +306,7 @@ export default function AboutClient({ lang }: { lang: Lang }) {
         </div>
       </nav>
 
-      {/* HERO */}
+      {/* ─── HERO ─────────────────────────────────────────────────────────── */}
       <div className="hero">
         <div className="badge">
           <span style={{ width: 6, height: 6, background: "var(--cyan)", borderRadius: "50%", display: "inline-block" }} />
@@ -239,17 +318,17 @@ export default function AboutClient({ lang }: { lang: Lang }) {
         <p className="hero-subtitle">{t.subtitle}</p>
       </div>
 
-      {/* STATS */}
+      {/* ─── STATS ────────────────────────────────────────────────────────── */}
       <div className="stats">
         {t.stats.map((s, i) => (
           <div key={i} className="stat-box">
-            <div className="stat-val">{s.value}</div>
+            <AnimatedCounter value={s.value} />
             <div className="stat-lbl">{s.label}</div>
           </div>
         ))}
       </div>
 
-      {/* MANIFESTO */}
+      {/* ─── MANIFESTO ────────────────────────────────────────────────────── */}
       <div className="section">
         <div className="section-label">{t.manifesto.label}</div>
         <div className="manifesto-grid">
@@ -263,7 +342,23 @@ export default function AboutClient({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      {/* MISSION */}
+      {/* ─── HOW WE WORK ──────────────────────────────────────────────────── */}
+      <div className="section" style={{ paddingTop: 0 }}>
+        <div className="section-label">{t.howWeWork.label}</div>
+        <div className="timeline">
+          {t.howWeWork.steps.map((step, i) => (
+            <div key={i} className="timeline-step">
+              <div className="timeline-num">{step.num}</div>
+              <div className="timeline-content">
+                <div className="timeline-title">{step.title}</div>
+                <p className="timeline-text">{step.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ─── MISSION ──────────────────────────────────────────────────────── */}
       <div className="section" style={{ paddingTop: 0 }}>
         <div className="mission-box">
           <div className="mission-glow" />
@@ -272,7 +367,7 @@ export default function AboutClient({ lang }: { lang: Lang }) {
           <p className="mission-text">{t.mission.text}</p>
         </div>
 
-        {/* CONTACT + NEWSLETTER */}
+        {/* ─── CONTACT + NEWSLETTER ─────────────────────────────────────── */}
         <div className="bottom-grid">
           <div className="bottom-card">
             <div className="bottom-card-label">{t.contact.label}</div>
@@ -293,9 +388,16 @@ export default function AboutClient({ lang }: { lang: Lang }) {
         </div>
       </div>
 
+      {/* ─── FOOTER ───────────────────────────────────────────────────────── */}
       <footer>
-        <p className="cp">© 2026 <span>Neuriflux</span>. {lang === "fr" ? "Tous droits réservés." : "All rights reserved."}</p>
-        <p className="cp">{lang === "fr" ? "Fait avec" : "Made with"} <span>♥</span> {lang === "fr" ? "en France" : "in France"}</p>
+        <div className="footer-inner">
+          <p className="cp">© 2026 <span>Neuriflux</span>. {t.footer.rights} {t.footer.madeWith} <span>♥</span> {t.footer.inFrance}</p>
+          <div className="footer-links">
+            {t.footer.links.map((link, i) => (
+              <a key={i} href={l(link.href)}>{link.label}</a>
+            ))}
+          </div>
+        </div>
       </footer>
     </>
   );

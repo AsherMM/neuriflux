@@ -25,11 +25,303 @@ export interface Article {
   date: { fr: string; en: string };
   timeMin: string;
   featured?: boolean;
+  affiliate?: {        
+    url: string;
+    label: { fr: string; en: string };
+    toolName: string;
+  };
   fr: ArticleLang;
   en: ArticleLang;
 }
 
 export const ARTICLES: Article[] = [
+// ─── Perplexity AI Review 2026 ──────────────────────────────────────────────
+  {
+    slug: "perplexity-ai-review-2026",
+    tag: "Chatbots",
+    date: { fr: "25 mars 2026", en: "March 25, 2026" },
+    timeMin: "11",
+    featured: true,
+    affiliate: {
+      url: "https://perplexity.ai",
+      toolName: "Perplexity AI",
+      label: {
+        fr: "Essai gratuit disponible — plan Pro à 20$/mois",
+        en: "Free plan available — Pro plan at $20/month",
+      },
+    },
+    fr: {
+      title: "Perplexity AI : notre avis complet en 2026 (test, prix, Perplexity Computer)",
+      desc: "On a testé Perplexity AI pendant un mois en conditions réelles. L'outil qui veut remplacer Google — est-ce que ça marche vraiment ?",
+      metaTitle: "Perplexity AI : avis complet 2026, prix et test | Neuriflux",
+      metaDesc: "Notre avis complet sur Perplexity AI en 2026. Test approfondi de la recherche IA avec sources, Perplexity Pro, Perplexity Computer — vaut-il le coup face à ChatGPT et Google ?",
+      content: `
+## C'est quoi Perplexity AI ?
+
+Perplexity AI est un **moteur de recherche propulsé par l'IA** qui répond à vos questions en langage naturel, en citant ses sources en temps réel. Contrairement à ChatGPT qui génère des réponses à partir de données d'entraînement statiques, Perplexity interroge le web en direct et vous donne des réponses vérifiables avec des liens cliquables vers les sources originales.
+
+Fondé en 2022 par d'anciens ingénieurs d'OpenAI et Google, Perplexity a explosé en 2025-2026 : **500 millions de requêtes par mois**, une valorisation de 20 milliards de dollars, et le lancement en février 2026 de **Perplexity Computer** — un agent IA autonome qui change complètement la donne.
+
+Après un mois d'utilisation intensive, voici notre verdict.
+
+## Tableau comparatif rapide
+
+| Critère | Perplexity Pro | ChatGPT Plus | Claude | Google AI |
+|---|---|---|---|---|
+| Recherche en temps réel | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Citations & sources | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐ |
+| Qualité de rédaction | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Analyse de documents | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Agents IA autonomes | ✅ Computer | ❌ | ❌ | ❌ |
+| Prix mensuel | 20$/mois | 20$/mois | 20$/mois | 19.99$/mois |
+| Version gratuite | ✅ Généreuse | ✅ Limitée | ✅ Limitée | ✅ Généreuse |
+
+## Les fonctionnalités clés de Perplexity
+
+### La recherche avec sources — son cœur de métier
+
+Perplexity excelle là où ChatGPT échoue : **la recherche factuelle en temps réel**. Chaque réponse est accompagnée de sources numérotées et cliquables. Vous pouvez vérifier chaque affirmation en un clic — ce que vous ne pouvez pas faire avec les réponses parfois inventées de ChatGPT.
+
+Sur des sujets d'actualité, Perplexity est imbattable. Prix du Bitcoin ce matin, dernière mise à jour de Next.js, résultats électoraux — tout est là, sourcé et à jour.
+
+### Pro Search — la recherche approfondie
+
+Le mode **Pro Search** (disponible sur le plan payant) ne se contente pas d'une requête simple. Il décompose votre question en sous-requêtes, interroge plusieurs sources en parallèle, et synthétise une réponse structurée de plusieurs pages. C'est l'équivalent d'un assistant de recherche qui passe 20 minutes à fouiller le web pour vous.
+
+Testé sur "Quel est le meilleur outil IA pour créer des vidéos en 2026 ?" : le résultat était une analyse comparative de 800 mots avec 12 sources, bien mieux que ce que Google aurait renvoyé.
+
+### Perplexity Pages — pour créer du contenu
+
+**Pages** permet de transformer une recherche en une page web structurée, partageable et sourcée. Idéal pour créer rapidement des rapports, des analyses ou des briefs. Le rendu est propre, le contenu est vérifiable — c'est un outil sérieux pour les knowledge workers.
+
+### Perplexity Finance — l'analyste financier intégré
+
+La fonctionnalité **Finance** est probablement la plus sous-estimée. Elle affiche des graphiques boursiers en temps réel, des filings SEC, des actualités financières, et synthétise les rapports de résultats en quelques lignes. C'est un Bloomberg allégé, gratuit et conversationnel.
+
+### Perplexity Computer — la révolution de février 2026
+
+Le **25 février 2026**, Perplexity a lancé ce qui est probablement le produit le plus ambitieux du marché IA : **Perplexity Computer**. Disponible uniquement avec le plan Max (200$/mois), c'est un agent IA autonome qui coordonne **19 modèles d'IA simultanément** pour accomplir des tâches complexes de bout en bout.
+
+Concrètement : vous décrivez un objectif ("analyse la concurrence de mon produit et génère un rapport de 20 pages avec graphiques"), et Computer décompose la tâche en sous-tâches, mobilise Claude pour le raisonnement, Gemini pour la recherche, des modèles spécialisés pour les images et vidéos, et livre un résultat complet — sans intervention humaine.
+
+C'est tôt. C'est parfois lent. Mais c'est la première fois qu'un outil IA grand public peut vraiment gérer des workflows complets de façon autonome.
+
+## Les tarifs en 2026
+
+| Plan | Prix | Pour qui |
+|---|---|---|
+| Free | Gratuit | Recherche occasionnelle, 5 Pro Searches/jour |
+| Pro | 20$/mois | Recherche illimitée, accès multi-modèles, uploads fichiers |
+| Max | 200$/mois | Perplexity Computer, Labs illimités, accès prioritaire |
+| Enterprise Pro | 40$/siège/mois | Équipes, collaboration, sécurité renforcée |
+| Enterprise Max | 325$/siège/mois | Workflows autonomes à l'échelle de l'entreprise |
+
+**Le plan Pro à 20$/mois** est clairement celui qui offre le meilleur rapport qualité/prix pour un usage professionnel quotidien.
+
+## Ce qu'on a aimé
+
+**Les sources cliquables** : c'est THE feature de Perplexity. Sur tout sujet factuel, pouvoir vérifier chaque affirmation en un clic est d'une valeur inestimable. On perd l'habitude avec ChatGPT d'avoir à vérifier soi-même — avec Perplexity, la vérification est intégrée.
+
+**La version gratuite généreuse** : même sans payer, Perplexity est utilisable quotidiennement. Les 5 Pro Searches gratuites par jour couvrent la plupart des besoins occasionnels.
+
+**Perplexity Finance** : pour suivre l'actualité économique et analyser des entreprises, c'est devenu notre outil de référence. La synthèse d'un rapport de résultats en 3 bullet points en 10 secondes, c'est magique.
+
+**La rapidité** : Perplexity répond vite. Très vite. L'interface est fluide, les réponses arrivent quasi instantanément même en mode Pro Search.
+
+**L'intégration multi-modèles** : avec le plan Pro, vous pouvez choisir entre GPT-4o, Claude 3.5, Mistral et d'autres selon la tâche. C'est comme avoir plusieurs abonnements en un.
+
+## Ce qu'on a moins aimé
+
+**Pas fait pour la rédaction créative** : si vous voulez écrire un email percutant, une accroche publicitaire ou un article de blog nuancé, Perplexity n'est pas votre outil. Il synthétise, il informe — il ne crée pas vraiment. Claude et ChatGPT restent bien supérieurs pour la rédaction.
+
+**Les sources peuvent être insuffisantes** : sur des sujets très pointus ou très récents, Perplexity cite parfois des sources de mauvaise qualité ou renvoie vers la page d'accueil d'un site plutôt que vers l'article précis. À vérifier systématiquement.
+
+**Perplexity Computer est encore en rodage** : à 200$/mois, on attend une fiabilité parfaite. En l'état, les tâches longues peuvent planter à mi-chemin, et le système de crédits manque de transparence — impossible de savoir à l'avance combien de crédits une tâche va consommer.
+
+**L'interface mobile** : l'application mobile est fonctionnelle mais moins soignée que l'expérience web. Quelques frictions sur les uploads de fichiers et la gestion des conversations.
+
+## Pour qui est Perplexity ?
+
+Perplexity est fait pour vous si :
+
+✅ Vous faites beaucoup de recherche factuelle et d'analyse
+✅ Vous voulez remplacer Google pour les requêtes complexes
+✅ Vous suivez l'actualité financière, tech ou sectorielle
+✅ Vous avez besoin de réponses sourcées et vérifiables
+✅ Vous cherchez un accès multi-modèles dans un seul abonnement
+
+Perplexity n'est probablement pas fait pour vous si :
+
+❌ Vous cherchez un assistant de rédaction créative (prenez Claude)
+❌ Vous avez besoin d'un coding assistant (prenez Cursor)
+❌ Vous voulez des workflows d'équipe marketing (prenez Jasper)
+❌ Votre budget ne dépasse pas 10$/mois
+
+## Perplexity vs Google : le vrai verdict
+
+La vraie question en 2026 : est-ce que Perplexity peut remplacer Google ?
+
+**Pour les recherches informationnelles complexes** : oui, Perplexity est souvent meilleur. Au lieu de cliquer sur 5 liens pour assembler une réponse, Perplexity vous donne la synthèse en 10 secondes.
+
+**Pour trouver un restaurant, un produit, naviguer localement** : non. Google reste imbattable pour les requêtes pratiques et locales.
+
+**Pour l'actualité** : les deux sont bons, mais Perplexity synthétise mieux.
+
+Notre utilisation quotidienne : Perplexity pour la recherche et l'analyse, Google pour le reste.
+
+## Notre verdict final
+
+Perplexity AI est **l'outil de recherche IA le plus sérieux de 2026**. Sa capacité à fouiller le web en temps réel tout en citant ses sources le distingue radicalement de ChatGPT et Claude sur les tâches factuelles.
+
+Le plan Pro à 20$/mois est une évidence pour quiconque fait de la veille, de la recherche ou de l'analyse régulièrement. La version gratuite est déjà remarquablement généreuse pour un usage occasionnel.
+
+Perplexity Computer est prometteur mais encore immature à ce prix. À suivre de près en 2026.
+
+**Notre note : 8.5/10** — La meilleure alternative IA à Google. Indispensable pour la recherche, insuffisant pour la création.
+      `,
+      related: [
+        { slug: "alternatives-gratuites-chatgpt", title: "Les 7 meilleures alternatives gratuites à ChatGPT", tag: "Chatbots", timeMin: "7" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "12" },
+        { slug: "cursor-ai-review-2026", title: "Cursor AI : le meilleur assistant dev en 2026 ?", tag: "Code", timeMin: "9" },
+      ],
+    },
+    en: {
+      title: "Perplexity AI Review 2026: The AI Search Engine That Wants to Kill Google",
+      desc: "We tested Perplexity AI for a month in real conditions. The tool that wants to replace Google — does it actually work?",
+      metaTitle: "Perplexity AI Review 2026: Full Test, Pricing & Verdict | Neuriflux",
+      metaDesc: "Our complete Perplexity AI review for 2026. In-depth test of AI search with sources, Perplexity Pro, Perplexity Computer — is it worth it vs ChatGPT and Google?",
+      content: `
+## What is Perplexity AI?
+
+Perplexity AI is an **AI-powered search engine** that answers your questions in natural language while citing real-time sources. Unlike ChatGPT which generates responses from static training data, Perplexity queries the live web and gives you verifiable answers with clickable links to original sources.
+
+Founded in 2022 by former OpenAI and Google engineers, Perplexity exploded in 2025-2026: **500 million monthly queries**, a $20 billion valuation, and the February 2026 launch of **Perplexity Computer** — an autonomous AI agent that changes everything.
+
+After a month of intensive use, here's our verdict.
+
+## Quick comparison table
+
+| Criteria | Perplexity Pro | ChatGPT Plus | Claude | Google AI |
+|---|---|---|---|---|
+| Real-time search | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Citations & sources | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐ |
+| Writing quality | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Document analysis | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Autonomous AI agents | ✅ Computer | ❌ | ❌ | ❌ |
+| Monthly price | $20/month | $20/month | $20/month | $19.99/month |
+| Free plan | ✅ Generous | ✅ Limited | ✅ Limited | ✅ Generous |
+
+## Key features
+
+### Sourced search — its core strength
+
+Perplexity excels where ChatGPT stumbles: **real-time factual research**. Every answer comes with numbered, clickable source citations. You can verify every claim with one click — something you can't do with ChatGPT's occasionally hallucinated responses.
+
+On current events, Perplexity is unbeatable. Bitcoin price this morning, latest Next.js update, election results — it's all there, sourced and up to date.
+
+### Pro Search — deep research mode
+
+**Pro Search** (available on the paid plan) doesn't just run a simple query. It breaks your question down into sub-queries, queries multiple sources in parallel, and synthesizes a structured multi-page response. It's the equivalent of a research assistant spending 20 minutes combing the web for you.
+
+Tested on "What's the best AI tool for creating videos in 2026?": the result was an 800-word comparative analysis with 12 sources — far better than anything Google would have returned.
+
+### Perplexity Pages — for content creation
+
+**Pages** lets you turn a search into a structured, shareable, sourced web page. Ideal for quickly creating reports, analyses, or briefs. The output is clean, the content is verifiable — it's a serious tool for knowledge workers.
+
+### Perplexity Finance — the built-in financial analyst
+
+The **Finance** feature is probably the most underrated. It displays real-time stock charts, SEC filings, financial news, and synthesizes earnings reports into a few bullet points. It's a lightweight Bloomberg, free and conversational.
+
+### Perplexity Computer — the February 2026 revolution
+
+On **February 25, 2026**, Perplexity launched what is probably the most ambitious product in the AI market: **Perplexity Computer**. Available only on the Max plan ($200/month), it's an autonomous AI agent that coordinates **19 AI models simultaneously** to accomplish complex tasks from start to finish.
+
+In practice: you describe a goal ("analyze my product's competition and generate a 20-page report with charts"), and Computer breaks it into subtasks, mobilizes Claude for reasoning, Gemini for research, specialized models for images and video, and delivers a complete result — without human intervention.
+
+It's early. It's sometimes slow. But it's the first time a consumer AI tool can genuinely handle complete workflows autonomously.
+
+## Pricing in 2026
+
+| Plan | Price | For whom |
+|---|---|---|
+| Free | Free | Occasional research, 5 Pro Searches/day |
+| Pro | $20/month | Unlimited search, multi-model access, file uploads |
+| Max | $200/month | Perplexity Computer, unlimited Labs, priority access |
+| Enterprise Pro | $40/seat/month | Teams, collaboration, enhanced security |
+| Enterprise Max | $325/seat/month | Autonomous workflows at enterprise scale |
+
+**The Pro plan at $20/month** clearly offers the best value for daily professional use.
+
+## What we liked
+
+**Clickable sources**: this is THE Perplexity feature. On any factual topic, being able to verify every claim with one click is invaluable. You get used to ChatGPT having to verify things yourself — with Perplexity, verification is built in.
+
+**Generous free plan**: even without paying, Perplexity is usable daily. The 5 free Pro Searches per day cover most occasional needs.
+
+**Perplexity Finance**: for following economic news and analyzing companies, this has become our go-to tool. Synthesizing an earnings report into 3 bullet points in 10 seconds is genuinely impressive.
+
+**Speed**: Perplexity responds fast. Very fast. The interface is smooth, responses arrive almost instantly even in Pro Search mode.
+
+**Multi-model access**: with the Pro plan, you can choose between GPT-4o, Claude 3.5, Mistral and others depending on the task. It's like having multiple subscriptions in one.
+
+## What we liked less
+
+**Not built for creative writing**: if you want to write a punchy email, advertising hook, or nuanced blog post, Perplexity isn't your tool. It synthesizes, it informs — it doesn't really create. Claude and ChatGPT remain far superior for writing.
+
+**Sources can be insufficient**: on very niche or very recent topics, Perplexity sometimes cites low-quality sources or links to a site's homepage rather than the specific article. Always worth double-checking.
+
+**Perplexity Computer is still maturing**: at $200/month, you expect perfect reliability. As it stands, long tasks can fail mid-way, and the credit system lacks transparency — impossible to know in advance how many credits a task will consume.
+
+**Mobile experience**: the mobile app is functional but less polished than the web experience. Some friction around file uploads and conversation management.
+
+## Who is Perplexity for?
+
+Perplexity is right for you if:
+
+✅ You do a lot of factual research and analysis
+✅ You want to replace Google for complex queries
+✅ You follow financial, tech, or industry news
+✅ You need sourced, verifiable answers
+✅ You want multi-model access in a single subscription
+
+Perplexity is probably not right for you if:
+
+❌ You want a creative writing assistant (get Claude)
+❌ You need a coding assistant (get Cursor)
+❌ You want marketing team workflows (get Jasper)
+❌ Your budget doesn't exceed $10/month
+
+## Perplexity vs Google: the real verdict
+
+The real question in 2026: can Perplexity replace Google?
+
+**For complex informational queries**: yes, Perplexity is often better. Instead of clicking through 5 links to piece together an answer, Perplexity gives you the synthesis in 10 seconds.
+
+**For finding a restaurant, a product, local navigation**: no. Google remains unbeatable for practical and local queries.
+
+**For news**: both are good, but Perplexity synthesizes better.
+
+Our daily use: Perplexity for research and analysis, Google for everything else.
+
+## Our final verdict
+
+Perplexity AI is **the most serious AI research tool of 2026**. Its ability to search the web in real time while citing sources sets it radically apart from ChatGPT and Claude on factual tasks.
+
+The Pro plan at $20/month is a no-brainer for anyone doing regular monitoring, research, or analysis. The free version is already remarkably generous for occasional use.
+
+Perplexity Computer is promising but still immature at that price point. Worth watching closely throughout 2026.
+
+**Our rating: 8.5/10** — The best AI alternative to Google. Essential for research, insufficient for creation.
+      `,
+      related: [
+        { slug: "alternatives-gratuites-chatgpt", title: "7 best free alternatives to ChatGPT", tag: "Chatbots", timeMin: "7" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "12" },
+        { slug: "cursor-ai-review-2026", title: "Cursor AI: best dev assistant in 2026?", tag: "Code", timeMin: "9" },
+      ],
+    },
+  },
+
 // ─── Jasper AI Review 2026 ──────────────────────────────────────────────────
   {
     slug: "jasper-ai-review-2026",
@@ -37,6 +329,8 @@ export const ARTICLES: Article[] = [
     date: { fr: "24 mars 2026", en: "March 24, 2026" },
     timeMin: "10",
     featured: true,
+    affiliate: { url: "https://jasper.ai?ref=neuriflux", toolName: "Jasper AI", label: 
+      { fr: "Essai gratuit 7 jours — sans carte bancaire", en: "7-day free trial — no credit card required", }, },
     fr: {
       title: "Jasper AI : notre avis complet en 2026 (test & prix)",
       desc: "On a testé Jasper AI pendant 3 semaines sur des projets réels. Fonctionnalités, prix, limites — notre verdict honnête pour savoir si ça vaut le coup.",
@@ -276,6 +570,11 @@ But at $59/month minimum, you really need to make full use of it. For individual
     date: { fr: "18 mars 2026", en: "March 18, 2026" },
     timeMin: "12",
     featured: true,
+    affiliate: { url: "https://claude.ai", toolName: "Claude", label: 
+    {
+      fr: "Le meilleur LLM pour la rédaction et l'analyse en 2026. Essai gratuit disponible.",
+      en: "The best LLM for writing and analysis in 2026. Free tier available." },
+    },
     fr: {
       title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?",
       desc: "On a testé les trois sur 50 cas d'usage réels. Performances, prix, limites — notre verdict sans filtre.",
@@ -423,6 +722,10 @@ Our recommendation: start with Gemini's free tier to get a feel, then invest in 
     date: { fr: "14 mars 2026", en: "March 14, 2026" },
     timeMin: "9",
     featured: true,
+    affiliate: { url: "https://cursor.com", toolName: "Cursor", label: {
+      fr: "L'éditeur de code IA le plus puissant de 2026. Plan Hobby gratuit disponible.",
+      en: "The most powerful AI code editor of 2026. Free Hobby plan available.",
+    }, },
     fr: {
       title: "Cursor AI : le meilleur assistant dev en 2026 ?",
       desc: "6 mois d'utilisation intensive. Notre verdict sans filtre sur l'outil qui affole les devs.",
@@ -603,9 +906,9 @@ Microsoft offre un accès à GPT-4o via Copilot, gratuitement et sans compte. C'
 
 **Pour qui** : utilisateurs Windows, ceux qui veulent GPT-4o sans payer.
 
-## 7. Groq — Le plus rapide
+## 7. Grok — Le plus rapide
 
-Groq n'est pas un nouveau modèle mais une infrastructure ultra-rapide qui fait tourner Llama 3 et Mixtral à des vitesses incroyables. Idéal pour du prototypage rapide.
+Grok n'est pas un nouveau modèle mais une infrastructure ultra-rapide qui fait tourner Llama 3 et Mixtral à des vitesses incroyables. Idéal pour du prototypage rapide.
 
 **Pour qui** : développeurs, power users qui veulent de la vitesse.
 
@@ -618,7 +921,7 @@ Groq n'est pas un nouveau modèle mais une infrastructure ultra-rapide qui fait 
 | Recherche | Perplexity |
 | Français | Mistral Le Chat |
 | GPT-4o gratuit | Microsoft Copilot |
-| Vitesse | Groq |
+| Vitesse | Grok |
       `,
       related: [
         { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir ?", tag: "Chatbots", timeMin: "12" },
@@ -673,9 +976,9 @@ Microsoft offers access to GPT-4o via Copilot, for free and without an account. 
 
 **Best for**: Windows users, those who want GPT-4o without paying.
 
-## 7. Groq — The fastest
+## 7. Grok — The fastest
 
-Groq isn't a new model but an ultra-fast infrastructure that runs Llama 3 and Mixtral at incredible speeds. Ideal for rapid prototyping.
+Grok isn't a new model but an ultra-fast infrastructure that runs Llama 3 and Mixtral at incredible speeds. Ideal for rapid prototyping.
 
 **Best for**: developers, power users who want speed.
 
@@ -686,7 +989,7 @@ Groq isn't a new model but an ultra-fast infrastructure that runs Llama 3 and Mi
 | All-in-one | Gemini |
 | Writing | Claude |
 | Research | Perplexity |
-| Speed | Groq |
+| Speed | Grok |
 | Free GPT-4o | Microsoft Copilot |
       `,
       related: [
@@ -1072,6 +1375,10 @@ Notion AI isn't worth it if:
     tag: "Audio",
     date: { fr: "24 fév. 2026", en: "Feb 24, 2026" },
     timeMin: "8",
+    affiliate: { url: "https://elevenlabs.io", toolName: "ElevenLabs", label: {
+      fr: "La meilleure synthèse vocale IA en 2026. Plan gratuit disponible — 10 000 caractères/mois.",
+      en: "The best AI voice synthesis in 2026. Free plan available — 10,000 characters/month.",
+    }, },
     fr: {
       title: "ElevenLabs : la meilleure synthèse vocale IA en 2026 ?",
       desc: "Voix réalistes, pricing, API — tout ce qu'il faut savoir avant de s'abonner.",

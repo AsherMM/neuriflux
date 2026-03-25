@@ -62,6 +62,110 @@ function ProgressBar() {
   );
 }
 
+// ─── CTA Milieu d'article ─────────────────────────────────────────────────────
+function MidCTA({ url, toolName, label, lang }: { url: string; toolName: string; label: string; lang: Lang }) {
+  return (
+    <div style={{
+      margin: "2.5rem 0",
+      padding: "1.5rem 1.75rem",
+      background: "linear-gradient(135deg, rgba(0,230,190,0.06) 0%, rgba(0,230,190,0.02) 100%)",
+      border: "1px solid var(--border-glow)",
+      borderRadius: 12,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: "1.25rem",
+      flexWrap: "wrap",
+      position: "relative",
+      overflow: "hidden",
+    }}>
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, transparent, var(--cyan), transparent)" }} />
+      <div style={{ flex: 1, minWidth: 200 }}>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "var(--cyan)", marginBottom: "0.4rem" }}>
+          {lang === "fr" ? "✦ Recommandé par Neuriflux" : "✦ Recommended by Neuriflux"}
+        </div>
+        <div style={{ fontFamily: "var(--font-display)", fontSize: "1rem", fontWeight: 700, color: "var(--text)", letterSpacing: "-0.02em" }}>
+          {toolName}
+        </div>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", color: "var(--text-muted)", marginTop: "0.2rem", fontWeight: 300 }}>
+          {label}
+        </div>
+      </div>
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer sponsored"
+        style={{
+          display: "inline-flex", alignItems: "center", gap: "0.4rem",
+          background: "var(--cyan)", color: "var(--bg)",
+          fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.85rem",
+          padding: "10px 20px", borderRadius: 8, textDecoration: "none",
+          transition: "all 0.2s", letterSpacing: "-0.01em", whiteSpace: "nowrap" as const,
+        }}
+      >
+        {lang === "fr" ? "Essayer gratuitement" : "Try for free"} →
+      </a>
+      <div style={{ position: "absolute", bottom: 6, right: 12, fontFamily: "var(--font-mono)", fontSize: "0.58rem", color: "var(--text-dim)" }}>
+        {lang === "fr" ? "Lien affilié" : "Affiliate link"}
+      </div>
+    </div>
+  );
+}
+
+// ─── CTA Fin d'article ────────────────────────────────────────────────────────
+function EndCTA({ url, toolName, label, lang }: { url: string; toolName: string; label: string; lang: Lang }) {
+  return (
+    <div style={{
+      margin: "3rem 0 0",
+      padding: "2rem",
+      background: "var(--bg2)",
+      border: "1px solid var(--border-glow)",
+      borderRadius: 16,
+      position: "relative",
+      overflow: "hidden",
+    }}>
+      <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: "60%", height: 1, background: "linear-gradient(90deg, transparent, var(--cyan), transparent)" }} />
+      <div style={{ position: "absolute", top: "-30%", left: "50%", transform: "translateX(-50%)", width: 400, height: 200, background: "radial-gradient(ellipse, rgba(0,230,190,0.06), transparent 70%)", pointerEvents: "none" }} />
+
+      <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "var(--cyan)", marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <span style={{ display: "inline-block", width: 20, height: 1, background: "var(--cyan)" }} />
+        {lang === "fr" ? "Notre recommandation" : "Our recommendation"}
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1.5rem", flexWrap: "wrap", position: "relative", zIndex: 1 }}>
+        <div style={{ flex: 1, minWidth: 220 }}>
+          <div style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 800, letterSpacing: "-0.03em", color: "var(--text)", marginBottom: "0.5rem" }}>
+            {toolName}
+          </div>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: "var(--text-muted)", fontWeight: 300, lineHeight: 1.6 }}>
+            {label}
+          </div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.5rem", alignItems: "flex-end" }}>
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "0.5rem",
+              background: "var(--cyan)", color: "var(--bg)",
+              fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.95rem",
+              padding: "12px 24px", borderRadius: 10, textDecoration: "none",
+              transition: "all 0.2s", letterSpacing: "-0.01em", whiteSpace: "nowrap" as const,
+              boxShadow: "0 4px 20px rgba(0,230,190,0.25)",
+            }}
+          >
+            {lang === "fr" ? "Essayer" : "Try"} {toolName} →
+          </a>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", color: "var(--text-dim)" }}>
+            {lang === "fr" ? "Lien affilié — sans coût supplémentaire pour vous" : "Affiliate link — no extra cost to you"}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string }) {
   const router = useRouter();
@@ -70,8 +174,6 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
   const [copied, setCopied] = useState(false);
   const [email, setEmail] = useState("");
   const [subbed, setSubbed] = useState(false);
-
-  // ─── shareUrl uniquement côté client pour éviter l'hydration mismatch ───────
   const [shareUrl, setShareUrl] = useState("");
   useEffect(() => {
     setShareUrl(window.location.href);
@@ -87,6 +189,7 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
   const articleData = getArticleBySlug(slug);
   const article = articleData ? articleData[lang] : null;
   const color = articleData ? getColor(articleData.tag) : "var(--cyan)";
+  const affiliate = articleData?.affiliate;
 
   const copy = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -118,6 +221,21 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
   }[lang];
 
   const headings = article?.content.match(/^## .+$/gm)?.map(h => h.replace("## ", "")) || [];
+
+  // Coupe le contenu en deux pour injecter le CTA milieu
+  const splitContent = (content: string) => {
+    const rendered = renderMd(content);
+    const h2matches = [...rendered.matchAll(/<h2>/g)];
+    if (h2matches.length < 2) return { first: rendered, second: "" };
+    // On coupe après le 2e h2
+    const cutIndex = h2matches[1].index ?? rendered.length / 2;
+    return {
+      first: rendered.slice(0, cutIndex),
+      second: rendered.slice(cutIndex),
+    };
+  };
+
+  const { first, second } = article ? splitContent(article.content) : { first: "", second: "" };
 
   return (
     <>
@@ -202,6 +320,13 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         .btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,230,190,.35)}
         footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem clamp(1.5rem,5vw,4rem);max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
         .cp{font-family:var(--font-mono);font-size:.7rem;color:var(--text-dim)}.cp span{color:var(--cyan)}
+        .sbox-affiliate{background:linear-gradient(135deg,rgba(0,230,190,0.07),rgba(0,230,190,0.02));border:1px solid var(--border-glow) !important;position:relative;overflow:hidden}
+        .sbox-affiliate::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
+        .aff-tool{font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--text);letter-spacing:-.02em;margin-bottom:.35rem}
+        .aff-label{font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);font-weight:300;line-height:1.5;margin-bottom:1rem}
+        .aff-btn{display:flex;align-items:center;justify-content:center;gap:.4rem;width:100%;background:var(--cyan);color:var(--bg);font-family:var(--font-display);font-weight:700;font-size:.82rem;padding:11px;border-radius:8px;text-decoration:none;transition:all .2s;letter-spacing:-.01em}
+        .aff-btn:hover{opacity:.9;transform:translateY(-1px)}
+        .aff-note{font-family:var(--font-mono);font-size:.58rem;color:var(--text-dim);text-align:center;margin-top:.5rem}
       `}</style>
 
       <ProgressBar />
@@ -213,7 +338,7 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
           <li><a href={l("/blog")}>{lang === "fr" ? "Blog" : "Blog"}</a></li>
           <li><a href={l("/comparatifs")}>{lang === "fr" ? "Comparatifs" : "Comparisons"}</a></li>
           <li><a href={l("/newsletter")}>Newsletter</a></li>
-          <li><a href={l("/about")}>{lang === "fr" ? "A propos" : "About"}</a></li>
+          <li><a href={l("/about")}>{lang === "fr" ? "À propos" : "About"}</a></li>
         </ul>
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
           <div className="lang-toggle">
@@ -252,9 +377,33 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
               </div>
             </div>
 
-            <div className="prose" dangerouslySetInnerHTML={{ __html: renderMd(article.content) }} />
+            {/* ─── Contenu première partie ──────────────────────────────────── */}
+            <div className="prose" dangerouslySetInnerHTML={{ __html: first }} />
 
-            {/* Share — shareUrl via useEffect, zéro hydration mismatch */}
+            {/* ─── CTA Milieu d'article (si affiliate) ─────────────────────── */}
+            {affiliate && second && (
+              <MidCTA
+                url={affiliate.url}
+                toolName={affiliate.toolName}
+                label={affiliate.label[lang]}
+                lang={lang}
+              />
+            )}
+
+            {/* ─── Contenu deuxième partie ──────────────────────────────────── */}
+            {second && <div className="prose" dangerouslySetInnerHTML={{ __html: second }} />}
+
+            {/* ─── CTA Fin d'article (si affiliate) ────────────────────────── */}
+            {affiliate && (
+              <EndCTA
+                url={affiliate.url}
+                toolName={affiliate.toolName}
+                label={affiliate.label[lang]}
+                lang={lang}
+              />
+            )}
+
+            {/* ─── Share ───────────────────────────────────────────────────── */}
             <div className="share">
               <span className="share-label">{lang === "fr" ? "Partager" : "Share"}</span>
               <button className={`sbtn${copied ? " done" : ""}`} onClick={copy}>
@@ -307,6 +456,29 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
                 </ul>
               </div>
             )}
+
+            {/* ─── Sidebar CTA partenaire ───────────────────────────────────── */}
+            {affiliate && (
+              <div className="sbox sbox-affiliate">
+                <div className="sbox-title" style={{ color: "var(--cyan)" }}>
+                  {lang === "fr" ? "★ Notre choix" : "★ Our pick"}
+                </div>
+                <div className="aff-tool">{affiliate.toolName}</div>
+                <div className="aff-label">{affiliate.label[lang]}</div>
+                <a
+                  href={affiliate.url}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="aff-btn"
+                >
+                  {lang === "fr" ? "Essayer gratuitement" : "Try for free"} →
+                </a>
+                <div className="aff-note">
+                  {lang === "fr" ? "Lien affilié" : "Affiliate link"}
+                </div>
+              </div>
+            )}
+
             <div className="sbox">
               <div className="sbox-title">Newsletter</div>
               <p className="nl-text">{lang === "fr" ? "Le radar IA chaque lundi. Gratuit. Sans spam." : "The AI radar every Monday. Free. No spam."}</p>

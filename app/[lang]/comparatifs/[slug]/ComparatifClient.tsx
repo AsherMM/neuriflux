@@ -31,7 +31,6 @@ function SpiderChart({ tools, criteria }: { tools: ToolScore[]; criteria: string
   const getPoint = (r: number, angle: number) => ({ x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) });
   const toolPolygon = (tool: ToolScore) =>
     tool.scores.map((s, i) => { const p = getPoint((s.value / 10) * R, angles[i]); return `${p.x},${p.y}`; }).join(" ");
-
   return (
     <svg viewBox="0 0 260 260" style={{ width: "100%", maxWidth: 260 }}>
       {levels.map(level => (
@@ -77,7 +76,6 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel }: {
         </div>
       )}
 
-      {/* Scores avec label bilingue */}
       <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
         {tool.scores.map((s, i) => (
           <div key={i}>
@@ -115,11 +113,93 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel }: {
         "{tool.verdict[lang]}"
       </div>
 
+      {/* ─── Bouton affilié amélioré ──────────────────────────────────────── */}
       {tool.affiliate && (
-        <a href={tool.affiliate} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem", background: isWinner ? tool.color : "transparent", color: isWinner ? "var(--bg)" : tool.color, border: `1px solid ${tool.color}`, borderRadius: 8, padding: "10px 16px", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.85rem", textDecoration: "none", transition: "all 0.2s", letterSpacing: "-0.01em" }}>
-          {lang === "fr" ? "Essayer" : "Try"} {tool.name} →
-        </a>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.4rem" }}>
+          <a
+            href={tool.affiliate}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem",
+              background: isWinner ? tool.color : "transparent",
+              color: isWinner ? "var(--bg)" : tool.color,
+              border: `1px solid ${tool.color}`,
+              borderRadius: 8, padding: "11px 16px",
+              fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.85rem",
+              textDecoration: "none", transition: "all 0.2s", letterSpacing: "-0.01em",
+              boxShadow: isWinner ? `0 4px 16px ${tool.color}40` : "none",
+            }}
+          >
+            {isWinner ? "🏆 " : ""}{lang === "fr" ? "Essayer" : "Try"} {tool.name} →
+          </a>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.58rem", color: "var(--text-dim)", textAlign: "center" as const }}>
+            {lang === "fr" ? "Lien affilié" : "Affiliate link"}
+          </div>
+        </div>
       )}
+    </div>
+  );
+}
+
+// ─── CTA Winner — après le verdict ───────────────────────────────────────────
+function WinnerCTA({ winner, lang }: { winner: ToolScore; lang: Lang }) {
+  if (!winner.affiliate) return null;
+  return (
+    <div style={{
+      margin: "2.5rem 0",
+      padding: "2rem",
+      background: `linear-gradient(135deg, ${winner.color}08, ${winner.color}03)`,
+      border: `1px solid ${winner.color}35`,
+      borderRadius: 16,
+      position: "relative",
+      overflow: "hidden",
+    }}>
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, ${winner.color}, transparent)` }} />
+      <div style={{ position: "absolute", top: "-40%", left: "50%", transform: "translateX(-50%)", width: 400, height: 200, background: `radial-gradient(ellipse, ${winner.color}08, transparent 70%)`, pointerEvents: "none" }} />
+
+      <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase" as const, color: winner.color, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <span style={{ display: "inline-block", width: 20, height: 1, background: winner.color }} />
+        {lang === "fr" ? "🏆 Notre recommandation" : "🏆 Our recommendation"}
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1.5rem", flexWrap: "wrap", position: "relative", zIndex: 1 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem", flex: 1, minWidth: 220 }}>
+          <div style={{ width: 52, height: 52, background: `${winner.color}20`, border: `2px solid ${winner.color}40`, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", flexShrink: 0 }}>
+            {winner.logo}
+          </div>
+          <div>
+            <div style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 800, letterSpacing: "-0.03em", color: "var(--text)", marginBottom: "0.3rem" }}>
+              {winner.name}
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "1rem", fontWeight: 800, color: winner.color, marginLeft: "0.6rem" }}>{winner.globalScore.toFixed(1)}/10</span>
+            </div>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 300, lineHeight: 1.5 }}>
+              {winner.verdict[lang]}
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.4rem", alignItems: "flex-end" }}>
+          <a
+            href={winner.affiliate}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "0.5rem",
+              background: winner.color, color: "var(--bg)",
+              fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.95rem",
+              padding: "12px 24px", borderRadius: 10, textDecoration: "none",
+              transition: "all 0.2s", letterSpacing: "-0.01em", whiteSpace: "nowrap" as const,
+              boxShadow: `0 4px 20px ${winner.color}35`,
+            }}
+          >
+            {lang === "fr" ? "Essayer" : "Try"} {winner.name} →
+          </a>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", color: "var(--text-dim)" }}>
+            {lang === "fr" ? "Lien affilié — sans coût supplémentaire" : "Affiliate link — no extra cost"}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
@@ -180,11 +260,12 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
   const [activeTab, setActiveTab] = useState<"overview" | "details" | "analysis">("overview");
   const [email, setEmail] = useState("");
   const [subbed, setSubbed] = useState(false);
-  const [shareUrl, setShareUrl] = useState("");
 
-useEffect(() => {
-  setShareUrl(window.location.href);
-}, []);
+  // ─── shareUrl via useEffect — zéro hydration mismatch ─────────────────────
+  const [shareUrl, setShareUrl] = useState("");
+  useEffect(() => {
+    setShareUrl(window.location.href);
+  }, []);
 
   const l = (path: string) => `/${lang}${path}`;
   const switchLang = (next: Lang) => {
@@ -244,8 +325,6 @@ useEffect(() => {
 
   const winner = data.tools.find(t => t.name === data.winner);
   const tagColor = TAG_COLORS[data.tag] || "#00e6be";
-
-  // Critères dans la bonne langue
   const criteriaLabels = data.criteria[lang];
 
   return (
@@ -313,6 +392,10 @@ useEffect(() => {
         .nl-text{font-family:var(--font-mono);font-size:.75rem;color:var(--text-muted);line-height:1.6;font-weight:300;margin-bottom:1rem;text-align:center}
         .nl-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text);font-family:var(--font-mono);font-size:.78rem;outline:none;margin-bottom:.5rem;transition:border-color .2s}.nl-input:focus{border-color:var(--border-glow)}
         .nl-btn{width:100%;background:var(--cyan);color:var(--bg);font-family:var(--font-display);font-weight:700;font-size:.82rem;padding:10px;border-radius:6px;border:none;cursor:pointer}
+        .sidebar-winner{position:relative;overflow:hidden}
+        .sidebar-winner-btn{display:flex;align-items:center;justify-content:center;gap:.4rem;width:100%;font-family:var(--font-display);font-weight:700;font-size:.82rem;padding:11px;border-radius:8px;text-decoration:none;transition:all .2s;letter-spacing:-.01em}
+        .sidebar-winner-btn:hover{opacity:.9;transform:translateY(-1px)}
+        .sidebar-aff-note{font-family:var(--font-mono);font-size:.58rem;color:var(--text-dim);text-align:center;margin-top:.5rem}
         footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem clamp(1.5rem,5vw,4rem);max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
         .cp{font-family:var(--font-mono);font-size:.7rem;color:var(--text-dim)}.cp span{color:var(--cyan)}
       `}</style>
@@ -326,8 +409,7 @@ useEffect(() => {
           <li><a href={l("/blog")}>{lang === "fr" ? "Blog" : "Blog"}</a></li>
           <li><a href={l("/comparatifs")} className="active">{lang === "fr" ? "Comparatifs" : "Comparisons"}</a></li>
           <li><a href={l("/newsletter")}>Newsletter</a></li>
-          <li><a href={l("/about")}>{lang === "fr" ? "A propos" : "About"}</a></li>
-
+          <li><a href={l("/about")}>{lang === "fr" ? "À propos" : "About"}</a></li>
         </ul>
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <div className="lt">
@@ -360,9 +442,28 @@ useEffect(() => {
                 <div style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 800, letterSpacing: "-0.02em", color: "var(--text)" }}>{winner.name}</div>
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 300, marginTop: "0.25rem" }}>{winner.verdict[lang]}</div>
               </div>
-              <div style={{ textAlign: "center" as const }}>
-                <div className="winner-score" style={{ color: winner.color }}>{winner.globalScore.toFixed(1)}</div>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem", color: "var(--text-dim)" }}>/10</div>
+              <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", gap: "0.5rem" }}>
+                <div style={{ textAlign: "center" as const }}>
+                  <div className="winner-score" style={{ color: winner.color }}>{winner.globalScore.toFixed(1)}</div>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem", color: "var(--text-dim)" }}>/10</div>
+                </div>
+                {/* ─── Bouton affilié dans le winner banner ─────────────── */}
+                {winner.affiliate && (
+                  <a
+                    href={winner.affiliate}
+                    target="_blank"
+                    rel="noopener noreferrer sponsored"
+                    style={{
+                      display: "inline-flex", alignItems: "center", gap: "0.3rem",
+                      background: winner.color, color: "var(--bg)",
+                      fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.75rem",
+                      padding: "7px 14px", borderRadius: 7, textDecoration: "none",
+                      whiteSpace: "nowrap" as const, letterSpacing: "-0.01em",
+                    }}
+                  >
+                    {lang === "fr" ? "Essayer →" : "Try it →"}
+                  </a>
+                )}
               </div>
             </div>
           )}
@@ -382,7 +483,6 @@ useEffect(() => {
               <div className="radar-section">
                 <div className="section-label">{L.radar}</div>
                 <div className="radar-wrap">
-                  {/* Radar avec critères dans la bonne langue */}
                   <SpiderChart tools={data.tools} criteria={criteriaLabels} />
                   <div className="radar-legend">
                     {data.tools.map(tool => (
@@ -405,7 +505,6 @@ useEffect(() => {
                   <table style={{ width: "100%", borderCollapse: "collapse", fontFamily: "var(--font-mono)", fontSize: "0.78rem" }}>
                     <thead>
                       <tr style={{ background: "var(--bg3)" }}>
-                        {/* Entête "Critère" / "Criteria" */}
                         <th style={{ padding: "10px 16px", textAlign: "left" as const, color: "var(--text-dim)", fontWeight: 400, letterSpacing: "0.06em", textTransform: "uppercase" as const, fontSize: "0.65rem" }}>{L.criteria}</th>
                         {data.tools.map(tool => (
                           <th key={tool.name} style={{ padding: "10px 16px", textAlign: "center" as const, color: tool.color, fontWeight: 700 }}>
@@ -415,7 +514,6 @@ useEffect(() => {
                       </tr>
                     </thead>
                     <tbody>
-                      {/* Lignes avec critère dans la bonne langue */}
                       {criteriaLabels.map((criterion, ci) => (
                         <tr key={criterion} style={{ borderTop: "1px solid var(--border)" }}>
                           <td style={{ padding: "10px 16px", color: "var(--text-muted)", fontWeight: 300 }}>{criterion}</td>
@@ -457,6 +555,9 @@ useEffect(() => {
                 <div className="section-label">{L.verdict}</div>
                 <p className="verdict-text">{comp.verdict}</p>
               </div>
+
+              {/* ─── CTA Winner après verdict ──────────────────────────────── */}
+              {winner && <WinnerCTA winner={winner} lang={lang} />}
             </div>
           )}
 
@@ -469,6 +570,8 @@ useEffect(() => {
                   <ToolCard key={tool.name} tool={tool} lang={lang} isWinner={tool.name === data.winner} proLabel={L.pros} conLabel={L.cons} />
                 ))}
               </div>
+              {/* ─── CTA Winner après les ToolCards ───────────────────────── */}
+              {winner && <WinnerCTA winner={winner} lang={lang} />}
             </div>
           )}
 
@@ -477,15 +580,31 @@ useEffect(() => {
             <div>
               <div className="section-label" style={{ marginBottom: "1.5rem" }}>{L.methodology}</div>
               <div className="prose" dangerouslySetInnerHTML={{ __html: renderMd(comp.content) }} />
+              {/* ─── CTA Winner après l'analyse ───────────────────────────── */}
+              {winner && <WinnerCTA winner={winner} lang={lang} />}
             </div>
           )}
 
-          {/* Share */}
+          {/* Share — URLs corrigées */}
           <div className="share">
             <span className="slabel">{lang === "fr" ? "Partager" : "Share"}</span>
             <button className={`sbtn${copied ? " done" : ""}`} onClick={copy}>🔗 {L.share}</button>
-            <a className="sbtn" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(comp.title)}&url=${encodeURIComponent(shareUrl)}&url=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}`} target="_blank" rel="noopener noreferrer">𝕏 Twitter</a>
-            <a className="sbtn" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)} ? window.location.href : "")}`} target="_blank" rel="noopener noreferrer">in LinkedIn</a>
+            <a
+              className="sbtn"
+              href={shareUrl ? `https://twitter.com/intent/tweet?text=${encodeURIComponent(comp.title)}&url=${encodeURIComponent(shareUrl)}` : "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              𝕏 Twitter
+            </a>
+            <a
+              className="sbtn"
+              href={shareUrl ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}` : "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              in LinkedIn
+            </a>
           </div>
         </main>
 
@@ -503,6 +622,31 @@ useEffect(() => {
               </div>
             ))}
           </div>
+
+          {/* ─── Sidebar CTA winner ─────────────────────────────────────── */}
+          {winner && winner.affiliate && (
+            <div className="sbox sidebar-winner" style={{ background: `linear-gradient(135deg, ${winner.color}08, ${winner.color}03)`, border: `1px solid ${winner.color}35`, position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, ${winner.color}, transparent)` }} />
+              <div className="sbox-title" style={{ color: winner.color }}>🏆 {lang === "fr" ? "Gagnant" : "Winner"}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.75rem" }}>
+                <span style={{ fontSize: "1.3rem" }}>{winner.logo}</span>
+                <div>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: "0.95rem", fontWeight: 800, color: "var(--text)", letterSpacing: "-0.02em" }}>{winner.name}</div>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: winner.color, fontWeight: 700 }}>{winner.globalScore.toFixed(1)}/10</div>
+                </div>
+              </div>
+              <a
+                href={winner.affiliate}
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+                className="sidebar-winner-btn"
+                style={{ background: winner.color, color: "var(--bg)" }}
+              >
+                {lang === "fr" ? "Essayer gratuitement" : "Try for free"} →
+              </a>
+              <div className="sidebar-aff-note">{lang === "fr" ? "Lien affilié" : "Affiliate link"}</div>
+            </div>
+          )}
 
           <div className="sbox">
             <div className="sbox-title">{L.pricing}</div>
