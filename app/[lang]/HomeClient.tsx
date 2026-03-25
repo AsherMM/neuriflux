@@ -30,6 +30,8 @@ const translations = {
     featured: {
       title: "Comparatifs populaires", subtitle: "Les articles les plus lus cette semaine", badge: "Populaire", readMore: "Lire →",
       articles: [
+        { slug: "perplexity-ai-review-2026", tag: "Chatbots", title: "Perplexity AI : avis 2026, est-il meilleur que ChatGPT et Google ?", desc: "On a testé Perplexity AI pendant un mois en conditions réelles. Sources citées, Perplexity Pro, Perplexity Computer — notre verdict complet et honnête face à ChatGPT et Google.", time: "13 min" },
+        { slug: "jasper-ai-review-2026", tag: "Writing", title: "Jasper AI : notre avis complet en 2026 (test & prix)", desc: "On a testé Jasper AI pendant 3 semaines sur des projets réels. Fonctionnalités, prix, limites — notre verdict honnête pour savoir si ça vaut le coup.", time: "10 min" },
         { slug: "chatgpt-vs-claude-vs-gemini-2026", tag: "Chatbots", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", desc: "On a testé les trois sur 50 cas d'usage réels. Les résultats sont surprenants.", time: "12 min" },
         { slug: "cursor-ai-review-2026", tag: "Code", title: "Cursor AI : le meilleur assistant dev en 2026 ?", desc: "6 mois d'utilisation intensive. Notre verdict sans filtre sur l'outil qui affole les devs.", time: "9 min" },
         { slug: "alternatives-gratuites-chatgpt", tag: "Chatbots", title: "Les 7 meilleures alternatives gratuites à ChatGPT", desc: "Budget zéro, résultats max. On a testé tout ce qui existe pour vous.", time: "7 min" },
@@ -77,6 +79,8 @@ const translations = {
     featured: {
       title: "Popular comparisons", subtitle: "Most read articles this week", badge: "Popular", readMore: "Read →",
       articles: [
+        { slug: "perplexity-ai-review-2026", tag: "Chatbots", title: "Perplexity AI Review 2026: Is It Worth It vs ChatGPT & Google?", desc: "We tested Perplexity AI for a month in real conditions. Sourced search, Perplexity Pro, Perplexity Computer — our complete and honest verdict vs ChatGPT and Google.", time: "13 min" },
+        { slug: "jasper-ai-review-2026", tag: "Writing", title: "Jasper AI Review 2026: Is It Worth It? (Full Test)", desc: "We tested Jasper AI for 3 weeks on real projects. Features, pricing, limits — our honest verdict on whether it's worth the money.", time: "10 min" },
         { slug: "chatgpt-vs-claude-vs-gemini-2026", tag: "Chatbots", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", desc: "We tested all three on 50 real use cases. The results are surprising.", time: "12 min" },
         { slug: "cursor-ai-review-2026", tag: "Code", title: "Cursor AI: best dev assistant in 2026?", desc: "6 months of intensive use. Our unfiltered verdict on the tool every dev is talking about.", time: "9 min" },
         { slug: "alternatives-gratuites-chatgpt", tag: "Chatbots", title: "7 best free alternatives to ChatGPT", desc: "Zero budget, maximum results. We tested everything out there for you.", time: "7 min" },
