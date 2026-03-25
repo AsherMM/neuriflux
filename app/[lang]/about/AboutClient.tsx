@@ -7,7 +7,7 @@ type Lang = "fr" | "en";
 
 const T = {
   fr: {
-    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", about: "À propos" },
+    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
     badge: "À propos de Neuriflux",
     title: "On teste.",
     titleAccent: "Vous choisissez.",
@@ -82,7 +82,7 @@ const T = {
     },
   },
   en: {
-    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", about: "About" },
+    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact:"Contact", about: "About" },
     badge: "About Neuriflux",
     title: "We test.",
     titleAccent: "You choose.",
@@ -295,6 +295,7 @@ export default function AboutClient({ lang }: { lang: Lang }) {
           <li><a href={l("/blog")}>{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")}>{t.nav.comparatifs}</a></li>
           <li><a href={l("/newsletter")}>{t.nav.newsletter}</a></li>
+          <li><a href={l("/contact")}>{t.nav.contact}</a></li>
           <li><a href={l("/about")} className="active">{t.nav.about}</a></li>
         </ul>
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>

@@ -8,7 +8,7 @@ type Lang = "fr" | "en";
 
 const translations = {
   fr: {
-    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", about: "A propos" },
+    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact:"Contact", about: "A propos" },
     hero: {
       badge: "Média indépendant · Tests réels",
       title1: "Les meilleurs", title2: "outils IA", title3: "enfin comparés honnêtement.",
@@ -48,14 +48,14 @@ const translations = {
     footer: {
       tagline: "Le média indépendant des outils IA.",
       links: {
-        produit: { title: "Contenu", items: [{ label: "Blog", href: "/blog" }, { label: "Comparatifs", href: "/comparatifs" }, { label: "Newsletter", href: "/newsletter" }] },
+        produit: { title: "Contenu", items: [{ label: "Blog", href: "/blog" }, { label: "Comparatifs", href: "/comparatifs" }, { label: "Newsletter", href: "/newsletter" }, { label: "Contact", href: "/contact" }, { label: "A propos", href: "/about" }] },
         legal: { title: "Légal", items: [{ label: "Mentions légales", href: "/legal" }, { label: "Confidentialité", href: "/privacy" }, { label: "Cookies", href: "/cookies" }] },
       },
       rights: "Tous droits réservés.", madeWith: "Fait avec", inFrance: "en France",
     },
   },
   en: {
-    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", about: "About" },
+    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
     hero: {
       badge: "Independent media · Real tests",
       title1: "The best", title2: "AI tools", title3: "finally compared honestly.",
@@ -95,7 +95,7 @@ const translations = {
     footer: {
       tagline: "The independent AI tools media.",
       links: {
-        produit: { title: "Content", items: [{ label: "Blog", href: "/blog" }, { label: "Comparisons", href: "/comparatifs" }, { label: "Newsletter", href: "/newsletter" }] },
+        produit: { title: "Content", items: [{ label: "Blog", href: "/blog" }, { label: "Comparisons", href: "/comparatifs" }, { label: "Newsletter", href: "/newsletter" }, { label: "Contact", href: "/contact" }, { label: "About", href: "/about" }] },
         legal: { title: "Legal", items: [{ label: "Legal notice", href: "/legal" }, { label: "Privacy", href: "/privacy" }, { label: "Cookies", href: "/cookies" }] },
       },
       rights: "All rights reserved.", madeWith: "Made with", inFrance: "in France",
@@ -255,6 +255,7 @@ export default function HomeClient({ lang }: { lang: Lang }) {
           <li><a href={l("/blog")}>{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")}>{t.nav.comparatifs}</a></li>
           <li><a href={l("/newsletter")}>{t.nav.newsletter}</a></li>
+          <li><a href={l("/contact")}>{t.nav.contact}</a></li>
           <li><a href={l("/about")}>{t.nav.about}</a></li>
         </ul>
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>

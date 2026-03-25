@@ -8,7 +8,7 @@ type Lang = "fr" | "en";
 
 const T = {
   fr: {
-    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", about: "À propos" },
+    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
     badge: "Gratuit · 3 200+ lecteurs · Chaque lundi",
     title: "Le Radar IA",
     titleAccent: "de la semaine",
@@ -64,7 +64,7 @@ const T = {
     },
   },
   en: {
-    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", about: "About" },
+    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
     badge: "Free · 3,200+ readers · Every Monday",
     title: "The Weekly",
     titleAccent: "AI Radar",
@@ -270,6 +270,7 @@ export default function NewsletterClient({ lang }: { lang: Lang }) {
           <li><a href={l("/blog")}>{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")}>{t.nav.comparatifs}</a></li>
           <li><a href={l("/newsletter")} className="active">{t.nav.newsletter}</a></li>
+          <li><a href={l("/contact")}>{t.nav.contact}</a></li>
           <li><a href={l("/about")}>{t.nav.about}</a></li>
         </ul>
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>

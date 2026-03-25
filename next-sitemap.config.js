@@ -1,7 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
-  "perplexity-ai-review-2026",
   "jasper-ai-review-2026",
   "chatgpt-vs-claude-vs-gemini-2026",
   "cursor-ai-review-2026",
@@ -54,10 +53,11 @@ const additionalPaths = async () => {
     });
   });
 
-  // Newsletter et About
+  // Newsletter, About et Contact
   LANGS.forEach(lang => {
     urls.push({ loc: `${BASE}/${lang}/newsletter`, priority: 0.7, changefreq: "monthly", lastmod: NOW });
     urls.push({ loc: `${BASE}/${lang}/about`, priority: 0.5, changefreq: "monthly", lastmod: NOW });
+    urls.push({ loc: `${BASE}/${lang}/contact`, priority: 0.5, changefreq: "yearly", lastmod: NOW });
   });
 
   // Pages légales
