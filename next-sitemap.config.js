@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "perplexity-ai-review-2026",
   "jasper-ai-review-2026",
   "chatgpt-vs-claude-vs-gemini-2026",
   "cursor-ai-review-2026",
