@@ -8,7 +8,7 @@ type Lang = "fr" | "en";
 
 const T = {
   fr: {
-    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact:"Contact", about: "A propos" },
+    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
     hero: { badge: "Articles & Analyses", title: "Le blog", accent: "Neuriflux", subtitle: "Tests approfondis, analyses honnêtes et guides pratiques sur les meilleurs outils IA du marché." },
     filters: { all: "Tous" },
     search: "Rechercher un article...",
@@ -36,7 +36,6 @@ const TAG_COLORS: Record<string, string> = {
   Writing: "#f59e0b", Image: "#a855f7", "Productivité": "#10b981",
   Productivity: "#10b981", Audio: "#ef4444",
 };
-
 function getColor(tag: string) { return TAG_COLORS[tag] || "#00e6be"; }
 
 function Card({ article, lang, readMore, readTime, l }: {
@@ -75,11 +74,8 @@ export default function BlogClient({ lang }: { lang: Lang }) {
 
   const t = T[lang];
   const tags = getAllTags();
-
-  // Préfixe les liens avec /fr ou /en
   const l = (path: string) => `/${lang}${path}`;
 
-  // Switch de langue
   const switchLang = (next: Lang) => {
     if (next === lang) return;
     router.push(pathname.replace(/^\/(fr|en)/, `/${next}`));
@@ -94,8 +90,30 @@ export default function BlogClient({ lang }: { lang: Lang }) {
   const featured = filtered.filter(a => a.featured);
   const rest = filtered.filter(a => !a.featured);
 
+  // Schema.org Blog + ItemList
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: lang === "fr" ? "Blog Neuriflux — Outils IA" : "Neuriflux Blog — AI Tools",
+    url: `https://neuriflux.com/${lang}/blog`,
+    description: lang === "fr"
+      ? "Tests approfondis et avis honnêtes sur les meilleurs outils IA du marché."
+      : "In-depth reviews and honest tests on the best AI tools on the market.",
+    publisher: { "@type": "Organization", name: "Neuriflux", url: "https://neuriflux.com" },
+    blogPost: ARTICLES.map(a => ({
+      "@type": "BlogPosting",
+      headline: a[lang].title,
+      description: a[lang].desc,
+      url: `https://neuriflux.com/${lang}/blog/${a.slug}`,
+      datePublished: a.date.en,
+      author: { "@type": "Organization", name: "Neuriflux" },
+    })),
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -105,8 +123,7 @@ export default function BlogClient({ lang }: { lang: Lang }) {
         .grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,230,190,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,190,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
         .glow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(0,230,190,0.07) 0%,transparent 70%);pointer-events:none;z-index:0}
         nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(8,12,16,0.85);border-bottom:1px solid var(--border);padding:0 clamp(1.5rem,5vw,4rem);height:64px;display:flex;align-items:center;justify-content:space-between}
-        .logo{font-family:var(--font-display);font-weight:800;font-size:1.2rem;letter-spacing:-0.02em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.5rem}
-        .logo span{color:var(--cyan)}
+        .logo{font-family:var(--font-display);font-weight:800;font-size:1.2rem;letter-spacing:-0.02em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.5rem}.logo span{color:var(--cyan)}
         .dot{width:7px;height:7px;background:var(--cyan);border-radius:50%;box-shadow:0 0 10px var(--cyan);animation:pulse 2s infinite}
         @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.8)}}
         .nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
@@ -114,14 +131,12 @@ export default function BlogClient({ lang }: { lang: Lang }) {
         .nav-links a{font-family:var(--font-mono);font-size:.78rem;color:var(--text-muted);text-decoration:none;letter-spacing:.04em;transition:color .2s}
         .nav-links a:hover,.nav-links a.active{color:var(--cyan)}
         .lang-toggle{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px;display:flex;gap:2px}
-        .lb{font-family:var(--font-mono);font-size:.7rem;padding:4px 10px;border-radius:4px;border:none;cursor:pointer;transition:all .2s;background:transparent;color:var(--text-muted)}
-        .lb.active{background:var(--cyan);color:var(--bg);font-weight:600}
-        .hb{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:6px;background:none;border:none}
-        @media(max-width:768px){.hb{display:flex}}
-        .hb span{display:block;width:20px;height:2px;background:var(--text-muted);border-radius:2px}
+        .lb{font-family:var(--font-mono);font-size:.7rem;padding:4px 10px;border-radius:4px;border:none;cursor:pointer;transition:all .2s;background:transparent;color:var(--text-muted)}.lb.active{background:var(--cyan);color:var(--bg);font-weight:600}
+        .hb{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:6px;background:none;border:none}@media(max-width:768px){.hb{display:flex}}.hb span{display:block;width:20px;height:2px;background:var(--text-muted);border-radius:2px}
         .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem)}
         .hero{padding:clamp(4rem,8vw,7rem) 0 clamp(2rem,4vw,3rem)}
         .badge{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;color:var(--cyan);background:var(--cyan-dim);border:1px solid var(--border-glow);border-radius:100px;padding:6px 14px;margin-bottom:1.5rem}
+        .badge-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:pulse 2s infinite}
         h1{font-size:clamp(2.4rem,6vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:1rem}
         .accent{color:var(--cyan)}
         .sub{font-family:var(--font-mono);font-size:.92rem;color:var(--text-muted);font-weight:300;line-height:1.7;max-width:520px}
@@ -165,7 +180,7 @@ export default function BlogClient({ lang }: { lang: Lang }) {
       <div className="wrap">
         <div className="hero">
           <div className="badge">
-            <span style={{ width: 6, height: 6, background: "var(--cyan)", borderRadius: "50%", display: "inline-block" }} />
+            <div className="badge-dot" />
             {t.hero.badge}
           </div>
           <h1>{t.hero.title} <span className="accent">{t.hero.accent}</span></h1>

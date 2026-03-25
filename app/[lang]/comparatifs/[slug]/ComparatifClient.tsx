@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { getComparatifBySlug, type ToolScore } from "../../lib/comparatifs";
+import { useNewsletter } from "@/lib/useNewsletter";
 
 type Lang = "fr" | "en";
 
@@ -55,7 +56,6 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel }: {
   return (
     <div style={{ background: "var(--bg2)", border: `1px solid ${isWinner ? tool.color + "40" : "var(--border)"}`, borderRadius: 16, padding: "1.75rem", display: "flex", flexDirection: "column", gap: "1.25rem", position: "relative", overflow: "hidden", flex: 1, minWidth: 260 }}>
       {isWinner && <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: tool.color, boxShadow: `0 0 20px ${tool.color}` }} />}
-
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
           <div style={{ width: 44, height: 44, background: `${tool.color}20`, border: `2px solid ${tool.color}40`, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.3rem" }}>{tool.logo}</div>
@@ -69,24 +69,21 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel }: {
           <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem", color: "var(--text-dim)", letterSpacing: "0.06em" }}>/10</div>
         </div>
       </div>
-
       {tool.badge && (
         <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: tool.color, background: `${tool.color}15`, border: `1px solid ${tool.color}30`, borderRadius: 6, padding: "4px 10px", display: "inline-block", alignSelf: "flex-start" }}>
           {tool.badge[lang]}
         </div>
       )}
-
       <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
         {tool.scores.map((s, i) => (
           <div key={i}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem" }}>
+            <div style={{ marginBottom: "0.25rem" }}>
               <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "var(--text-muted)", fontWeight: 300 }}>{s[lang]}</span>
             </div>
             <ScoreBar value={s.value} color={tool.color} />
           </div>
         ))}
       </div>
-
       <div>
         <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#10b981", marginBottom: "0.5rem" }}>✓ {proLabel}</div>
         <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.35rem" }}>
@@ -97,7 +94,6 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel }: {
           ))}
         </ul>
       </div>
-
       <div>
         <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#ef4444", marginBottom: "0.5rem" }}>✗ {conLabel}</div>
         <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.35rem" }}>
@@ -108,29 +104,13 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel }: {
           ))}
         </ul>
       </div>
-
       <div style={{ background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: 8, padding: "0.75rem 1rem", fontFamily: "var(--font-mono)", fontSize: "0.76rem", color: "var(--text-muted)", lineHeight: 1.6, fontWeight: 300, fontStyle: "italic" }}>
         "{tool.verdict[lang]}"
       </div>
-
-      {/* ─── Bouton affilié amélioré ──────────────────────────────────────── */}
       {tool.affiliate && (
         <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.4rem" }}>
-          <a
-            href={tool.affiliate}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            style={{
-              display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem",
-              background: isWinner ? tool.color : "transparent",
-              color: isWinner ? "var(--bg)" : tool.color,
-              border: `1px solid ${tool.color}`,
-              borderRadius: 8, padding: "11px 16px",
-              fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.85rem",
-              textDecoration: "none", transition: "all 0.2s", letterSpacing: "-0.01em",
-              boxShadow: isWinner ? `0 4px 16px ${tool.color}40` : "none",
-            }}
-          >
+          <a href={tool.affiliate} target="_blank" rel="noopener noreferrer sponsored"
+            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem", background: isWinner ? tool.color : "transparent", color: isWinner ? "var(--bg)" : tool.color, border: `1px solid ${tool.color}`, borderRadius: 8, padding: "11px 16px", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.85rem", textDecoration: "none", transition: "all 0.2s", letterSpacing: "-0.01em", boxShadow: isWinner ? `0 4px 16px ${tool.color}40` : "none" }}>
             {isWinner ? "🏆 " : ""}{lang === "fr" ? "Essayer" : "Try"} {tool.name} →
           </a>
           <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.58rem", color: "var(--text-dim)", textAlign: "center" as const }}>
@@ -142,57 +122,31 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel }: {
   );
 }
 
-// ─── CTA Winner — après le verdict ───────────────────────────────────────────
+// ─── CTA Winner ───────────────────────────────────────────────────────────────
 function WinnerCTA({ winner, lang }: { winner: ToolScore; lang: Lang }) {
   if (!winner.affiliate) return null;
   return (
-    <div style={{
-      margin: "2.5rem 0",
-      padding: "2rem",
-      background: `linear-gradient(135deg, ${winner.color}08, ${winner.color}03)`,
-      border: `1px solid ${winner.color}35`,
-      borderRadius: 16,
-      position: "relative",
-      overflow: "hidden",
-    }}>
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, ${winner.color}, transparent)` }} />
-      <div style={{ position: "absolute", top: "-40%", left: "50%", transform: "translateX(-50%)", width: 400, height: 200, background: `radial-gradient(ellipse, ${winner.color}08, transparent 70%)`, pointerEvents: "none" }} />
-
+    <div style={{ margin: "2.5rem 0", padding: "2rem", background: `linear-gradient(135deg,${winner.color}08,${winner.color}03)`, border: `1px solid ${winner.color}35`, borderRadius: 16, position: "relative", overflow: "hidden" }}>
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg,transparent,${winner.color},transparent)` }} />
+      <div style={{ position: "absolute", top: "-40%", left: "50%", transform: "translateX(-50%)", width: 400, height: 200, background: `radial-gradient(ellipse,${winner.color}08,transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase" as const, color: winner.color, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
         <span style={{ display: "inline-block", width: 20, height: 1, background: winner.color }} />
         {lang === "fr" ? "🏆 Notre recommandation" : "🏆 Our recommendation"}
       </div>
-
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1.5rem", flexWrap: "wrap", position: "relative", zIndex: 1 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "1rem", flex: 1, minWidth: 220 }}>
-          <div style={{ width: 52, height: 52, background: `${winner.color}20`, border: `2px solid ${winner.color}40`, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", flexShrink: 0 }}>
-            {winner.logo}
-          </div>
+          <div style={{ width: 52, height: 52, background: `${winner.color}20`, border: `2px solid ${winner.color}40`, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", flexShrink: 0 }}>{winner.logo}</div>
           <div>
             <div style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 800, letterSpacing: "-0.03em", color: "var(--text)", marginBottom: "0.3rem" }}>
               {winner.name}
               <span style={{ fontFamily: "var(--font-mono)", fontSize: "1rem", fontWeight: 800, color: winner.color, marginLeft: "0.6rem" }}>{winner.globalScore.toFixed(1)}/10</span>
             </div>
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 300, lineHeight: 1.5 }}>
-              {winner.verdict[lang]}
-            </div>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 300, lineHeight: 1.5 }}>{winner.verdict[lang]}</div>
           </div>
         </div>
-
         <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.4rem", alignItems: "flex-end" }}>
-          <a
-            href={winner.affiliate}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: "0.5rem",
-              background: winner.color, color: "var(--bg)",
-              fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.95rem",
-              padding: "12px 24px", borderRadius: 10, textDecoration: "none",
-              transition: "all 0.2s", letterSpacing: "-0.01em", whiteSpace: "nowrap" as const,
-              boxShadow: `0 4px 20px ${winner.color}35`,
-            }}
-          >
+          <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored"
+            style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: winner.color, color: "var(--bg)", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.95rem", padding: "12px 24px", borderRadius: 10, textDecoration: "none", whiteSpace: "nowrap" as const, boxShadow: `0 4px 20px ${winner.color}35` }}>
             {lang === "fr" ? "Essayer" : "Try"} {winner.name} →
           </a>
           <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", color: "var(--text-dim)" }}>
@@ -258,14 +212,18 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
   const [menuOpen, setMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<"overview" | "details" | "analysis">("overview");
-  const [email, setEmail] = useState("");
-  const [subbed, setSubbed] = useState(false);
-
-  // ─── shareUrl via useEffect — zéro hydration mismatch ─────────────────────
+  const [nlEmail, setNlEmail] = useState("");
   const [shareUrl, setShareUrl] = useState("");
-  useEffect(() => {
-    setShareUrl(window.location.href);
-  }, []);
+
+  // ─── shareUrl client-only — zéro hydration mismatch ───────────────────────
+  useEffect(() => { setShareUrl(window.location.href); }, []);
+
+  // ─── Newsletter sidebar → Supabase ────────────────────────────────────────
+  const { status: nlStatus, subscribe } = useNewsletter("comparatif-sidebar");
+  const handleNlSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await subscribe(nlEmail, lang);
+  };
 
   const l = (path: string) => `/${lang}${path}`;
   const switchLang = (next: Lang) => {
@@ -293,20 +251,22 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
       pros: "Points forts", cons: "Points faibles",
       overview: "Vue d'ensemble", details: "Détails", analysis: "Analyse",
       verdict: "Notre verdict", nlText: "Le radar IA chaque lundi. Gratuit.",
-      sub: "S'abonner", subDone: "✓ À lundi !", placeholder: "votre@email.com",
+      sub: "S'abonner", subLoading: "...", subDone: "✓ À lundi !", subError: "Erreur, réessayez.",
+      placeholder: "votre@email.com",
       radar: "Radar des scores", compare: "Comparatif côte à côte", methodology: "Méthodologie & analyse",
-      scores: "Scores globaux", pricing: "Tarifs", criteria: "Critère",
-      detailed: "Scores détaillés",
+      scores: "Scores globaux", pricing: "Tarifs", criteria: "Critère", detailed: "Scores détaillés",
+      contact: "Contact",
     },
     en: {
       back: "← Comparisons", share: copied ? "Copied!" : "Copy link", winner: "🏆 Winner",
       pros: "Strengths", cons: "Weaknesses",
       overview: "Overview", details: "Details", analysis: "Analysis",
       verdict: "Our verdict", nlText: "The AI radar every Monday. Free.",
-      sub: "Subscribe", subDone: "✓ See you Monday!", placeholder: "your@email.com",
+      sub: "Subscribe", subLoading: "...", subDone: "✓ See you Monday!", subError: "Error, try again.",
+      placeholder: "your@email.com",
       radar: "Score radar", compare: "Side by side", methodology: "Methodology & analysis",
-      scores: "Global scores", pricing: "Pricing", criteria: "Criteria",
-      detailed: "Detailed scores",
+      scores: "Global scores", pricing: "Pricing", criteria: "Criteria", detailed: "Detailed scores",
+      contact: "Contact",
     },
   }[lang];
 
@@ -314,11 +274,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
     return (
       <>
         <style>{`*{box-sizing:border-box;margin:0;padding:0}:root{--bg:#080c10;--cyan:#00e6be;--text:#f0f4f8;--text-muted:#6b7a8d;--font-display:'Syne',sans-serif;--font-mono:'JetBrains Mono',monospace}body{background:var(--bg);color:var(--text);font-family:var(--font-display);display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:2rem}.nf h1{font-size:3rem;font-weight:800;margin-bottom:1rem}.nf p{font-family:var(--font-mono);color:var(--text-muted);margin-bottom:2rem}.btn{display:inline-flex;background:var(--cyan);color:var(--bg);font-weight:700;padding:12px 24px;border-radius:8px;text-decoration:none}`}</style>
-        <div className="nf">
-          <h1>404</h1>
-          <p>{lang === "fr" ? "Ce comparatif n'existe pas." : "This comparison doesn't exist."}</p>
-          <a href={l("/comparatifs")} className="btn">{L.back}</a>
-        </div>
+        <div className="nf"><h1>404</h1><p>{lang === "fr" ? "Ce comparatif n'existe pas." : "This comparison doesn't exist."}</p><a href={l("/comparatifs")} className="btn">{L.back}</a></div>
       </>
     );
   }
@@ -327,8 +283,24 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
   const tagColor = TAG_COLORS[data.tag] || "#00e6be";
   const criteriaLabels = data.criteria[lang];
 
+  // ─── Schema.org ComparisonPage JSON-LD ───────────────────────────────────
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: comp.title,
+    description: comp.intro,
+    author: { "@type": "Organization", name: "Neuriflux", url: "https://neuriflux.com" },
+    publisher: { "@type": "Organization", name: "Neuriflux", logo: { "@type": "ImageObject", url: "https://neuriflux.com/logo.png" } },
+    datePublished: data.date.en,
+    url: `https://neuriflux.com/${lang}/comparatifs/${slug}`,
+    inLanguage: lang,
+    about: data.tools.map(t => ({ "@type": "SoftwareApplication", name: t.name })),
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -341,7 +313,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
         @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.8)}}
         .nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
         @media(max-width:768px){.nav-links{display:none}.nav-links.open{display:flex;flex-direction:column;position:fixed;top:67px;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);padding:1.5rem 2rem;gap:1.2rem}}
-        .nav-links a{font-family:var(--font-mono);font-size:.78rem;color:var(--text-muted);text-decoration:none;transition:color .2s}.nav-links a:hover{color:var(--cyan)}
+        .nav-links a{font-family:var(--font-mono);font-size:.78rem;color:var(--text-muted);text-decoration:none;transition:color .2s}.nav-links a:hover,.nav-links a.active{color:var(--cyan)}
         .lt{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px;display:flex;gap:2px}
         .lb{font-family:var(--font-mono);font-size:.7rem;padding:4px 10px;border-radius:4px;border:none;cursor:pointer;transition:all .2s;background:transparent;color:var(--text-muted)}.lb.active{background:var(--cyan);color:var(--bg);font-weight:600}
         .hb{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:6px;background:none;border:none}@media(max-width:768px){.hb{display:flex}}.hb span{display:block;width:20px;height:2px;background:var(--text-muted);border-radius:2px}
@@ -391,7 +363,8 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
         .score-row{display:flex;align-items:center;justify-content:space-between;padding:.4rem 0;border-bottom:1px solid var(--border)}.score-row:last-child{border-bottom:none}
         .nl-text{font-family:var(--font-mono);font-size:.75rem;color:var(--text-muted);line-height:1.6;font-weight:300;margin-bottom:1rem;text-align:center}
         .nl-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text);font-family:var(--font-mono);font-size:.78rem;outline:none;margin-bottom:.5rem;transition:border-color .2s}.nl-input:focus{border-color:var(--border-glow)}
-        .nl-btn{width:100%;background:var(--cyan);color:var(--bg);font-family:var(--font-display);font-weight:700;font-size:.82rem;padding:10px;border-radius:6px;border:none;cursor:pointer}
+        .nl-btn{width:100%;background:var(--cyan);color:var(--bg);font-family:var(--font-display);font-weight:700;font-size:.82rem;padding:10px;border-radius:6px;border:none;cursor:pointer}.nl-btn:disabled{opacity:.6;cursor:not-allowed}
+        .nl-status{text-align:center;font-family:var(--font-mono);font-size:.78rem;padding:8px 0}
         .sidebar-winner{position:relative;overflow:hidden}
         .sidebar-winner-btn{display:flex;align-items:center;justify-content:center;gap:.4rem;width:100%;font-family:var(--font-display);font-weight:700;font-size:.82rem;padding:11px;border-radius:8px;text-decoration:none;transition:all .2s;letter-spacing:-.01em}
         .sidebar-winner-btn:hover{opacity:.9;transform:translateY(-1px)}
@@ -409,6 +382,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
           <li><a href={l("/blog")}>{lang === "fr" ? "Blog" : "Blog"}</a></li>
           <li><a href={l("/comparatifs")} className="active">{lang === "fr" ? "Comparatifs" : "Comparisons"}</a></li>
           <li><a href={l("/newsletter")}>Newsletter</a></li>
+          <li><a href={l("/contact")}>{L.contact}</a></li>
           <li><a href={l("/about")}>{lang === "fr" ? "À propos" : "About"}</a></li>
         </ul>
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
@@ -423,13 +397,11 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
       <div className="layout">
         <main>
           <a href={l("/comparatifs")} className="back">{L.back}</a>
-
           <div className="art-meta">
             <span className="tag-b" style={{ color: tagColor, background: `${tagColor}18`, border: `1px solid ${tagColor}30` }}>{data.tag}</span>
             <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", color: "var(--text-muted)" }}>{data.date[lang]}</span>
             <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", color: "var(--text-dim)" }}>⚔️ {data.tools.length} {lang === "fr" ? "outils" : "tools"}</span>
           </div>
-
           <h1 className="art-title">{comp.title}</h1>
           <p className="art-desc">{comp.intro}</p>
 
@@ -447,20 +419,9 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
                   <div className="winner-score" style={{ color: winner.color }}>{winner.globalScore.toFixed(1)}</div>
                   <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem", color: "var(--text-dim)" }}>/10</div>
                 </div>
-                {/* ─── Bouton affilié dans le winner banner ─────────────── */}
                 {winner.affiliate && (
-                  <a
-                    href={winner.affiliate}
-                    target="_blank"
-                    rel="noopener noreferrer sponsored"
-                    style={{
-                      display: "inline-flex", alignItems: "center", gap: "0.3rem",
-                      background: winner.color, color: "var(--bg)",
-                      fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.75rem",
-                      padding: "7px 14px", borderRadius: 7, textDecoration: "none",
-                      whiteSpace: "nowrap" as const, letterSpacing: "-0.01em",
-                    }}
-                  >
+                  <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored"
+                    style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem", background: winner.color, color: "var(--bg)", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.75rem", padding: "7px 14px", borderRadius: 7, textDecoration: "none", whiteSpace: "nowrap" as const }}>
                     {lang === "fr" ? "Essayer →" : "Try it →"}
                   </a>
                 )}
@@ -477,7 +438,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
             ))}
           </div>
 
-          {/* Tab: Overview */}
+          {/* Overview */}
           {activeTab === "overview" && (
             <div>
               <div className="radar-section">
@@ -488,15 +449,12 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
                     {data.tools.map(tool => (
                       <div key={tool.name} className="radar-legend-item">
                         <div className="radar-legend-dot" style={{ background: tool.color }} />
-                        {tool.name}
-                        <span style={{ color: tool.color, fontWeight: 700 }}>{tool.globalScore.toFixed(1)}</span>
+                        {tool.name}<span style={{ color: tool.color, fontWeight: 700 }}>{tool.globalScore.toFixed(1)}</span>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
-
-              {/* Scores table */}
               <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 16, overflow: "hidden", marginBottom: "2.5rem" }}>
                 <div style={{ padding: "1.25rem 1.5rem", borderBottom: "1px solid var(--border)" }}>
                   <div className="section-label" style={{ marginBottom: 0 }}>{L.detailed}</div>
@@ -507,9 +465,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
                       <tr style={{ background: "var(--bg3)" }}>
                         <th style={{ padding: "10px 16px", textAlign: "left" as const, color: "var(--text-dim)", fontWeight: 400, letterSpacing: "0.06em", textTransform: "uppercase" as const, fontSize: "0.65rem" }}>{L.criteria}</th>
                         {data.tools.map(tool => (
-                          <th key={tool.name} style={{ padding: "10px 16px", textAlign: "center" as const, color: tool.color, fontWeight: 700 }}>
-                            {tool.logo} {tool.name}
-                          </th>
+                          <th key={tool.name} style={{ padding: "10px 16px", textAlign: "center" as const, color: tool.color, fontWeight: 700 }}>{tool.logo} {tool.name}</th>
                         ))}
                       </tr>
                     </thead>
@@ -537,9 +493,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
                           const best = Math.max(...data.tools.map(t => t.globalScore));
                           return (
                             <td key={tool.name} style={{ padding: "12px 16px", textAlign: "center" as const }}>
-                              <span style={{ fontFamily: "var(--font-display)", fontSize: "1.1rem", fontWeight: 800, color: tool.globalScore === best ? tool.color : "var(--text-muted)" }}>
-                                {tool.globalScore.toFixed(1)}
-                              </span>
+                              <span style={{ fontFamily: "var(--font-display)", fontSize: "1.1rem", fontWeight: 800, color: tool.globalScore === best ? tool.color : "var(--text-muted)" }}>{tool.globalScore.toFixed(1)}</span>
                             </td>
                           );
                         })}
@@ -548,20 +502,16 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
                   </table>
                 </div>
               </div>
-
-              {/* Verdict */}
               <div className="verdict-box">
                 <div className="verdict-glow" />
                 <div className="section-label">{L.verdict}</div>
                 <p className="verdict-text">{comp.verdict}</p>
               </div>
-
-              {/* ─── CTA Winner après verdict ──────────────────────────────── */}
               {winner && <WinnerCTA winner={winner} lang={lang} />}
             </div>
           )}
 
-          {/* Tab: Details */}
+          {/* Details */}
           {activeTab === "details" && (
             <div>
               <div className="section-label" style={{ marginBottom: "1.5rem" }}>{L.compare}</div>
@@ -570,41 +520,25 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
                   <ToolCard key={tool.name} tool={tool} lang={lang} isWinner={tool.name === data.winner} proLabel={L.pros} conLabel={L.cons} />
                 ))}
               </div>
-              {/* ─── CTA Winner après les ToolCards ───────────────────────── */}
               {winner && <WinnerCTA winner={winner} lang={lang} />}
             </div>
           )}
 
-          {/* Tab: Analysis */}
+          {/* Analysis */}
           {activeTab === "analysis" && (
             <div>
               <div className="section-label" style={{ marginBottom: "1.5rem" }}>{L.methodology}</div>
               <div className="prose" dangerouslySetInnerHTML={{ __html: renderMd(comp.content) }} />
-              {/* ─── CTA Winner après l'analyse ───────────────────────────── */}
               {winner && <WinnerCTA winner={winner} lang={lang} />}
             </div>
           )}
 
-          {/* Share — URLs corrigées */}
+          {/* Share */}
           <div className="share">
             <span className="slabel">{lang === "fr" ? "Partager" : "Share"}</span>
             <button className={`sbtn${copied ? " done" : ""}`} onClick={copy}>🔗 {L.share}</button>
-            <a
-              className="sbtn"
-              href={shareUrl ? `https://twitter.com/intent/tweet?text=${encodeURIComponent(comp.title)}&url=${encodeURIComponent(shareUrl)}` : "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              𝕏 Twitter
-            </a>
-            <a
-              className="sbtn"
-              href={shareUrl ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}` : "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              in LinkedIn
-            </a>
+            <a className="sbtn" href={shareUrl ? `https://twitter.com/intent/tweet?text=${encodeURIComponent(comp.title)}&url=${encodeURIComponent(shareUrl)}` : "#"} target="_blank" rel="noopener noreferrer">𝕏 Twitter</a>
+            <a className="sbtn" href={shareUrl ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}` : "#"} target="_blank" rel="noopener noreferrer">in LinkedIn</a>
           </div>
         </main>
 
@@ -623,10 +557,10 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
             ))}
           </div>
 
-          {/* ─── Sidebar CTA winner ─────────────────────────────────────── */}
+          {/* Sidebar CTA winner */}
           {winner && winner.affiliate && (
-            <div className="sbox sidebar-winner" style={{ background: `linear-gradient(135deg, ${winner.color}08, ${winner.color}03)`, border: `1px solid ${winner.color}35`, position: "relative", overflow: "hidden" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, ${winner.color}, transparent)` }} />
+            <div className="sbox sidebar-winner" style={{ background: `linear-gradient(135deg,${winner.color}08,${winner.color}03)`, border: `1px solid ${winner.color}35`, position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg,transparent,${winner.color},transparent)` }} />
               <div className="sbox-title" style={{ color: winner.color }}>🏆 {lang === "fr" ? "Gagnant" : "Winner"}</div>
               <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.75rem" }}>
                 <span style={{ fontSize: "1.3rem" }}>{winner.logo}</span>
@@ -635,13 +569,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
                   <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: winner.color, fontWeight: 700 }}>{winner.globalScore.toFixed(1)}/10</div>
                 </div>
               </div>
-              <a
-                href={winner.affiliate}
-                target="_blank"
-                rel="noopener noreferrer sponsored"
-                className="sidebar-winner-btn"
-                style={{ background: winner.color, color: "var(--bg)" }}
-              >
+              <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored" className="sidebar-winner-btn" style={{ background: winner.color, color: "var(--bg)" }}>
                 {lang === "fr" ? "Essayer gratuitement" : "Try for free"} →
               </a>
               <div className="sidebar-aff-note">{lang === "fr" ? "Lien affilié" : "Affiliate link"}</div>
@@ -658,16 +586,22 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
             ))}
           </div>
 
+          {/* Newsletter sidebar → Supabase */}
           <div className="sbox">
             <div className="sbox-title">Newsletter</div>
             <p className="nl-text">{L.nlText}</p>
-            {subbed ? (
-              <div style={{ textAlign: "center" as const, fontFamily: "var(--font-mono)", fontSize: ".82rem", color: "var(--cyan)", padding: "8px 0" }}>{L.subDone}</div>
+            {nlStatus === "success" ? (
+              <div className="nl-status" style={{ color: "var(--cyan)" }}>{L.subDone}</div>
+            ) : nlStatus === "error" ? (
+              <div className="nl-status" style={{ color: "#ef4444" }}>{L.subError}</div>
             ) : (
-              <>
-                <input className="nl-input" type="email" placeholder={L.placeholder} value={email} onChange={e => setEmail(e.target.value)} />
-                <button className="nl-btn" onClick={() => email && setSubbed(true)}>{L.sub}</button>
-              </>
+              <form onSubmit={handleNlSubmit}>
+                <input className="nl-input" type="email" placeholder={L.placeholder} value={nlEmail}
+                  onChange={e => setNlEmail(e.target.value)} required disabled={nlStatus === "loading"} />
+                <button className="nl-btn" type="submit" disabled={nlStatus === "loading"}>
+                  {nlStatus === "loading" ? L.subLoading : L.sub}
+                </button>
+              </form>
             )}
           </div>
         </aside>

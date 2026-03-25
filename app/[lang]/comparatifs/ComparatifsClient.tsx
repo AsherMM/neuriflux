@@ -8,7 +8,7 @@ type Lang = "fr" | "en";
 
 const T = {
   fr: {
-    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact",about: "A propos" },
+    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
     badge: "Comparatifs & Benchmarks",
     title: "Comparatifs", accent: "IA",
     subtitle: "Des comparatifs honnêtes basés sur des tests réels. Scores détaillés, verdicts clairs, sans bullshit.",
@@ -64,10 +64,20 @@ function ComparatifCard({ c, lang, t, l }: {
   return (
     <a
       href={l(`/comparatifs/${c.slug}`)}
-      style={{ background: "var(--bg2)", border: `1px solid ${hov ? "rgba(0,230,190,0.25)" : "var(--border)"}`, borderRadius: 16, padding: "1.75rem", display: "flex", flexDirection: "column", gap: "1.25rem", textDecoration: "none", transition: "all 0.25s", transform: hov ? "translateY(-3px)" : "none", boxShadow: hov ? "0 16px 50px rgba(0,0,0,0.5)" : "none", position: "relative", overflow: "hidden" }}
-      onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      style={{
+        background: "var(--bg2)",
+        border: `1px solid ${hov ? "rgba(0,230,190,0.25)" : "var(--border)"}`,
+        borderRadius: 16, padding: "1.75rem",
+        display: "flex", flexDirection: "column", gap: "1.25rem",
+        textDecoration: "none", transition: "all 0.25s",
+        transform: hov ? "translateY(-3px)" : "none",
+        boxShadow: hov ? "0 16px 50px rgba(0,0,0,0.5)" : "none",
+        position: "relative", overflow: "hidden",
+      }}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
     >
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${tagColor}, transparent)`, opacity: hov ? 1 : 0.5, transition: "opacity 0.3s" }} />
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg,${tagColor},transparent)`, opacity: hov ? 1 : 0.5, transition: "opacity 0.3s" }} />
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "0.5rem" }}>
         <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, color: tagColor, fontWeight: 500, background: `${tagColor}18`, border: `1px solid ${tagColor}30`, padding: "3px 10px", borderRadius: 100 }}>{c.tag}</span>
@@ -118,8 +128,8 @@ export default function ComparatifsClient({ lang }: { lang: Lang }) {
 
   const t = T[lang];
   const tags = getAllComparatifTags();
-
   const l = (path: string) => `/${lang}${path}`;
+
   const switchLang = (next: Lang) => {
     if (next === lang) return;
     router.push(pathname.replace(/^\/(fr|en)/, `/${next}`));
@@ -135,8 +145,25 @@ export default function ComparatifsClient({ lang }: { lang: Lang }) {
   const featured = filtered.filter(c => c.featured);
   const rest = filtered.filter(c => !c.featured);
 
+  // Schema.org ItemList
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: lang === "fr" ? "Comparatifs IA 2026" : "AI Comparisons 2026",
+    url: `https://neuriflux.com/${lang}/comparatifs`,
+    numberOfItems: COMPARATIFS.length,
+    itemListElement: COMPARATIFS.map((c, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: c[lang].title,
+      url: `https://neuriflux.com/${lang}/comparatifs/${c.slug}`,
+    })),
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -145,8 +172,7 @@ export default function ComparatifsClient({ lang }: { lang: Lang }) {
         .grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,230,190,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,190,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
         .glow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:900px;height:700px;background:radial-gradient(ellipse,rgba(0,230,190,0.06) 0%,transparent 70%);pointer-events:none;z-index:0}
         nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(8,12,16,0.85);border-bottom:1px solid var(--border);padding:0 clamp(1.5rem,5vw,4rem);height:64px;display:flex;align-items:center;justify-content:space-between}
-        .logo{font-family:var(--font-display);font-weight:800;font-size:1.2rem;letter-spacing:-0.02em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.5rem}
-        .logo span{color:var(--cyan)}
+        .logo{font-family:var(--font-display);font-weight:800;font-size:1.2rem;letter-spacing:-0.02em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.5rem}.logo span{color:var(--cyan)}
         .dot{width:7px;height:7px;background:var(--cyan);border-radius:50%;box-shadow:0 0 10px var(--cyan);animation:pulse 2s infinite}
         @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.8)}}
         .nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
@@ -154,14 +180,12 @@ export default function ComparatifsClient({ lang }: { lang: Lang }) {
         .nav-links a{font-family:var(--font-mono);font-size:.78rem;color:var(--text-muted);text-decoration:none;letter-spacing:.04em;transition:color .2s}
         .nav-links a:hover,.nav-links a.active{color:var(--cyan)}
         .lt{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px;display:flex;gap:2px}
-        .lb{font-family:var(--font-mono);font-size:.7rem;padding:4px 10px;border-radius:4px;border:none;cursor:pointer;transition:all .2s;background:transparent;color:var(--text-muted)}
-        .lb.active{background:var(--cyan);color:var(--bg);font-weight:600}
-        .hb{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:6px;background:none;border:none}
-        @media(max-width:768px){.hb{display:flex}}
-        .hb span{display:block;width:20px;height:2px;background:var(--text-muted);border-radius:2px}
+        .lb{font-family:var(--font-mono);font-size:.7rem;padding:4px 10px;border-radius:4px;border:none;cursor:pointer;transition:all .2s;background:transparent;color:var(--text-muted)}.lb.active{background:var(--cyan);color:var(--bg);font-weight:600}
+        .hb{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:6px;background:none;border:none}@media(max-width:768px){.hb{display:flex}}.hb span{display:block;width:20px;height:2px;background:var(--text-muted);border-radius:2px}
         .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem)}
         .hero{padding:clamp(4rem,8vw,7rem) 0 clamp(2rem,4vw,3rem)}
         .badge{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;color:var(--cyan);background:var(--cyan-dim);border:1px solid var(--border-glow);border-radius:100px;padding:6px 14px;margin-bottom:1.5rem}
+        .badge-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:pulse 2s infinite}
         h1{font-size:clamp(2.4rem,6vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:1rem}
         .ac{color:var(--cyan)}
         .sub{font-family:var(--font-mono);font-size:.92rem;color:var(--text-muted);font-weight:300;line-height:1.7;max-width:560px}
@@ -206,7 +230,7 @@ export default function ComparatifsClient({ lang }: { lang: Lang }) {
       <div className="wrap">
         <div className="hero">
           <div className="badge">
-            <span style={{ width: 6, height: 6, background: "var(--cyan)", borderRadius: "50%", display: "inline-block" }} />
+            <div className="badge-dot" />
             {t.badge}
           </div>
           <h1>{t.title} <span className="ac">{t.accent}</span></h1>
