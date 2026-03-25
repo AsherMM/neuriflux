@@ -40,283 +40,377 @@ export const ARTICLES: Article[] = [
     slug: "perplexity-ai-review-2026",
     tag: "Chatbots",
     date: { fr: "25 mars 2026", en: "March 25, 2026" },
-    timeMin: "11",
+    timeMin: "13",
     featured: true,
     affiliate: {
       url: "https://perplexity.ai",
       toolName: "Perplexity AI",
       label: {
-        fr: "Essai gratuit disponible — plan Pro à 20$/mois",
-        en: "Free plan available — Pro plan at $20/month",
+        fr: "Plan gratuit disponible — Pro à 20$/mois",
+        en: "Free plan available — Pro at $20/month",
       },
     },
     fr: {
-      title: "Perplexity AI : notre avis complet en 2026 (test, prix, Perplexity Computer)",
-      desc: "On a testé Perplexity AI pendant un mois en conditions réelles. L'outil qui veut remplacer Google — est-ce que ça marche vraiment ?",
-      metaTitle: "Perplexity AI : avis complet 2026, prix et test | Neuriflux",
-      metaDesc: "Notre avis complet sur Perplexity AI en 2026. Test approfondi de la recherche IA avec sources, Perplexity Pro, Perplexity Computer — vaut-il le coup face à ChatGPT et Google ?",
+      title: "Perplexity AI : avis 2026, est-il meilleur que ChatGPT et Google ?",
+      desc: "On a testé Perplexity AI pendant un mois en conditions réelles. Sources citées, Perplexity Pro, Perplexity Computer — notre verdict complet et honnête face à ChatGPT et Google.",
+      metaTitle: "Perplexity AI : avis complet 2026 vs ChatGPT et Google | Neuriflux",
+      metaDesc: "Notre avis complet sur Perplexity AI en 2026. Comparatif vs ChatGPT et Google, test du plan Pro (20$/mois), Perplexity Computer — est-ce vraiment le meilleur moteur de recherche IA ?",
       content: `
 ## C'est quoi Perplexity AI ?
 
-Perplexity AI est un **moteur de recherche propulsé par l'IA** qui répond à vos questions en langage naturel, en citant ses sources en temps réel. Contrairement à ChatGPT qui génère des réponses à partir de données d'entraînement statiques, Perplexity interroge le web en direct et vous donne des réponses vérifiables avec des liens cliquables vers les sources originales.
+Perplexity AI est un **moteur de recherche propulsé par l'IA** qui répond à vos questions en langage naturel en citant ses sources en temps réel. Contrairement à ChatGPT qui génère des réponses à partir de données d'entraînement statiques — et qui peut donc inventer des informations — Perplexity interroge le web en direct et vous donne des réponses vérifiables, chaque affirmation étant liée à sa source originale.
 
-Fondé en 2022 par d'anciens ingénieurs d'OpenAI et Google, Perplexity a explosé en 2025-2026 : **500 millions de requêtes par mois**, une valorisation de 20 milliards de dollars, et le lancement en février 2026 de **Perplexity Computer** — un agent IA autonome qui change complètement la donne.
+Fondé en 2022 par d'anciens ingénieurs d'OpenAI et Google, Perplexity a connu une croissance spectaculaire : **500 millions de requêtes par mois** début 2026, une valorisation de 20 milliards de dollars après sa série E-6, et le lancement en février 2026 de **Perplexity Computer** — un agent IA autonome coordonnant 19 modèles simultanément.
 
-Après un mois d'utilisation intensive, voici notre verdict.
+Après un mois d'utilisation intensive — recherche professionnelle, veille concurrentielle, analyse financière — voici notre verdict complet.
 
-## Tableau comparatif rapide
+## Tableau comparatif : Perplexity vs ChatGPT vs Claude vs Google
 
-| Critère | Perplexity Pro | ChatGPT Plus | Claude | Google AI |
+| Critère | Perplexity Pro | ChatGPT Plus | Claude Pro | Google AI |
 |---|---|---|---|---|
-| Recherche en temps réel | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Recherche temps réel | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | Citations & sources | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐ |
 | Qualité de rédaction | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
 | Analyse de documents | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Code & technique | ⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
 | Agents IA autonomes | ✅ Computer | ❌ | ❌ | ❌ |
+| Accès multi-modèles | ✅ GPT, Claude, Mistral | ❌ | ❌ | ❌ |
 | Prix mensuel | 20$/mois | 20$/mois | 20$/mois | 19.99$/mois |
 | Version gratuite | ✅ Généreuse | ✅ Limitée | ✅ Limitée | ✅ Généreuse |
 
-## Les fonctionnalités clés de Perplexity
+## Les fonctionnalités clés de Perplexity AI
 
-### La recherche avec sources — son cœur de métier
+### Citations et sources — la fonctionnalité qui change tout
 
-Perplexity excelle là où ChatGPT échoue : **la recherche factuelle en temps réel**. Chaque réponse est accompagnée de sources numérotées et cliquables. Vous pouvez vérifier chaque affirmation en un clic — ce que vous ne pouvez pas faire avec les réponses parfois inventées de ChatGPT.
+La fonctionnalité fondatrice de Perplexity, c'est sa **transparence absolue sur les sources**. Chaque phrase de chaque réponse est numérotée et liée à la page web qui la supporte. Vous pouvez vérifier chaque affirmation en un clic — quelque chose que vous ne pouvez tout simplement pas faire avec ChatGPT ou Claude.
 
-Sur des sujets d'actualité, Perplexity est imbattable. Prix du Bitcoin ce matin, dernière mise à jour de Next.js, résultats électoraux — tout est là, sourcé et à jour.
+Dans la pratique, ça change radicalement votre façon de travailler. Sur Product Hunt, les utilisateurs le décrivent comme "le meilleur outil IA pour citer des sources" et "presque entièrement remplacé ma recherche web habituelle". Ce n'est pas du tout de l'hyperbole.
 
-### Pro Search — la recherche approfondie
+### Pro Search — la recherche approfondie multi-sources
 
-Le mode **Pro Search** (disponible sur le plan payant) ne se contente pas d'une requête simple. Il décompose votre question en sous-requêtes, interroge plusieurs sources en parallèle, et synthétise une réponse structurée de plusieurs pages. C'est l'équivalent d'un assistant de recherche qui passe 20 minutes à fouiller le web pour vous.
+Le mode **Pro Search** va bien au-delà d'une requête simple. Il décompose votre question en sous-requêtes complémentaires, interroge plusieurs sources en parallèle, maintient le contexte entre les questions de suivi, et synthétise une réponse structurée. C'est l'équivalent d'un assistant de recherche qui passe 20 minutes à fouiller le web pour vous, sans les résultats sponsorisés.
 
-Testé sur "Quel est le meilleur outil IA pour créer des vidéos en 2026 ?" : le résultat était une analyse comparative de 800 mots avec 12 sources, bien mieux que ce que Google aurait renvoyé.
+Testé sur "Quel est le meilleur outil IA pour créer des vidéos en mars 2026 ?" : résultat en 30 secondes, 800 mots, 12 sources, comparatif structuré. Google aurait renvoyé 10 liens à ouvrir séparément.
 
-### Perplexity Pages — pour créer du contenu
+### Accès multi-modèles sur le plan Pro
 
-**Pages** permet de transformer une recherche en une page web structurée, partageable et sourcée. Idéal pour créer rapidement des rapports, des analyses ou des briefs. Le rendu est propre, le contenu est vérifiable — c'est un outil sérieux pour les knowledge workers.
+Le plan Pro donne accès à **GPT-4o, Claude 3.5 Sonnet, Mistral Large et les modèles Sonar** de Perplexity dans la même interface. Vous pouvez choisir le modèle selon la tâche : Claude pour les textes nuancés, GPT-4o pour la logique complexe, Sonar pour la recherche rapide. C'est comme avoir plusieurs abonnements IA en un seul.
 
-### Perplexity Finance — l'analyste financier intégré
+### Modes spécialisés : Finance, Academic, Writing
 
-La fonctionnalité **Finance** est probablement la plus sous-estimée. Elle affiche des graphiques boursiers en temps réel, des filings SEC, des actualités financières, et synthétise les rapports de résultats en quelques lignes. C'est un Bloomberg allégé, gratuit et conversationnel.
+**Finance** : graphiques boursiers en temps réel, filings SEC, synthèse de rapports de résultats. C'est un Bloomberg allégé, conversationnel et gratuit. Pour suivre l'actualité d'une entreprise ou analyser un secteur, rien d'autre ne rivalise.
 
-### Perplexity Computer — la révolution de février 2026
+**Academic** : recherche dans les bases de données scientifiques (PubMed, arXiv, etc.) pour éviter les sources SEO-spammées sur les sujets pointus.
 
-Le **25 février 2026**, Perplexity a lancé ce qui est probablement le produit le plus ambitieux du marché IA : **Perplexity Computer**. Disponible uniquement avec le plan Max (200$/mois), c'est un agent IA autonome qui coordonne **19 modèles d'IA simultanément** pour accomplir des tâches complexes de bout en bout.
+**Writing** : aide à la rédaction avec sources intégrées — utile pour créer des briefs sourcés ou des premières ébauches d'articles.
 
-Concrètement : vous décrivez un objectif ("analyse la concurrence de mon produit et génère un rapport de 20 pages avec graphiques"), et Computer décompose la tâche en sous-tâches, mobilise Claude pour le raisonnement, Gemini pour la recherche, des modèles spécialisés pour les images et vidéos, et livre un résultat complet — sans intervention humaine.
+### Perplexity Pages — transformer une recherche en contenu
 
-C'est tôt. C'est parfois lent. Mais c'est la première fois qu'un outil IA grand public peut vraiment gérer des workflows complets de façon autonome.
+**Pages** convertit n'importe quel thread de recherche en une page web structurée, sourcée et partageable en un clic. Pour créer des rapports, des analyses sectorielles ou des briefs clients rapidement, c'est d'une efficacité redoutable.
 
-## Les tarifs en 2026
+### Perplexity Computer — l'agent IA autonome (février 2026)
 
-| Plan | Prix | Pour qui |
+Lancé le **25 février 2026** et réservé aux abonnés Max (200$/mois), **Perplexity Computer** est l'ambition la plus folle du marché IA grand public. Il coordonne **19 modèles d'IA simultanément** — Claude Opus pour le raisonnement, Gemini pour la recherche web, des modèles spécialisés pour les images et vidéos — dans un environnement cloud sécurisé avec 400+ intégrations d'applications.
+
+Le principe : vous décrivez un objectif complexe ("analyse la concurrence de mon SaaS et prépare une stratégie go-to-market"), Perplexity Computer décompose la tâche en sous-tâches parallèles, les exécute sur les meilleurs modèles disponibles, et vous livre un résultat complet — potentiellement en plusieurs heures, sans intervention humaine.
+
+**Est-ce que ça marche vraiment ?** Partiellement. Pour les workflows de recherche et de création de documents structurés, les résultats sont impressionnants. Pour les tâches nécessitant une précision numérique ou une logique conditionnelle complexe, les résultats sont inégaux. À 200$/mois, l'outil est encore en rodage — mais la direction est clairement la bonne.
+
+## Les tarifs de Perplexity AI en 2026
+
+| Plan | Prix | Ce qu'il inclut |
 |---|---|---|
-| Free | Gratuit | Recherche occasionnelle, 5 Pro Searches/jour |
-| Pro | 20$/mois | Recherche illimitée, accès multi-modèles, uploads fichiers |
-| Max | 200$/mois | Perplexity Computer, Labs illimités, accès prioritaire |
-| Enterprise Pro | 40$/siège/mois | Équipes, collaboration, sécurité renforcée |
-| Enterprise Max | 325$/siège/mois | Workflows autonomes à l'échelle de l'entreprise |
+| Free | Gratuit | Recherche illimitée basique, 5 Pro Searches/jour, modèle Sonar |
+| Pro | 20$/mois (ou 200$/an) | Pro Searches illimités, GPT-4o, Claude 3.5, Mistral, uploads fichiers, Spaces |
+| Max | 200$/mois (ou 2 000$/an) | Perplexity Computer, Labs illimités, accès prioritaire, tous modèles |
+| Enterprise Pro | 40$/siège/mois | Collaboration équipe, SSO, sécurité renforcée, audit logs |
+| Enterprise Max | 325$/siège/mois | Computer à l'échelle entreprise, SCIM, contrôles compliance |
 
-**Le plan Pro à 20$/mois** est clairement celui qui offre le meilleur rapport qualité/prix pour un usage professionnel quotidien.
+**Attention** : Perplexity a récemment modifié ses plans sans notification préalable. Des utilisateurs sur Trustpilot signalent que la fonctionnalité Deep Research a été réduite de 200 à 20 requêtes/mois sans annonce, et que le prix Pro est passé de 20$ à 17$ mais avec des limites plus strictes. À surveiller.
 
-## Ce qu'on a aimé
+## Perplexity vs ChatGPT : comparatif détaillé
 
-**Les sources cliquables** : c'est THE feature de Perplexity. Sur tout sujet factuel, pouvoir vérifier chaque affirmation en un clic est d'une valeur inestimable. On perd l'habitude avec ChatGPT d'avoir à vérifier soi-même — avec Perplexity, la vérification est intégrée.
+C'est la comparaison que tout le monde cherche. Voici la réponse honnête, cas d'usage par cas d'usage.
 
-**La version gratuite généreuse** : même sans payer, Perplexity est utilisable quotidiennement. Les 5 Pro Searches gratuites par jour couvrent la plupart des besoins occasionnels.
+**Perplexity gagne clairement sur :**
+- Recherche factuelle en temps réel — Perplexity a accès au web en direct, ChatGPT s'arrête à sa date d'entraînement
+- Sources citées — chaque affirmation est vérifiable, ChatGPT peut inventer des faits avec assurance
+- Veille d'actualité — parfait pour "que s'est-il passé cette semaine dans le domaine X ?"
+- Prix de revient — accès à GPT-4o + Claude + Mistral pour 20$/mois vs 20$/mois pour un seul modèle
 
-**Perplexity Finance** : pour suivre l'actualité économique et analyser des entreprises, c'est devenu notre outil de référence. La synthèse d'un rapport de résultats en 3 bullet points en 10 secondes, c'est magique.
+**ChatGPT (ou [Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026)) gagne clairement sur :**
+- Rédaction créative et nuancée — aucun outil ne bat Claude sur la qualité des textes
+- Code et débugging — ChatGPT reste la référence pour les développeurs
+- Conversations longues et mémorisation de contexte
+- Tâches qui ne nécessitent pas de données en temps réel
 
-**La rapidité** : Perplexity répond vite. Très vite. L'interface est fluide, les réponses arrivent quasi instantanément même en mode Pro Search.
+**Le verdict pour 2026 :** ce ne sont pas des outils concurrents, ce sont complémentaires. Perplexity pour chercher et vérifier, ChatGPT ou Claude pour créer et coder.
 
-**L'intégration multi-modèles** : avec le plan Pro, vous pouvez choisir entre GPT-4o, Claude 3.5, Mistral et d'autres selon la tâche. C'est comme avoir plusieurs abonnements en un.
+## Perplexity vs Google Search : peut-il remplacer Google ?
 
-## Ce qu'on a moins aimé
+C'est la vraie question derrière la popularité de Perplexity. La réponse honnête est : **partiellement, et de façon croissante**.
 
-**Pas fait pour la rédaction créative** : si vous voulez écrire un email percutant, une accroche publicitaire ou un article de blog nuancé, Perplexity n'est pas votre outil. Il synthétise, il informe — il ne crée pas vraiment. Claude et ChatGPT restent bien supérieurs pour la rédaction.
+**Où Perplexity est supérieur à Google :**
+- Requêtes informatives complexes qui nécessitent une synthèse de plusieurs sources
+- Recherche sans publicité — zéro résultat sponsorisé dans les réponses
+- Questions de suivi conversationnelles — Perplexity maintient le contexte, Google repart de zéro
+- Actualité sectorielle et financière — la synthèse est meilleure que les 10 liens bleus
 
-**Les sources peuvent être insuffisantes** : sur des sujets très pointus ou très récents, Perplexity cite parfois des sources de mauvaise qualité ou renvoie vers la page d'accueil d'un site plutôt que vers l'article précis. À vérifier systématiquement.
+**Où Google reste imbattable :**
+- Recherches locales (restaurants, magasins, itinéraires)
+- Shopping et comparaison de produits e-commerce
+- Navigation et recherche de sites spécifiques
+- Requêtes très courtes et pratiques ("météo Paris", "heure à Tokyo")
 
-**Perplexity Computer est encore en rodage** : à 200$/mois, on attend une fiabilité parfaite. En l'état, les tâches longues peuvent planter à mi-chemin, et le système de crédits manque de transparence — impossible de savoir à l'avance combien de crédits une tâche va consommer.
+**Notre utilisation quotidienne en 2026 :** Perplexity pour la recherche et l'analyse approfondie, Google pour tout le reste. Les deux coexistent et se complètent.
 
-**L'interface mobile** : l'application mobile est fonctionnelle mais moins soignée que l'expérience web. Quelques frictions sur les uploads de fichiers et la gestion des conversations.
+## Perplexity AI : avantages et inconvénients
 
-## Pour qui est Perplexity ?
+**✅ Points forts**
 
-Perplexity est fait pour vous si :
+- **Sources cliquables et vérifiables** sur chaque réponse — la fonctionnalité la plus unique du marché
+- **Version gratuite généreuse** : 5 Pro Searches/jour, suffisant pour un usage régulier
+- **Accès multi-modèles** (GPT-4o, Claude 3.5, Mistral) en un seul abonnement à 20$/mois
+- **Perplexity Finance** : analyse financière en temps réel, sans abonnement Bloomberg
+- **Rapidité d'exécution** : réponses en quelques secondes même en mode Pro Search
+- **Interface propre** : zéro publicité, zéro distraction, navigation intuitive
 
-✅ Vous faites beaucoup de recherche factuelle et d'analyse
-✅ Vous voulez remplacer Google pour les requêtes complexes
-✅ Vous suivez l'actualité financière, tech ou sectorielle
-✅ Vous avez besoin de réponses sourcées et vérifiables
-✅ Vous cherchez un accès multi-modèles dans un seul abonnement
+**❌ Points faibles**
 
-Perplexity n'est probablement pas fait pour vous si :
+- **Pas fait pour la rédaction créative** : Claude et ChatGPT restent très supérieurs
+- **Sources parfois insuffisantes** : sur des sujets très pointus, Perplexity peut citer des pages d'accueil plutôt que des articles précis
+- **Changements de plan sans avertissement** : historique de modifications tarifaires sans notification (Trustpilot, mars 2026)
+- **Perplexity Computer encore en rodage** : à 200$/mois, la fiabilité n'est pas encore au niveau attendu
+- **Interface mobile imparfaite** : quelques frictions sur les uploads de fichiers
+- **Pas de code exécutable** : contrairement à ChatGPT, impossible de faire tourner du code directement
 
-❌ Vous cherchez un assistant de rédaction créative (prenez Claude)
-❌ Vous avez besoin d'un coding assistant (prenez Cursor)
-❌ Vous voulez des workflows d'équipe marketing (prenez Jasper)
-❌ Votre budget ne dépasse pas 10$/mois
+## Perplexity AI vaut-il le coup en 2026 ?
 
-## Perplexity vs Google : le vrai verdict
+**Oui, pour la plupart des professionnels de l'information.** Le plan Pro à 20$/mois est une évidence si vous faites régulièrement de la veille, de la recherche ou de l'analyse. Le fait d'avoir GPT-4o, Claude 3.5 et Mistral dans la même interface pour le prix d'un seul abonnement est déjà une proposition de valeur difficile à battre.
 
-La vraie question en 2026 : est-ce que Perplexity peut remplacer Google ?
+**Non, si vous cherchez principalement un assistant de rédaction.** Dans ce cas, Claude à 20$/mois ou ChatGPT Plus donnent de meilleurs résultats. Consultez notre [comparatif complet ChatGPT vs Claude vs Gemini](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) pour choisir.
 
-**Pour les recherches informationnelles complexes** : oui, Perplexity est souvent meilleur. Au lieu de cliquer sur 5 liens pour assembler une réponse, Perplexity vous donne la synthèse en 10 secondes.
+**Commencez par la version gratuite.** Les 5 Pro Searches/jour sont suffisants pour évaluer l'outil avant de payer. La plupart des utilisateurs qui testent finissent par garder l'onglet ouvert en permanence.
 
-**Pour trouver un restaurant, un produit, naviguer localement** : non. Google reste imbattable pour les requêtes pratiques et locales.
+**Pour Perplexity Computer à 200$/mois** : attendez encore 6 mois. Le produit est prometteur mais trop instable pour justifier ce prix en mars 2026, sauf si vous avez des workflows de recherche extrêmement intensifs.
 
-**Pour l'actualité** : les deux sont bons, mais Perplexity synthétise mieux.
+## Notre verdict final sur Perplexity AI
 
-Notre utilisation quotidienne : Perplexity pour la recherche et l'analyse, Google pour le reste.
+Perplexity AI est **l'outil de recherche IA indispensable de 2026**. Il ne remplace pas ChatGPT ou Claude — il comble un angle mort que ces outils ne couvrent pas : la recherche factuelle vérifiable en temps réel.
 
-## Notre verdict final
+Pour les chercheurs, journalistes, analystes, consultants, marketeurs et tous ceux dont le métier repose sur des informations fraîches et fiables, Perplexity Pro à 20$/mois est un des meilleurs investissements IA du moment.
 
-Perplexity AI est **l'outil de recherche IA le plus sérieux de 2026**. Sa capacité à fouiller le web en temps réel tout en citant ses sources le distingue radicalement de ChatGPT et Claude sur les tâches factuelles.
+Pour la rédaction créative, le code ou les tâches qui ne nécessitent pas de données en temps réel, restez sur Claude ou ChatGPT.
 
-Le plan Pro à 20$/mois est une évidence pour quiconque fait de la veille, de la recherche ou de l'analyse régulièrement. La version gratuite est déjà remarquablement généreuse pour un usage occasionnel.
+**Notre note : 8.5/10** — Indispensable pour la recherche. Insuffisant pour la création. Le meilleur rapport qualité/prix du marché IA pour les knowledge workers.
 
-Perplexity Computer est prometteur mais encore immature à ce prix. À suivre de près en 2026.
+## FAQ Perplexity AI
 
-**Notre note : 8.5/10** — La meilleure alternative IA à Google. Indispensable pour la recherche, insuffisant pour la création.
+### Perplexity AI est-il meilleur que ChatGPT ?
+
+Ça dépend de l'usage. Pour la recherche factuelle, la veille et les données en temps réel, Perplexity est nettement supérieur — ses réponses sont sourcées et vérifiables là où ChatGPT peut inventer. Pour la rédaction créative, le code et les conversations longues, ChatGPT ou Claude restent supérieurs. Les deux outils sont complémentaires.
+
+### Perplexity AI est-il gratuit ?
+
+Oui. Le plan gratuit inclut des recherches illimitées en mode basique et 5 Pro Searches par jour — suffisant pour un usage occasionnel. Le plan Pro (20$/mois) débloque les Pro Searches illimités, l'accès à GPT-4o, Claude 3.5 et Mistral, les uploads de fichiers et les Spaces.
+
+### Perplexity peut-il remplacer Google ?
+
+Partiellement. Perplexity est meilleur que Google pour les requêtes informatives complexes, l'actualité sectorielle et les recherches qui nécessitent une synthèse multi-sources. Google reste imbattable pour les recherches locales, le shopping et la navigation. En pratique en 2026, la plupart des power users utilisent les deux selon le type de requête.
+
+### Perplexity Pro vaut-il le coup à 20$/mois ?
+
+Oui, pour un usage professionnel régulier. À ce prix, vous avez accès à GPT-4o, Claude 3.5 Sonnet et Mistral dans la même interface, des Pro Searches illimités avec sources citées, et les uploads de documents. C'est un des meilleurs rapports qualité/prix du marché IA en 2026 — à condition de ne pas chercher un assistant de rédaction créative.
+
+### Qu'est-ce que Perplexity Computer ?
+
+Perplexity Computer est un agent IA autonome lancé le 25 février 2026, disponible sur le plan Max (200$/mois). Il coordonne 19 modèles d'IA simultanément pour accomplir des tâches complexes de bout en bout — recherche, analyse, création de documents, workflows automatisés — sans intervention humaine. Prometteur mais encore en rodage en mars 2026.
       `,
       related: [
-        { slug: "alternatives-gratuites-chatgpt", title: "Les 7 meilleures alternatives gratuites à ChatGPT", tag: "Chatbots", timeMin: "7" },
         { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "12" },
+        { slug: "alternatives-gratuites-chatgpt", title: "Les 7 meilleures alternatives gratuites à ChatGPT", tag: "Chatbots", timeMin: "7" },
         { slug: "cursor-ai-review-2026", title: "Cursor AI : le meilleur assistant dev en 2026 ?", tag: "Code", timeMin: "9" },
       ],
     },
     en: {
-      title: "Perplexity AI Review 2026: The AI Search Engine That Wants to Kill Google",
-      desc: "We tested Perplexity AI for a month in real conditions. The tool that wants to replace Google — does it actually work?",
-      metaTitle: "Perplexity AI Review 2026: Full Test, Pricing & Verdict | Neuriflux",
-      metaDesc: "Our complete Perplexity AI review for 2026. In-depth test of AI search with sources, Perplexity Pro, Perplexity Computer — is it worth it vs ChatGPT and Google?",
+      title: "Perplexity AI Review 2026: Is It Worth It vs ChatGPT & Google?",
+      desc: "We tested Perplexity AI for a month in real conditions. Sourced search, Perplexity Pro, Perplexity Computer — our complete and honest verdict vs ChatGPT and Google.",
+      metaTitle: "Perplexity AI Review 2026: Worth It vs ChatGPT & Google? | Neuriflux",
+      metaDesc: "Our complete Perplexity AI review for 2026. Detailed comparison vs ChatGPT and Google, Pro plan test ($20/month), Perplexity Computer — is it really the best AI search engine?",
       content: `
 ## What is Perplexity AI?
 
-Perplexity AI is an **AI-powered search engine** that answers your questions in natural language while citing real-time sources. Unlike ChatGPT which generates responses from static training data, Perplexity queries the live web and gives you verifiable answers with clickable links to original sources.
+Perplexity AI is an **AI-powered search engine** that answers your questions in natural language while citing real-time sources. Unlike ChatGPT which generates responses from static training data — and can therefore hallucinate information — Perplexity queries the live web and gives you verifiable answers, with every claim linked to its original source.
 
-Founded in 2022 by former OpenAI and Google engineers, Perplexity exploded in 2025-2026: **500 million monthly queries**, a $20 billion valuation, and the February 2026 launch of **Perplexity Computer** — an autonomous AI agent that changes everything.
+Founded in 2022 by former OpenAI and Google engineers, Perplexity has seen spectacular growth: **500 million monthly queries** in early 2026, a $20 billion valuation after its Series E-6 round, and the February 2026 launch of **Perplexity Computer** — an autonomous AI agent coordinating 19 models simultaneously.
 
-After a month of intensive use, here's our verdict.
+After a month of intensive use — professional research, competitive intelligence, financial analysis — here's our complete verdict.
 
-## Quick comparison table
+## Comparison table: Perplexity vs ChatGPT vs Claude vs Google
 
-| Criteria | Perplexity Pro | ChatGPT Plus | Claude | Google AI |
+| Criteria | Perplexity Pro | ChatGPT Plus | Claude Pro | Google AI |
 |---|---|---|---|---|
 | Real-time search | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | Citations & sources | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐ |
 | Writing quality | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
 | Document analysis | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Code & technical | ⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
 | Autonomous AI agents | ✅ Computer | ❌ | ❌ | ❌ |
+| Multi-model access | ✅ GPT, Claude, Mistral | ❌ | ❌ | ❌ |
 | Monthly price | $20/month | $20/month | $20/month | $19.99/month |
 | Free plan | ✅ Generous | ✅ Limited | ✅ Limited | ✅ Generous |
 
-## Key features
+## Key features of Perplexity AI
 
-### Sourced search — its core strength
+### Citations and sources — the feature that changes everything
 
-Perplexity excels where ChatGPT stumbles: **real-time factual research**. Every answer comes with numbered, clickable source citations. You can verify every claim with one click — something you can't do with ChatGPT's occasionally hallucinated responses.
+Perplexity's foundational feature is its **absolute transparency about sources**. Every sentence of every response is numbered and linked to the supporting webpage. You can verify every claim with one click — something you simply cannot do with ChatGPT or Claude.
 
-On current events, Perplexity is unbeatable. Bitcoin price this morning, latest Next.js update, election results — it's all there, sourced and up to date.
+In practice, this radically changes how you work. On Product Hunt, users describe it as "the best AI tool for citing sources" and say it has "almost entirely replaced normal web search." This is not hyperbole.
 
-### Pro Search — deep research mode
+### Pro Search — deep multi-source research
 
-**Pro Search** (available on the paid plan) doesn't just run a simple query. It breaks your question down into sub-queries, queries multiple sources in parallel, and synthesizes a structured multi-page response. It's the equivalent of a research assistant spending 20 minutes combing the web for you.
+**Pro Search** goes far beyond a simple query. It breaks your question into complementary sub-queries, queries multiple sources in parallel, maintains context across follow-up questions, and synthesizes a structured response. It's the equivalent of a research assistant spending 20 minutes combing the web for you — without the sponsored results.
 
-Tested on "What's the best AI tool for creating videos in 2026?": the result was an 800-word comparative analysis with 12 sources — far better than anything Google would have returned.
+Tested on "What's the best AI tool for creating videos in March 2026?": result in 30 seconds, 800 words, 12 sources, structured comparison. Google would have returned 10 links to open separately.
 
-### Perplexity Pages — for content creation
+### Multi-model access on the Pro plan
 
-**Pages** lets you turn a search into a structured, shareable, sourced web page. Ideal for quickly creating reports, analyses, or briefs. The output is clean, the content is verifiable — it's a serious tool for knowledge workers.
+The Pro plan gives access to **GPT-4o, Claude 3.5 Sonnet, Mistral Large and Perplexity's own Sonar models** within the same interface. You can choose the model by task: Claude for nuanced writing, GPT-4o for complex logic, Sonar for fast research. It's like having multiple AI subscriptions in one.
 
-### Perplexity Finance — the built-in financial analyst
+### Specialized modes: Finance, Academic, Writing
 
-The **Finance** feature is probably the most underrated. It displays real-time stock charts, SEC filings, financial news, and synthesizes earnings reports into a few bullet points. It's a lightweight Bloomberg, free and conversational.
+**Finance**: real-time stock charts, SEC filings, earnings report synthesis. It's a lightweight Bloomberg, conversational and free. For tracking a company's news or analyzing a sector, nothing else competes.
 
-### Perplexity Computer — the February 2026 revolution
+**Academic**: searches scientific databases (PubMed, arXiv, etc.) to avoid SEO-spammed sources on niche topics.
 
-On **February 25, 2026**, Perplexity launched what is probably the most ambitious product in the AI market: **Perplexity Computer**. Available only on the Max plan ($200/month), it's an autonomous AI agent that coordinates **19 AI models simultaneously** to accomplish complex tasks from start to finish.
+**Writing**: writing assistance with embedded sources — useful for creating sourced briefs or article first drafts.
 
-In practice: you describe a goal ("analyze my product's competition and generate a 20-page report with charts"), and Computer breaks it into subtasks, mobilizes Claude for reasoning, Gemini for research, specialized models for images and video, and delivers a complete result — without human intervention.
+### Perplexity Pages — turning research into content
 
-It's early. It's sometimes slow. But it's the first time a consumer AI tool can genuinely handle complete workflows autonomously.
+**Pages** converts any research thread into a structured, sourced, shareable webpage with one click. For creating reports, sector analyses, or client briefs quickly, the efficiency is remarkable.
 
-## Pricing in 2026
+### Perplexity Computer — the autonomous AI agent (February 2026)
 
-| Plan | Price | For whom |
+Launched **February 25, 2026** and reserved for Max subscribers ($200/month), **Perplexity Computer** is the most ambitious bet in consumer AI. It coordinates **19 AI models simultaneously** — Claude Opus for reasoning, Gemini for web research, specialized models for images and video — in a secure cloud environment with 400+ app integrations.
+
+The concept: you describe a complex goal ("analyze my SaaS competition and prepare a go-to-market strategy"), Perplexity Computer breaks the task into parallel subtasks, executes them on the best available models, and delivers a complete result — potentially over several hours, without human intervention.
+
+**Does it actually work?** Partially. For research and structured document creation workflows, results are impressive. For tasks requiring numerical precision or complex conditional logic, results are uneven. At $200/month, the tool is still maturing — but the direction is clearly right.
+
+## Perplexity AI pricing in 2026
+
+| Plan | Price | What's included |
 |---|---|---|
-| Free | Free | Occasional research, 5 Pro Searches/day |
-| Pro | $20/month | Unlimited search, multi-model access, file uploads |
-| Max | $200/month | Perplexity Computer, unlimited Labs, priority access |
-| Enterprise Pro | $40/seat/month | Teams, collaboration, enhanced security |
-| Enterprise Max | $325/seat/month | Autonomous workflows at enterprise scale |
+| Free | Free | Unlimited basic search, 5 Pro Searches/day, Sonar model |
+| Pro | $20/month (or $200/year) | Unlimited Pro Searches, GPT-4o, Claude 3.5, Mistral, file uploads, Spaces |
+| Max | $200/month (or $2,000/year) | Perplexity Computer, unlimited Labs, priority access, all models |
+| Enterprise Pro | $40/seat/month | Team collaboration, SSO, enhanced security, audit logs |
+| Enterprise Max | $325/seat/month | Computer at enterprise scale, SCIM, compliance controls |
 
-**The Pro plan at $20/month** clearly offers the best value for daily professional use.
+**Warning**: Perplexity has recently modified its plans without prior notice. Users on Trustpilot report that Deep Research was reduced from 200 to 20 queries/month without announcement. Worth monitoring before committing to an annual plan.
 
-## What we liked
+## Perplexity vs ChatGPT: detailed comparison
 
-**Clickable sources**: this is THE Perplexity feature. On any factual topic, being able to verify every claim with one click is invaluable. You get used to ChatGPT having to verify things yourself — with Perplexity, verification is built in.
+This is the comparison everyone is searching for. Here's the honest answer, use case by use case.
 
-**Generous free plan**: even without paying, Perplexity is usable daily. The 5 free Pro Searches per day cover most occasional needs.
+**Perplexity clearly wins on:**
+- Real-time factual research — Perplexity has live web access, ChatGPT stops at its training cutoff
+- Cited sources — every claim is verifiable, ChatGPT can confidently hallucinate facts
+- News monitoring — perfect for "what happened this week in field X?"
+- Value for money — access to GPT-4o + Claude + Mistral for $20/month vs $20/month for a single model
 
-**Perplexity Finance**: for following economic news and analyzing companies, this has become our go-to tool. Synthesizing an earnings report into 3 bullet points in 10 seconds is genuinely impressive.
+**ChatGPT (or [Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026)) clearly wins on:**
+- Creative and nuanced writing — no tool beats Claude on text quality
+- Code and debugging — ChatGPT remains the developer reference
+- Long conversations and context memory
+- Tasks that don't require real-time data
 
-**Speed**: Perplexity responds fast. Very fast. The interface is smooth, responses arrive almost instantly even in Pro Search mode.
+**The 2026 verdict:** these are not competing tools, they are complementary. Perplexity for searching and verifying, ChatGPT or Claude for creating and coding.
 
-**Multi-model access**: with the Pro plan, you can choose between GPT-4o, Claude 3.5, Mistral and others depending on the task. It's like having multiple subscriptions in one.
+## Perplexity vs Google Search: can it replace Google?
 
-## What we liked less
+This is the real question behind Perplexity's popularity. The honest answer: **partially, and increasingly so**.
 
-**Not built for creative writing**: if you want to write a punchy email, advertising hook, or nuanced blog post, Perplexity isn't your tool. It synthesizes, it informs — it doesn't really create. Claude and ChatGPT remain far superior for writing.
+**Where Perplexity beats Google:**
+- Complex informational queries requiring synthesis across multiple sources
+- Ad-free search — zero sponsored results in responses
+- Conversational follow-up questions — Perplexity maintains context, Google starts over
+- Sector and financial news — synthesis is better than 10 blue links
 
-**Sources can be insufficient**: on very niche or very recent topics, Perplexity sometimes cites low-quality sources or links to a site's homepage rather than the specific article. Always worth double-checking.
+**Where Google remains unbeatable:**
+- Local searches (restaurants, stores, directions)
+- Shopping and e-commerce product comparison
+- Navigation and finding specific websites
+- Very short practical queries ("weather London", "time in Tokyo")
 
-**Perplexity Computer is still maturing**: at $200/month, you expect perfect reliability. As it stands, long tasks can fail mid-way, and the credit system lacks transparency — impossible to know in advance how many credits a task will consume.
+**Our daily use in 2026:** Perplexity for deep research and analysis, Google for everything else. Both coexist and complement each other.
 
-**Mobile experience**: the mobile app is functional but less polished than the web experience. Some friction around file uploads and conversation management.
+## Perplexity AI pros and cons
 
-## Who is Perplexity for?
+**✅ Strengths**
 
-Perplexity is right for you if:
+- **Clickable, verifiable sources** on every response — the most unique feature in the market
+- **Generous free plan**: 5 Pro Searches/day, enough for regular use
+- **Multi-model access** (GPT-4o, Claude 3.5, Mistral) in a single $20/month subscription
+- **Perplexity Finance**: real-time financial analysis without a Bloomberg subscription
+- **Exceptional response speed**: answers in seconds even in Pro Search mode
+- **Clean interface**: zero advertising, zero distraction, intuitive navigation
 
-✅ You do a lot of factual research and analysis
-✅ You want to replace Google for complex queries
-✅ You follow financial, tech, or industry news
-✅ You need sourced, verifiable answers
-✅ You want multi-model access in a single subscription
+**❌ Weaknesses**
 
-Perplexity is probably not right for you if:
+- **Not built for creative writing**: Claude and ChatGPT remain far superior
+- **Sometimes insufficient sources**: on very niche topics, Perplexity can cite homepages rather than specific articles
+- **Plan changes without warning**: history of pricing modifications without notification (Trustpilot, March 2026)
+- **Perplexity Computer still maturing**: at $200/month, reliability isn't yet at the expected level
+- **Imperfect mobile interface**: some friction around file uploads
+- **No executable code**: unlike ChatGPT, impossible to run code directly
 
-❌ You want a creative writing assistant (get Claude)
-❌ You need a coding assistant (get Cursor)
-❌ You want marketing team workflows (get Jasper)
-❌ Your budget doesn't exceed $10/month
+## Is Perplexity AI worth it in 2026?
 
-## Perplexity vs Google: the real verdict
+**Yes, for most information professionals.** The Pro plan at $20/month is a no-brainer if you regularly do monitoring, research, or analysis. Having GPT-4o, Claude 3.5, and Mistral in the same interface for the price of a single subscription is already a hard proposition to beat.
 
-The real question in 2026: can Perplexity replace Google?
+**No, if you're primarily looking for a writing assistant.** In that case, Claude at $20/month or ChatGPT Plus deliver better results. Check our [complete ChatGPT vs Claude vs Gemini comparison](/en/blog/chatgpt-vs-claude-vs-gemini-2026) to choose.
 
-**For complex informational queries**: yes, Perplexity is often better. Instead of clicking through 5 links to piece together an answer, Perplexity gives you the synthesis in 10 seconds.
+**Start with the free plan.** The 5 Pro Searches/day are enough to evaluate the tool before paying. Most users who test it end up keeping the tab permanently open.
 
-**For finding a restaurant, a product, local navigation**: no. Google remains unbeatable for practical and local queries.
+**For Perplexity Computer at $200/month**: wait another 6 months. The product is promising but too unstable to justify this price in March 2026, unless you have extremely intensive research workflows.
 
-**For news**: both are good, but Perplexity synthesizes better.
+## Our final verdict on Perplexity AI
 
-Our daily use: Perplexity for research and analysis, Google for everything else.
+Perplexity AI is **the indispensable AI research tool of 2026**. It doesn't replace ChatGPT or Claude — it fills a blind spot that these tools don't cover: real-time, verifiable factual research.
 
-## Our final verdict
+For researchers, journalists, analysts, consultants, marketers, and anyone whose work depends on fresh, reliable information, Perplexity Pro at $20/month is one of the best AI investments right now.
 
-Perplexity AI is **the most serious AI research tool of 2026**. Its ability to search the web in real time while citing sources sets it radically apart from ChatGPT and Claude on factual tasks.
+For creative writing, code, or tasks that don't require real-time data, stick with Claude or ChatGPT.
 
-The Pro plan at $20/month is a no-brainer for anyone doing regular monitoring, research, or analysis. The free version is already remarkably generous for occasional use.
+**Our rating: 8.5/10** — Essential for research. Insufficient for creation. The best value-for-money AI subscription for knowledge workers in 2026.
 
-Perplexity Computer is promising but still immature at that price point. Worth watching closely throughout 2026.
+## Perplexity AI FAQ
 
-**Our rating: 8.5/10** — The best AI alternative to Google. Essential for research, insufficient for creation.
+### Is Perplexity AI better than ChatGPT?
+
+It depends on your use case. For factual research, monitoring, and real-time data, Perplexity is significantly better — its responses are sourced and verifiable where ChatGPT can hallucinate. For creative writing, code, and long conversations, ChatGPT or Claude are superior. The two tools are complementary, not competing.
+
+### Is Perplexity AI free?
+
+Yes. The free plan includes unlimited basic searches and 5 Pro Searches per day — enough for occasional use. The Pro plan ($20/month) unlocks unlimited Pro Searches, access to GPT-4o, Claude 3.5, and Mistral, file uploads, and Spaces.
+
+### Can Perplexity replace Google?
+
+Partially. Perplexity is better than Google for complex informational queries, sector news, and research requiring multi-source synthesis. Google remains unbeatable for local searches, shopping, and navigation. In practice in 2026, most power users use both depending on query type.
+
+### Is Perplexity Pro worth it at $20/month?
+
+Yes, for regular professional use. At this price, you get access to GPT-4o, Claude 3.5 Sonnet, and Mistral in the same interface, unlimited sourced Pro Searches, and document uploads. It's one of the best value-for-money AI subscriptions in 2026 — as long as you're not looking for a creative writing assistant.
+
+### What is Perplexity Computer?
+
+Perplexity Computer is an autonomous AI agent launched February 25, 2026, available on the Max plan ($200/month). It coordinates 19 AI models simultaneously to accomplish complex tasks end-to-end — research, analysis, document creation, automated workflows — without human intervention. Promising but still maturing as of March 2026.
       `,
       related: [
-        { slug: "alternatives-gratuites-chatgpt", title: "7 best free alternatives to ChatGPT", tag: "Chatbots", timeMin: "7" },
         { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "12" },
+        { slug: "alternatives-gratuites-chatgpt", title: "7 best free alternatives to ChatGPT", tag: "Chatbots", timeMin: "7" },
         { slug: "cursor-ai-review-2026", title: "Cursor AI: best dev assistant in 2026?", tag: "Code", timeMin: "9" },
       ],
     },
