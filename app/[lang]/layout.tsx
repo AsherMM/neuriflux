@@ -53,8 +53,8 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    site: "@neuriflux",
-    creator: "@neuriflux",
+    site: "@Neurifluxcom",
+    creator: "@NeurifluxCom",
     title: "Neuriflux — Honest AI Tools Comparisons",
     description:
       "Honest comparisons, detailed scores, clear verdicts on the best AI tools.",
@@ -120,7 +120,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               logo: "https://neuriflux.com/logo.png",
               description:
                 "Independent media testing and comparing the best AI tools on the market.",
-              sameAs: ["https://twitter.com/neuriflux"],
+              sameAs: ["https://twitter.com/NeurifluxCom"],
             }),
           }}
         />
