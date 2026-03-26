@@ -19,7 +19,7 @@ export async function generateMetadata({
   }
 
   const url = `https://neuriflux.com/${lang}/blog/${slug}`;
-  const imageUrl = "https://neuriflux.com/og-image-v2.png";
+  const imageUrl = "https://neuriflux.com/og-image-v3.png";
 
   return {
     title: article.title,
