@@ -19,6 +19,7 @@ export async function generateMetadata({
   }
 
   const url = `https://neuriflux.com/${lang}/blog/${slug}`;
+  const imageUrl = "https://neuriflux.com/og-image-v2.png";
 
   return {
     title: article.title,
@@ -40,11 +41,20 @@ export async function generateMetadata({
       siteName: "Neuriflux",
       publishedTime: data.date.en,
       authors: ["Neuriflux"],
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: article.title,
       description: article.desc,
+      images: [imageUrl],
     },
   };
 }
@@ -60,11 +70,9 @@ export default function ArticlePage({
 
   return (
     <>
-      {/* ─── Font preload non-blocking ────────────────────────────────────── */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <link rel="preload" as="style" href={fontUrl} />
-      {/* Inline script pour éviter le render-blocking — équivalent du trick media=print */}
       <script
         dangerouslySetInnerHTML={{
           __html: `(function(){var l=document.createElement('link');l.rel='stylesheet';l.href='${fontUrl}';document.head.appendChild(l);})();`,

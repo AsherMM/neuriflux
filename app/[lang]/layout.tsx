@@ -28,10 +28,11 @@ export const metadata: Metadata = {
     "outils IA", "comparatif IA",
   ],
 
+  metadataBase: new URL("https://neuriflux.com"),
   authors: [{ name: "Neuriflux", url: "https://neuriflux.com" }],
   creator: "Neuriflux",
   publisher: "Neuriflux",
-
+  
   openGraph: {
     type: "website",
     siteName: "Neuriflux",
