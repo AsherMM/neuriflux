@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     alternateLocale: "fr_FR",
     images: [
       {
-        url: "https://neuriflux.com/og-image.png",
+        url: "https://neuriflux.com/og-image-v2.png",
         width: 1200,
         height: 630,
         alt: "Neuriflux — Honest AI Tools Comparisons",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     title: "Neuriflux — Honest AI Tools Comparisons",
     description:
       "Honest comparisons, detailed scores, clear verdicts on the best AI tools.",
-    images: ["https://neuriflux.com/og-image.png"],
+    images: ["https://neuriflux.com/og-image-v2.png"],
   },
 
   robots: {
