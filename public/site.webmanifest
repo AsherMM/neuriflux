@@ -1,0 +1,68 @@
+{
+  "name": "Neuriflux — Honest AI Tools Comparisons",
+  "short_name": "Neuriflux",
+  "description": "Honest AI tools comparisons, detailed scores and clear verdicts. No bullshit.",
+  "start_url": "/en",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#080c10",
+  "theme_color": "#00e6be",
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Neuriflux homepage"
+    }
+  ],
+  "categories": ["news", "productivity", "technology"],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "shortcuts": [
+    {
+      "name": "Blog",
+      "short_name": "Blog",
+      "description": "Latest AI tool reviews and guides",
+      "url": "/en/blog",
+      "icons": [{ "src": "/favicon.ico", "sizes": "48x48" }]
+    },
+    {
+      "name": "Comparisons",
+      "short_name": "Compare",
+      "description": "Detailed AI tools comparisons with scores",
+      "url": "/en/comparatifs",
+      "icons": [{ "src": "/favicon.ico", "sizes": "48x48" }]
+    },
+    {
+      "name": "Newsletter",
+      "short_name": "Newsletter",
+      "description": "The weekly AI radar — every Monday",
+      "url": "/en/newsletter",
+      "icons": [{ "src": "/favicon.ico", "sizes": "48x48" }]
+    }
+  ]
+}

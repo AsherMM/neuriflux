@@ -74,13 +74,9 @@ export const metadata: Metadata = {
   },
 
   icons: {
-    icon: [
-      { url: "/favicon.ico" },
-      { url: "/favicon.ico", sizes: "16x16", type: "image/png" },
-      { url: "/favicon.ico", sizes: "32x32", type: "image/png" },
-    ],
+    icon: [{ url: "/favicon.ico", type: "image/x-icon" }],
     apple: [{ url: "/apple-touch-icon.png" }],
-  },
+},
 
   manifest: "/site.webmanifest",
   category: "technology",
