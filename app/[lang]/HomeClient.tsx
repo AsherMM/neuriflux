@@ -41,6 +41,7 @@ const T = {
     readMore: "Lire →",
     featured: "À la une",
     articles: [
+      { slug: "deepseek-review-2026", tag: "Chatbots", color: "#00e6be", t: "DeepSeek : avis 2026, le meilleur ChatGPT gratuit venu de Chine ?", d: "DeepSeek a bouleversé le marché IA en janvier 2025. On a testé R1, V3 et l'API pendant des semaines. Performances, vie privée, cas d'usage — notre verdict complet et honnête.", time: "12", star: true },
       { slug: "perplexity-ai-review-2026", tag: "Chatbots", color: "#00e6be", t: "Perplexity AI : vaut-il mieux que ChatGPT et Google ?", d: "Recherche sourcée, Perplexity Pro, Perplexity Computer — notre verdict complet.", time: "13", star: true },
       { slug: "jasper-ai-review-2026", tag: "Rédaction", color: "#f59e0b", t: "Jasper AI : avis 2026 (test & prix)", d: "3 semaines de tests sur des projets réels. Notre verdict honnête.", time: "10", star: false },
       { slug: "chatgpt-vs-claude-vs-gemini-2026", tag: "Chatbots", color: "#00e6be", t: "ChatGPT vs Claude vs Gemini : lequel choisir ?", d: "50 cas d'usage réels. Les résultats sont surprenants.", time: "12", star: false },
@@ -98,6 +99,7 @@ const T = {
     readMore: "Read →",
     featured: "Featured",
     articles: [
+      { slug: "deepseek-review-2026", tag: "Chatbots", color: "#00e6be", t: "DeepSeek Review 2026: The Best Free ChatGPT Alternative?", d: "DeepSeek shook the AI industry in January 2025. We tested R1, V3, and the API for weeks. Performance, privacy, and real use cases — our complete, unfiltered verdict.", time: "12", star: true },
       { slug: "perplexity-ai-review-2026", tag: "Chatbots", color: "#00e6be", t: "Perplexity AI: Is It Worth It vs ChatGPT & Google?", d: "Sourced search, Perplexity Pro, Perplexity Computer — our complete verdict.", time: "13", star: true },
       { slug: "jasper-ai-review-2026", tag: "Writing", color: "#f59e0b", t: "Jasper AI Review 2026: Is It Worth It?", d: "3 weeks of real-project testing. Our honest verdict.", time: "10", star: false },
       { slug: "chatgpt-vs-claude-vs-gemini-2026", tag: "Chatbots", color: "#00e6be", t: "ChatGPT vs Claude vs Gemini: which to choose?", d: "50 real use cases. The results are surprising.", time: "12", star: false },
