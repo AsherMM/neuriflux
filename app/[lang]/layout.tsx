@@ -15,8 +15,6 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  // ─── Titre & Description (EN par défaut) ──────────────────────────────────
-  // Le [lang]/layout.tsx overridera avec les bonnes valeurs FR/EN par page
   title: {
     default: "Neuriflux — Honest AI Tools Comparisons",
     template: "%s | Neuriflux",
@@ -24,26 +22,16 @@ export const metadata: Metadata = {
   description:
     "Neuriflux tests and compares the best AI tools on the market. Honest comparisons, detailed scores, clear verdicts — no bullshit.",
 
-  // ─── Mots-clés ─────────────────────────────────────────────────────────────
   keywords: [
-    "AI tools",
-    "AI comparison",
-    "ChatGPT",
-    "Claude",
-    "Gemini",
-    "Cursor AI",
-    "artificial intelligence",
-    "best AI tool",
-    "outils IA",
-    "comparatif IA",
+    "AI tools", "AI comparison", "ChatGPT", "Claude", "Gemini",
+    "Cursor AI", "artificial intelligence", "best AI tool",
+    "outils IA", "comparatif IA",
   ],
 
-  // ─── Auteur & Editeur ──────────────────────────────────────────────────────
   authors: [{ name: "Neuriflux", url: "https://neuriflux.com" }],
   creator: "Neuriflux",
   publisher: "Neuriflux",
 
-  // ─── Open Graph ────────────────────────────────────────────────────────────
   openGraph: {
     type: "website",
     siteName: "Neuriflux",
@@ -63,7 +51,6 @@ export const metadata: Metadata = {
     ],
   },
 
-  // ─── Twitter / X ───────────────────────────────────────────────────────────
   twitter: {
     card: "summary_large_image",
     site: "@neuriflux",
@@ -74,7 +61,6 @@ export const metadata: Metadata = {
     images: ["https://neuriflux.com/og-image.png"],
   },
 
-  // ─── Robots & Indexation ───────────────────────────────────────────────────
   robots: {
     index: true,
     follow: true,
@@ -87,34 +73,20 @@ export const metadata: Metadata = {
     },
   },
 
-  // ─── Canonique & hreflang ──────────────────────────────────────────────────
-  alternates: {
-    canonical: "https://neuriflux.com/en",
-    languages: {
-      fr: "https://neuriflux.com/fr",
-      en: "https://neuriflux.com/en",
-      "x-default": "https://neuriflux.com/en", // EN comme langue principale
-    },
-  },
+  // ─── PAS de alternates/canonical ici ──────────────────────────────────────
+  // Chaque page.tsx définit son propre canonical via generateMetadata.
+  // Un canonical global dans le layout crée des conflits et confond Google.
 
-  // ─── Icônes ────────────────────────────────────────────────────────────────
   icons: {
     icon: [
       { url: "/favicon.ico" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.ico", sizes: "16x16", type: "image/png" },
+      { url: "/favicon.ico", sizes: "32x32", type: "image/png" },
     ],
     apple: [{ url: "/apple-touch-icon.png" }],
   },
 
-  // ─── Manifest ──────────────────────────────────────────────────────────────
   manifest: "/site.webmanifest",
-
-  // ─── Google Search Console — décommenter après vérification ───────────────
-  // verification: {
-  //   google: "VOTRE_CODE_GOOGLE",
-  // },
-
   category: "technology",
 };
 
@@ -124,13 +96,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // lang="en" par défaut — le [lang]/layout.tsx overridera dynamiquement
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        {/* Schema.org — Organisation */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -146,7 +116,6 @@ export default function RootLayout({
             }),
           }}
         />
-        {/* Schema.org — WebSite + SearchAction */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
