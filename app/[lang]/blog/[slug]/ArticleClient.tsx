@@ -122,19 +122,15 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
   const [nlEmail, setNlEmail] = useState("");
   const [shareUrl, setShareUrl] = useState("");
 
-  // ─── shareUrl client-only — zéro hydration mismatch ───────────────────────
   useEffect(() => { setShareUrl(window.location.href); }, []);
 
-  // ─── Newsletter sidebar → Supabase ────────────────────────────────────────
   const { status: nlStatus, subscribe } = useNewsletter("article-sidebar");
-
   const handleNlSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await subscribe(nlEmail, lang);
   };
 
   const l = (path: string) => `/${lang}${path}`;
-
   const switchLang = (next: Lang) => {
     if (next === lang) return;
     router.push(pathname.replace(/^\/(fr|en)/, `/${next}`));
@@ -153,38 +149,23 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
 
   const L = {
     fr: {
-      back: "← Retour au blog",
-      share: copied ? "Copié !" : "Copier le lien",
-      toc: "Sommaire",
-      related: "Articles similaires",
-      readTime: "min de lecture",
-      sub: "S'abonner",
-      subLoading: "...",
-      subDone: "✓ À lundi !",
-      subError: "Erreur, réessayez.",
-      placeholder: "votre@email.com",
-      nlText: "Le radar IA chaque lundi. Gratuit. Sans spam.",
-      contact: "Contact",
+      back: "← Retour au blog", share: copied ? "Copié !" : "Copier le lien",
+      toc: "Sommaire", related: "Articles similaires", readTime: "min de lecture",
+      sub: "S'abonner", subLoading: "...", subDone: "✓ À lundi !",
+      subError: "Erreur, réessayez.", placeholder: "votre@email.com",
+      nlText: "Le radar IA chaque lundi. Gratuit. Sans spam.", contact: "Contact",
     },
     en: {
-      back: "← Back to blog",
-      share: copied ? "Copied!" : "Copy link",
-      toc: "Contents",
-      related: "Related articles",
-      readTime: "min read",
-      sub: "Subscribe",
-      subLoading: "...",
-      subDone: "✓ See you Monday!",
-      subError: "Error, try again.",
-      placeholder: "your@email.com",
-      nlText: "The AI radar every Monday. Free. No spam.",
-      contact: "Contact",
+      back: "← Back to blog", share: copied ? "Copied!" : "Copy link",
+      toc: "Contents", related: "Related articles", readTime: "min read",
+      sub: "Subscribe", subLoading: "...", subDone: "✓ See you Monday!",
+      subError: "Error, try again.", placeholder: "your@email.com",
+      nlText: "The AI radar every Monday. Free. No spam.", contact: "Contact",
     },
   }[lang];
 
   const headings = article?.content.match(/^## .+$/gm)?.map(h => h.replace("## ", "")) || [];
 
-  // ─── Split content pour MidCTA ────────────────────────────────────────────
   const splitContent = (content: string) => {
     const rendered = renderMd(content);
     const h2matches = [...rendered.matchAll(/<h2>/g)];
@@ -194,7 +175,6 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
   };
   const { first, second } = article ? splitContent(article.content) : { first: "", second: "" };
 
-  // ─── Schema.org Article JSON-LD ───────────────────────────────────────────
   const articleSchema = article && articleData ? {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -210,17 +190,26 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
   return (
     <>
       {articleSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       )}
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+        /* ─── Pas de @import ici — fonts chargées en non-blocking via page.tsx ─ */
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        :root{--bg:#080c10;--bg2:#0d1117;--bg3:#111820;--border:rgba(255,255,255,0.07);--border-glow:rgba(0,230,190,0.25);--cyan:#00e6be;--cyan-dim:rgba(0,230,190,0.12);--text:#f0f4f8;--text-muted:#6b7a8d;--text-dim:#3d4f61;--font-display:'Syne',sans-serif;--font-mono:'JetBrains Mono',monospace;--font-body:'Lora',serif}
-        html{scroll-behavior:smooth}body{background:var(--bg);color:var(--text);font-family:var(--font-display);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+        :root{
+          --bg:#080c10;--bg2:#0d1117;--bg3:#111820;
+          --border:rgba(255,255,255,0.07);--border-glow:rgba(0,230,190,0.25);
+          --cyan:#00e6be;--cyan-dim:rgba(0,230,190,0.12);
+          --text:#f0f4f8;--text-muted:#6b7a8d;--text-dim:#3d4f61;
+          --font-display:'Syne',sans-serif;
+          --font-mono:'JetBrains Mono',monospace;
+          /* ─── Lora remplacée par une font-stack serif système ─────────────
+             Georgia → Times New Roman → serif générique
+             Zéro requête réseau supplémentaire, rendu immédiat             */
+          --font-body:Georgia,'Times New Roman',serif;
+        }
+        html{scroll-behavior:smooth}
+        body{background:var(--bg);color:var(--text);font-family:var(--font-display);-webkit-font-smoothing:antialiased;overflow-x:hidden}
         .grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,230,190,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,190,0.02) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
         nav{position:sticky;top:3px;z-index:100;backdrop-filter:blur(20px);background:rgba(8,12,16,0.85);border-bottom:1px solid var(--border);padding:0 clamp(1.5rem,5vw,4rem);height:64px;display:flex;align-items:center;justify-content:space-between}
         .logo{font-family:var(--font-display);font-weight:800;font-size:1.2rem;letter-spacing:-0.02em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.5rem}.logo span{color:var(--cyan)}
@@ -243,6 +232,7 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         .author{display:flex;align-items:center;gap:.75rem;padding:1rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:2.5rem}
         .avatar{width:36px;height:36px;background:var(--cyan-dim);border:1px solid var(--border-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
         .author-name{font-family:var(--font-mono);font-size:.78rem;color:var(--text);font-weight:500}.author-sub{font-family:var(--font-mono);font-size:.68rem;color:var(--text-dim);font-weight:300}
+        /* ─── Prose : Georgia au lieu de Lora — même rendu, 0 requête réseau ── */
         .prose{font-family:var(--font-body);font-size:1.02rem;line-height:1.85;color:#d4dde8}
         .prose h2{font-family:var(--font-display);font-size:1.5rem;font-weight:800;letter-spacing:-.02em;color:var(--text);margin:2.5rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
         .prose h3{font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--text);margin:2rem 0 .75rem}
@@ -323,16 +313,13 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         <div className="layout">
           <main>
             <a href={l("/blog")} className="back">{L.back}</a>
-
             <div className="meta">
               <span className="tag-badge" style={{ color, background: `${color}18`, border: `1px solid ${color}30` }}>{articleData.tag}</span>
               <span className="art-date">{articleData.date[lang]}</span>
               <span className="art-time">⏱ {articleData.timeMin} {L.readTime}</span>
             </div>
-
             <h1 className="art-title">{article.title}</h1>
             <p className="art-desc">{article.desc}</p>
-
             <div className="author">
               <div className="avatar">⚡</div>
               <div>
@@ -341,44 +328,23 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
               </div>
             </div>
 
-            {/* ─── Contenu 1ère partie ─────────────────────────────────────── */}
             <div className="prose" dangerouslySetInnerHTML={{ __html: first }} />
 
-            {/* ─── CTA Milieu ──────────────────────────────────────────────── */}
             {affiliate && second && (
               <MidCTA url={affiliate.url} toolName={affiliate.toolName} label={affiliate.label[lang]} lang={lang} />
             )}
 
-            {/* ─── Contenu 2ème partie ─────────────────────────────────────── */}
             {second && <div className="prose" dangerouslySetInnerHTML={{ __html: second }} />}
 
-            {/* ─── CTA Fin ─────────────────────────────────────────────────── */}
             {affiliate && (
               <EndCTA url={affiliate.url} toolName={affiliate.toolName} label={affiliate.label[lang]} lang={lang} />
             )}
 
-            {/* ─── Share — shareUrl via useEffect ──────────────────────────── */}
             <div className="share">
               <span className="share-label">{lang === "fr" ? "Partager" : "Share"}</span>
-              <button className={`sbtn${copied ? " done" : ""}`} onClick={copy}>
-                🔗 {L.share}
-              </button>
-              <a
-                className="sbtn"
-                href={shareUrl ? `https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(shareUrl)}` : "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                𝕏 Twitter
-              </a>
-              <a
-                className="sbtn"
-                href={shareUrl ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}` : "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                in LinkedIn
-              </a>
+              <button className={`sbtn${copied ? " done" : ""}`} onClick={copy}>🔗 {L.share}</button>
+              <a className="sbtn" href={shareUrl ? `https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(shareUrl)}` : "#"} target="_blank" rel="noopener noreferrer">𝕏 Twitter</a>
+              <a className="sbtn" href={shareUrl ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}` : "#"} target="_blank" rel="noopener noreferrer">in LinkedIn</a>
             </div>
 
             {article.related.length > 0 && (
@@ -398,7 +364,6 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
           </main>
 
           <aside className="sidebar">
-            {/* ─── TOC ─────────────────────────────────────────────────────── */}
             {headings.length > 0 && (
               <div className="sbox">
                 <div className="sbox-title">{L.toc}</div>
@@ -412,7 +377,6 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
               </div>
             )}
 
-            {/* ─── Sidebar CTA affilié ─────────────────────────────────────── */}
             {affiliate && (
               <div className="sbox sbox-affiliate">
                 <div className="sbox-title" style={{ color: "var(--cyan)" }}>
@@ -427,7 +391,6 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
               </div>
             )}
 
-            {/* ─── Newsletter sidebar → Supabase ───────────────────────────── */}
             <div className="sbox">
               <div className="sbox-title">Newsletter</div>
               <p className="nl-text">{L.nlText}</p>
@@ -437,15 +400,8 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
                 <div className="nl-status" style={{ color: "#ef4444" }}>{L.subError}</div>
               ) : (
                 <form onSubmit={handleNlSubmit}>
-                  <input
-                    className="nl-input"
-                    type="email"
-                    placeholder={L.placeholder}
-                    value={nlEmail}
-                    onChange={e => setNlEmail(e.target.value)}
-                    required
-                    disabled={nlStatus === "loading"}
-                  />
+                  <input className="nl-input" type="email" placeholder={L.placeholder} value={nlEmail}
+                    onChange={e => setNlEmail(e.target.value)} required disabled={nlStatus === "loading"} />
                   <button className="nl-btn" type="submit" disabled={nlStatus === "loading"}>
                     {nlStatus === "loading" ? L.subLoading : L.sub}
                   </button>

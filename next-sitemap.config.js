@@ -62,13 +62,6 @@ const additionalPaths = async () => {
     urls.push({ loc: `${BASE}/${lang}/contact`, priority: 0.5, changefreq: "yearly", lastmod: NOW });
   });
 
-  // Pages légales
-  LANGS.forEach(lang => {
-    ["legal", "privacy", "cookies"].forEach(page => {
-      urls.push({ loc: `${BASE}/${lang}/${page}`, priority: 0.3, changefreq: "yearly", lastmod: NOW });
-    });
-  });
-
   return urls;
 };
 
