@@ -35,6 +35,404 @@ export interface Article {
 }
 
 export const ARTICLES: Article[] = [
+// ─── Grok Review 2026 ────────────────────────────────────────────────────────
+  {
+    slug: "grok-review-2026",
+    tag: "Chatbots",
+    date: { fr: "27 mars 2026", en: "March 27, 2026" },
+    timeMin: "13",
+    featured: true,
+    affiliate: {
+      url: "https://x.com/i/grok",
+      toolName: "Grok",
+      label: {
+        fr: "Gratuit sur X · SuperGrok à 30$/mois · API à partir de 0,20$/million de tokens",
+        en: "Free on X · SuperGrok at $30/month · API from $0.20/million tokens",
+      },
+    },
+    fr: {
+      title: "Grok : avis 2026, l'IA d'Elon Musk vaut-elle vraiment le coup ?",
+      desc: "Grok 3 et 4 promettent données temps réel, 2 millions de tokens de contexte et une IA sans censure. On a tout testé pendant 3 semaines. Verdict honnête, controverse incluse.",
+      metaTitle: "Grok : avis complet 2026 — performances, prix et controverses | Neuriflux",
+      metaDesc: "Notre test complet de Grok en 2026 : modèles Grok 3 et 4, performances vs ChatGPT et Claude, tarifs SuperGrok, données temps réel X — et les vraies controverses. Verdict sans filtre.",
+      content: `
+## C'est quoi Grok ?
+
+Grok est l'assistant IA développé par **xAI**, la société d'intelligence artificielle fondée par Elon Musk en 2023. Là où DeepSeek a secoué le marché par son coût d'entraînement dérisoire et où ChatGPT domine par son écosystème, Grok joue une carte unique : **l'accès en temps réel aux données de X (Twitter)**, une personnalité délibérément moins filtrée que ses concurrents, et un contexte de 2 millions de tokens qui n'a pas d'équivalent sur le marché grand public.
+
+En 2026, Grok a évolué bien au-delà du simple chatbot intégré à X. Avec les modèles **Grok 3**, **Grok 4** et **Grok 4 Heavy**, xAI positionne son assistant comme un concurrent direct de GPT-5 et Claude Opus — avec des benchmarks impressionnants sur les maths et le code, et une API deux à quatre fois moins chère que la concurrence américaine.
+
+Mais Grok traîne aussi un bagage polémique qu'on ne peut pas ignorer dans un avis honnête : la controverse sur la génération d'images en janvier 2026, les questions sur la modération, et un écosystème encore jeune qui montre ses limites sur certains cas d'usage professionnels. On a tout testé. Voici le verdict.
+
+## Les modèles Grok en 2026
+
+Grok n'est plus un modèle unique — c'est une gamme, chacun conçu pour un usage différent :
+
+| Modèle | Spécialité | Contexte | Accès |
+|---|---|---|---|
+| **Grok 3 Mini** | Usage basique, questions simples | 128K tokens | Gratuit (limité) |
+| **Grok 3** | Usage général, recherche temps réel | 128K tokens | X Premium |
+| **Grok 4** | Raisonnement, code, analyse | 2M tokens | SuperGrok |
+| **Grok 4 Fast** | Vitesse maximale, temps réel | 2M tokens | SuperGrok |
+| **Grok 4 Heavy** | Tâches complexes, recherche avancée | 2M tokens | SuperGrok Heavy |
+
+L'atout différenciant de tous ces modèles : **l'intégration native aux données X en temps réel**. Là où ChatGPT et Claude s'arrêtent à leur date d'entraînement pour les événements récents, Grok peut puiser directement dans les tweets, les tendances et les conversations en cours sur la plateforme.
+
+## Tableau comparatif : Grok vs ChatGPT vs Claude vs Perplexity
+
+| Critère | Grok 4 | ChatGPT Plus | Claude Pro | Perplexity Pro |
+|---|---|---|---|---|
+| Données temps réel | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Raisonnement & maths | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Code & débugging | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐ |
+| Rédaction créative | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Fenêtre de contexte | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Génération d'images | ✅ Aurora | ✅ DALL-E | ❌ | ❌ |
+| Sources citées | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Prix mensuel | 30$/mois | 20$/mois | 20$/mois | 20$/mois |
+| Version gratuite | ✅ Limitée | ✅ Limitée | ✅ Limitée | ✅ Limitée |
+
+## Ce qu'on a testé pendant 3 semaines
+
+### Données temps réel — la vraie valeur ajoutée de Grok
+
+C'est là que Grok n'a pas de concurrent direct. Posez-lui une question sur un événement qui s'est passé il y a 3 heures sur X — il sait. Demandez-lui d'analyser ce que les développeurs disent en ce moment d'un framework spécifique — il le fait. Pour la veille d'actualité, le suivi de tendances ou la compréhension du sentiment autour d'un sujet, Grok est dans une catégorie à part.
+
+Le mode **DeepSearch** pousse ça encore plus loin : il synthétise des informations depuis plusieurs sources web et X simultanément, produit un rapport cité en 2 à 5 minutes. Pas aussi propre que Perplexity pour la recherche académique, mais plus ancré dans la réalité des conversations tech et des nouvelles de dernière minute.
+
+### Raisonnement et maths — du sérieux
+
+Sur AIME 2025, Grok 4 atteint **90,6%** — un score qui le place au niveau des meilleurs modèles du marché. Sur LiveCodeBench pour le code, il score **79%**, compétitif avec GPT-5 et Claude Opus sur ces benchmarks.
+
+Le mode **Think** est l'équivalent du Chain-of-Thought visible de DeepSeek R1 : le modèle affiche son raisonnement étape par étape avant de donner une réponse. Sur des problèmes de logique complexe ou des problèmes mathématiques multi-étapes, la différence de qualité entre le mode Think et le mode normal est réelle et mesurable.
+
+### Code — compétent mais pas le meilleur
+
+Sur des tâches de code réelles — refactoring, débogage, génération de composants — Grok 4 est compétent. Pas au niveau de Claude Code qui domine les benchmarks SWE avec 80%+, mais largement utilisable pour des tâches dev quotidiennes. Pour les équipes qui cherchent un assistant code intégré à leur workflow X et qui veulent aussi accéder à des données en temps réel, c'est un bon compromis.
+
+### La fenêtre de 2 millions de tokens — un vrai avantage
+
+Deux millions de tokens, c'est environ 1 500 000 mots — soit plusieurs livres, ou une base de code entière avec sa documentation. Aucun autre modèle grand public n'offre cette fenêtre à ce prix. Pour analyser de longs rapports financiers, des dépôts GitHub complexes ou des conversations multi-sources, c'est un avantage concret qui change vraiment la façon de travailler.
+
+### Génération d'images — Aurora est impressionnant, mais controversé
+
+Le moteur **Aurora** génère des images photoréalistes en moins de 5 secondes, avec une qualité comparable à Midjourney v6 sur des prompts standards. C'est l'une des meilleures intégrations de génération d'images dans un assistant IA grand public.
+
+Mais on ne peut pas ne pas mentionner la controverse de janvier 2026 : Grok a été exploité pour générer massivement des images sexualisées non consenties, conduisant à des enquêtes dans 7 pays. xAI a depuis renforcé sa modération et réservé la génération d'images aux abonnés payants. Le problème a été traité — mais l'incident illustre les risques d'une approche moins restrictive sur la modération de contenu.
+
+## Les tarifs de Grok en 2026
+
+| Plan | Prix | Ce qu'il inclut |
+|---|---|---|
+| **Gratuit** | Gratuit | Grok 3 Mini, 10 requêtes/2h, pas de génération d'images |
+| **X Premium** | 8$/mois | Grok 3, ~100 requêtes/jour, images limitées |
+| **X Premium+** | 40$/mois | Grok 3 complet, accès étendu, sans pub sur X |
+| **SuperGrok** | 30$/mois | Grok 4, illimité, images illimitées, voice, 2M contexte |
+| **SuperGrok Heavy** | 300$/mois | Grok 4 Heavy, API prioritaire, usage enterprise |
+| **API (Grok Fast)** | 0,20$/M tokens | Temps réel, latence ultra-faible |
+| **API (Grok 4)** | 3$/M tokens | Raisonnement avancé, 2M contexte |
+
+**Ce qui surprend** : le plan SuperGrok à 30$/mois est **plus cher** que ChatGPT Plus ou Claude Pro à 20$/mois. Pour justifier ce différentiel, il faut vraiment avoir besoin des données temps réel X, de la fenêtre 2M tokens, ou de la génération d'images illimitée.
+
+**L'API en revanche est très compétitive** : 0,20$/M tokens pour les modèles rapides, c'est parmi les moins chers du marché pour ce niveau de performance. Pour les développeurs qui veulent intégrer de l'accès temps réel à X dans leurs applications, le rapport qualité/prix est solide.
+
+## Grok vs ChatGPT : le comparatif honnête
+
+**Grok gagne clairement sur :**
+- **Données temps réel X** — aucun concurrent ne peut accéder aux tendances et tweets en direct comme Grok
+- **Fenêtre de contexte** — 2M tokens vs 128K pour ChatGPT Plus, c'est un écart énorme pour les documents longs
+- **Prix API** — 0,20$/M tokens vs ~7,50$ pour GPT-5, un avantage massif pour les builders
+- **Génération d'images rapide** — Aurora est plus rapide que DALL-E 3 sur la plupart des prompts
+- **Personnalité** — Grok est délibérément plus direct et moins "corporate" dans ses réponses
+
+**ChatGPT (ou Claude) gagne clairement sur :**
+- **Qualité rédactionnelle** — Claude reste la référence pour les textes nuancés et créatifs
+- **Écosystème** — plugins, mémoire persistante, GPT Store, intégrations enterprise
+- **Stabilité et fiabilité** — Grok est plus jeune et montre encore des bugs et des incohérences
+- **Code avancé** — Claude Code domine largement les benchmarks SWE, Grok est en retrait
+- **Confiance des entreprises** — la controverse images de janvier 2026 a refroidi beaucoup d'équipes
+
+## La controverse qu'on ne peut pas ignorer
+
+En janvier 2026, des chercheurs ont documenté que Grok avait été utilisé pour générer plus de **1,8 million d'images sexualisées** de femmes réelles, dont des deepfakes non consentis. Le New York Times et le Center for Countering Digital Hate ont tous deux publié des analyses détaillées. 7 pays ont ouvert des enquêtes sur xAI.
+
+xAI a depuis :
+- Réservé la génération d'images aux abonnés payants uniquement
+- Renforcé ses filtres de modération sur Aurora
+- Publié de nouvelles politiques d'utilisation acceptable
+
+L'incident est traité — mais il illustre une réalité que les utilisateurs doivent connaître : Grok a historiquement eu une approche moins restrictive que OpenAI ou Anthropic sur la modération de contenu. C'est un avantage pour certains cas d'usage (réponses plus directes, moins de refus arbitraires), et un risque pour d'autres.
+
+## Grok : avantages et inconvénients
+
+**✅ Points forts**
+- **Données temps réel X** — le seul assistant grand public avec un accès natif au flux X en direct
+- **Fenêtre de 2 millions de tokens** — traite des documents entiers sans perte de contexte, unique à ce prix
+- **API ultra-compétitive** — 0,20$/M tokens pour les modèles rapides, parmi les moins chers du marché
+- **Mode Think** — raisonnement visible étape par étape, comparable à DeepSeek R1
+- **Aurora** — génération d'images photoréaliste rapide incluse dans SuperGrok
+- **Personnalité** — réponses plus directes et moins lisses que les concurrents
+
+**❌ Points faibles**
+
+- **Prix SuperGrok élevé** — 30$/mois vs 20$ pour ChatGPT ou Claude, difficile à justifier sans usage spécifique
+- **Controverse modération** — l'incident images de janvier 2026 a entamé la confiance des équipes enterprise
+- **Code en retrait** — Claude Code et Cursor restent supérieurs sur les tâches de développement complexes
+- **Écosystème limité** — pas de mémoire persistante, peu d'intégrations natives hors X
+- **Instabilité occasionnelle** — plus jeune que ses concurrents, Grok montre encore des bugs et des répétitions
+- **Support minimal** — remboursements difficiles, SAV quasi-inexistant signalé par de nombreux utilisateurs
+
+## Pour qui est fait Grok en 2026 ?
+
+**Grok est fait pour vous si :**
+
+✅ Vous êtes actif sur X et voulez un assistant IA intégré à votre flux d'informations
+✅ Vous faites de la veille d'actualité, du suivi de tendances ou de l'analyse de sentiment en temps réel
+✅ Vous avez besoin d'analyser de très longs documents (rapports, bases de code, contrats) — 2M tokens
+✅ Vous construisez des applications qui ont besoin de données X en temps réel via l'API
+✅ Vous cherchez une API compétitive (0,20$/M tokens) pour des usages à volume élevé
+
+**Grok n'est pas fait pour vous si :**
+
+❌ Vous cherchez le meilleur assistant de rédaction créative — Claude gagne sans discussion
+❌ Vous avez besoin d'un assistant code avancé — Claude Code ou Cursor sont supérieurs
+❌ Vous gérez des données sensibles dans un contexte enterprise avec des exigences de conformité strictes
+❌ Vous n'utilisez pas X et n'avez pas besoin de données temps réel — la proposition de valeur centrale disparaît
+❌ Votre budget est serré — à 30$/mois, SuperGrok coûte 50% de plus que ChatGPT Plus
+
+## Notre verdict final sur Grok
+
+Grok est un outil sérieux, pas un gadget. La fenêtre de 2 millions de tokens, l'accès temps réel à X et l'API compétitive sont de vraies différenciations — pas du marketing. Sur les benchmarks de raisonnement et de maths, Grok 4 tient tête aux meilleurs modèles du marché.
+
+Mais Grok paye encore le prix de sa jeunesse et de ses controverses. La confiance enterprise a pris un coup en janvier 2026, l'écosystème est encore limité, et le tarif SuperGrok est difficile à justifier face à Claude ou ChatGPT sauf si l'accès X temps réel est central à votre usage.
+
+**Pour les power users de X, les journalistes, les analystes de tendances et les builders API** : Grok est probablement votre meilleur choix en 2026.
+
+**Pour tout le reste** : ChatGPT ou Claude restent plus polyvalents et plus stables pour le même budget ou moins.
+
+**Notre note : 7.5/10** — Techniquement impressionnant sur les données temps réel et le contexte long, mais encore trop jeune et trop cher pour détrôner les leaders sur les cas d'usage généralistes.
+
+## FAQ Grok
+
+### Grok est-il vraiment gratuit ?
+
+Partiellement. La version gratuite de Grok sur X donne accès à Grok 3 Mini avec une limite de 10 requêtes toutes les 2 heures — suffisant pour tester, pas pour travailler. L'accès complet à Grok 3 nécessite X Premium (8$/mois), et les modèles Grok 4 avec les fonctionnalités avancées sont réservés au plan SuperGrok (30$/mois).
+
+### Grok est-il meilleur que ChatGPT ?
+
+Ça dépend entièrement de l'usage. Pour les données temps réel, l'analyse de tendances X et les documents très longs (2M tokens), Grok gagne. Pour la rédaction créative, le code avancé, l'écosystème et la stabilité générale, ChatGPT ou Claude restent supérieurs. Les deux outils sont complémentaires plus que concurrents directs.
+
+### SuperGrok vaut-il le coup à 30$/mois ?
+
+Si votre activité repose sur X ou sur la veille en temps réel, oui. La fenêtre de 2 millions de tokens, la génération d'images illimitée et l'accès à Grok 4 justifient le prix pour les utilisateurs intensifs. Pour un usage généraliste sans besoin de données X, ChatGPT Plus ou Claude Pro offrent un meilleur rapport qualité/prix à 20$/mois.
+
+### Grok est-il sûr après la controverse de janvier 2026 ?
+
+xAI a renforcé la modération d'Aurora suite à l'incident et réservé la génération d'images aux abonnés payants. Pour un usage texte standard, le risque est limité. Pour des contextes enterprise sensibles, la prudence reste de mise — l'incident a montré une approche historiquement moins restrictive que OpenAI ou Anthropic sur la modération de contenu.
+
+### Quelle est la différence entre Grok 4 et Grok 4 Heavy ?
+
+Grok 4 est le modèle standard de SuperGrok — puissant, rapide, 2M tokens. Grok 4 Heavy est le modèle flagship réservé au plan SuperGrok Heavy (300$/mois) : il est optimisé pour les tâches de raisonnement les plus complexes, avec une priorité API maximale et un contexte encore plus étendu. Pour 99% des usages, Grok 4 suffit largement.
+      `,
+      related: [
+        { slug: "deepseek-review-2026", title: "DeepSeek : avis 2026, le meilleur ChatGPT gratuit venu de Chine ?", tag: "Chatbots", timeMin: "12" },
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI : avis 2026, est-il meilleur que ChatGPT et Google ?", tag: "Chatbots", timeMin: "13" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "12" },
+      ],
+    },
+    en: {
+      title: "Grok Review 2026: Is Elon Musk's AI Actually Worth It?",
+      desc: "Grok 3 and 4 promise real-time X data, a 2 million token context window, and less filtered AI. We tested everything for 3 weeks. Honest verdict, controversy included.",
+      metaTitle: "Grok Review 2026: Performance, Pricing & Controversy | Neuriflux",
+      metaDesc: "Our complete Grok review for 2026: Grok 3 and 4 tested, benchmarks vs ChatGPT and Claude, SuperGrok pricing breakdown, real-time X data — and the January 2026 controversy answered honestly.",
+      content: `
+## What is Grok?
+
+Grok is the AI assistant developed by **xAI**, the artificial intelligence company founded by Elon Musk in 2023. Where DeepSeek shook the market with its absurdly low training cost and ChatGPT dominates through its ecosystem, Grok plays a unique card: **real-time access to X (Twitter) data**, a deliberately less filtered personality than its competitors, and a 2 million token context window that has no equivalent in the consumer AI market.
+
+In 2026, Grok has evolved well beyond a simple chatbot embedded in X. With the **Grok 3**, **Grok 4**, and **Grok 4 Heavy** models, xAI is positioning its assistant as a direct competitor to GPT-5 and Claude Opus — with impressive benchmarks on math and code, and an API that's two to four times cheaper than American competition.
+
+But Grok also carries some controversial baggage that honest reviewers can't ignore: the image generation controversy in January 2026, questions about moderation, and a still-young ecosystem showing its limits on certain professional use cases. We tested everything. Here's the verdict.
+
+## Grok's model lineup in 2026
+
+Grok is no longer a single model — it's a full lineup, each built for a different purpose:
+
+| Model | Specialty | Context | Access |
+|---|---|---|---|
+| **Grok 3 Mini** | Basic use, simple questions | 128K tokens | Free (limited) |
+| **Grok 3** | General use, real-time search | 128K tokens | X Premium |
+| **Grok 4** | Reasoning, code, analysis | 2M tokens | SuperGrok |
+| **Grok 4 Fast** | Maximum speed, real-time | 2M tokens | SuperGrok |
+| **Grok 4 Heavy** | Complex tasks, advanced research | 2M tokens | SuperGrok Heavy |
+
+The differentiating feature across all these models: **native integration with real-time X data**. Where ChatGPT and Claude stop at their training cutoff for recent events, Grok can pull directly from tweets, trends, and live conversations happening on the platform right now.
+
+## Comparison table: Grok vs ChatGPT vs Claude vs Perplexity
+
+| Criteria | Grok 4 | ChatGPT Plus | Claude Pro | Perplexity Pro |
+|---|---|---|---|---|
+| Real-time data | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Reasoning & math | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Code & debugging | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐ |
+| Creative writing | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Context window | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Image generation | ✅ Aurora | ✅ DALL-E | ❌ | ❌ |
+| Cited sources | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Monthly price | $30/month | $20/month | $20/month | $20/month |
+| Free plan | ✅ Limited | ✅ Limited | ✅ Limited | ✅ Limited |
+
+## What we tested over 3 weeks
+
+### Real-time X data — Grok's genuine differentiator
+
+This is where Grok has no direct competitor. Ask it about something that happened on X three hours ago — it knows. Ask it to analyze what developers are currently saying about a specific framework — it does it. For news monitoring, trend tracking, or understanding sentiment around a topic, Grok is in a category of its own.
+
+**DeepSearch mode** pushes this further: it synthesizes information from multiple web sources and X simultaneously, producing a cited report in 2 to 5 minutes. Not as clean as Perplexity for academic research, but more grounded in the reality of live tech conversations and breaking news.
+
+### Reasoning and math — genuinely impressive
+
+On AIME 2025, Grok 4 reaches **90.6%** — a score that places it among the top models on the market. On LiveCodeBench for coding, it scores **79%**, competitive with GPT-5 and Claude Opus on these benchmarks.
+
+**Think mode** is the equivalent of DeepSeek R1's visible Chain-of-Thought: the model displays its reasoning step by step before delivering an answer. On complex logic problems or multi-step math, the quality difference between Think mode and standard mode is real and measurable.
+
+### Code — capable but not the best
+
+On real coding tasks — refactoring, debugging, component generation — Grok 4 is competent. Not at the level of Claude Code which dominates SWE benchmarks with 80%+, but entirely workable for daily dev tasks. For teams wanting a code assistant integrated into their X workflow who also want real-time data access, it's a solid trade-off.
+
+### The 2 million token context window — a real advantage
+
+Two million tokens is approximately 1.5 million words — several books, or an entire codebase with its documentation. No other consumer-facing model offers this context window at this price. For analyzing long financial reports, complex GitHub repositories, or multi-source conversations, this is a concrete advantage that genuinely changes the way you work.
+
+### Image generation — Aurora is impressive, but controversial
+
+The **Aurora** engine generates photorealistic images in under 5 seconds, with quality comparable to Midjourney v6 on standard prompts. It's one of the best image generation integrations in a consumer AI assistant.
+
+But we can't skip the January 2026 controversy: Grok was exploited to generate over 1.8 million non-consensual sexualized images, leading to investigations in 7 countries. xAI has since tightened moderation and restricted image generation to paying subscribers only. The problem was addressed — but the incident illustrates the risks of a less restrictive approach to content moderation.
+
+## Grok pricing in 2026
+
+| Plan | Price | What's included |
+|---|---|---|
+| **Free** | Free | Grok 3 Mini, 10 queries/2h, no image generation |
+| **X Premium** | $8/month | Grok 3, ~100 queries/day, limited images |
+| **X Premium+** | $40/month | Full Grok 3, extended access, ad-free X |
+| **SuperGrok** | $30/month | Grok 4, unlimited, unlimited images, voice, 2M context |
+| **SuperGrok Heavy** | $300/month | Grok 4 Heavy, priority API, enterprise usage |
+| **API (Grok Fast)** | $0.20/M tokens | Real-time, ultra-low latency |
+| **API (Grok 4)** | $3/M tokens | Advanced reasoning, 2M context |
+
+**The surprising part**: SuperGrok at $30/month is **more expensive** than ChatGPT Plus or Claude Pro at $20/month. To justify this premium, you genuinely need the real-time X data, the 2M token window, or unlimited image generation.
+
+**The API is highly competitive though**: $0.20/M tokens for fast models is among the cheapest on the market for this performance tier. For developers building X data access into their applications, the value proposition is solid.
+
+## Grok vs ChatGPT: the honest comparison
+
+**Grok clearly wins on:**
+- **Real-time X data** — the only consumer assistant with native access to the live X feed
+- **Context window** — 2M tokens vs 128K for ChatGPT Plus, a massive gap for long documents
+- **API pricing** — $0.20/M tokens vs ~$7.50 for GPT-5, a decisive advantage for builders
+- **Image generation speed** — Aurora is faster than DALL-E 3 on most prompts
+- **Directness** — responses are more straightforward and less "corporate" than competitors
+
+**ChatGPT (or Claude) clearly wins on:**
+- **Writing quality** — Claude remains the reference for nuanced and creative text
+- **Ecosystem** — plugins, persistent memory, GPT Store, enterprise integrations
+- **Stability and reliability** — Grok is younger and still shows bugs and inconsistencies
+- **Advanced code** — Claude Code and Cursor remain superior on complex development tasks
+- **Enterprise trust** — the January 2026 image controversy has made many teams hesitant
+
+## The controversy you can't ignore
+
+In January 2026, researchers documented that Grok had been used to generate over **1.8 million sexualized images** of real women, including non-consensual deepfakes. The New York Times and the Center for Countering Digital Hate both published detailed analyses. Seven countries opened investigations into xAI.
+
+xAI has since:
+- Restricted image generation to paying subscribers only
+- Strengthened Aurora's content moderation filters
+- Published new acceptable use policies
+
+The incident has been addressed — but it highlights a reality users should understand: Grok has historically had a less restrictive approach than OpenAI or Anthropic to content moderation. That's an advantage for some use cases (more direct answers, fewer arbitrary refusals), and a risk for others.
+
+## Grok pros and cons
+
+**✅ Strengths**
+
+- **Real-time X data** — the only consumer assistant with native access to the live X feed
+- **2 million token context window** — processes entire documents without losing context, unique at this price
+- **Competitive API** — $0.20/M tokens for fast models, among the cheapest in the market
+- **Think mode** — visible step-by-step reasoning, comparable to DeepSeek R1
+- **Aurora** — fast photorealistic image generation included in SuperGrok
+- **Directness** — more straightforward responses than the sanitized outputs of competitors
+
+**❌ Weaknesses**
+
+- **SuperGrok pricing** — $30/month vs $20 for ChatGPT or Claude, hard to justify without specific X-dependent use cases
+- **Moderation controversy** — the January 2026 image incident has undermined enterprise trust
+- **Code quality gap** — Claude Code and Cursor remain superior for complex development work
+- **Limited ecosystem** — no persistent memory, few native integrations outside X
+- **Occasional instability** — younger than competitors, Grok still shows bugs and repetitive errors
+- **Minimal support** — difficult refunds, near-nonexistent customer service reported by many users
+
+## Who is Grok for in 2026?
+
+**Grok is right for you if:**
+
+✅ You're active on X and want an AI assistant integrated into your information feed
+✅ You do news monitoring, trend tracking, or real-time sentiment analysis
+✅ You need to analyze very long documents (reports, codebases, contracts) — 2M tokens
+✅ You're building applications that need real-time X data via the API
+✅ You're looking for a competitive API ($0.20/M tokens) for high-volume use cases
+
+**Grok is not right for you if:**
+
+❌ You want the best creative writing assistant — Claude wins without contest
+❌ You need advanced code assistance — Claude Code or Cursor are significantly better
+❌ You handle sensitive data in enterprise contexts with strict compliance requirements
+❌ You don't use X and don't need real-time data — the core value proposition disappears
+❌ Your budget is tight — at $30/month, SuperGrok costs 50% more than ChatGPT Plus
+
+## Our final verdict on Grok
+
+Grok is a serious tool, not a gimmick. The 2 million token window, real-time X access, and competitive API are genuine differentiators — not marketing. On reasoning and math benchmarks, Grok 4 stands toe-to-toe with the best models on the market.
+
+But Grok is still paying the price of its youth and its controversies. Enterprise trust took a hit in January 2026, the ecosystem is still limited, and SuperGrok pricing is hard to justify against Claude or ChatGPT unless real-time X access is central to your workflow.
+
+**For power X users, journalists, trend analysts, and API builders**: Grok is probably your best choice in 2026.
+
+**For everything else**: ChatGPT or Claude remain more versatile and more stable for the same budget or less.
+
+**Our rating: 7.5/10** — Technically impressive on real-time data and long context, but still too young and too expensive to dethrone the leaders on general-purpose use cases.
+
+## Grok FAQ
+
+### Is Grok really free?
+
+Partially. The free version of Grok on X gives access to Grok 3 Mini with a limit of 10 queries every 2 hours — enough to test, not enough to work seriously. Full access to Grok 3 requires X Premium ($8/month), and Grok 4 models with advanced features are reserved for the SuperGrok plan ($30/month).
+
+### Is Grok better than ChatGPT?
+
+It entirely depends on your use case. For real-time data, X trend analysis, and very long documents (2M tokens), Grok wins. For creative writing, advanced code, ecosystem, and general stability, ChatGPT or Claude remain superior. The two tools are more complementary than directly competitive.
+
+### Is SuperGrok worth it at $30/month?
+
+If your work depends on X or real-time monitoring, yes. The 2 million token window, unlimited image generation, and Grok 4 access justify the price for intensive users. For general use without X data needs, ChatGPT Plus or Claude Pro offer better value at $20/month.
+
+### Is Grok safe after the January 2026 controversy?
+
+xAI strengthened Aurora's moderation following the incident and restricted image generation to paying subscribers only. For standard text use, the risk is limited. For sensitive enterprise contexts, caution remains warranted — the incident demonstrated a historically less restrictive approach than OpenAI or Anthropic on content moderation.
+
+### What's the difference between Grok 4 and Grok 4 Heavy?
+
+Grok 4 is the standard SuperGrok model — powerful, fast, 2M tokens. Grok 4 Heavy is the flagship model reserved for the SuperGrok Heavy plan ($300/month): optimized for the most complex reasoning tasks, with maximum API priority and extended context. For 99% of use cases, Grok 4 is more than sufficient.
+      `,
+      related: [
+        { slug: "deepseek-review-2026", title: "DeepSeek Review 2026: The Best Free ChatGPT Alternative?", tag: "Chatbots", timeMin: "12" },
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI Review 2026: Is It Worth It vs ChatGPT & Google?", tag: "Chatbots", timeMin: "13" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "12" },
+      ],
+    },
+  },
+
 // ─── DeepSeek Review 2026 ────────────────────────────────────────────────────
   {
     slug: "deepseek-review-2026",
