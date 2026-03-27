@@ -17,6 +17,7 @@ const ARTICLE_SLUGS = [
 ];
 
 const COMPARATIF_SLUGS = [
+  "runway-vs-kling-vs-pika-2026",
   "chatgpt-vs-claude-vs-gemini",
   "cursor-vs-copilot-vs-codeium",
   "midjourney-vs-dalle-vs-stable-diffusion",

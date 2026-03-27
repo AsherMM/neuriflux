@@ -16,6 +16,7 @@ const T = {
       sub: "Neuriflux teste, compare et décortique les outils IA pour vous faire gagner du temps et de l'argent.",
       cta1: "Voir les comparatifs →",
       cta2: "Lire le blog",
+      ticker: "🆕 Nouveau : Grok review 2026 · Runway vs Kling vs Pika · DeepSeek V4 analysé · Sora fermé par OpenAI",
     },
     stats: [{ v: "120+", l: "Outils testés" }, { v: "48h", l: "Test moyen" }, { v: "100%", l: "Indépendant" }],
     social: "lecteurs · chaque lundi",
@@ -24,15 +25,68 @@ const T = {
       { icon: "🔬", t: "Tests réels", d: "Plusieurs semaines sur des projets concrets." },
       { icon: "💰", t: "Transparent", d: "Liens affiliés toujours signalés." },
     ],
-    catTag: "Catégories",
-    catTitle: "Explorer par catégorie",
-    cats: [
-      { icon: "✍️", t: "Rédaction & Contenu", d: "ChatGPT, Claude, Jasper — cas réels", n: "24", isNew: false },
-      { icon: "💻", t: "Code & Dev", d: "Cursor, Copilot, Codeium — comparés", n: "18", isNew: true },
-      { icon: "🎨", t: "Image & Design", d: "Midjourney, DALL-E, Stable Diffusion", n: "15", isNew: false },
-      { icon: "📊", t: "Productivité", d: "Notion AI, Zapier, Make", n: "21", isNew: false },
-      { icon: "🤖", t: "Chatbots", d: "Tous les LLMs sous le capot", n: "12", isNew: false },
-      { icon: "🎙️", t: "Audio & Voix", d: "ElevenLabs, Murf, Whisper", n: "9", isNew: true },
+    compTag: "Comparatifs",
+    compTitle: "Nos comparatifs",
+    compSub: "Scores objectifs · Tests en conditions réelles · Zéro marketing",
+    compWinner: "Gagnant",
+    compVoir: "Voir →",
+    compNew: "Nouveau",
+    compFeat: "À la une",
+    comparatifs: [
+      {
+        slug: "runway-vs-kling-vs-pika-2026",
+        tag: "Vidéo IA", color: "#a855f7",
+        winner: "Runway", winnerScore: 9.0,
+        title: "Runway vs Kling vs Pika",
+        subtitle: "Quel générateur vidéo IA choisir après la mort de Sora ?",
+        tools: [{ name: "Runway Gen-4", score: 9.0 }, { name: "Kling 2.6", score: 8.7 }, { name: "Pika 2.5", score: 7.8 }],
+        isNew: true, isFeat: true,
+      },
+      {
+        slug: "chatgpt-vs-claude-vs-gemini",
+        tag: "Chatbots", color: "#00e6be",
+        winner: "Claude", winnerScore: 9.2,
+        title: "ChatGPT vs Claude vs Gemini",
+        subtitle: "50 cas d'usage réels. Le verdict sans filtre.",
+        tools: [{ name: "ChatGPT", score: 8.5 }, { name: "Claude", score: 9.2 }, { name: "Gemini", score: 7.8 }],
+        isNew: false, isFeat: true,
+      },
+      {
+        slug: "cursor-vs-copilot-vs-codeium",
+        tag: "Code", color: "#3b82f6",
+        winner: "Cursor", winnerScore: 9.4,
+        title: "Cursor vs Copilot vs Codeium",
+        subtitle: "L'assistant dev qui booste vraiment la productivité.",
+        tools: [{ name: "Cursor", score: 9.4 }, { name: "GitHub Copilot", score: 8.2 }, { name: "Codeium", score: 7.5 }],
+        isNew: false, isFeat: false,
+      },
+      {
+        slug: "midjourney-vs-dalle-vs-stable-diffusion",
+        tag: "Image", color: "#7c3aed",
+        winner: "Midjourney", winnerScore: 9.1,
+        title: "Midjourney vs DALL-E vs SD",
+        subtitle: "300 images, 6 critères. Le vrai gagnant.",
+        tools: [{ name: "Midjourney", score: 9.1 }, { name: "DALL-E 3", score: 8.0 }, { name: "Stable Diffusion", score: 7.8 }],
+        isNew: false, isFeat: false,
+      },
+      {
+        slug: "elevenlabs-vs-openai-tts-vs-playht",
+        tag: "Audio", color: "#ef4444",
+        winner: "ElevenLabs", winnerScore: 9.0,
+        title: "ElevenLabs vs OpenAI TTS vs PlayHT",
+        subtitle: "Clonage vocal, qualité, API. Le meilleur outil voix.",
+        tools: [{ name: "ElevenLabs", score: 9.0 }, { name: "OpenAI TTS", score: 8.0 }, { name: "PlayHT", score: 7.8 }],
+        isNew: false, isFeat: false,
+      },
+      {
+        slug: "jasper-vs-copyai-vs-claude",
+        tag: "Rédaction", color: "#f59e0b",
+        winner: "Claude", winnerScore: 9.0,
+        title: "Jasper vs Copy.ai vs Claude",
+        subtitle: "20 formats testés. SEO, qualité, workflow.",
+        tools: [{ name: "Jasper", score: 7.5 }, { name: "Copy.ai", score: 7.2 }, { name: "Claude", score: 9.0 }],
+        isNew: false, isFeat: false,
+      },
     ],
     artTag: "Populaire",
     artTitle: "Articles les plus lus",
@@ -41,10 +95,10 @@ const T = {
     readMore: "Lire →",
     featured: "À la une",
     articles: [
-      { slug: "grok-review-2026", tag: "Chatbots", color: "#00e6be", t: "Grok : avis 2026, l'IA d'Elon Musk vaut-elle vraiment le coup ?", d: "Grok 3 et 4 promettent données temps réel, 2 millions de tokens de contexte et une IA sans censure. On a tout testé pendant 3 semaines. Verdict honnête, controverse incluse.", time: "13", star: true },
-      { slug: "deepseek-review-2026", tag: "Chatbots", color: "#00e6be", t: "DeepSeek : avis 2026, le meilleur ChatGPT gratuit venu de Chine ?", d: "DeepSeek a bouleversé le marché IA en janvier 2025. On a testé R1, V3 et l'API pendant des semaines. Performances, vie privée, cas d'usage — notre verdict complet et honnête.", time: "12", star: true },
+      { slug: "grok-review-2026", tag: "Chatbots", color: "#00e6be", t: "Grok : avis 2026, l'IA d'Elon Musk vaut-elle vraiment le coup ?", d: "Grok 3 et 4 promettent données temps réel, 2M tokens et une IA sans censure. On a tout testé pendant 3 semaines.", time: "13", star: true },
+      { slug: "deepseek-review-2026", tag: "Chatbots", color: "#00e6be", t: "DeepSeek : avis 2026, le meilleur ChatGPT gratuit venu de Chine ?", d: "DeepSeek a bouleversé le marché IA. Performances, vie privée, cas d'usage — notre verdict complet.", time: "12", star: true },
       { slug: "perplexity-ai-review-2026", tag: "Chatbots", color: "#00e6be", t: "Perplexity AI : vaut-il mieux que ChatGPT et Google ?", d: "Recherche sourcée, Perplexity Pro, Perplexity Computer — notre verdict complet.", time: "13", star: true },
-      { slug: "jasper-ai-review-2026", tag: "Rédaction", color: "#f59e0b", t: "Jasper AI : avis 2026 (test & prix)", d: "3 semaines de tests sur des projets réels. Notre verdict honnête.", time: "10", star: false },
+      { slug: "jasper-ai-review-2026", tag: "Rédaction", color: "#f59e0b", t: "Jasper AI : avis 2026", d: "3 semaines de tests sur des projets réels. Notre verdict honnête.", time: "10", star: false },
       { slug: "chatgpt-vs-claude-vs-gemini-2026", tag: "Chatbots", color: "#00e6be", t: "ChatGPT vs Claude vs Gemini : lequel choisir ?", d: "50 cas d'usage réels. Les résultats sont surprenants.", time: "12", star: false },
       { slug: "elevenlabs-review-2026", tag: "Audio", color: "#ef4444", t: "ElevenLabs : meilleure synthèse vocale IA ?", d: "Voix réalistes, prix, API — tout ce qu'il faut savoir.", time: "8", star: false },
     ],
@@ -73,6 +127,7 @@ const T = {
       sub: "Neuriflux tests, compares and breaks down AI tools to save you time and money.",
       cta1: "Browse comparisons →",
       cta2: "Read the blog",
+      ticker: "🆕 New: Grok review 2026 · Runway vs Kling vs Pika · DeepSeek V4 analyzed · Sora shut down by OpenAI",
     },
     stats: [{ v: "120+", l: "Tools tested" }, { v: "48h", l: "Avg. test time" }, { v: "100%", l: "Independent" }],
     social: "readers · every Monday",
@@ -81,15 +136,68 @@ const T = {
       { icon: "🔬", t: "Real tests", d: "Several weeks on concrete projects." },
       { icon: "💰", t: "Transparent", d: "Affiliate links always disclosed." },
     ],
-    catTag: "Categories",
-    catTitle: "Browse by category",
-    cats: [
-      { icon: "✍️", t: "Writing & Content", d: "ChatGPT, Claude, Jasper — real use cases", n: "24", isNew: false },
-      { icon: "💻", t: "Code & Dev", d: "Cursor, Copilot, Codeium — compared", n: "18", isNew: true },
-      { icon: "🎨", t: "Image & Design", d: "Midjourney, DALL-E, Stable Diffusion", n: "15", isNew: false },
-      { icon: "📊", t: "Productivity", d: "Notion AI, Zapier, Make", n: "21", isNew: false },
-      { icon: "🤖", t: "Chatbots", d: "All LLMs under the hood", n: "12", isNew: false },
-      { icon: "🎙️", t: "Audio & Voice", d: "ElevenLabs, Murf, Whisper", n: "9", isNew: true },
+    compTag: "Comparisons",
+    compTitle: "Our comparisons",
+    compSub: "Objective scores · Real-world tests · Zero marketing",
+    compWinner: "Winner",
+    compVoir: "See →",
+    compNew: "New",
+    compFeat: "Featured",
+    comparatifs: [
+      {
+        slug: "runway-vs-kling-vs-pika-2026",
+        tag: "AI Video", color: "#a855f7",
+        winner: "Runway", winnerScore: 9.0,
+        title: "Runway vs Kling vs Pika",
+        subtitle: "Which AI video generator to choose after Sora's shutdown?",
+        tools: [{ name: "Runway Gen-4", score: 9.0 }, { name: "Kling 2.6", score: 8.7 }, { name: "Pika 2.5", score: 7.8 }],
+        isNew: true, isFeat: true,
+      },
+      {
+        slug: "chatgpt-vs-claude-vs-gemini",
+        tag: "Chatbots", color: "#00e6be",
+        winner: "Claude", winnerScore: 9.2,
+        title: "ChatGPT vs Claude vs Gemini",
+        subtitle: "50 real use cases. The unfiltered verdict.",
+        tools: [{ name: "ChatGPT", score: 8.5 }, { name: "Claude", score: 9.2 }, { name: "Gemini", score: 7.8 }],
+        isNew: false, isFeat: true,
+      },
+      {
+        slug: "cursor-vs-copilot-vs-codeium",
+        tag: "Code", color: "#3b82f6",
+        winner: "Cursor", winnerScore: 9.4,
+        title: "Cursor vs Copilot vs Codeium",
+        subtitle: "The dev assistant that truly boosts productivity.",
+        tools: [{ name: "Cursor", score: 9.4 }, { name: "GitHub Copilot", score: 8.2 }, { name: "Codeium", score: 7.5 }],
+        isNew: false, isFeat: false,
+      },
+      {
+        slug: "midjourney-vs-dalle-vs-stable-diffusion",
+        tag: "Image", color: "#7c3aed",
+        winner: "Midjourney", winnerScore: 9.1,
+        title: "Midjourney vs DALL-E vs SD",
+        subtitle: "300 images, 6 criteria. The real winner.",
+        tools: [{ name: "Midjourney", score: 9.1 }, { name: "DALL-E 3", score: 8.0 }, { name: "Stable Diffusion", score: 7.8 }],
+        isNew: false, isFeat: false,
+      },
+      {
+        slug: "elevenlabs-vs-openai-tts-vs-playht",
+        tag: "Audio", color: "#ef4444",
+        winner: "ElevenLabs", winnerScore: 9.0,
+        title: "ElevenLabs vs OpenAI TTS vs PlayHT",
+        subtitle: "Voice cloning, quality, API. The best voice tool.",
+        tools: [{ name: "ElevenLabs", score: 9.0 }, { name: "OpenAI TTS", score: 8.0 }, { name: "PlayHT", score: 7.8 }],
+        isNew: false, isFeat: false,
+      },
+      {
+        slug: "jasper-vs-copyai-vs-claude",
+        tag: "Writing", color: "#f59e0b",
+        winner: "Claude", winnerScore: 9.0,
+        title: "Jasper vs Copy.ai vs Claude",
+        subtitle: "20 formats tested. SEO, quality, workflow.",
+        tools: [{ name: "Jasper", score: 7.5 }, { name: "Copy.ai", score: 7.2 }, { name: "Claude", score: 9.0 }],
+        isNew: false, isFeat: false,
+      },
     ],
     artTag: "Popular",
     artTitle: "Most read articles",
@@ -97,9 +205,9 @@ const T = {
     read: "min read",
     readMore: "Read →",
     featured: "Featured",
-    articles: [ 
-      { slug: "grok-review-2026", tag: "Chatbots", color: "#00e6be", t: "Grok Review 2026: Is Elon Musk's AI Actually Worth It?", d: "Grok 3 and 4 promise real-time X data, a 2 million token context window, and less filtered AI. We tested everything for 3 weeks. Honest verdict, controversy included.", time: "13", star: true },
-      { slug: "deepseek-review-2026", tag: "Chatbots", color: "#00e6be", t: "DeepSeek Review 2026: The Best Free ChatGPT Alternative?", d: "DeepSeek shook the AI industry in January 2025. We tested R1, V3, and the API for weeks. Performance, privacy, and real use cases — our complete, unfiltered verdict.", time: "12", star: true },
+    articles: [
+      { slug: "grok-review-2026", tag: "Chatbots", color: "#00e6be", t: "Grok Review 2026: Is Elon Musk's AI Actually Worth It?", d: "Grok 3 and 4 promise real-time X data, 2M token context, and less filtered AI. We tested everything for 3 weeks.", time: "13", star: true },
+      { slug: "deepseek-review-2026", tag: "Chatbots", color: "#00e6be", t: "DeepSeek Review 2026: The Best Free ChatGPT Alternative?", d: "DeepSeek shook the AI industry. Performance, privacy, and real use cases — our complete, unfiltered verdict.", time: "12", star: true },
       { slug: "perplexity-ai-review-2026", tag: "Chatbots", color: "#00e6be", t: "Perplexity AI: Is It Worth It vs ChatGPT & Google?", d: "Sourced search, Perplexity Pro, Perplexity Computer — our complete verdict.", time: "13", star: true },
       { slug: "jasper-ai-review-2026", tag: "Writing", color: "#f59e0b", t: "Jasper AI Review 2026: Is It Worth It?", d: "3 weeks of real-project testing. Our honest verdict.", time: "10", star: false },
       { slug: "chatgpt-vs-claude-vs-gemini-2026", tag: "Chatbots", color: "#00e6be", t: "ChatGPT vs Claude vs Gemini: which to choose?", d: "50 real use cases. The results are surprising.", time: "12", star: false },
@@ -170,6 +278,8 @@ export default function HomeClient({ lang }: { lang: Lang }) {
     await subscribe(email, lang);
   };
 
+
+
   return (
     <>
       <style>{`
@@ -177,47 +287,43 @@ export default function HomeClient({ lang }: { lang: Lang }) {
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         :root{
           --bg:#080c10;--bg2:#0d1117;--bg3:#111820;
-          --border:rgba(255,255,255,0.06);--glow:rgba(0,230,190,0.2);
-          --cyan:#00e6be;--cdim:rgba(0,230,190,0.1);
-          --text:#edf2f7;--muted:#5a6a7a;--dim:#2d3d4d;
+          --border:rgba(255,255,255,0.06);--glow:rgba(0,230,190,0.18);
+          --cyan:#00e6be;--cdim:rgba(0,230,190,0.09);
+          --text:#edf2f7;--muted:#5a6a7a;--dim:#2a3a4a;
           --d:'Syne',sans-serif;--m:'JetBrains Mono',monospace;
-          --r:12px;--pad:clamp(1.5rem,5vw,4rem)
+          --r:10px;--pad:clamp(1.5rem,5vw,4rem)
         }
         html{scroll-behavior:smooth}
         body{background:var(--bg);color:var(--text);font-family:var(--d);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-
-        /* grid bg */
         .bg-grid{position:fixed;inset:0;
-          background-image:linear-gradient(rgba(0,230,190,.025) 1px,transparent 1px),
-            linear-gradient(90deg,rgba(0,230,190,.025) 1px,transparent 1px);
+          background-image:linear-gradient(rgba(0,230,190,.022) 1px,transparent 1px),
+            linear-gradient(90deg,rgba(0,230,190,.022) 1px,transparent 1px);
           background-size:72px 72px;pointer-events:none;z-index:0}
-        .bg-glow{position:fixed;top:-25%;left:50%;transform:translateX(-50%);
-          width:700px;height:500px;
-          background:radial-gradient(ellipse,rgba(0,230,190,.065) 0%,transparent 65%);
+        .bg-glow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);
+          width:800px;height:500px;
+          background:radial-gradient(ellipse,rgba(0,230,190,.055) 0%,transparent 65%);
           pointer-events:none;z-index:0}
 
         /* NAV */
-        nav{position:sticky;top:0;z-index:100;
-          backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-          background:rgba(8,12,16,.9);border-bottom:1px solid var(--border);
+        nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+          background:rgba(8,12,16,.93);border-bottom:1px solid var(--border);
           padding:0 var(--pad);height:60px;display:flex;align-items:center;justify-content:space-between}
         .logo{font-family:var(--d);font-weight:800;font-size:1.15rem;letter-spacing:-.03em;
           color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.45rem}
         .logo em{color:var(--cyan);font-style:normal}
         .logo-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;
           box-shadow:0 0 8px var(--cyan);animation:blink 2s infinite}
-        @keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:.45}}
         .nav-links{display:flex;align-items:center;gap:1.75rem;list-style:none}
         @media(max-width:720px){
           .nav-links{display:none}
           .nav-links.open{display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;
-            background:var(--bg2);border-bottom:1px solid var(--border);padding:1.25rem var(--pad);gap:1rem}
+            background:var(--bg2);border-bottom:1px solid var(--border);padding:1.25rem var(--pad);gap:1rem;z-index:99}
         }
-        .nav-links a{font-family:var(--m);font-size:.75rem;color:var(--muted);
-          text-decoration:none;letter-spacing:.03em;transition:color .15s}
+        .nav-links a{font-family:var(--m);font-size:.74rem;color:var(--muted);text-decoration:none;letter-spacing:.03em;transition:color .15s}
         .nav-links a:hover{color:var(--text)}
         .lt{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:3px;display:flex;gap:2px}
-        .lb{font-family:var(--m);font-size:.68rem;font-weight:500;padding:4px 9px;border-radius:4px;
+        .lb{font-family:var(--m);font-size:.67rem;font-weight:500;padding:4px 9px;border-radius:4px;
           border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all .15s}
         .lb.on{background:var(--cyan);color:var(--bg)}
         .hb{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:5px;background:none;border:none}
@@ -226,172 +332,156 @@ export default function HomeClient({ lang }: { lang: Lang }) {
 
         /* HERO */
         .hero{position:relative;z-index:1;max-width:1160px;margin:0 auto;
-          padding:clamp(4rem,9vw,7rem) var(--pad) clamp(3rem,5vw,4.5rem)}
-        .hero-wrap{max-width:680px}
-        .badge{display:inline-flex;align-items:center;gap:.45rem;
-          font-family:var(--m);font-size:.68rem;letter-spacing:.07em;
-          color:var(--cyan);background:var(--cdim);border:1px solid var(--glow);
-          border-radius:100px;padding:5px 13px;margin-bottom:1.75rem}
+          padding:clamp(4rem,9vw,6.5rem) var(--pad) clamp(2rem,4vw,3rem);
+          display:flex;flex-direction:column;align-items:center;text-align:center}
+        .hero-wrap{max-width:720px;width:100%;display:flex;flex-direction:column;align-items:center}
+        .badge{display:inline-flex;align-items:center;gap:.45rem;font-family:var(--m);font-size:.67rem;
+          letter-spacing:.07em;color:var(--cyan);background:var(--cdim);border:1px solid var(--glow);
+          border-radius:100px;padding:5px 13px;margin-bottom:1.6rem}
         .badge-dot{width:5px;height:5px;background:var(--cyan);border-radius:50%;animation:blink 2s infinite}
-        h1{font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:800;line-height:1.08;
-          letter-spacing:-.04em;margin-bottom:1.25rem;color:var(--text)}
+        h1{font-size:clamp(2.1rem,5.5vw,3.75rem);font-weight:800;line-height:1.07;
+          letter-spacing:-.04em;margin-bottom:1.2rem;color:var(--text)}
         h1 em{color:var(--cyan);font-style:normal;position:relative}
         h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:2px;
-          background:var(--cyan);opacity:.35;border-radius:2px}
-        .hero-sub{font-family:var(--m);font-size:.88rem;font-weight:300;color:var(--muted);
-          line-height:1.7;max-width:520px;margin-bottom:2rem}
-        .ctas{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:2.5rem}
+          background:var(--cyan);opacity:.3;border-radius:2px}
+        .hero-sub{font-family:var(--m);font-size:.86rem;font-weight:300;color:var(--muted);
+          line-height:1.75;max-width:490px;margin-bottom:2rem;text-align:center}
+        .ctas{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:2rem}
         .btn{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--d);
-          font-weight:700;font-size:.85rem;padding:11px 22px;border-radius:8px;
+          font-weight:700;font-size:.84rem;padding:11px 22px;border-radius:8px;
           text-decoration:none;transition:all .2s;letter-spacing:-.01em;border:none;cursor:pointer}
         .btn-p{background:var(--cyan);color:var(--bg)}
-        .btn-p:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,230,190,.3)}
+        .btn-p:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,230,190,.28)}
         .btn-p:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
         .btn-s{background:transparent;color:var(--text);border:1px solid var(--border)}
         .btn-s:hover{border-color:var(--glow);background:var(--cdim);color:var(--cyan)}
-
-        /* social proof */
-        .sp{display:flex;align-items:center;gap:.75rem;margin-bottom:2.5rem}
+        .sp{display:flex;align-items:center;gap:.75rem;margin-bottom:2rem}
         .avs{display:flex}
-        .av{width:26px;height:26px;border-radius:50%;background:var(--bg3);
-          border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;
-          font-size:.72rem;margin-left:-7px}
+        .av{width:26px;height:26px;border-radius:50%;background:var(--bg3);border:2px solid var(--bg);
+          display:flex;align-items:center;justify-content:center;font-size:.72rem;margin-left:-7px}
         .av:first-child{margin-left:0}
-        .sp-t{font-family:var(--m);font-size:.72rem;color:var(--muted)}
+        .sp-t{font-family:var(--m);font-size:.71rem;color:var(--muted)}
         .sp-t strong{color:var(--cyan)}
+        .stats{display:flex;gap:clamp(1.5rem,4vw,3.5rem);border-top:1px solid var(--border);padding-top:2rem;flex-wrap:wrap;justify-content:center}
+        .st-v{font-family:var(--d);font-size:clamp(1.5rem,3.5vw,2rem);font-weight:800;letter-spacing:-.04em;color:var(--text);text-align:center}
+        .st-l{font-family:var(--m);font-size:.63rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:.1rem;text-align:center}
 
-        /* stats bar */
-        .stats{display:flex;gap:0;border-top:1px solid var(--border);padding-top:2rem;
-          flex-wrap:wrap;gap:clamp(1.5rem,4vw,3.5rem)}
-        .st{display:flex;flex-direction:column;gap:.15rem}
-        .stv{font-family:var(--d);font-size:clamp(1.5rem,3.5vw,2rem);
-          font-weight:800;letter-spacing:-.04em;color:var(--text)}
-        .stl{font-family:var(--m);font-size:.65rem;color:var(--muted);
-          letter-spacing:.08em;text-transform:uppercase}
+        /* TICKER */
+        .ticker-wrap{position:relative;z-index:1;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+          background:var(--bg2);overflow:hidden;height:34px;display:flex;align-items:center}
+        .ticker-label{font-family:var(--m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;
+          color:var(--bg);background:var(--cyan);padding:0 14px;height:100%;
+          display:flex;align-items:center;flex-shrink:0;font-weight:700;white-space:nowrap}
+        .ticker-inner{display:flex;align-items:center;overflow:hidden;flex:1}
+        .ticker-text{font-family:var(--m);font-size:.7rem;color:var(--muted);font-weight:300;
+          white-space:nowrap;animation:scroll-ticker 22s linear infinite;padding-left:2rem}
+        @keyframes scroll-ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-        /* SECTION SHARED */
-        .section{position:relative;z-index:1;max-width:1160px;margin:0 auto;
-          padding:clamp(2.5rem,5vw,4rem) var(--pad)}
-        .sh{margin-bottom:2rem}
-        .stag{font-family:var(--m);font-size:.65rem;letter-spacing:.12em;
-          text-transform:uppercase;color:var(--cyan);margin-bottom:.6rem;
-          display:flex;align-items:center;gap:.4rem}
-        .stag::before{content:'';width:16px;height:1px;background:var(--cyan);display:inline-block}
-        .stitle{font-size:clamp(1.25rem,2.8vw,1.75rem);font-weight:800;
-          letter-spacing:-.03em;line-height:1.1;color:var(--text)}
-        .ssub{font-family:var(--m);font-size:.78rem;color:var(--muted);
-          font-weight:300;margin-top:.4rem}
+        /* SHARED SECTION */
+        .section{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:clamp(2.5rem,5vw,3.5rem) var(--pad)}
+        .sh{margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem}
+        .sh-right{font-family:var(--m);font-size:.7rem;color:var(--cyan);text-decoration:none;
+          opacity:.65;transition:opacity .2s;white-space:nowrap}
+        .sh-right:hover{opacity:1}
+        .stag{font-family:var(--m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+          color:var(--cyan);margin-bottom:.45rem;display:flex;align-items:center;gap:.4rem}
+        .stag::before{content:'';width:14px;height:1px;background:var(--cyan);display:inline-block}
+        .stitle{font-size:clamp(1.2rem,2.6vw,1.55rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--text)}
+        .ssub{font-family:var(--m);font-size:.68rem;color:var(--muted);font-weight:300;margin-top:.3rem;letter-spacing:.02em}
 
-        /* TRUST ROW */
+        /* TRUST */
         .trust-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
           background:var(--border);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
         @media(max-width:600px){.trust-row{grid-template-columns:1fr}}
-        .trust-cell{background:var(--bg2);padding:1.25rem 1.5rem;display:flex;gap:.85rem;align-items:flex-start}
-        .ti{font-size:1.25rem;flex-shrink:0;margin-top:.05rem}
-        .tt{font-family:var(--d);font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.2rem}
-        .td{font-family:var(--m);font-size:.72rem;color:var(--muted);font-weight:300;line-height:1.5}
+        .trust-cell{background:var(--bg2);padding:1rem 1.35rem;display:flex;gap:.7rem;align-items:center}
+        .ti{font-size:1.05rem;flex-shrink:0}
+        .tt{font-family:var(--d);font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:.12rem}
+        .td{font-family:var(--m);font-size:.67rem;color:var(--muted);font-weight:300;line-height:1.5}
 
-        /* CATEGORIES */
-        .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
-          background:var(--border);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-        @media(max-width:860px){.cat-grid{grid-template-columns:repeat(2,1fr)}}
-        @media(max-width:540px){.cat-grid{grid-template-columns:1fr}}
-        .cat{background:var(--bg2);padding:1.4rem 1.5rem;text-decoration:none;
-          display:flex;flex-direction:column;gap:.5rem;
-          position:relative;overflow:hidden;transition:background .18s}
-        .cat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
-          background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .25s}
-        .cat:hover{background:var(--bg3)}.cat:hover::before{transform:scaleX(1)}
-        .cat-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.25rem}
-        .cat-icon{font-size:1.3rem}
-        .new{font-family:var(--m);font-size:.58rem;letter-spacing:.06em;
+        /* ── COMPARATIFS — même grid que les articles ── */
+        .comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+        @media(max-width:900px){.comp-grid{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:560px){.comp-grid{grid-template-columns:1fr}}
+        .cmp{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
+          padding:1.35rem;display:flex;flex-direction:column;gap:.55rem;
+          text-decoration:none;transition:all .2s;overflow:hidden}
+        .cmp.star{border-color:rgba(0,230,190,.13);background:linear-gradient(135deg,rgba(0,230,190,.03),var(--bg2))}
+        .cmp:hover{border-color:var(--glow);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.35)}
+        .cmp-top{display:flex;justify-content:space-between;align-items:center}
+        .cmp-tag{font-family:var(--m);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+        .cmp-badge{font-family:var(--m);font-size:.56rem;letter-spacing:.06em;
           text-transform:uppercase;color:var(--bg);background:var(--cyan);
-          padding:2px 7px;border-radius:100px;font-weight:600}
-        .cat-title{font-family:var(--d);font-size:.9rem;font-weight:700;
-          letter-spacing:-.01em;color:var(--text)}
-        .cat-desc{font-family:var(--m);font-size:.7rem;color:var(--muted);
-          font-weight:300;line-height:1.5}
-        .cat-n{font-family:var(--m);font-size:.62rem;color:var(--cyan);
-          background:var(--cdim);border:1px solid var(--glow);
-          padding:2px 9px;border-radius:100px;align-self:flex-start;margin-top:.25rem}
+          padding:2px 7px;border-radius:100px;font-weight:700}
+        .cmp-title{font-family:var(--d);font-size:.88rem;font-weight:700;
+          letter-spacing:-.01em;line-height:1.35;color:var(--text)}
+        .cmp-sub{font-family:var(--m);font-size:.68rem;color:var(--muted);line-height:1.6;font-weight:300;flex:1}
+        .cmp-foot{display:flex;justify-content:space-between;align-items:center;
+          padding-top:.55rem;border-top:1px solid var(--border);margin-top:auto}
+        .cmp-winner{font-family:var(--m);font-size:.62rem;color:var(--muted);display:flex;align-items:center;gap:.3rem}
+        .cmp-winner strong{font-weight:700}
+        .cmp-score{font-family:var(--m);font-size:.6rem;font-weight:700;
+          padding:1px 7px;border-radius:100px;border:1px solid}
+        .cmp-more{font-family:var(--m);font-size:.65rem;font-weight:500;opacity:.65;transition:opacity .15s}
+        .cmp:hover .cmp-more{opacity:1}
 
         /* ARTICLES */
         .art-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
         @media(max-width:900px){.art-grid{grid-template-columns:repeat(2,1fr)}}
         @media(max-width:560px){.art-grid{grid-template-columns:1fr}}
         .art{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
-          padding:1.4rem;display:flex;flex-direction:column;gap:.6rem;
-          text-decoration:none;transition:all .2s;position:relative;overflow:hidden}
-        .art.star{border-color:rgba(0,230,190,.18);background:linear-gradient(135deg,rgba(0,230,190,.04),var(--bg2))}
+          padding:1.35rem;display:flex;flex-direction:column;gap:.55rem;
+          text-decoration:none;transition:all .2s;overflow:hidden}
+        .art.star{border-color:rgba(0,230,190,.13);background:linear-gradient(135deg,rgba(0,230,190,.03),var(--bg2))}
         .art:hover{border-color:var(--glow);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.35)}
         .art-top{display:flex;justify-content:space-between;align-items:center}
-        .art-tag{font-family:var(--m);font-size:.62rem;letter-spacing:.07em;
-          text-transform:uppercase;font-weight:500}
-        .feat-badge{font-family:var(--m);font-size:.58rem;letter-spacing:.05em;
+        .art-tag{font-family:var(--m);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+        .feat-badge{font-family:var(--m);font-size:.56rem;letter-spacing:.06em;
           text-transform:uppercase;color:var(--bg);background:var(--cyan);
-          padding:2px 7px;border-radius:100px;font-weight:600}
-        .art-title{font-family:var(--d);font-size:.92rem;font-weight:700;
+          padding:2px 7px;border-radius:100px;font-weight:700}
+        .art-title{font-family:var(--d);font-size:.88rem;font-weight:700;
           letter-spacing:-.01em;line-height:1.35;color:var(--text)}
-        .art-desc{font-family:var(--m);font-size:.7rem;color:var(--muted);
-          line-height:1.55;font-weight:300;flex:1}
+        .art-desc{font-family:var(--m);font-size:.68rem;color:var(--muted);line-height:1.6;font-weight:300;flex:1}
         .art-foot{display:flex;justify-content:space-between;align-items:center;
-          padding-top:.6rem;border-top:1px solid var(--border)}
-        .art-time{font-family:var(--m);font-size:.65rem;color:var(--dim)}
-        .art-more{font-family:var(--m);font-size:.68rem;color:var(--cyan);font-weight:500}
+          padding-top:.55rem;border-top:1px solid var(--border);margin-top:auto}
+        .art-time{font-family:var(--m);font-size:.6rem;color:var(--dim)}
+        .art-more{font-family:var(--m);font-size:.65rem;color:var(--cyan);font-weight:500;opacity:.65;transition:opacity .15s}
+        .art:hover .art-more{opacity:1}
 
         /* NEWSLETTER */
-        .nl-wrap{position:relative;z-index:1;max-width:1160px;margin:0 auto;
-          padding:0 var(--pad) clamp(4rem,7vw,5.5rem)}
-        .nl-box{background:var(--bg2);border:1px solid var(--glow);
-          border-radius:16px;padding:clamp(2rem,4vw,3rem);
-          text-align:center;position:relative;overflow:hidden}
-        .nl-box::before{content:'';position:absolute;top:0;left:50%;
-          transform:translateX(-50%);width:50%;height:1px;
+        .nl-wrap{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:0 var(--pad) clamp(4rem,7vw,5rem)}
+        .nl-box{background:var(--bg2);border:1px solid var(--glow);border-radius:14px;
+          padding:clamp(2rem,4vw,2.75rem);text-align:center;position:relative;overflow:hidden}
+        .nl-box::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:45%;height:1px;
           background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
-        .nl-glow{position:absolute;top:-50%;left:50%;transform:translateX(-50%);
-          width:400px;height:250px;
-          background:radial-gradient(ellipse,rgba(0,230,190,.06),transparent 70%);
-          pointer-events:none}
-        .nl-title{font-size:clamp(1.25rem,2.8vw,1.75rem);font-weight:800;
-          letter-spacing:-.03em;margin-bottom:.6rem;position:relative;z-index:1}
-        .nl-sub{font-family:var(--m);font-size:.78rem;color:var(--muted);font-weight:300;
-          line-height:1.7;max-width:440px;margin:0 auto 1.4rem;position:relative;z-index:1}
-        .nl-sp{display:flex;align-items:center;justify-content:center;gap:.65rem;
-          margin-bottom:1.4rem;position:relative;z-index:1}
-        .nl-form{display:flex;gap:.65rem;max-width:420px;margin:0 auto .6rem;
-          position:relative;z-index:1;flex-wrap:wrap;justify-content:center}
-        .nl-in{flex:1;min-width:190px;background:var(--bg3);border:1px solid var(--border);
-          border-radius:8px;padding:10px 14px;color:var(--text);font-family:var(--m);
-          font-size:.8rem;outline:none;transition:all .2s}
-        .nl-in:focus{border-color:var(--glow);box-shadow:0 0 0 3px rgba(0,230,190,.06)}
+        .nl-glow{position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:400px;height:250px;
+          background:radial-gradient(ellipse,rgba(0,230,190,.055),transparent 70%);pointer-events:none}
+        .nl-title{font-size:clamp(1.2rem,2.6vw,1.6rem);font-weight:800;letter-spacing:-.03em;margin-bottom:.5rem;position:relative;z-index:1}
+        .nl-sub{font-family:var(--m);font-size:.74rem;color:var(--muted);font-weight:300;line-height:1.75;
+          max-width:400px;margin:0 auto 1.2rem;position:relative;z-index:1}
+        .nl-sp{display:flex;align-items:center;justify-content:center;gap:.6rem;margin-bottom:1.2rem;position:relative;z-index:1}
+        .nl-form{display:flex;gap:.6rem;max-width:390px;margin:0 auto .55rem;position:relative;z-index:1;flex-wrap:wrap;justify-content:center}
+        .nl-in{flex:1;min-width:175px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;
+          padding:9px 13px;color:var(--text);font-family:var(--m);font-size:.78rem;outline:none;transition:all .2s}
+        .nl-in:focus{border-color:var(--glow);box-shadow:0 0 0 3px rgba(0,230,190,.05)}
         .nl-in::placeholder{color:var(--dim)}
-        .nl-priv{font-family:var(--m);font-size:.64rem;color:var(--dim);
-          position:relative;z-index:1}
-        .nl-ok{font-family:var(--m);font-size:.82rem;color:var(--cyan);
-          background:var(--cdim);border:1px solid var(--glow);border-radius:8px;
-          padding:10px 18px;display:inline-block;position:relative;z-index:1}
-        .nl-err{font-family:var(--m);font-size:.78rem;color:#ef4444;
-          background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);
-          border-radius:8px;padding:9px 14px;margin-bottom:.75rem;
-          position:relative;z-index:1}
+        .nl-priv{font-family:var(--m);font-size:.6rem;color:var(--dim);position:relative;z-index:1}
+        .nl-ok{font-family:var(--m);font-size:.78rem;color:var(--cyan);background:var(--cdim);
+          border:1px solid var(--glow);border-radius:8px;padding:9px 16px;display:inline-block;position:relative;z-index:1}
+        .nl-err{font-family:var(--m);font-size:.74rem;color:#ef4444;background:rgba(239,68,68,.07);
+          border:1px solid rgba(239,68,68,.22);border-radius:8px;padding:9px 13px;margin-bottom:.7rem;position:relative;z-index:1}
 
         /* FOOTER */
-        footer{position:relative;z-index:1;border-top:1px solid var(--border);
-          padding:2.5rem var(--pad);max-width:1160px;margin:0 auto}
+        footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.25rem var(--pad);max-width:1160px;margin:0 auto}
         .ft{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2.5rem}
-        @media(max-width:600px){.ft{grid-template-columns:1fr;gap:1.75rem}}
-        .ft-brand{display:flex;flex-direction:column;gap:.6rem}
-        .ft-tag{font-family:var(--m);font-size:.73rem;color:var(--muted);
-          font-weight:300;line-height:1.6;max-width:230px}
-        .ft-col{font-family:var(--m);font-size:.62rem;letter-spacing:.1em;
-          text-transform:uppercase;color:var(--dim);margin-bottom:.85rem}
-        .ft-ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}
-        .ft-ul a{font-family:var(--m);font-size:.74rem;color:var(--muted);
-          text-decoration:none;transition:color .15s;font-weight:300}
+        @media(max-width:600px){.ft{grid-template-columns:1fr;gap:1.5rem}}
+        .ft-tag{font-family:var(--m);font-size:.7rem;color:var(--muted);font-weight:300;line-height:1.65;max-width:210px;margin-top:.4rem}
+        .ft-col{font-family:var(--m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:.75rem}
+        .ft-ul{list-style:none;display:flex;flex-direction:column;gap:.45rem}
+        .ft-ul a{font-family:var(--m);font-size:.7rem;color:var(--muted);text-decoration:none;transition:color .15s;font-weight:300}
         .ft-ul a:hover{color:var(--cyan)}
-        .ft-bot{margin-top:2rem;padding-top:1.25rem;border-top:1px solid var(--border);
+        .ft-bot{margin-top:1.75rem;padding-top:1.1rem;border-top:1px solid var(--border);
           display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem}
-        .ft-copy{font-family:var(--m);font-size:.65rem;color:var(--dim)}
+        .ft-copy{font-family:var(--m);font-size:.62rem;color:var(--dim)}
         .ft-copy em{color:var(--cyan);font-style:normal}
       `}</style>
 
@@ -427,52 +517,68 @@ export default function HomeClient({ lang }: { lang: Lang }) {
             <a href={l("/comparatifs")} className="btn btn-p">{t.hero.cta1}</a>
             <a href={l("/blog")} className="btn btn-s">{t.hero.cta2}</a>
           </div>
-          <div className="sp">
-            <div className="avs">{AVATARS.map((a, i) => <div key={i} className="av">{a}</div>)}</div>
-            <span className="sp-t"><strong>{lang === "fr" ? "3 200+" : "3,200+"}</strong> {t.social}</span>
-          </div>
           <div className="stats">
             {t.stats.map((s, i) => (
-              <div key={i} className="st">
-                <div className="stv"><Counter value={s.v} /></div>
-                <div className="stl">{s.l}</div>
+              <div key={i}>
+                <div className="st-v"><Counter value={s.v} /></div>
+                <div className="st-l">{s.l}</div>
               </div>
             ))}
           </div>
         </div>
       </div>
 
+      {/* TICKER */}
+      <div style={{ marginTop: "2rem" }} className="ticker-wrap">
+        <div className="ticker-label">{lang === "fr" ? "Actus" : "Latest"}</div>
+        <div className="ticker-inner">
+          <div className="ticker-text">
+            {t.hero.ticker}&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;{t.hero.ticker}&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;{t.hero.ticker}
+          </div>
+        </div>
+      </div>
+
       {/* TRUST */}
-      <div className="section" style={{ paddingTop: 0 }}>
+      <div className="section" style={{ paddingTop: "4rem", paddingBottom: "1.25rem" }}>
         <div className="trust-row">
           {t.trust.map((item, i) => (
             <div key={i} className="trust-cell">
               <div className="ti">{item.icon}</div>
-              <div>
-                <div className="tt">{item.t}</div>
-                <div className="td">{item.d}</div>
-              </div>
+              <div><div className="tt">{item.t}</div><div className="td">{item.d}</div></div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* CATEGORIES */}
+      {/* ══ COMPARATIFS ══ */}
       <div className="section">
         <div className="sh">
-          <div className="stag">{t.catTag}</div>
-          <div className="stitle">{t.catTitle}</div>
+          <div>
+            <div className="stag">{t.compTag}</div>
+            <div className="stitle">{t.compTitle}</div>
+            <div className="ssub">{t.compSub}</div>
+          </div>
+          <a href={l("/comparatifs")} className="sh-right">
+            {lang === "fr" ? "Tous les comparatifs →" : "All comparisons →"}
+          </a>
         </div>
-        <div className="cat-grid">
-          {t.cats.map((c, i) => (
-            <a key={i} href={l("/comparatifs")} className="cat">
-              <div className="cat-top">
-                <div className="cat-icon">{c.icon}</div>
-                {c.isNew && <span className="new">{lang === "fr" ? "Nouveau" : "New"}</span>}
+
+        <div className="comp-grid">
+          {t.comparatifs.map((c, i) => (
+            <a key={i} href={l(`/comparatifs/${c.slug}`)} className={`cmp${c.isFeat ? " star" : ""}`}>
+              <div className="cmp-top">
+                <div className="cmp-tag" style={{ color: c.color }}>{c.tag}</div>
+                {c.isFeat && <span className="cmp-badge">{t.compFeat}</span>}
               </div>
-              <div className="cat-title">{c.t}</div>
-              <div className="cat-desc">{c.d}</div>
-              <div className="cat-n">{c.n} {lang === "fr" ? "outils" : "tools"}</div>
+              <div className="cmp-title">{c.title}</div>
+              <div className="cmp-sub">{c.subtitle}</div>
+              <div className="cmp-foot">
+                <div className="cmp-winner">
+                  🏆 <strong style={{ color: c.color }}>{c.winner}</strong>
+                  <span className="cmp-score" style={{ color: c.color, borderColor: `${c.color}50` }}>{c.winnerScore}/10</span>
+                </div>
+                <span className="cmp-more" style={{ color: c.color }}>{t.compVoir}</span>
+              </div>
             </a>
           ))}
         </div>
@@ -481,9 +587,12 @@ export default function HomeClient({ lang }: { lang: Lang }) {
       {/* ARTICLES */}
       <div className="section">
         <div className="sh">
-          <div className="stag">{t.artTag}</div>
-          <div className="stitle">{t.artTitle}</div>
-          <div className="ssub">{t.artSub}</div>
+          <div>
+            <div className="stag">{t.artTag}</div>
+            <div className="stitle">{t.artTitle}</div>
+            <div className="ssub">{t.artSub}</div>
+          </div>
+          <a href={l("/blog")} className="sh-right">{lang === "fr" ? "Tous les articles →" : "All articles →"}</a>
         </div>
         <div className="art-grid">
           {t.articles.map((a, i) => (
@@ -534,8 +643,8 @@ export default function HomeClient({ lang }: { lang: Lang }) {
       {/* FOOTER */}
       <footer>
         <div className="ft">
-          <div className="ft-brand">
-            <a href={l("")} className="logo" style={{ fontSize: ".95rem" }}><div className="logo-dot" />Neuri<em>flux</em></a>
+          <div>
+            <a href={l("")} className="logo" style={{ fontSize: ".93rem" }}><div className="logo-dot" />Neuri<em>flux</em></a>
             <p className="ft-tag">{t.ftTagline}</p>
           </div>
           <div>

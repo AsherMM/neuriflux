@@ -166,6 +166,7 @@ L'incident est traité — mais il illustre une réalité que les utilisateurs d
 ## Grok : avantages et inconvénients
 
 **✅ Points forts**
+
 - **Données temps réel X** — le seul assistant grand public avec un accès natif au flux X en direct
 - **Fenêtre de 2 millions de tokens** — traite des documents entiers sans perte de contexte, unique à ce prix
 - **API ultra-compétitive** — 0,20$/M tokens pour les modèles rapides, parmi les moins chers du marché

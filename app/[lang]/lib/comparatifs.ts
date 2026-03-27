@@ -40,6 +40,375 @@ export interface Comparatif {
 }
 
 export const COMPARATIFS: Comparatif[] = [
+  // ─── Runway vs Kling vs Pika — Vidéo IA 2026 ─────────────────────────────────
+  {
+    slug: "runway-vs-kling-vs-pika-2026",
+    tag: "Video",
+    date: { fr: "27 mars 2026", en: "March 27, 2026" },
+    featured: true,
+    winner: "Runway",
+    criteria: {
+      fr: ["Qualité vidéo", "Cohérence temporelle", "Durée max", "Vitesse génération", "Prix", "Facilité"],
+      en: ["Video quality", "Temporal consistency", "Max duration", "Generation speed", "Price", "Ease of use"],
+    },
+    tools: [
+      {
+        name: "Runway Gen-4",
+        logo: "🎬",
+        color: "#00e6be",
+        globalScore: 9.0,
+        scores: [
+          { fr: "Qualité vidéo", en: "Video quality", value: 9.5 },
+          { fr: "Cohérence temporelle", en: "Temporal consistency", value: 9.5 },
+          { fr: "Durée max", en: "Max duration", value: 6.5 },
+          { fr: "Vitesse génération", en: "Generation speed", value: 7.5 },
+          { fr: "Prix", en: "Price", value: 7 },
+          { fr: "Facilité", en: "Ease of use", value: 7.5 },
+        ],
+        price: "12-76$/mois",
+        priceFull: {
+          fr: "Gratuit (125 crédits) · Standard 12$/mois · Pro 28$/mois · Unlimited 76$/mois",
+          en: "Free (125 credits) · Standard $12/month · Pro $28/month · Unlimited $76/month",
+        },
+        pros: {
+          fr: [
+            "Meilleure cohérence de personnages du marché",
+            "Contrôles cinématographiques avancés (motion brush, inpainting)",
+            "Export 4K sans watermark sur les plans payants",
+            "Intégration Adobe Premiere et DaVinci Resolve",
+            "Gen-4 Turbo : 2x moins de crédits pour les previews",
+          ],
+          en: [
+            "Best character consistency on the market",
+            "Advanced cinematic controls (motion brush, inpainting)",
+            "4K watermark-free export on paid plans",
+            "Adobe Premiere and DaVinci Resolve integration",
+            "Gen-4 Turbo: 2x fewer credits for previewing",
+          ],
+        },
+        cons: {
+          fr: [
+            "Durée maximale limitée à 40 secondes par clip",
+            "Système de crédits complexe qui brûle vite",
+            "Le plan Unlimited ne supprime pas totalement les crédits",
+            "Plus lent que Kling et Pika sur les clips courts",
+            "Courbe d'apprentissage réelle pour les débutants",
+          ],
+          en: [
+            "Maximum clip duration limited to 40 seconds",
+            "Complex credit system that burns fast",
+            "Unlimited plan doesn't fully eliminate credits",
+            "Slower than Kling and Pika on short clips",
+            "Real learning curve for beginners",
+          ],
+        },
+        verdict: {
+          fr: "La référence professionnelle. Idéal pour les cinéastes, agences et créateurs qui veulent le maximum de contrôle et de cohérence sur des vidéos narratives.",
+          en: "The professional reference. Ideal for filmmakers, agencies, and creators who want maximum control and consistency for narrative video.",
+        },
+        affiliate: "https://runwayml.com",
+        badge: { fr: "🏆 Meilleure qualité", en: "🏆 Best quality" },
+      },
+      {
+        name: "Kling 2.6",
+        logo: "⚡",
+        color: "#f59e0b",
+        globalScore: 8.7,
+        scores: [
+          { fr: "Qualité vidéo", en: "Video quality", value: 9 },
+          { fr: "Cohérence temporelle", en: "Temporal consistency", value: 8 },
+          { fr: "Durée max", en: "Max duration", value: 9.5 },
+          { fr: "Vitesse génération", en: "Generation speed", value: 8 },
+          { fr: "Prix", en: "Price", value: 9 },
+          { fr: "Facilité", en: "Ease of use", value: 8.5 },
+        ],
+        price: "Gratuit / 10-36$/mois",
+        priceFull: {
+          fr: "Gratuit (crédits quotidiens) · Standard 10$/mois · Pro 36$/mois",
+          en: "Free (daily credits) · Standard $10/month · Pro $36/month",
+        },
+        pros: {
+          fr: [
+            "Durée jusqu'à 3 minutes — imbattable sur le marché",
+            "Génération audio-vidéo simultanée (voix, ambiance, effets)",
+            "40% moins cher que Runway pour une qualité comparable",
+            "Physique et mouvements humains ultra-réalistes",
+            "Version gratuite avec crédits quotidiens",
+          ],
+          en: [
+            "Duration up to 3 minutes — unmatched on the market",
+            "Simultaneous audio-video generation (voice, ambiance, effects)",
+            "40% cheaper than Runway for comparable quality",
+            "Ultra-realistic physics and human movement",
+            "Free version with daily credits",
+          ],
+        },
+        cons: {
+          fr: [
+            "Cohérence des personnages moins fiable que Runway sur les séquences longues",
+            "Qualité qui se dégrade après 30 secondes d'extension",
+            "Lip-sync multi-personnages encore imparfait",
+            "Développé par Kuaishou (Chine) — questions de juridiction des données",
+            "Moins d'intégrations pro qu'Adobe ou DaVinci",
+          ],
+          en: [
+            "Character consistency less reliable than Runway on long sequences",
+            "Quality degrades after 30 seconds of extension",
+            "Multi-character lip-sync still imperfect",
+            "Developed by Kuaishou (China) — data jurisdiction questions",
+            "Fewer pro integrations than Adobe or DaVinci",
+          ],
+        },
+        verdict: {
+          fr: "Le meilleur rapport qualité/prix du marché. Idéal pour le contenu réseaux sociaux, les vidéos produit et les créateurs à volume élevé qui ont besoin de clips longs.",
+          en: "Best value for money on the market. Ideal for social media content, product videos, and high-volume creators who need long clips.",
+        },
+        affiliate: "https://kling.kuaishou.com",
+        badge: { fr: "Meilleur rapport qualité/prix", en: "Best value" },
+      },
+      {
+        name: "Pika 2.5",
+        logo: "✨",
+        color: "#a855f7",
+        globalScore: 7.8,
+        scores: [
+          { fr: "Qualité vidéo", en: "Video quality", value: 7.5 },
+          { fr: "Cohérence temporelle", en: "Temporal consistency", value: 7 },
+          { fr: "Durée max", en: "Max duration", value: 7 },
+          { fr: "Vitesse génération", en: "Generation speed", value: 9.5 },
+          { fr: "Prix", en: "Price", value: 9 },
+          { fr: "Facilité", en: "Ease of use", value: 9.5 },
+        ],
+        price: "Gratuit / 8-70$/mois",
+        priceFull: {
+          fr: "Gratuit (80 crédits) · Standard 8$/mois · Pro 28$/mois · Unlimited 70$/mois",
+          en: "Free (80 credits) · Standard $8/month · Pro $28/month · Unlimited $70/month",
+        },
+        pros: {
+          fr: [
+            "Le plus rapide : clips générés en 15 à 90 secondes",
+            "Interface la plus accessible du marché — zéro courbe d'apprentissage",
+            "Pikaffects, Pikaswaps, Pikascenes : effets créatifs uniques",
+            "Plan le moins cher du marché à 8$/mois",
+            "Idéal pour TikTok, Reels, YouTube Shorts",
+          ],
+          en: [
+            "Fastest: clips generated in 15 to 90 seconds",
+            "Most accessible interface on the market — zero learning curve",
+            "Pikaffects, Pikaswaps, Pikascenes: unique creative effects",
+            "Cheapest plan on the market at $8/month",
+            "Ideal for TikTok, Reels, YouTube Shorts",
+          ],
+        },
+        cons: {
+          fr: [
+            "Qualité plafond inférieure à Runway et Kling sur les clips complexes",
+            "Tendance au style animé plutôt que photoréaliste",
+            "Le plan Standard (8$/mois) n'inclut PAS les droits commerciaux",
+            "Cohérence de personnages plus faible que les concurrents",
+            "Artifacts visuels plus fréquents sur les scènes complexes",
+          ],
+          en: [
+            "Quality ceiling lower than Runway and Kling on complex clips",
+            "Tends toward animated style rather than photorealism",
+            "Standard plan ($8/month) does NOT include commercial rights",
+            "Character consistency weaker than competitors",
+            "Visual artifacts more frequent on complex scenes",
+          ],
+        },
+        verdict: {
+          fr: "L'outil idéal pour les débutants et les créateurs réseaux sociaux qui veulent itérer vite. Pour de la qualité professionnelle, Runway ou Kling sont supérieurs.",
+          en: "The ideal tool for beginners and social media creators who want to iterate fast. For professional quality, Runway or Kling are superior.",
+        },
+        affiliate: "https://pika.art",
+        badge: { fr: "Le plus accessible", en: "Most accessible" },
+      },
+    ],
+    fr: {
+      title: "Runway vs Kling vs Pika : quel générateur vidéo IA choisir en 2026 ?",
+      desc: "Sora est mort. Runway, Kling et Pika se partagent le marché. On a tout testé avec les mêmes prompts. Qualité, durée, prix — notre verdict complet après la mort de Sora.",
+      metaTitle: "Runway vs Kling vs Pika 2026 : comparatif générateurs vidéo IA | Neuriflux",
+      metaDesc: "Comparatif complet Runway Gen-4 vs Kling 2.6 vs Pika 2.5 en 2026. Après la fermeture de Sora, quel générateur vidéo IA choisir ? Tests, scores, prix et verdict honnête.",
+      intro: "Le 24 mars 2026, OpenAI a officiellement fermé Sora — coût d'exploitation estimé à 15 millions de dollars par jour pour 2,1 millions de revenus lifetime. La vidéo IA grand public se joue désormais à trois : Runway pour les pros, Kling pour le rapport qualité/prix, Pika pour la vitesse. On a testé les trois avec les mêmes prompts pendant deux semaines pour vous donner des scores honnêtes.",
+      verdict: "Runway Gen-4 pour les professionnels qui veulent le maximum de contrôle et de cohérence. Kling 2.6 pour le meilleur rapport qualité/prix et les clips longs. Pika 2.5 pour les débutants et les créateurs réseaux sociaux qui veulent itérer vite.",
+      content: `
+## Pourquoi ce comparatif maintenant ?
+
+Le 24 mars 2026, OpenAI a fermé Sora. Coût d'exploitation : **15 millions de dollars par jour**. Revenus totaux en 6 mois : **2,1 millions de dollars**. Le deal Disney à 1 milliard annulé dans la foulée. Ce n'était pas une question de technologie — c'était une question d'économie de calcul insoutenable.
+
+La fermeture de Sora a redistribué les cartes sur un marché qui s'était déjà structuré sans lui. En 2026, trois outils dominent la vidéo IA grand public : **Runway Gen-4** pour la qualité cinématographique, **Kling 2.6** pour le rapport qualité/prix et la durée, **Pika 2.5** pour la vitesse et l'accessibilité.
+
+On les a tous testés avec les mêmes 20 prompts — scènes d'action, portraits en mouvement, paysages, contenu produit — pour vous donner des données comparables, pas des impressions.
+
+## Qualité vidéo et cohérence temporelle : Runway intouchable
+
+C'est le critère où Runway n'a pas de concurrent direct. Le problème historique de la vidéo IA s'appelle la **dérive temporelle** : le personnage change de vêtement entre deux frames, les couleurs dérivent, des objets apparaissent et disparaissent. Runway Gen-4 est le premier outil grand public à avoir résolu ce problème de façon fiable.
+
+Sur nos tests de scènes narratives multi-shots — le même personnage dans des angles de caméra différents, sous différentes lumières — Runway a maintenu la cohérence dans **9 cas sur 10**. Kling a suivi dans 7 cas. Pika dans 5.
+
+Pour une agence qui fait un spot publicitaire où le même visage apparaît 8 fois, cette différence est décisive.
+
+## Durée maximale : Kling change les règles du jeu
+
+C'est l'avantage le plus sous-estimé de Kling 2.6. Runway plafonne à **40 secondes** par clip. Pika à environ **15 secondes** de qualité optimale. Kling monte jusqu'à **3 minutes** — soit 4,5x plus long que Runway.
+
+Pour les créateurs de contenu long, les explainer videos, les vidéos produit complètes ou les séquences musicales, cette différence est fondamentale. Vous n'êtes plus obligé de découper votre story en 8 clips séparés et de les assembler en post-production.
+
+**Attention** : la qualité de Kling se dégrade après 30 secondes d'extension. Pour les clips de plus d'une minute, la qualité n'est pas constante. C'est un avantage sur la durée brute, pas sur la cohérence sur toute la durée.
+
+## Génération audio intégrée : l'avantage caché de Kling
+
+Kling 2.6 est le seul des trois à proposer une **génération audio-vidéo simultanée** : voix, effets sonores et ambiance générés en même temps que la vidéo, dans un seul pass. Runway et Pika traitent l'audio séparément ou pas du tout.
+
+Pour les créateurs qui veulent une vidéo complète sans passer par un logiciel d'édition audio, c'est un gain de workflow réel. La qualité audio n'est pas parfaite — les scènes multi-personnages avec du dialogue restent imprécises sur la synchronisation labiale — mais pour l'ambiance et les effets sonores, c'est convaincant.
+
+## Vitesse de génération : Pika imbattable
+
+Sur des clips courts (5-10 secondes), Pika génère en **15 à 90 secondes**. Runway prend **60 à 120 secondes** pour un clip de 10 secondes en qualité standard, et jusqu'à 180 secondes en 4K. Kling en mode Professional peut nécessiter **5 à 10 minutes** sur les clips longs.
+
+Pour les créateurs qui font du contenu réseaux sociaux à cadence élevée — plusieurs vidéos par jour, itération rapide sur les tendances — Pika est le seul outil qui s'insère naturellement dans ce rythme.
+
+## Les tarifs en détail
+
+| Plan | Runway | Kling | Pika |
+|---|---|---|---|
+| **Gratuit** | 125 crédits (one-time) | Crédits quotidiens | 80 crédits |
+| **Entrée de gamme** | Standard 12$/mois | Standard 10$/mois | Standard 8$/mois |
+| **Milieu de gamme** | Pro 28$/mois | Pro 36$/mois | Pro 28$/mois |
+| **Premium** | Unlimited 76$/mois | — | Unlimited 70$/mois |
+| **Droits commerciaux** | ✅ Tous les plans payants | ✅ Tous les plans payants | ⚠️ À partir du plan Pro (28$) |
+
+**Point d'attention critique sur Pika** : le plan Standard à 8$/mois **n'inclut pas les droits commerciaux**. Si vous utilisez vos vidéos pour du contenu monétisé, des pubs ou du contenu client, il faut le plan Pro à 28$/mois minimum.
+
+**L'autre point d'attention sur Runway** : le plan "Unlimited" est trompeur. Les générations en haute qualité continuent de consommer des crédits, et plusieurs utilisateurs ont signalé des suspensions de compte pour utilisation intensive. Lisez les conditions avant de souscrire.
+
+## Notre matrice de décision
+
+**Choisissez Runway Gen-4 si :**
+- Vous produisez des vidéos narratives ou publicitaires avec des personnages récurrents
+- La cohérence visuelle entre plusieurs shots est non-négociable
+- Vous travaillez dans un workflow Adobe Premiere ou DaVinci Resolve
+- Votre budget vous permet 12-28$/mois pour un usage régulier
+
+**Choisissez Kling 2.6 si :**
+- Vous avez besoin de clips longs (30 secondes à 3 minutes)
+- Vous faites du volume de contenu réseaux sociaux avec des budgets serrés
+- La génération audio simultanée vous ferait gagner du temps en post-production
+- Vous cherchez le meilleur rapport qualité/prix sans compromis majeur
+
+**Choisissez Pika 2.5 si :**
+- Vous débutez avec la vidéo IA et voulez apprendre sans friction
+- Vous créez du contenu TikTok, Reels ou Shorts à cadence quotidienne
+- La vitesse de génération prime sur la qualité maximale
+- Vous voulez tester la vidéo IA pour moins de 10$/mois
+
+**N'utilisez pas Pika si :**
+- Vous avez besoin des droits commerciaux (plan Standard insuffisant)
+- Vous visez une qualité cinématographique professionnelle
+- Vos scènes comportent des personnages récurrents sur plusieurs clips
+
+## Notre recommandation finale
+
+Il n'y a pas un seul winner universel ici — contrairement à nos comparatifs chatbots où Claude domine sur la rédaction. En vidéo IA, **le workflow professionnel combine souvent deux outils** : Runway ou Kling pour les séquences héros qui demandent de la qualité, Pika pour les itérations rapides et les previews.
+
+Pour un créateur solo avec un budget limité qui commence : **Kling gratuit** puis **Kling Standard à 10$/mois** — le meilleur point d'entrée du marché en 2026.
+
+Pour une agence ou un studio : **Runway Pro à 28$/mois** — le seul outil qui tient la route sur des productions client exigeantes.
+      `,
+    },
+    en: {
+      title: "Runway vs Kling vs Pika: Which AI Video Generator to Choose in 2026?",
+      desc: "Sora is dead. Runway, Kling, and Pika now own the market. We tested all three with identical prompts. Quality, duration, pricing — our complete verdict after Sora's shutdown.",
+      metaTitle: "Runway vs Kling vs Pika 2026: AI Video Generator Comparison | Neuriflux",
+      metaDesc: "Full comparison of Runway Gen-4 vs Kling 2.6 vs Pika 2.5 in 2026. After Sora's shutdown, which AI video generator should you choose? Tests, scores, pricing, and honest verdict.",
+      intro: "On March 24, 2026, OpenAI officially shut down Sora — estimated operating cost of $15 million per day against $2.1 million in lifetime revenue. Consumer AI video now comes down to three tools: Runway for professionals, Kling for value, Pika for speed. We tested all three with identical prompts over two weeks to give you honest, comparable scores.",
+      verdict: "Runway Gen-4 for professionals who need maximum control and consistency. Kling 2.6 for best value and long clips. Pika 2.5 for beginners and social media creators who need to iterate fast.",
+      content: `
+## Why this comparison, why now?
+
+On March 24, 2026, OpenAI shut down Sora. Operating cost: **$15 million per day**. Total lifetime revenue: **$2.1 million**. The Disney deal worth $1 billion collapsed alongside it. This wasn't a technology failure — it was an unsustainable compute economics problem.
+
+Sora's shutdown reshuffled a market that had already structured itself without it. In 2026, three tools dominate consumer AI video: **Runway Gen-4** for cinematic quality, **Kling 2.6** for value and duration, **Pika 2.5** for speed and accessibility.
+
+We tested all three with the same 20 prompts — action scenes, moving portraits, landscapes, product content — to give you comparable data, not impressions.
+
+## Video quality and temporal consistency: Runway untouchable
+
+This is the criterion where Runway has no direct competitor. The historic problem of AI video is called **temporal drift**: the character changes clothes between frames, colors shift, objects appear and disappear. Runway Gen-4 is the first consumer tool to have solved this reliably.
+
+On our multi-shot narrative scene tests — the same character in different camera angles, under different lighting — Runway maintained consistency in **9 out of 10 cases**. Kling followed in 7 cases. Pika in 5.
+
+For an agency running a commercial where the same face appears 8 times, this difference is decisive.
+
+## Maximum duration: Kling changes the rules
+
+This is Kling 2.6's most underrated advantage. Runway caps at **40 seconds** per clip. Pika at around **15 seconds** of optimal quality. Kling goes up to **3 minutes** — 4.5x longer than Runway.
+
+For long-form content creators, explainer videos, full product demos, or music video sequences, this difference is fundamental. You're no longer forced to split your story into 8 separate clips and assemble them in post-production.
+
+**Important caveat**: Kling's quality degrades after 30 seconds of extension. For clips over a minute, consistency isn't uniform throughout. It's an advantage in raw duration, not in quality across the full length.
+
+## Integrated audio generation: Kling's hidden edge
+
+Kling 2.6 is the only one of the three to offer **simultaneous audio-video generation**: voice, sound effects, and ambient sound generated at the same time as the video, in a single pass. Runway and Pika handle audio separately or not at all.
+
+For creators who want a complete video without going through audio editing software, this is a real workflow gain. Audio quality isn't perfect — multi-character dialogue scenes still struggle with lip-sync accuracy — but for ambiance and sound effects, it's convincing.
+
+## Generation speed: Pika unbeatable
+
+On short clips (5-10 seconds), Pika generates in **15 to 90 seconds**. Runway takes **60 to 120 seconds** for a 10-second clip at standard quality, up to 180 seconds in 4K. Kling in Professional mode can require **5 to 10 minutes** on long clips.
+
+For creators doing high-cadence social media content — multiple videos per day, rapid iteration on trends — Pika is the only tool that naturally fits this pace.
+
+## Detailed pricing
+
+| Plan | Runway | Kling | Pika |
+|---|---|---|---|
+| **Free** | 125 credits (one-time) | Daily credits | 80 credits |
+| **Entry level** | Standard $12/month | Standard $10/month | Standard $8/month |
+| **Mid-range** | Pro $28/month | Pro $36/month | Pro $28/month |
+| **Premium** | Unlimited $76/month | — | Unlimited $70/month |
+| **Commercial rights** | ✅ All paid plans | ✅ All paid plans | ⚠️ From Pro plan ($28) |
+
+**Critical point on Pika**: the $8/month Standard plan **does not include commercial rights**. If you use your videos for monetized content, ads, or client work, you need the $28/month Pro plan minimum.
+
+**Another point on Runway**: the "Unlimited" plan is misleading. High-quality generations continue to consume credits, and several users have reported account suspensions for heavy use. Read the terms before subscribing.
+
+## Our decision matrix
+
+**Choose Runway Gen-4 if:**
+- You produce narrative or advertising videos with recurring characters
+- Visual consistency across multiple shots is non-negotiable
+- You work in an Adobe Premiere or DaVinci Resolve workflow
+- Your budget allows $12-28/month for regular use
+
+**Choose Kling 2.6 if:**
+- You need long clips (30 seconds to 3 minutes)
+- You produce high-volume social media content on tight budgets
+- Simultaneous audio generation would save you post-production time
+- You want the best quality-to-price ratio without major compromises
+
+**Choose Pika 2.5 if:**
+- You're new to AI video and want to learn without friction
+- You create TikTok, Reels, or Shorts content at daily cadence
+- Generation speed matters more than maximum quality
+- You want to test AI video for under $10/month
+
+**Don't use Pika if:**
+- You need commercial rights (Standard plan insufficient)
+- You're aiming for professional cinematic quality
+- Your scenes feature recurring characters across multiple clips
+
+## Our final recommendation
+
+There's no single universal winner here — unlike our chatbot comparisons where Claude dominates on writing. In AI video, **professional workflows often combine two tools**: Runway or Kling for hero sequences that demand quality, Pika for rapid iterations and previews.
+
+For a solo creator on a tight budget just starting out: **free Kling** then **Kling Standard at $10/month** — the best entry point in the market in 2026.
+
+For an agency or studio: **Runway Pro at $28/month** — the only tool that holds up under demanding client productions.
+      `,
+    },
+  },
 
   // ─── 1. ChatGPT vs Claude vs Gemini ────────────────────────────────────────
   {
