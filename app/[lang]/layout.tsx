@@ -94,6 +94,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
+        {/* ─── Impact Verification ──────────────────────────────────────────── */}
+        <meta
+          name="impact-site-verification"
+          content="9f80294a-9aa2-488e-8537-06ae286b64b8"
+        />
+
         {/* ─── Google Tag Manager ──────────────────────────────────────────── */}
         <script
           dangerouslySetInnerHTML={{

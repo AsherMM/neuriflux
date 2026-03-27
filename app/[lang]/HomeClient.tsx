@@ -304,28 +304,31 @@ export default function HomeClient({ lang }: { lang: Lang }) {
           background:radial-gradient(ellipse,rgba(0,230,190,.055) 0%,transparent 65%);
           pointer-events:none;z-index:0}
 
-        /* NAV */
-        nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+        /* ─── NAV ──────────────────────────────────────────────── */
+        nav{position:sticky;top:0;z-index:100;
+          backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
           background:rgba(8,12,16,.93);border-bottom:1px solid var(--border);
-          padding:0 var(--pad);height:60px;display:flex;align-items:center;justify-content:space-between}
+          padding:0 var(--pad);height:60px;display:flex;align-items:center;justify-content:space-between;
+          transition:box-shadow .25s}
+        nav.scrolled{box-shadow:0 4px 28px rgba(0,0,0,.5)}
         .logo{font-family:var(--d);font-weight:800;font-size:1.15rem;letter-spacing:-.03em;
           color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.45rem}
         .logo em{color:var(--cyan);font-style:normal}
         .logo-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;
           box-shadow:0 0 8px var(--cyan);animation:blink 2s infinite}
-        @keyframes blink{0%,100%{opacity:1}50%{opacity:.45}}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
         .nav-links{display:flex;align-items:center;gap:1.75rem;list-style:none}
         @media(max-width:720px){
           .nav-links{display:none}
           .nav-links.open{display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;
-            background:var(--bg2);border-bottom:1px solid var(--border);padding:1.25rem var(--pad);gap:1rem;z-index:99}
+            background:var(--bg2);border-bottom:1px solid var(--border);
+            padding:1.25rem var(--pad);gap:1rem;z-index:99}
         }
         .nav-links a{font-family:var(--m);font-size:.74rem;color:var(--muted);text-decoration:none;letter-spacing:.03em;transition:color .15s}
-        .nav-links a:hover{color:var(--text)}
+        .nav-links a:hover,.nav-links a.active{color:var(--cyan)}
         .lt{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:3px;display:flex;gap:2px}
-        .lb{font-family:var(--m);font-size:.67rem;font-weight:500;padding:4px 9px;border-radius:4px;
-          border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all .15s}
-        .lb.on{background:var(--cyan);color:var(--bg)}
+        .lb{font-family:var(--m);font-size:.67rem;font-weight:500;padding:4px 9px;border-radius:4px;border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all .15s}
+        .lb.on{background:var(--cyan);color:#080c10}
         .hb{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:5px;background:none;border:none}
         @media(max-width:720px){.hb{display:flex}}
         .hb span{display:block;width:18px;height:1.5px;background:var(--muted);border-radius:2px}
