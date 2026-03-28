@@ -1,10 +1,11 @@
 "use client";
 
-import { useRouter, usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 
 type Lang = "fr" | "en";
 
+// ─── Traductions ───────────────────────────────────────────────────────────────
 const T = {
   fr: {
     nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
@@ -15,32 +16,16 @@ const T = {
     manifesto: {
       label: "Notre manifeste",
       blocks: [
-        {
-          icon: "⚡",
-          title: "Indépendance totale",
-          text: "Neuriflux n'appartient à aucun éditeur de logiciel. Nos comparatifs et avis sont rédigés sans pression commerciale. Quand un outil est nul, on le dit.",
-        },
-        {
-          icon: "🔬",
-          title: "Tests réels, pas des démos",
-          text: "Chaque outil est utilisé en conditions réelles, sur des projets concrets, pendant plusieurs semaines. Nos scores reflètent une utilisation quotidienne — pas un screenshot de marketing.",
-        },
-        {
-          icon: "💰",
-          title: "Transparence sur l'affiliation",
-          text: "Certains liens sont affiliés. Ça nous permet de garder le site gratuit. Mais ça ne change jamais notre avis — un mauvais outil reste un mauvais outil, affilié ou non.",
-        },
-        {
-          icon: "🇫🇷",
-          title: "Fait en France",
-          text: "Neuriflux est un projet français, bilingue FR/EN, pensé pour les créateurs, indépendants et équipes qui veulent naviguer dans l'écosystème IA sans se perdre.",
-        },
+        { icon: "⚡", title: "Indépendance totale", text: "Neuriflux n'appartient à aucun éditeur de logiciel. Nos comparatifs et avis sont rédigés sans pression commerciale. Quand un outil est nul, on le dit." },
+        { icon: "🔬", title: "Tests réels, pas des démos", text: "Chaque outil est utilisé en conditions réelles, sur des projets concrets, pendant plusieurs semaines. Nos scores reflètent une utilisation quotidienne — pas un screenshot de marketing." },
+        { icon: "💰", title: "Transparence sur l'affiliation", text: "Certains liens sont affiliés. Ça nous permet de garder le site gratuit. Mais ça ne change jamais notre avis — un mauvais outil reste un mauvais outil, affilié ou non." },
+        { icon: "🇫🇷", title: "Fait en France", text: "Neuriflux est un projet français, bilingue FR/EN, pensé pour les créateurs, indépendants et équipes qui veulent naviguer dans l'écosystème IA sans se perdre." },
       ],
     },
     stats: [
       { value: "120+", label: "Outils testés" },
       { value: "9", label: "Articles publiés" },
-      { value: "3 200+", label: "Lecteurs newsletter" },
+      { value: "3200+", label: "Lecteurs newsletter" },
       { value: "2026", label: "Lancé en" },
     ],
     howWeWork: {
@@ -71,18 +56,12 @@ const T = {
       cta: "S'abonner gratuitement →",
     },
     footer: {
-      rights: "Tous droits réservés.",
-      madeWith: "Fait avec",
-      inFrance: "en France",
-      links: [
-        { label: "Mentions légales", href: "/legal" },
-        { label: "Confidentialité", href: "/privacy" },
-        { label: "Cookies", href: "/cookies" },
-      ],
+      rights: "Tous droits réservés.", madeWith: "Fait avec", inFrance: "en France",
+      links: [{ label: "Mentions légales", href: "/legal" }, { label: "Confidentialité", href: "/privacy" }, { label: "Cookies", href: "/cookies" }],
     },
   },
   en: {
-    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact:"Contact", about: "About" },
+    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
     badge: "About Neuriflux",
     title: "We test.",
     titleAccent: "You choose.",
@@ -90,26 +69,10 @@ const T = {
     manifesto: {
       label: "Our manifesto",
       blocks: [
-        {
-          icon: "⚡",
-          title: "Total independence",
-          text: "Neuriflux is not owned by any software publisher. Our comparisons and reviews are written without commercial pressure. When a tool is bad, we say so.",
-        },
-        {
-          icon: "🔬",
-          title: "Real tests, not demos",
-          text: "Every tool is used in real conditions, on concrete projects, for several weeks. Our scores reflect daily use — not a marketing screenshot.",
-        },
-        {
-          icon: "💰",
-          title: "Transparent about affiliation",
-          text: "Some links are affiliate links. That's what keeps the site free. But it never changes our opinion — a bad tool stays a bad tool, affiliated or not.",
-        },
-        {
-          icon: "🇫🇷",
-          title: "Made in France",
-          text: "Neuriflux is a French project, bilingual FR/EN, designed for creators, freelancers and teams who want to navigate the AI ecosystem without getting lost.",
-        },
+        { icon: "⚡", title: "Total independence", text: "Neuriflux is not owned by any software publisher. Our comparisons and reviews are written without commercial pressure. When a tool is bad, we say so." },
+        { icon: "🔬", title: "Real tests, not demos", text: "Every tool is used in real conditions, on concrete projects, for several weeks. Our scores reflect daily use — not a marketing screenshot." },
+        { icon: "💰", title: "Transparent about affiliation", text: "Some links are affiliate links. That's what keeps the site free. But it never changes our opinion — a bad tool stays a bad tool, affiliated or not." },
+        { icon: "🇫🇷", title: "Made in France", text: "Neuriflux is a French project, bilingual FR/EN, designed for creators, freelancers and teams who want to navigate the AI ecosystem without getting lost." },
       ],
     },
     stats: [
@@ -146,45 +109,45 @@ const T = {
       cta: "Subscribe for free →",
     },
     footer: {
-      rights: "All rights reserved.",
-      madeWith: "Made with",
-      inFrance: "in France",
-      links: [
-        { label: "Legal notice", href: "/legal" },
-        { label: "Privacy", href: "/privacy" },
-        { label: "Cookies", href: "/cookies" },
-      ],
+      rights: "All rights reserved.", madeWith: "Made with", inFrance: "in France",
+      links: [{ label: "Legal notice", href: "/legal" }, { label: "Privacy", href: "/privacy" }, { label: "Cookies", href: "/cookies" }],
     },
   },
 };
 
-// ─── Animated counter ─────────────────────────────────────────────────────────
-function AnimatedCounter({ value }: { value: string }) {
-  const [display, setDisplay] = useState(value);
+// ─── Compteur animé au scroll ─────────────────────────────────────────────────
+function Counter({ value }: { value: string }) {
+  const [d, setD] = useState("0");
   const ref = useRef<HTMLDivElement>(null);
+  const done = useRef(false);
   useEffect(() => {
     const num = parseInt(value.replace(/\D/g, ""));
-    const suffix = value.replace(/[0-9]/g, "");
-    if (isNaN(num)) { setDisplay(value); return; }
-    const duration = 1400;
-    const step = (ts: number, t0: number) => {
-      const p = Math.min((ts - t0) / duration, 1);
-      setDisplay(Math.floor((1 - Math.pow(1 - p, 3)) * num) + suffix);
-      if (p < 1) requestAnimationFrame((t) => step(t, t0));
+    const sfx = value.replace(/[0-9]/g, "");
+    if (isNaN(num)) { setD(value); return; }
+    const run = () => {
+      if (done.current) return;
+      done.current = true;
+      const t0 = performance.now();
+      const tick = (t: number) => {
+        const p = Math.min((t - t0) / 1300, 1);
+        setD(Math.floor((1 - Math.pow(1 - p, 3)) * num) + sfx);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
     };
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { requestAnimationFrame((t) => step(t, t)); obs.disconnect(); }
-    }, { threshold: 0.3 });
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
+    const ob = new IntersectionObserver(([e]) => { if (e.isIntersecting) run(); }, { threshold: 0.2 });
+    if (ref.current) ob.observe(ref.current);
+    return () => ob.disconnect();
   }, [value]);
-  return <div ref={ref} className="stat-val">{display}</div>;
+  return <div ref={ref} className="stat-val">{d}</div>;
 }
 
+// ─── Page ─────────────────────────────────────────────────────────────────────
 export default function AboutClient({ lang }: { lang: Lang }) {
   const router = useRouter();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const t = T[lang];
   const l = (path: string) => `/${lang}${path}`;
 
@@ -193,104 +156,280 @@ export default function AboutClient({ lang }: { lang: Lang }) {
     router.push(pathname.replace(/^\/(fr|en)/, `/${next}`));
   };
 
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", fn, { passive: true });
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+        /* ─────────────────────────────────────────────────────────
+           RESET & VARIABLES
+        ───────────────────────────────────────────────────────── */
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        :root{--bg:#080c10;--bg2:#0d1117;--bg3:#111820;--border:rgba(255,255,255,0.07);--border-glow:rgba(0,230,190,0.25);--cyan:#00e6be;--cyan-dim:rgba(0,230,190,0.12);--cyan-glow:rgba(0,230,190,0.35);--text:#f0f4f8;--text-muted:#6b7a8d;--text-dim:#3d4f61;--font-display:'Syne',sans-serif;--font-mono:'JetBrains Mono',monospace;--font-body:'Lora',serif}
-        html{scroll-behavior:smooth}body{background:var(--bg);color:var(--text);font-family:var(--font-display);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-        .grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,230,190,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,190,0.02) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
-        .glow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(0,230,190,0.06) 0%,transparent 70%);pointer-events:none;z-index:0}
+        :root{
+          /* Fonds */
+          --bg:#080c10;
+          --bg2:#0d1117;
+          --bg3:#111820;
+          /* Bordures */
+          --border:rgba(255,255,255,.065);
+          --glow:rgba(0,230,190,.2);
+          /* Couleur accent */
+          --cyan:#00e6be;
+          --cdim:rgba(0,230,190,.09);
+          /* Texte */
+          --text:#edf2f7;
+          --muted:#5a6a7a;
+          --dim:#2a3a4a;
+          /* Fonts */
+          --d:'Syne',sans-serif;
+          --m:'JetBrains Mono',monospace;
+          /* Utilitaires */
+          --r:10px;
+          --pad:clamp(1.5rem,5vw,4rem)
+        }
+        html{scroll-behavior:smooth}
+        body{background:var(--bg);color:var(--text);font-family:var(--d);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
-        nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(8,12,16,0.85);border-bottom:1px solid var(--border);padding:0 clamp(1.5rem,5vw,4rem);height:64px;display:flex;align-items:center;justify-content:space-between}
-        .logo{font-family:var(--font-display);font-weight:800;font-size:1.2rem;letter-spacing:-0.02em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.5rem}
-        .logo span{color:var(--cyan)}
-        .dot{width:7px;height:7px;background:var(--cyan);border-radius:50%;box-shadow:0 0 10px var(--cyan);animation:pulse 2s infinite}
-        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.8)}}
-        .nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
-        @media(max-width:768px){.nav-links{display:none}.nav-links.open{display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);padding:1.5rem 2rem;gap:1.2rem}}
-        .nav-links a{font-family:var(--font-mono);font-size:.78rem;color:var(--text-muted);text-decoration:none;letter-spacing:.04em;transition:color .2s}
+        /* ─────────────────────────────────────────────────────────
+           FOND : GRILLE + GLOW AMBIANT
+        ───────────────────────────────────────────────────────── */
+        .bg-grid{
+          position:fixed;inset:0;
+          background-image:
+            linear-gradient(rgba(0,230,190,.018) 1px,transparent 1px),
+            linear-gradient(90deg,rgba(0,230,190,.018) 1px,transparent 1px);
+          background-size:72px 72px;
+          pointer-events:none;z-index:0
+        }
+        .bg-glow{
+          position:fixed;top:-20%;left:50%;transform:translateX(-50%);
+          width:900px;height:680px;
+          background:radial-gradient(ellipse,rgba(0,230,190,.055) 0%,transparent 68%);
+          pointer-events:none;z-index:0
+        }
+
+        /* ─────────────────────────────────────────────────────────
+           NAVIGATION — identique sur toutes les pages
+        ───────────────────────────────────────────────────────── */
+        nav{
+          position:sticky;top:0;z-index:100;
+          backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+          background:rgba(8,12,16,.93);
+          border-bottom:1px solid var(--border);
+          padding:0 var(--pad);height:60px;
+          display:flex;align-items:center;justify-content:space-between;
+          transition:box-shadow .2s
+        }
+        nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,.4)}
+        .logo{
+          font-family:var(--d);font-weight:800;font-size:1.15rem;
+          letter-spacing:-.03em;color:var(--text);text-decoration:none;
+          display:flex;align-items:center;gap:.45rem
+        }
+        .logo em{color:var(--cyan);font-style:normal}
+        .logo-dot{
+          width:6px;height:6px;background:var(--cyan);border-radius:50%;
+          box-shadow:0 0 8px var(--cyan);animation:blink 2s infinite
+        }
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+        .nav-links{display:flex;align-items:center;gap:1.75rem;list-style:none}
+        @media(max-width:720px){
+          .nav-links{display:none}
+          .nav-links.open{
+            display:flex;flex-direction:column;
+            position:fixed;top:60px;left:0;right:0;
+            background:var(--bg2);border-bottom:1px solid var(--border);
+            padding:1.25rem var(--pad);gap:1rem;z-index:99
+          }
+        }
+        .nav-links a{font-family:var(--m);font-size:.74rem;color:var(--muted);text-decoration:none;letter-spacing:.03em;transition:color .15s}
         .nav-links a:hover,.nav-links a.active{color:var(--cyan)}
-        .lang-toggle{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px;display:flex;gap:2px}
-        .lb{font-family:var(--font-mono);font-size:.7rem;padding:4px 10px;border-radius:4px;border:none;cursor:pointer;transition:all .2s;background:transparent;color:var(--text-muted)}
-        .lb.active{background:var(--cyan);color:var(--bg);font-weight:600}
-        .hb{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:6px;background:none;border:none}
-        @media(max-width:768px){.hb{display:flex}}
-        .hb span{display:block;width:20px;height:2px;background:var(--text-muted);border-radius:2px}
+        .lt{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:3px;display:flex;gap:2px}
+        .lb{font-family:var(--m);font-size:.67rem;font-weight:500;padding:4px 9px;border-radius:4px;border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all .15s}
+        .lb.on{background:var(--cyan);color:#080c10}
+        .hb{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:5px;background:none;border:none}
+        @media(max-width:720px){.hb{display:flex}}
+        .hb span{display:block;width:18px;height:1.5px;background:var(--muted);border-radius:2px}
 
-        /* HERO */
-        .hero{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:clamp(5rem,10vw,8rem) clamp(1.5rem,5vw,4rem) clamp(3rem,6vw,5rem);text-align:center}
-        .badge{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;color:var(--cyan);background:var(--cyan-dim);border:1px solid var(--border-glow);border-radius:100px;padding:6px 14px;margin-bottom:2rem}
-        .hero-title{font-size:clamp(3rem,8vw,6rem);font-weight:800;line-height:1.0;letter-spacing:-.04em;margin-bottom:1.5rem}
-        .hero-title .accent{color:var(--cyan)}
-        .hero-subtitle{font-family:var(--font-mono);font-size:clamp(.9rem,1.8vw,1.05rem);font-weight:300;color:var(--text-muted);line-height:1.7;max-width:600px;margin:0 auto}
+        /* ─────────────────────────────────────────────────────────
+           LAYOUT PRINCIPAL
+        ───────────────────────────────────────────────────────── */
+        .wrap{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:0 var(--pad)}
 
-        /* STATS */
-        .stats{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem) clamp(3rem,6vw,5rem);display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden}
-        @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+        /* ─────────────────────────────────────────────────────────
+           HERO
+        ───────────────────────────────────────────────────────── */
+        .hero{padding:clamp(5rem,10vw,8rem) 0 clamp(3rem,6vw,4rem);text-align:center}
+        .badge{
+          display:inline-flex;align-items:center;gap:.5rem;
+          font-family:var(--m);font-size:.7rem;letter-spacing:.08em;
+          color:var(--cyan);background:var(--cdim);border:1px solid var(--glow);
+          border-radius:100px;padding:6px 14px;margin-bottom:2rem
+        }
+        .badge-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:blink 2s infinite}
+        .hero-title{
+          font-size:clamp(3rem,8vw,5.5rem);font-weight:800;
+          line-height:1.0;letter-spacing:-.04em;margin-bottom:1.5rem
+        }
+        .hero-title .ac{color:var(--cyan)}
+        .hero-sub{
+          font-family:var(--m);font-size:clamp(.82rem,1.6vw,.96rem);
+          font-weight:300;color:var(--muted);line-height:1.75;
+          max-width:580px;margin:0 auto
+        }
+
+        /* ─────────────────────────────────────────────────────────
+           STATS — 4 colonnes avec compteurs animés
+        ───────────────────────────────────────────────────────── */
+        .stats{
+          display:grid;grid-template-columns:repeat(4,1fr);
+          gap:1px;background:var(--border);
+          border:1px solid var(--border);border-radius:14px;overflow:hidden;
+          margin-bottom:clamp(3rem,6vw,5rem)
+        }
+        @media(max-width:580px){.stats{grid-template-columns:repeat(2,1fr)}}
         .stat-box{background:var(--bg2);padding:2rem 1.5rem;text-align:center;transition:background .2s}
         .stat-box:hover{background:var(--bg3)}
-        .stat-val{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;letter-spacing:-.04em;color:var(--cyan);font-family:var(--font-display)}
-        .stat-lbl{font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;margin-top:.3rem}
+        .stat-val{font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;letter-spacing:-.04em;color:var(--cyan);font-family:var(--d)}
+        .stat-lbl{font-family:var(--m);font-size:.65rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:.3rem}
 
-        /* SECTIONS */
-        .section{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,4rem)}
-        .section-label{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
-        .section-label::before{content:'';display:inline-block;width:20px;height:1px;background:var(--cyan)}
+        /* ─────────────────────────────────────────────────────────
+           SECTION — layout commun
+        ───────────────────────────────────────────────────────── */
+        .section{padding:clamp(2.5rem,5vw,3.5rem) 0}
+        .sec-label{
+          font-family:var(--m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+          color:var(--cyan);margin-bottom:1.5rem;
+          display:flex;align-items:center;gap:.4rem
+        }
+        .sec-label::before{content:'';width:14px;height:1px;background:var(--cyan);display:inline-block}
 
-        /* MANIFESTO */
-        .manifesto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin-top:2.5rem}
-        .manifesto-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem;transition:all .2s;position:relative;overflow:hidden}
-        .manifesto-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
-        .manifesto-card:hover{border-color:var(--border-glow);transform:translateY(-2px)}
-        .manifesto-card:hover::before{transform:scaleX(1)}
-        .manifesto-icon{font-size:2rem;margin-bottom:1.25rem;display:block}
-        .manifesto-title{font-size:1.05rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.75rem;color:var(--text)}
-        .manifesto-text{font-family:var(--font-body);font-size:.9rem;line-height:1.75;color:#d4dde8}
+        /* ─────────────────────────────────────────────────────────
+           MANIFESTE — 4 cards en grille
+        ───────────────────────────────────────────────────────── */
+        .manifesto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem}
+        .mcard{
+          background:var(--bg2);border:1px solid var(--border);border-radius:14px;
+          padding:1.75rem;transition:all .2s;position:relative;overflow:hidden
+        }
+        /* Barre cyan apparaît au hover */
+        .mcard::before{
+          content:'';position:absolute;top:0;left:0;right:0;height:2px;
+          background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .3s
+        }
+        .mcard:hover{border-color:var(--glow);transform:translateY(-2px);box-shadow:0 12px 36px rgba(0,0,0,.4)}
+        .mcard:hover::before{transform:scaleX(1)}
+        .mcard-icon{font-size:1.75rem;margin-bottom:1.1rem;display:block}
+        .mcard-title{font-family:var(--d);font-size:.95rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.6rem;color:var(--text)}
+        .mcard-text{font-family:var(--m);font-size:.75rem;color:var(--muted);line-height:1.75;font-weight:300}
 
-        /* HOW WE WORK — timeline */
-        .timeline{margin-top:2.5rem;display:flex;flex-direction:column;gap:0}
-        .timeline-step{display:grid;grid-template-columns:60px 1fr;gap:1.5rem;position:relative}
-        .timeline-step:not(:last-child)::after{content:'';position:absolute;left:29px;top:52px;bottom:-1px;width:2px;background:var(--border)}
-        .timeline-num{width:44px;height:44px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.72rem;font-weight:600;color:var(--cyan);flex-shrink:0;position:relative;z-index:1;transition:all .2s}
-        .timeline-step:hover .timeline-num{background:var(--cyan-dim);border-color:var(--border-glow)}
-        .timeline-content{padding:0 0 2.5rem}
-        .timeline-title{font-size:1.05rem;font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:.5rem}
-        .timeline-text{font-family:var(--font-body);font-size:.9rem;color:#d4dde8;line-height:1.7}
+        /* ─────────────────────────────────────────────────────────
+           TIMELINE — comment on travaille
+        ───────────────────────────────────────────────────────── */
+        .timeline{display:flex;flex-direction:column;gap:0}
+        .tl-step{display:grid;grid-template-columns:56px 1fr;gap:1.5rem;position:relative}
+        /* Ligne verticale reliant les étapes */
+        .tl-step:not(:last-child)::after{
+          content:'';position:absolute;left:27px;top:48px;bottom:-1px;
+          width:2px;background:var(--border)
+        }
+        .tl-num{
+          width:40px;height:40px;border-radius:10px;
+          background:var(--bg2);border:1px solid var(--border);
+          display:flex;align-items:center;justify-content:center;
+          font-family:var(--m);font-size:.68rem;font-weight:600;color:var(--cyan);
+          flex-shrink:0;position:relative;z-index:1;transition:all .2s
+        }
+        .tl-step:hover .tl-num{background:var(--cdim);border-color:var(--glow)}
+        .tl-content{padding:0 0 2.5rem}
+        .tl-title{font-family:var(--d);font-size:.98rem;font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:.4rem}
+        .tl-text{font-family:var(--m);font-size:.75rem;color:var(--muted);line-height:1.7;font-weight:300}
 
-        /* MISSION */
-        .mission-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:clamp(2rem,4vw,3.5rem);position:relative;overflow:hidden}
-        .mission-box::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
-        .mission-glow{position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:500px;height:300px;background:radial-gradient(ellipse,rgba(0,230,190,.05),transparent 70%);pointer-events:none}
-        .mission-title{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;letter-spacing:-.03em;margin-bottom:1rem;position:relative;z-index:1}
-        .mission-text{font-family:var(--font-body);font-size:1rem;line-height:1.8;color:#d4dde8;max-width:680px;position:relative;z-index:1}
+        /* ─────────────────────────────────────────────────────────
+           MISSION — bloc centré avec glow
+        ───────────────────────────────────────────────────────── */
+        .mission-box{
+          background:var(--bg2);border:1px solid var(--border);border-radius:16px;
+          padding:clamp(2rem,4vw,3rem);position:relative;overflow:hidden
+        }
+        .mission-box::before{
+          content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+          width:55%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)
+        }
+        .mission-glow{
+          position:absolute;top:-40%;left:50%;transform:translateX(-50%);
+          width:500px;height:280px;
+          background:radial-gradient(ellipse,rgba(0,230,190,.05),transparent 70%);
+          pointer-events:none
+        }
+        .mission-title{
+          font-size:clamp(1.4rem,3vw,1.9rem);font-weight:800;letter-spacing:-.03em;
+          margin-bottom:1rem;position:relative;z-index:1
+        }
+        .mission-text{
+          font-family:var(--m);font-size:.82rem;line-height:1.85;color:var(--muted);
+          max-width:640px;position:relative;z-index:1;font-weight:300
+        }
 
-        /* BOTTOM GRID */
-        .bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem}
-        @media(max-width:640px){.bottom-grid{grid-template-columns:1fr}}
-        .bottom-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem;transition:border-color .2s}
-        .bottom-card:hover{border-color:var(--border-glow)}
-        .bottom-card-label{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:1rem}
-        .bottom-card-title{font-size:1.1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.75rem;color:var(--text)}
-        .bottom-card-text{font-family:var(--font-mono);font-size:.8rem;color:var(--text-muted);line-height:1.6;font-weight:300;margin-bottom:1.5rem}
-        .btn-cyan{display:inline-flex;align-items:center;gap:.4rem;background:var(--cyan);color:var(--bg);font-family:var(--font-display);font-weight:700;font-size:.85rem;padding:10px 20px;border-radius:8px;text-decoration:none;transition:all .2s;letter-spacing:-.01em}
-        .btn-cyan:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--cyan-glow)}
-        .btn-outline{display:inline-flex;align-items:center;gap:.4rem;background:transparent;color:var(--cyan);font-family:var(--font-display);font-weight:700;font-size:.85rem;padding:10px 20px;border-radius:8px;text-decoration:none;transition:all .2s;letter-spacing:-.01em;border:1px solid var(--border-glow)}
-        .btn-outline:hover{background:var(--cyan-dim);transform:translateY(-1px)}
+        /* ─────────────────────────────────────────────────────────
+           GRILLE BAS — contact + newsletter
+        ───────────────────────────────────────────────────────── */
+        .bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:1.5rem}
+        @media(max-width:600px){.bottom-grid{grid-template-columns:1fr}}
+        .bcard{
+          background:var(--bg2);border:1px solid var(--border);border-radius:14px;
+          padding:1.75rem;transition:border-color .2s;display:flex;flex-direction:column;gap:.5rem
+        }
+        .bcard:hover{border-color:var(--glow)}
+        .bcard-label{font-family:var(--m);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+        .bcard-title{font-family:var(--d);font-size:1.05rem;font-weight:700;letter-spacing:-.02em;color:var(--text)}
+        .bcard-text{font-family:var(--m);font-size:.75rem;color:var(--muted);line-height:1.65;font-weight:300;flex:1}
+        .btn-p{
+          display:inline-flex;align-items:center;gap:.4rem;
+          background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:700;
+          font-size:.82rem;padding:10px 20px;border-radius:8px;
+          text-decoration:none;transition:all .2s;letter-spacing:-.01em;margin-top:.5rem
+        }
+        .btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,230,190,.28)}
+        .btn-s{
+          display:inline-flex;align-items:center;gap:.4rem;
+          background:transparent;color:var(--cyan);font-family:var(--d);font-weight:700;
+          font-size:.82rem;padding:10px 20px;border-radius:8px;
+          text-decoration:none;transition:all .2s;letter-spacing:-.01em;
+          border:1px solid var(--glow);margin-top:.5rem
+        }
+        .btn-s:hover{background:var(--cdim);transform:translateY(-1px)}
 
-        footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem clamp(1.5rem,5vw,4rem);max-width:1000px;margin:0 auto}
-        .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-        .cp{font-family:var(--font-mono);font-size:.7rem;color:var(--text-dim)}.cp span{color:var(--cyan)}
-        .footer-links{display:flex;gap:1.5rem;flex-wrap:wrap}
-        .footer-links a{font-family:var(--font-mono);font-size:.68rem;color:var(--text-dim);text-decoration:none;transition:color .2s}
-        .footer-links a:hover{color:var(--cyan)}
+        /* ─────────────────────────────────────────────────────────
+           FOOTER
+        ───────────────────────────────────────────────────────── */
+        footer{
+          position:relative;z-index:1;
+          border-top:1px solid var(--border);
+          padding:1.75rem var(--pad);
+          max-width:1000px;margin:0 auto;
+          display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem
+        }
+        .ft-copy{font-family:var(--m);font-size:.62rem;color:var(--dim)}
+        .ft-copy em{color:var(--cyan);font-style:normal}
+        .ft-links{display:flex;gap:1.25rem;list-style:none}
+        .ft-links a{font-family:var(--m);font-size:.62rem;color:var(--dim);text-decoration:none;transition:color .15s}
+        .ft-links a:hover{color:var(--muted)}
       `}</style>
 
-      <div className="grid-bg" /><div className="glow" />
+      <div className="bg-grid" />
+      <div className="bg-glow" />
 
-      <nav>
-        <a href={l("")} className="logo"><div className="dot" />Neuri<span>flux</span></a>
+      {/* ── NAVIGATION ── */}
+      <nav className={scrolled ? "scrolled" : ""}>
+        <a href={l("")} className="logo">
+          <div className="logo-dot" />
+          Neuri<em>flux</em>
+        </a>
         <ul className={`nav-links${menuOpen ? " open" : ""}`}>
           <li><a href={l("/blog")}>{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")}>{t.nav.comparatifs}</a></li>
@@ -298,107 +437,108 @@ export default function AboutClient({ lang }: { lang: Lang }) {
           <li><a href={l("/contact")}>{t.nav.contact}</a></li>
           <li><a href={l("/about")} className="active">{t.nav.about}</a></li>
         </ul>
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div className="lang-toggle">
-            <button className={`lb${lang === "fr" ? " active" : ""}`} onClick={() => switchLang("fr")}>FR</button>
-            <button className={`lb${lang === "en" ? " active" : ""}`} onClick={() => switchLang("en")}>EN</button>
+        <div style={{ display: "flex", gap: ".75rem", alignItems: "center" }}>
+          <div className="lt">
+            <button className={`lb${lang === "fr" ? " on" : ""}`} onClick={() => switchLang("fr")}>FR</button>
+            <button className={`lb${lang === "en" ? " on" : ""}`} onClick={() => switchLang("en")}>EN</button>
           </div>
-          <button className="hb" onClick={() => setMenuOpen(!menuOpen)}><span /><span /><span /></button>
+          <button className="hb" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
+            <span /><span /><span />
+          </button>
         </div>
       </nav>
 
-      {/* ─── HERO ─────────────────────────────────────────────────────────── */}
-      <div className="hero">
-        <div className="badge">
-          <span style={{ width: 6, height: 6, background: "var(--cyan)", borderRadius: "50%", display: "inline-block" }} />
-          {t.badge}
-        </div>
-        <h1 className="hero-title">
-          {t.title}<br /><span className="accent">{t.titleAccent}</span>
-        </h1>
-        <p className="hero-subtitle">{t.subtitle}</p>
-      </div>
+      {/* ── CONTENU ── */}
+      <div className="wrap">
 
-      {/* ─── STATS ────────────────────────────────────────────────────────── */}
-      <div className="stats">
-        {t.stats.map((s, i) => (
-          <div key={i} className="stat-box">
-            <AnimatedCounter value={s.value} />
-            <div className="stat-lbl">{s.label}</div>
+        {/* Hero */}
+        <div className="hero">
+          <div className="badge">
+            <div className="badge-dot" />
+            {t.badge}
           </div>
-        ))}
-      </div>
+          <h1 className="hero-title">
+            {t.title}<br /><span className="ac">{t.titleAccent}</span>
+          </h1>
+          <p className="hero-sub">{t.subtitle}</p>
+        </div>
 
-      {/* ─── MANIFESTO ────────────────────────────────────────────────────── */}
-      <div className="section">
-        <div className="section-label">{t.manifesto.label}</div>
-        <div className="manifesto-grid">
-          {t.manifesto.blocks.map((block, i) => (
-            <div key={i} className="manifesto-card">
-              <span className="manifesto-icon">{block.icon}</span>
-              <div className="manifesto-title">{block.title}</div>
-              <p className="manifesto-text">{block.text}</p>
+        {/* Stats */}
+        <div className="stats">
+          {t.stats.map((s, i) => (
+            <div key={i} className="stat-box">
+              <Counter value={s.value} />
+              <div className="stat-lbl">{s.label}</div>
             </div>
           ))}
         </div>
-      </div>
 
-      {/* ─── HOW WE WORK ──────────────────────────────────────────────────── */}
-      <div className="section" style={{ paddingTop: 0 }}>
-        <div className="section-label">{t.howWeWork.label}</div>
-        <div className="timeline">
-          {t.howWeWork.steps.map((step, i) => (
-            <div key={i} className="timeline-step">
-              <div className="timeline-num">{step.num}</div>
-              <div className="timeline-content">
-                <div className="timeline-title">{step.title}</div>
-                <p className="timeline-text">{step.text}</p>
+        {/* Manifeste */}
+        <div className="section">
+          <div className="sec-label">{t.manifesto.label}</div>
+          <div className="manifesto-grid">
+            {t.manifesto.blocks.map((b, i) => (
+              <div key={i} className="mcard">
+                <span className="mcard-icon">{b.icon}</span>
+                <div className="mcard-title">{b.title}</div>
+                <p className="mcard-text">{b.text}</p>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ─── MISSION ──────────────────────────────────────────────────────── */}
-      <div className="section" style={{ paddingTop: 0 }}>
-        <div className="mission-box">
-          <div className="mission-glow" />
-          <div className="section-label" style={{ marginBottom: "1.5rem" }}>{t.mission.label}</div>
-          <h2 className="mission-title">{t.mission.title}</h2>
-          <p className="mission-text">{t.mission.text}</p>
-        </div>
-
-        {/* ─── CONTACT + NEWSLETTER ─────────────────────────────────────── */}
-        <div className="bottom-grid">
-          <div className="bottom-card">
-            <div className="bottom-card-label">{t.contact.label}</div>
-            <div className="bottom-card-title">{t.contact.title}</div>
-            <p className="bottom-card-text">{t.contact.text}</p>
-            <a href={`mailto:${t.contact.email}`} className="btn-cyan">
-              ✉ {t.contact.emailLabel}
-            </a>
-          </div>
-          <div className="bottom-card">
-            <div className="bottom-card-label">{t.newsletter.label}</div>
-            <div className="bottom-card-title">{t.newsletter.title}</div>
-            <p className="bottom-card-text">{t.newsletter.text}</p>
-            <a href={l("/newsletter")} className="btn-outline">
-              {t.newsletter.cta}
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* ─── FOOTER ───────────────────────────────────────────────────────── */}
-      <footer>
-        <div className="footer-inner">
-          <p className="cp">© 2026 <span>Neuriflux</span>. {t.footer.rights} {t.footer.madeWith} <span>♥</span> {t.footer.inFrance}</p>
-          <div className="footer-links">
-            {t.footer.links.map((link, i) => (
-              <a key={i} href={l(link.href)}>{link.label}</a>
             ))}
           </div>
         </div>
+
+        {/* Comment on travaille */}
+        <div className="section">
+          <div className="sec-label">{t.howWeWork.label}</div>
+          <div className="timeline">
+            {t.howWeWork.steps.map((s, i) => (
+              <div key={i} className="tl-step">
+                <div className="tl-num">{s.num}</div>
+                <div className="tl-content">
+                  <div className="tl-title">{s.title}</div>
+                  <p className="tl-text">{s.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mission */}
+        <div className="section">
+          <div className="mission-box">
+            <div className="mission-glow" />
+            <div className="sec-label" style={{ marginBottom: "1.25rem" }}>{t.mission.label}</div>
+            <h2 className="mission-title">{t.mission.title}</h2>
+            <p className="mission-text">{t.mission.text}</p>
+          </div>
+
+          {/* Contact + Newsletter */}
+          <div className="bottom-grid">
+            <div className="bcard">
+              <div className="bcard-label">{t.contact.label}</div>
+              <div className="bcard-title">{t.contact.title}</div>
+              <p className="bcard-text">{t.contact.text}</p>
+              <a href={`mailto:${t.contact.email}`} className="btn-p">✉ {t.contact.emailLabel}</a>
+            </div>
+            <div className="bcard">
+              <div className="bcard-label">{t.newsletter.label}</div>
+              <div className="bcard-title">{t.newsletter.title}</div>
+              <p className="bcard-text">{t.newsletter.text}</p>
+              <a href={l("/newsletter")} className="btn-s">{t.newsletter.cta}</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Footer */}
+      <footer>
+        <span className="ft-copy">© 2026 <em>Neuriflux</em>. {t.footer.rights} {t.footer.madeWith} <em>♥</em> {t.footer.inFrance}</span>
+        <ul className="ft-links">
+          {t.footer.links.map((x, i) => (
+            <li key={i}><a href={l(x.href)}>{x.label}</a></li>
+          ))}
+        </ul>
       </footer>
     </>
   );

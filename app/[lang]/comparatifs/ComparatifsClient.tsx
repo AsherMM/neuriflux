@@ -6,6 +6,7 @@ import { COMPARATIFS, getAllComparatifTags, type Comparatif } from "../lib/compa
 
 type Lang = "fr" | "en";
 
+// ─── Traductions ───────────────────────────────────────────────────────────────
 const T = {
   fr: {
     nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
@@ -13,13 +14,10 @@ const T = {
     title: "Comparatifs", accent: "IA",
     subtitle: "Des comparatifs honnêtes basés sur des tests réels. Scores détaillés, verdicts clairs, sans bullshit.",
     search: "Rechercher un comparatif...",
-    all: "Tous",
-    featured: "À la une",
-    allLabel: "Tous les comparatifs",
-    vs: "vs",
-    winner: "Gagnant",
-    see: "Voir le comparatif →",
+    all: "Tous", featured: "À la une", allLabel: "Tous les comparatifs",
+    vs: "vs", winner: "Gagnant", see: "Voir →",
     noResults: "Aucun comparatif trouvé.",
+    tools: "outils testés",
   },
   en: {
     nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
@@ -27,32 +25,35 @@ const T = {
     title: "AI", accent: "Comparisons",
     subtitle: "Honest comparisons based on real tests. Detailed scores, clear verdicts, no bullshit.",
     search: "Search comparisons...",
-    all: "All",
-    featured: "Featured",
-    allLabel: "All comparisons",
-    vs: "vs",
-    winner: "Winner",
-    see: "See comparison →",
+    all: "All", featured: "Featured", allLabel: "All comparisons",
+    vs: "vs", winner: "Winner", see: "See →",
     noResults: "No comparisons found.",
+    tools: "tools tested",
   },
 };
 
+// ─── Couleurs par tag ──────────────────────────────────────────────────────────
 const TAG_COLORS: Record<string, string> = {
-  Chatbots: "#00e6be", Code: "#3b82f6", "Rédaction": "#f59e0b",
-  Writing: "#f59e0b", Image: "#a855f7", "Productivité": "#10b981",
-  Productivity: "#10b981", Audio: "#ef4444",
+  Chatbots: "#00e6be", Code: "#3b82f6", Rédaction: "#f59e0b",
+  Writing: "#f59e0b", Image: "#a855f7", Productivité: "#10b981",
+  Productivity: "#10b981", Audio: "#ef4444", Video: "#a855f7", Vidéo: "#a855f7",
 };
-function gc(tag: string) { return TAG_COLORS[tag] || "#00e6be"; }
+const gc = (tag: string) => TAG_COLORS[tag] || "#00e6be";
 
-function ScorePill({ score }: { score: number }) {
-  const color = score >= 9 ? "#00e6be" : score >= 8 ? "#3b82f6" : score >= 7 ? "#f59e0b" : "#ef4444";
+// ─── Score pill ────────────────────────────────────────────────────────────────
+function ScorePill({ score, color }: { score: number; color: string }) {
   return (
-    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.82rem", fontWeight: 700, color, background: `${color}18`, border: `1px solid ${color}40`, borderRadius: 6, padding: "3px 10px" }}>
+    <span style={{
+      fontFamily: "var(--m)", fontSize: "0.8rem", fontWeight: 700,
+      color, background: `${color}18`, border: `1px solid ${color}38`,
+      borderRadius: 6, padding: "2px 9px", display: "inline-block",
+    }}>
       {score.toFixed(1)}
     </span>
   );
 }
 
+// ─── Card comparatif ───────────────────────────────────────────────────────────
 function ComparatifCard({ c, lang, t, l }: {
   c: Comparatif; lang: Lang; t: typeof T["fr"]; l: (p: string) => string;
 }) {
@@ -60,65 +61,118 @@ function ComparatifCard({ c, lang, t, l }: {
   const cl = c[lang];
   const tagColor = gc(c.tag);
   const winner = c.tools.find(tool => tool.name === c.winner);
+  const winnerTool = c.tools.find(t => t.name === c.winner);
 
   return (
     <a
       href={l(`/comparatifs/${c.slug}`)}
-      style={{
-        background: "var(--bg2)",
-        border: `1px solid ${hov ? "rgba(0,230,190,0.25)" : "var(--border)"}`,
-        borderRadius: 16, padding: "1.75rem",
-        display: "flex", flexDirection: "column", gap: "1.25rem",
-        textDecoration: "none", transition: "all 0.25s",
-        transform: hov ? "translateY(-3px)" : "none",
-        boxShadow: hov ? "0 16px 50px rgba(0,0,0,0.5)" : "none",
-        position: "relative", overflow: "hidden",
-      }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
+      style={{
+        background: "var(--bg2)",
+        border: `1px solid ${hov ? tagColor + "35" : "var(--border)"}`,
+        borderRadius: 16, padding: "1.75rem",
+        display: "flex", flexDirection: "column" as const, gap: "1.1rem",
+        textDecoration: "none", transition: "all 0.22s",
+        transform: hov ? "translateY(-3px)" : "none",
+        boxShadow: hov ? `0 20px 50px rgba(0,0,0,.5), 0 0 0 1px ${tagColor}20` : "none",
+        position: "relative" as const, overflow: "hidden",
+      }}
     >
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg,${tagColor},transparent)`, opacity: hov ? 1 : 0.5, transition: "opacity 0.3s" }} />
+      {/* Barre colorée en haut selon le tag */}
+      <div style={{
+        position: "absolute", top: 0, left: 0, right: 0, height: 2,
+        background: `linear-gradient(90deg,${tagColor},${tagColor}50,transparent)`,
+        opacity: hov ? 1 : 0.55, transition: "opacity 0.25s",
+      }} />
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "0.5rem" }}>
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, color: tagColor, fontWeight: 500, background: `${tagColor}18`, border: `1px solid ${tagColor}30`, padding: "3px 10px", borderRadius: 100 }}>{c.tag}</span>
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "var(--text-dim)" }}>{c.date[lang]}</span>
+      {/* Glow au hover */}
+      {hov && (
+        <div style={{
+          position: "absolute", top: "-40%", right: "-10%",
+          width: 280, height: 200,
+          background: `radial-gradient(ellipse,${tagColor}08,transparent 70%)`,
+          pointerEvents: "none",
+        }} />
+      )}
+
+      {/* Header : tag + date */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: "0.4rem" }}>
+        <span style={{
+          fontFamily: "var(--m)", fontSize: "0.6rem", letterSpacing: "0.1em",
+          textTransform: "uppercase" as const, color: tagColor, fontWeight: 700,
+          background: `${tagColor}18`, border: `1px solid ${tagColor}30`,
+          padding: "3px 10px", borderRadius: 100,
+        }}>{c.tag}</span>
+        <span style={{ fontFamily: "var(--m)", fontSize: "0.65rem", color: "var(--dim)" }}>{c.date[lang]}</span>
       </div>
 
-      <div style={{ fontSize: "1.05rem", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.3, color: "var(--text)", fontFamily: "var(--font-display)" }}>{cl.title}</div>
+      {/* Titre */}
+      <div style={{
+        fontFamily: "var(--d)", fontSize: "1.02rem", fontWeight: 700,
+        letterSpacing: "-0.02em", lineHeight: 1.3, color: "var(--text)",
+      }}>{cl.title}</div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
+      {/* Outils avec logos */}
+      <div style={{ display: "flex", alignItems: "center", gap: "0.45rem", flexWrap: "wrap" as const }}>
         {c.tools.map((tool, i) => (
-          <span key={tool.name} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem", background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: 8, padding: "5px 10px", fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--text-muted)" }}>
+          <span key={tool.name} style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
+            <span style={{
+              display: "inline-flex", alignItems: "center", gap: "0.3rem",
+              background: "var(--bg3)", border: "1px solid var(--border)",
+              borderRadius: 8, padding: "5px 10px",
+              fontFamily: "var(--m)", fontSize: "0.72rem", color: "var(--muted)",
+            }}>
               <span style={{ color: tool.color }}>{tool.logo}</span> {tool.name}
             </span>
-            {i < c.tools.length - 1 && <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", color: "var(--text-dim)" }}>{t.vs}</span>}
+            {i < c.tools.length - 1 && (
+              <span style={{ fontFamily: "var(--m)", fontSize: "0.6rem", color: "var(--dim)", fontWeight: 500 }}>
+                {t.vs}
+              </span>
+            )}
           </span>
         ))}
       </div>
 
-      <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+      {/* Scores */}
+      <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" as const, alignItems: "center" }}>
         {c.tools.map(tool => (
-          <div key={tool.name} style={{ display: "flex", flexDirection: "column", gap: "0.3rem", alignItems: "center" }}>
-            <ScorePill score={tool.globalScore} />
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", color: "var(--text-dim)" }}>{tool.name}</span>
+          <div key={tool.name} style={{ display: "flex", flexDirection: "column" as const, gap: "0.2rem", alignItems: "center" }}>
+            <ScorePill score={tool.globalScore} color={tool.color} />
+            <span style={{ fontFamily: "var(--m)", fontSize: "0.6rem", color: "var(--dim)" }}>{tool.name}</span>
           </div>
         ))}
       </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "1rem", borderTop: "1px solid var(--border)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", color: "var(--text-dim)", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>{t.winner}</span>
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.78rem", color: "var(--cyan)", fontWeight: 600 }}>
-            {winner?.logo} {c.winner}
+      {/* Footer : winner + CTA */}
+      <div style={{
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        paddingTop: "1rem", borderTop: "1px solid var(--border)", marginTop: "auto",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
+          <span style={{ fontFamily: "var(--m)", fontSize: "0.62rem", color: "var(--dim)", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>
+            🏆 {t.winner}
           </span>
+          <span style={{ fontFamily: "var(--m)", fontSize: "0.76rem", color: tagColor, fontWeight: 700 }}>
+            {winnerTool?.logo} {c.winner}
+          </span>
+          {winnerTool && (
+            <ScorePill score={winnerTool.globalScore} color={tagColor} />
+          )}
         </div>
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", color: "var(--cyan)", fontWeight: 500 }}>{t.see}</span>
+        <span style={{
+          fontFamily: "var(--m)", fontSize: "0.7rem", color: tagColor,
+          fontWeight: 600, display: "flex", alignItems: "center", gap: "0.25rem",
+          opacity: hov ? 1 : 0.7, transition: "opacity 0.2s",
+        }}>
+          {t.see}
+        </span>
       </div>
     </a>
   );
 }
 
+// ─── Page principale ───────────────────────────────────────────────────────────
 export default function ComparatifsClient({ lang }: { lang: Lang }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -138,18 +192,21 @@ export default function ComparatifsClient({ lang }: { lang: Lang }) {
   const filtered = COMPARATIFS.filter(c => {
     const matchTag = activeTag === "all" || c.tag === activeTag;
     const s = search.toLowerCase();
-    const matchSearch = !s || c[lang].title.toLowerCase().includes(s) || c.tools.some(tool => tool.name.toLowerCase().includes(s));
+    const matchSearch = !s
+      || c[lang].title.toLowerCase().includes(s)
+      || c.tools.some(tool => tool.name.toLowerCase().includes(s));
     return matchTag && matchSearch;
   });
 
   const featured = filtered.filter(c => c.featured);
   const rest = filtered.filter(c => !c.featured);
 
-  // Schema.org ItemList
+  // SEO — ItemList schema
   const schema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: lang === "fr" ? "Comparatifs IA 2026" : "AI Comparisons 2026",
+    name: lang === "fr" ? "Comparatifs IA 2026 — Neuriflux" : "AI Comparisons 2026 — Neuriflux",
+    description: t.subtitle,
     url: `https://neuriflux.com/${lang}/comparatifs`,
     numberOfItems: COMPARATIFS.length,
     itemListElement: COMPARATIFS.map((c, i) => ({
@@ -165,52 +222,244 @@ export default function ComparatifsClient({ lang }: { lang: Lang }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
+        /* ─────────────────────────────────────────────────────────
+           RESET & VARIABLES
+        ───────────────────────────────────────────────────────── */
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        :root{--bg:#080c10;--bg2:#0d1117;--bg3:#111820;--border:rgba(255,255,255,0.07);--border-glow:rgba(0,230,190,0.25);--cyan:#00e6be;--cyan-dim:rgba(0,230,190,0.12);--text:#f0f4f8;--text-muted:#6b7a8d;--text-dim:#3d4f61;--font-display:'Syne',sans-serif;--font-mono:'JetBrains Mono',monospace}
-        html{scroll-behavior:smooth}body{background:var(--bg);color:var(--text);font-family:var(--font-display);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-        .grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,230,190,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,190,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
-        .glow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:900px;height:700px;background:radial-gradient(ellipse,rgba(0,230,190,0.06) 0%,transparent 70%);pointer-events:none;z-index:0}
-        nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(8,12,16,0.85);border-bottom:1px solid var(--border);padding:0 clamp(1.5rem,5vw,4rem);height:64px;display:flex;align-items:center;justify-content:space-between}
-        .logo{font-family:var(--font-display);font-weight:800;font-size:1.2rem;letter-spacing:-0.02em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.5rem}.logo span{color:var(--cyan)}
-        .dot{width:7px;height:7px;background:var(--cyan);border-radius:50%;box-shadow:0 0 10px var(--cyan);animation:pulse 2s infinite}
-        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.8)}}
-        .nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
-        @media(max-width:768px){.nav-links{display:none}.nav-links.open{display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);padding:1.5rem 2rem;gap:1.2rem}}
-        .nav-links a{font-family:var(--font-mono);font-size:.78rem;color:var(--text-muted);text-decoration:none;letter-spacing:.04em;transition:color .2s}
+        :root{
+          /* Fonds */
+          --bg:#080c10;
+          --bg2:#0d1117;
+          --bg3:#111820;
+          /* Bordures */
+          --border:rgba(255,255,255,.065);
+          --glow:rgba(0,230,190,.2);
+          /* Couleur accent */
+          --cyan:#00e6be;
+          --cdim:rgba(0,230,190,.09);
+          /* Texte */
+          --text:#edf2f7;
+          --muted:#5a6a7a;
+          --dim:#2a3a4a;
+          /* Fonts — système uniquement, zéro requête réseau */
+          --d:'Syne',sans-serif;
+          --m:'JetBrains Mono',monospace;
+          /* Utilitaires */
+          --r:10px;
+          --pad:clamp(1.5rem,5vw,4rem)
+        }
+        html{scroll-behavior:smooth}
+        body{
+          background:var(--bg);color:var(--text);
+          font-family:var(--d);
+          -webkit-font-smoothing:antialiased;
+          overflow-x:hidden
+        }
+
+        /* ─────────────────────────────────────────────────────────
+           FOND : GRILLE + GLOW AMBIANT
+        ───────────────────────────────────────────────────────── */
+        .bg-grid{
+          position:fixed;inset:0;
+          background-image:
+            linear-gradient(rgba(0,230,190,.018) 1px,transparent 1px),
+            linear-gradient(90deg,rgba(0,230,190,.018) 1px,transparent 1px);
+          background-size:72px 72px;
+          pointer-events:none;z-index:0
+        }
+        .bg-glow{
+          position:fixed;top:-20%;left:50%;transform:translateX(-50%);
+          width:900px;height:700px;
+          background:radial-gradient(ellipse,rgba(0,230,190,.055) 0%,transparent 68%);
+          pointer-events:none;z-index:0
+        }
+
+        /* ─────────────────────────────────────────────────────────
+           NAVIGATION
+        ───────────────────────────────────────────────────────── */
+        nav{
+          position:sticky;top:0;z-index:100;
+          backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+          background:rgba(8,12,16,.93);
+          border-bottom:1px solid var(--border);
+          padding:0 var(--pad);height:60px;
+          display:flex;align-items:center;justify-content:space-between;
+          transition:box-shadow .2s
+        }
+        /* Ombre au scroll (activée via JS .scrolled) */
+        nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,.4)}
+
+        /* Logo */
+        .logo{
+          font-family:var(--d);font-weight:800;font-size:1.15rem;
+          letter-spacing:-.03em;color:var(--text);text-decoration:none;
+          display:flex;align-items:center;gap:.45rem
+        }
+        .logo em{color:var(--cyan);font-style:normal}
+
+        /* Point animé à côté du logo */
+        .logo-dot{
+          width:6px;height:6px;background:var(--cyan);border-radius:50%;
+          box-shadow:0 0 8px var(--cyan);animation:blink 2s infinite
+        }
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+
+        /* Liens nav desktop */
+        .nav-links{display:flex;align-items:center;gap:1.75rem;list-style:none}
+        @media(max-width:720px){
+          .nav-links{display:none}
+          .nav-links.open{
+            display:flex;flex-direction:column;
+            position:fixed;top:60px;left:0;right:0;
+            background:var(--bg2);border-bottom:1px solid var(--border);
+            padding:1.25rem var(--pad);gap:1rem;z-index:99
+          }
+        }
+        .nav-links a{
+          font-family:var(--m);font-size:.74rem;color:var(--muted);
+          text-decoration:none;letter-spacing:.03em;transition:color .15s
+        }
         .nav-links a:hover,.nav-links a.active{color:var(--cyan)}
-        .lt{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px;display:flex;gap:2px}
-        .lb{font-family:var(--font-mono);font-size:.7rem;padding:4px 10px;border-radius:4px;border:none;cursor:pointer;transition:all .2s;background:transparent;color:var(--text-muted)}.lb.active{background:var(--cyan);color:var(--bg);font-weight:600}
-        .hb{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:6px;background:none;border:none}@media(max-width:768px){.hb{display:flex}}.hb span{display:block;width:20px;height:2px;background:var(--text-muted);border-radius:2px}
-        .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem)}
-        .hero{padding:clamp(4rem,8vw,7rem) 0 clamp(2rem,4vw,3rem)}
-        .badge{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;color:var(--cyan);background:var(--cyan-dim);border:1px solid var(--border-glow);border-radius:100px;padding:6px 14px;margin-bottom:1.5rem}
-        .badge-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:pulse 2s infinite}
-        h1{font-size:clamp(2.4rem,6vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:1rem}
-        .ac{color:var(--cyan)}
-        .sub{font-family:var(--font-mono);font-size:.92rem;color:var(--text-muted);font-weight:300;line-height:1.7;max-width:560px}
-        .toolbar{display:flex;flex-direction:column;gap:1rem;padding:1.5rem 0 2.5rem}
-        .sw{position:relative;max-width:420px}
-        .si{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-dim);pointer-events:none;font-size:.85rem}
-        .sinput{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:11px 16px 11px 40px;color:var(--text);font-family:var(--font-mono);font-size:.82rem;outline:none;transition:border-color .2s}
-        .sinput:focus{border-color:var(--border-glow)}.sinput::placeholder{color:var(--text-dim)}
-        .filters{display:flex;gap:.5rem;flex-wrap:wrap}
-        .ft{font-family:var(--font-mono);font-size:.72rem;padding:6px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .2s}
-        .ft:hover{border-color:var(--border-glow);color:var(--cyan)}.ft.active{background:var(--cyan);border-color:var(--cyan);color:var(--bg);font-weight:600}
-        .stag{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem}
-        .stag::before{content:'';display:inline-block;width:20px;height:1px;background:var(--cyan)}
-        .gf{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:1.5rem;margin-bottom:4rem}
-        .ga{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem;margin-bottom:5rem}
-        @media(max-width:500px){.gf,.ga{grid-template-columns:1fr}}
-        .nr{text-align:center;padding:4rem;font-family:var(--font-mono);color:var(--text-muted);font-size:.85rem}
-        footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem clamp(1.5rem,5vw,4rem);max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-        .cp{font-family:var(--font-mono);font-size:.7rem;color:var(--text-dim)}.cp span{color:var(--cyan)}
+
+        /* Toggle FR / EN */
+        .lt{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:3px;display:flex;gap:2px}
+        .lb{
+          font-family:var(--m);font-size:.67rem;font-weight:500;
+          padding:4px 9px;border-radius:4px;border:none;
+          cursor:pointer;background:transparent;color:var(--muted);transition:all .15s
+        }
+        .lb.on{background:var(--cyan);color:#080c10}
+
+        /* Burger mobile */
+        .hb{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:5px;background:none;border:none}
+        @media(max-width:720px){.hb{display:flex}}
+        .hb span{display:block;width:18px;height:1.5px;background:var(--muted);border-radius:2px}
+
+        /* ─────────────────────────────────────────────────────────
+           LAYOUT PRINCIPAL
+        ───────────────────────────────────────────────────────── */
+        .wrap{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:0 var(--pad)}
+
+        /* ─────────────────────────────────────────────────────────
+           HERO
+        ───────────────────────────────────────────────────────── */
+        .hero{padding:clamp(4rem,8vw,6.5rem) 0 clamp(2rem,4vw,3rem)}
+
+        /* Badge "Comparatifs & Benchmarks" */
+        .badge{
+          display:inline-flex;align-items:center;gap:.5rem;
+          font-family:var(--m);font-size:.7rem;letter-spacing:.08em;
+          color:var(--cyan);background:var(--cdim);
+          border:1px solid var(--glow);border-radius:100px;
+          padding:6px 14px;margin-bottom:1.5rem
+        }
+        .badge-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:blink 2s infinite}
+
+        /* Titre H1 */
+        .hero h1{
+          font-size:clamp(2.4rem,6vw,4rem);font-weight:800;
+          letter-spacing:-.03em;line-height:1.05;margin-bottom:1rem
+        }
+        .ac{color:var(--cyan)} /* mot accentué en cyan */
+
+        /* Sous-titre */
+        .hero-sub{
+          font-family:var(--m);font-size:.88rem;color:var(--muted);
+          font-weight:300;line-height:1.7;max-width:540px
+        }
+
+        /* ─────────────────────────────────────────────────────────
+           BARRE D'OUTILS (recherche + filtres)
+        ───────────────────────────────────────────────────────── */
+        .toolbar{display:flex;flex-direction:column;gap:1rem;padding-bottom:2.5rem}
+
+        /* Champ recherche */
+        .search-wrap{position:relative;max-width:420px}
+        .search-icon{
+          position:absolute;left:14px;top:50%;transform:translateY(-50%);
+          color:var(--dim);pointer-events:none;font-size:.85rem
+        }
+        .search-input{
+          width:100%;background:var(--bg2);border:1px solid var(--border);
+          border-radius:8px;padding:10px 14px 10px 40px;
+          color:var(--text);font-family:var(--m);font-size:.8rem;
+          outline:none;transition:border-color .18s
+        }
+        .search-input:focus{border-color:rgba(0,230,190,.28)}
+        .search-input::placeholder{color:var(--dim)}
+
+        /* Filtres par tag */
+        .filters{display:flex;gap:.45rem;flex-wrap:wrap}
+        .ftag{
+          font-family:var(--m);font-size:.7rem;padding:6px 14px;
+          border-radius:100px;border:1px solid var(--border);
+          background:transparent;color:var(--muted);
+          cursor:pointer;transition:all .18s
+        }
+        .ftag:hover{border-color:rgba(0,230,190,.28);color:var(--cyan)}
+        .ftag.on{background:var(--cyan);border-color:var(--cyan);color:#080c10;font-weight:700}
+
+        /* ─────────────────────────────────────────────────────────
+           LABELS DE SECTION
+        ───────────────────────────────────────────────────────── */
+        .sec-tag{
+          font-family:var(--m);font-size:.62rem;letter-spacing:.14em;
+          text-transform:uppercase;color:var(--cyan);
+          margin-bottom:1.25rem;
+          display:flex;align-items:center;gap:.4rem
+        }
+        .sec-tag::before{content:'';width:14px;height:1px;background:var(--cyan);display:inline-block}
+
+        /* ─────────────────────────────────────────────────────────
+           GRILLES DE CARDS
+        ───────────────────────────────────────────────────────── */
+        /* Grille featured (cards larges) */
+        .grid-featured{
+          display:grid;
+          grid-template-columns:repeat(auto-fill,minmax(360px,1fr));
+          gap:1.5rem;margin-bottom:4rem
+        }
+        /* Grille normale (cards compactes) */
+        .grid-all{
+          display:grid;
+          grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+          gap:1.25rem;margin-bottom:5rem
+        }
+        @media(max-width:480px){.grid-featured,.grid-all{grid-template-columns:1fr}}
+
+        /* Aucun résultat */
+        .no-results{
+          text-align:center;padding:4rem 2rem;
+          font-family:var(--m);color:var(--muted);font-size:.85rem
+        }
+
+        /* ─────────────────────────────────────────────────────────
+           FOOTER
+        ───────────────────────────────────────────────────────── */
+        footer{
+          position:relative;z-index:1;
+          border-top:1px solid var(--border);
+          padding:1.75rem var(--pad);
+          max-width:1160px;margin:0 auto;
+          display:flex;justify-content:space-between;align-items:center;
+          flex-wrap:wrap;gap:.75rem
+        }
+        .ft-copy{font-family:var(--m);font-size:.62rem;color:var(--dim)}
+        .ft-copy em{color:var(--cyan);font-style:normal}
+        .ft-links{display:flex;gap:1.25rem;list-style:none}
+        .ft-links a{font-family:var(--m);font-size:.62rem;color:var(--dim);text-decoration:none;transition:color .15s}
+        .ft-links a:hover{color:var(--muted)}
       `}</style>
 
-      <div className="grid-bg" /><div className="glow" />
+      <div className="bg-grid" />
+      <div className="bg-glow" />
 
+      {/* ── NAVIGATION ── */}
       <nav>
-        <a href={l("")} className="logo"><div className="dot" />Neuri<span>flux</span></a>
+        <a href={l("")} className="logo">
+          <div className="logo-dot" />
+          Neuri<em>flux</em>
+        </a>
         <ul className={`nav-links${menuOpen ? " open" : ""}`}>
           <li><a href={l("/blog")}>{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")} className="active">{t.nav.comparatifs}</a></li>
@@ -218,61 +467,97 @@ export default function ComparatifsClient({ lang }: { lang: Lang }) {
           <li><a href={l("/contact")}>{t.nav.contact}</a></li>
           <li><a href={l("/about")}>{t.nav.about}</a></li>
         </ul>
-        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: ".75rem", alignItems: "center" }}>
           <div className="lt">
-            <button className={`lb${lang === "fr" ? " active" : ""}`} onClick={() => switchLang("fr")}>FR</button>
-            <button className={`lb${lang === "en" ? " active" : ""}`} onClick={() => switchLang("en")}>EN</button>
+            <button className={`lb${lang === "fr" ? " on" : ""}`} onClick={() => switchLang("fr")}>FR</button>
+            <button className={`lb${lang === "en" ? " on" : ""}`} onClick={() => switchLang("en")}>EN</button>
           </div>
-          <button className="hb" onClick={() => setMenuOpen(!menuOpen)}><span /><span /><span /></button>
+          <button className="hb" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
+            <span /><span /><span />
+          </button>
         </div>
       </nav>
 
+      {/* ── CONTENU ── */}
       <div className="wrap">
+
+        {/* Hero */}
         <div className="hero">
           <div className="badge">
             <div className="badge-dot" />
             {t.badge}
           </div>
           <h1>{t.title} <span className="ac">{t.accent}</span></h1>
-          <p className="sub">{t.subtitle}</p>
+          <p className="hero-sub">{t.subtitle}</p>
         </div>
 
+        {/* Barre d'outils */}
         <div className="toolbar">
-          <div className="sw">
-            <span className="si">🔍</span>
-            <input className="sinput" type="text" placeholder={t.search} value={search} onChange={e => setSearch(e.target.value)} />
+          <div className="search-wrap">
+            <span className="search-icon">🔍</span>
+            <input
+              className="search-input"
+              type="text"
+              placeholder={t.search}
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
           </div>
           <div className="filters">
-            <button className={`ft${activeTag === "all" ? " active" : ""}`} onClick={() => setActiveTag("all")}>{t.all}</button>
+            <button className={`ftag${activeTag === "all" ? " on" : ""}`} onClick={() => setActiveTag("all")}>
+              {t.all}
+            </button>
             {tags.map(tag => (
-              <button key={tag} className={`ft${activeTag === tag ? " active" : ""}`} onClick={() => setActiveTag(tag)}>{tag}</button>
+              <button
+                key={tag}
+                className={`ftag${activeTag === tag ? " on" : ""}`}
+                onClick={() => setActiveTag(tag)}
+              >
+                {tag}
+              </button>
             ))}
           </div>
         </div>
 
+        {/* Cards */}
         {filtered.length === 0 ? (
-          <div className="nr">{t.noResults}</div>
+          <div className="no-results">{t.noResults}</div>
         ) : (
           <>
             {featured.length > 0 && (
-              <div>
-                <div className="stag">{t.featured}</div>
-                <div className="gf">{featured.map(c => <ComparatifCard key={c.slug} c={c} lang={lang} t={t} l={l} />)}</div>
-              </div>
+              <section>
+                <div className="sec-tag">{t.featured}</div>
+                <div className="grid-featured">
+                  {featured.map(c => (
+                    <ComparatifCard key={c.slug} c={c} lang={lang} t={t} l={l} />
+                  ))}
+                </div>
+              </section>
             )}
             {rest.length > 0 && (
-              <div>
-                {featured.length > 0 && <div className="stag">{t.allLabel}</div>}
-                <div className="ga">{rest.map(c => <ComparatifCard key={c.slug} c={c} lang={lang} t={t} l={l} />)}</div>
-              </div>
+              <section>
+                {featured.length > 0 && <div className="sec-tag">{t.allLabel}</div>}
+                <div className="grid-all">
+                  {rest.map(c => (
+                    <ComparatifCard key={c.slug} c={c} lang={lang} t={t} l={l} />
+                  ))}
+                </div>
+              </section>
             )}
           </>
         )}
       </div>
 
+      {/* Footer */}
       <footer>
-        <p className="cp">© 2026 <span>Neuriflux</span>. {lang === "fr" ? "Tous droits réservés." : "All rights reserved."}</p>
-        <p className="cp">{lang === "fr" ? "Fait avec" : "Made with"} <span>♥</span> {lang === "fr" ? "en France" : "in France"}</p>
+        <span className="ft-copy">© 2026 <em>Neuriflux</em>. {lang === "fr" ? "Tous droits réservés." : "All rights reserved."}</span>
+        <ul className="ft-links">
+          <li><a href={l("/blog")}>Blog</a></li>
+          <li><a href={l("/comparatifs")}>{lang === "fr" ? "Comparatifs" : "Comparisons"}</a></li>
+          <li><a href={l("/newsletter")}>Newsletter</a></li>
+          <li><a href={l("/legal")}>{lang === "fr" ? "Mentions légales" : "Legal"}</a></li>
+        </ul>
+        <span className="ft-copy">{lang === "fr" ? "Fait avec" : "Made with"} <em>♥</em> {lang === "fr" ? "en France" : "in France"}</span>
       </footer>
     </>
   );
