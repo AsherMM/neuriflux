@@ -246,26 +246,54 @@ function WinnerCTA({ winner, lang }: { winner: ToolScore; lang: Lang }) {
         </div>
 
         {/* Actions */}
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.45rem", alignItems: "center", flexShrink: 0 }}>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.55rem", alignItems: "stretch", flexShrink: 0, minWidth: 220 }}>
+          {/* Bouton 1 — principal */}
           <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored" style={{
-            display: "inline-flex", alignItems: "center", gap: "0.5rem",
+            display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem",
             background: winner.color, color: "#080c10",
             fontFamily: "var(--d)", fontWeight: 800, fontSize: "1rem",
-            padding: "14px 28px", borderRadius: 11, textDecoration: "none",
+            padding: "15px 28px", borderRadius: 11, textDecoration: "none",
             whiteSpace: "nowrap" as const,
             boxShadow: `0 6px 24px ${winner.color}32`,
             transition: "all 0.2s",
           }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = `0 10px 36px ${winner.color}48`; (e.currentTarget as HTMLAnchorElement).style.background = "#00ffce"; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = `0 12px 38px ${winner.color}48`; (e.currentTarget as HTMLAnchorElement).style.background = "#00ffce"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.transform = "none"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = `0 6px 24px ${winner.color}32`; (e.currentTarget as HTMLAnchorElement).style.background = winner.color; }}
           >
-            {lang === "fr" ? "Commencer gratuitement" : "Start for free"} →
+            🚀 {lang === "fr" ? "Commencer gratuitement" : "Start for free"} →
           </a>
-          <div style={{ fontFamily: "var(--m)", fontSize: "0.62rem", color: "var(--muted)", textAlign: "center" as const }}>
+          {/* Bouton 2 — voir les tarifs, outline */}
+          <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored" style={{
+            display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem",
+            background: "transparent", color: "var(--text)",
+            fontFamily: "var(--d)", fontWeight: 700, fontSize: "0.88rem",
+            padding: "12px 22px", borderRadius: 10, textDecoration: "none",
+            border: "1px solid rgba(255,255,255,0.1)",
+            transition: "all 0.18s", whiteSpace: "nowrap" as const,
+          }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = `${winner.color}50`; (e.currentTarget as HTMLAnchorElement).style.color = winner.color; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-1px)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.1)"; (e.currentTarget as HTMLAnchorElement).style.color = "var(--text)"; (e.currentTarget as HTMLAnchorElement).style.transform = "none"; }}
+          >
+            {lang === "fr" ? "Voir les tarifs" : "View pricing"}
+          </a>
+          {/* Bouton 3 — ghost link */}
+          <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored" style={{
+            display: "flex", alignItems: "center", justifyContent: "center", gap: "0.3rem",
+            background: "transparent", color: "var(--muted)",
+            fontFamily: "var(--m)", fontWeight: 400, fontSize: "0.7rem",
+            padding: "4px", textDecoration: "none",
+            transition: "color 0.18s", whiteSpace: "nowrap" as const,
+          }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = winner.color; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--muted)"; }}
+          >
+            {lang === "fr" ? `En savoir plus sur ${winner.name}` : `Learn more about ${winner.name}`} →
+          </a>
+          <div style={{ fontFamily: "var(--m)", fontSize: "0.6rem", color: "var(--muted)", textAlign: "center" as const }}>
             {lang === "fr" ? "Accès immédiat · Sans engagement" : "Instant access · No commitment"}
           </div>
-          <span style={{ fontFamily: "var(--m)", fontSize: "0.54rem", color: "var(--dim)" }}>
-            {lang === "fr" ? "Lien affilié — aucun coût supplémentaire" : "Affiliate link — no extra cost to you"}
+          <span style={{ fontFamily: "var(--m)", fontSize: "0.53rem", color: "var(--dim)", textAlign: "center" as const }}>
+            {lang === "fr" ? "Liens affiliés — aucun coût supplémentaire" : "Affiliate links — no extra cost to you"}
           </span>
         </div>
       </div>
@@ -588,9 +616,18 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
           width:100%;font-family:var(--d);font-weight:800;font-size:.82rem;
           padding:12px;border-radius:8px;text-decoration:none;
           transition:all .2s;letter-spacing:-.01em}
-        .win-btn:hover{opacity:.87;transform:translateY(-2px)}
-        .win-btn-sub{font-family:var(--m);font-size:.58rem;color:var(--muted);text-align:center;margin-top:.35rem}
-        .aff-note{font-family:var(--m);font-size:.52rem;color:var(--dim);text-align:center;margin-top:.25rem}
+        .win-btn-p{box-shadow:0 4px 16px rgba(0,230,190,.2)}
+        .win-btn-p:hover{transform:translateY(-2px);filter:brightness(1.1)}
+        /* Bouton outline sidebar */
+        .win-btn-o{background:transparent!important;border:1px solid;font-weight:700;font-size:.78rem;padding:9px}
+        .win-btn-o:hover{background:rgba(0,230,190,.07)!important;transform:translateY(-1px)}
+        /* Ghost link */
+        .win-btn-ghost{display:flex;align-items:center;justify-content:center;
+          font-family:var(--m);font-size:.65rem;color:var(--muted);
+          text-decoration:none;padding:3px;transition:color .15s}
+        .win-btn-ghost:hover{color:var(--cyan)}
+        .win-btn-sub{font-family:var(--m);font-size:.58rem;color:var(--muted);text-align:center;margin-top:.3rem}
+        .aff-note{font-family:var(--m);font-size:.52rem;color:var(--dim);text-align:center;margin-top:.2rem}
 
         /* Newsletter */
         .nl-title-s{font-family:var(--d);font-size:.83rem;font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:.3rem}
@@ -938,11 +975,21 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
                   <span className="win-check">✓ {lang === "fr" ? "Version gratuite dispo" : "Free plan available"}</span>
                   <span className="win-check">✓ {lang === "fr" ? "Sans carte bancaire" : "No credit card needed"}</span>
                 </div>
+                {/* Bouton 1 — principal */}
                 <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored"
-                  className="win-btn" style={{ background: winner.color, color: "#080c10", boxShadow: `0 4px 16px ${winner.color}28` }}>
-                  {lang === "fr" ? "Commencer gratuit" : "Start free"} →
+                  className="win-btn win-btn-p" style={{ background: winner.color, color: "#080c10", boxShadow: `0 4px 16px ${winner.color}28` }}>
+                  🚀 {lang === "fr" ? "Commencer gratuitement" : "Start for free"} →
                 </a>
-                <div className="win-btn-sub">{lang === "fr" ? "Accès immédiat · Sans engagement" : "Instant access · No commitment"}</div>
+                {/* Bouton 2 — outline */}
+                <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored"
+                  className="win-btn win-btn-o" style={{ color: winner.color, borderColor: `${winner.color}40` }}>
+                  {lang === "fr" ? "Voir les tarifs" : "View pricing"}
+                </a>
+                {/* Lien ghost */}
+                <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored" className="win-btn-ghost">
+                  {lang === "fr" ? "En savoir plus →" : "Learn more →"}
+                </a>
+                <div className="win-btn-sub">{lang === "fr" ? "Accès immédiat · Sans carte" : "Instant access · No card"}</div>
                 <div className="aff-note">{L.affLink}</div>
               </div>
             </div>
@@ -1004,12 +1051,6 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
 
       <footer className="comp-footer">
         <span className="ft-copy">© 2026 <em>Neuriflux</em>. {lang === "fr" ? "Tous droits réservés." : "All rights reserved."}</span>
-        <ul className="ft-links">
-          <li><a href={l("/blog")}>Blog</a></li>
-          <li><a href={l("/comparatifs")}>{lang === "fr" ? "Comparatifs" : "Comparisons"}</a></li>
-          <li><a href={l("/newsletter")}>Newsletter</a></li>
-          <li><a href={l("/legal")}>{lang === "fr" ? "Mentions légales" : "Legal"}</a></li>
-        </ul>
         <span className="ft-copy">{lang === "fr" ? "Fait avec" : "Made with"} <em>♥</em> {lang === "fr" ? "en France" : "in France"}</span>
       </footer>
     </>

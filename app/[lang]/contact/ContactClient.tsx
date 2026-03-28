@@ -33,10 +33,16 @@ const T = {
         { icon: "💬", title: "Simple retour", text: "Vous aimez (ou pas) ce qu'on fait ? On aime les retours honnêtes." },
       ],
     },
-    footer: {
-      rights: "Tous droits réservés.", madeWith: "Fait avec", inFrance: "en France",
-      links: [{ label: "Mentions légales", href: "/legal" }, { label: "Confidentialité", href: "/privacy" }, { label: "Cookies", href: "/cookies" }],
-    },
+    ftTagline: "Le média indépendant des outils IA.",
+    ftContent: "Contenu", ftLegal: "Légal",
+    ftLinks: [
+      { l: "Blog", h: "/blog" }, { l: "Comparatifs", h: "/comparatifs" },
+      { l: "Newsletter", h: "/newsletter" }, { l: "Contact", h: "/contact" }, { l: "À propos", h: "/about" },
+    ],
+    ftLegal2: [
+      { l: "Mentions légales", h: "/legal" }, { l: "Confidentialité", h: "/privacy" }, { l: "Cookies", h: "/cookies" },
+    ],
+    ftRights: "Tous droits réservés.", ftMade: "Fait avec ♥ en France",
   },
   en: {
     nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
@@ -63,10 +69,16 @@ const T = {
         { icon: "💬", title: "Simple feedback", text: "You like (or don't like) what we do? We love honest feedback." },
       ],
     },
-    footer: {
-      rights: "All rights reserved.", madeWith: "Made with", inFrance: "in France",
-      links: [{ label: "Legal notice", href: "/legal" }, { label: "Privacy", href: "/privacy" }, { label: "Cookies", href: "/cookies" }],
-    },
+    ftTagline: "The independent AI tools media.",
+    ftContent: "Content", ftLegal: "Legal",
+    ftLinks: [
+      { l: "Blog", h: "/blog" }, { l: "Comparisons", h: "/comparatifs" },
+      { l: "Newsletter", h: "/newsletter" }, { l: "Contact", h: "/contact" }, { l: "About", h: "/about" },
+    ],
+    ftLegal2: [
+      { l: "Legal notice", h: "/legal" }, { l: "Privacy", h: "/privacy" }, { l: "Cookies", h: "/cookies" },
+    ],
+    ftRights: "All rights reserved.", ftMade: "Made with ♥ in France",
   },
 };
 
@@ -121,82 +133,33 @@ export default function ContactClient({ lang }: { lang: Lang }) {
         ───────────────────────────────────────────────────────── */
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         :root{
-          /* Fonds */
-          --bg:#080c10;
-          --bg2:#0d1117;
-          --bg3:#111820;
-          /* Bordures */
-          --border:rgba(255,255,255,.065);
-          --glow:rgba(0,230,190,.2);
-          /* Couleur accent */
-          --cyan:#00e6be;
-          --cdim:rgba(0,230,190,.09);
-          /* Texte */
-          --text:#edf2f7;
-          --muted:#5a6a7a;
-          --dim:#2a3a4a;
-          /* Fonts */
-          --d:'Syne',sans-serif;
-          --m:'JetBrains Mono',monospace;
-          /* Utilitaires */
-          --r:10px;
-          --pad:clamp(1.5rem,5vw,4rem)
+          --bg:#080c10;--bg2:#0d1117;--bg3:#111820;
+          --border:rgba(255,255,255,.065);--glow:rgba(0,230,190,.2);
+          --cyan:#00e6be;--cdim:rgba(0,230,190,.09);
+          --text:#edf2f7;--muted:#5a6a7a;--dim:#2a3a4a;
+          --d:'Syne',sans-serif;--m:'JetBrains Mono',monospace;
+          --r:10px;--pad:clamp(1.5rem,5vw,4rem)
         }
         html{scroll-behavior:smooth}
         body{background:var(--bg);color:var(--text);font-family:var(--d);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
         /* ─────────────────────────────────────────────────────────
-           FOND : GRILLE + GLOW AMBIANT
+           FOND
         ───────────────────────────────────────────────────────── */
-        .bg-grid{
-          position:fixed;inset:0;
-          background-image:
-            linear-gradient(rgba(0,230,190,.018) 1px,transparent 1px),
-            linear-gradient(90deg,rgba(0,230,190,.018) 1px,transparent 1px);
-          background-size:72px 72px;
-          pointer-events:none;z-index:0
-        }
-        .bg-glow{
-          position:fixed;top:-20%;left:50%;transform:translateX(-50%);
-          width:900px;height:680px;
-          background:radial-gradient(ellipse,rgba(0,230,190,.055) 0%,transparent 68%);
-          pointer-events:none;z-index:0
-        }
+        .bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(0,230,190,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,190,.018) 1px,transparent 1px);background-size:72px 72px;pointer-events:none;z-index:0}
+        .bg-glow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:900px;height:680px;background:radial-gradient(ellipse,rgba(0,230,190,.055) 0%,transparent 68%);pointer-events:none;z-index:0}
 
         /* ─────────────────────────────────────────────────────────
            NAVIGATION — identique sur toutes les pages
         ───────────────────────────────────────────────────────── */
-        nav{
-          position:sticky;top:0;z-index:100;
-          backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-          background:rgba(8,12,16,.93);
-          border-bottom:1px solid var(--border);
-          padding:0 var(--pad);height:60px;
-          display:flex;align-items:center;justify-content:space-between;
-          transition:box-shadow .2s
-        }
+        nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(8,12,16,.93);border-bottom:1px solid var(--border);padding:0 var(--pad);height:60px;display:flex;align-items:center;justify-content:space-between;transition:box-shadow .2s}
         nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,.4)}
-        .logo{
-          font-family:var(--d);font-weight:800;font-size:1.15rem;
-          letter-spacing:-.03em;color:var(--text);text-decoration:none;
-          display:flex;align-items:center;gap:.45rem
-        }
+        .logo{font-family:var(--d);font-weight:800;font-size:1.15rem;letter-spacing:-.03em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.45rem}
         .logo em{color:var(--cyan);font-style:normal}
-        .logo-dot{
-          width:6px;height:6px;background:var(--cyan);border-radius:50%;
-          box-shadow:0 0 8px var(--cyan);animation:blink 2s infinite
-        }
+        .logo-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;box-shadow:0 0 8px var(--cyan);animation:blink 2s infinite}
         @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
         .nav-links{display:flex;align-items:center;gap:1.75rem;list-style:none}
-        @media(max-width:720px){
-          .nav-links{display:none}
-          .nav-links.open{
-            display:flex;flex-direction:column;
-            position:fixed;top:60px;left:0;right:0;
-            background:var(--bg2);border-bottom:1px solid var(--border);
-            padding:1.25rem var(--pad);gap:1rem;z-index:99
-          }
-        }
+        @media(max-width:720px){.nav-links{display:none}.nav-links.open{display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);padding:1.25rem var(--pad);gap:1rem;z-index:99}}
         .nav-links a{font-family:var(--m);font-size:.74rem;color:var(--muted);text-decoration:none;letter-spacing:.03em;transition:color .15s}
         .nav-links a:hover,.nav-links a.active{color:var(--cyan)}
         .lt{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:3px;display:flex;gap:2px}
@@ -207,7 +170,7 @@ export default function ContactClient({ lang }: { lang: Lang }) {
         .hb span{display:block;width:18px;height:1.5px;background:var(--muted);border-radius:2px}
 
         /* ─────────────────────────────────────────────────────────
-           LAYOUT PRINCIPAL
+           LAYOUT
         ───────────────────────────────────────────────────────── */
         .wrap{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:0 var(--pad)}
 
@@ -215,151 +178,83 @@ export default function ContactClient({ lang }: { lang: Lang }) {
            HERO
         ───────────────────────────────────────────────────────── */
         .hero{padding:clamp(4rem,8vw,7rem) 0 clamp(2rem,4vw,3rem)}
-        .badge{
-          display:inline-flex;align-items:center;gap:.5rem;
-          font-family:var(--m);font-size:.7rem;letter-spacing:.08em;
-          color:var(--cyan);background:var(--cdim);border:1px solid var(--glow);
-          border-radius:100px;padding:6px 14px;margin-bottom:1.75rem
-        }
+        .badge{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--m);font-size:.7rem;letter-spacing:.08em;color:var(--cyan);background:var(--cdim);border:1px solid var(--glow);border-radius:100px;padding:6px 14px;margin-bottom:1.75rem}
         .badge-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:blink 2s infinite}
-        .hero-title{
-          font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;
-          line-height:1.05;letter-spacing:-.04em;margin-bottom:1rem
-        }
+        .hero-title{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;line-height:1.05;letter-spacing:-.04em;margin-bottom:1rem}
         .hero-title .ac{color:var(--cyan)}
-        .hero-sub{
-          font-family:var(--m);font-size:clamp(.82rem,1.5vw,.92rem);
-          font-weight:300;color:var(--muted);line-height:1.75;max-width:560px
-        }
+        .hero-sub{font-family:var(--m);font-size:clamp(.82rem,1.5vw,.92rem);font-weight:300;color:var(--muted);line-height:1.75;max-width:560px}
 
         /* ─────────────────────────────────────────────────────────
-           GRILLE PRINCIPALE — formulaire + sidebar
+           GRILLE PRINCIPALE
         ───────────────────────────────────────────────────────── */
-        .main-grid{
-          display:grid;grid-template-columns:1fr 360px;
-          gap:2.5rem;align-items:start;
-          padding-bottom:clamp(4rem,8vw,6rem)
-        }
+        .main-grid{display:grid;grid-template-columns:1fr 360px;gap:2.5rem;align-items:start;padding-bottom:clamp(4rem,8vw,6rem)}
         @media(max-width:840px){.main-grid{grid-template-columns:1fr}}
 
         /* ─────────────────────────────────────────────────────────
            FORMULAIRE
         ───────────────────────────────────────────────────────── */
-        .form-card{
-          background:var(--bg2);border:1px solid var(--border);border-radius:16px;
-          padding:2rem;position:relative;overflow:hidden
-        }
-        /* Barre cyan en haut */
-        .form-card::before{
-          content:'';position:absolute;top:0;left:0;right:0;height:2px;
-          background:linear-gradient(90deg,transparent,var(--cyan),transparent)
-        }
+        .form-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem;position:relative;overflow:hidden}
+        .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
         .form-title{font-family:var(--d);font-size:1.05rem;font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:1.75rem}
         .field{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.2rem}
         .field label{font-family:var(--m);font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
-        .field input,.field textarea,.field select{
-          background:var(--bg3);border:1px solid var(--border);border-radius:8px;
-          padding:10px 13px;color:var(--text);font-family:var(--m);font-size:.8rem;
-          font-weight:300;outline:none;transition:all .2s;width:100%;
-          appearance:none;-webkit-appearance:none
-        }
+        .field input,.field textarea,.field select{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 13px;color:var(--text);font-family:var(--m);font-size:.8rem;font-weight:300;outline:none;transition:all .2s;width:100%;appearance:none;-webkit-appearance:none}
         .field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(0,230,190,.28);box-shadow:0 0 0 3px rgba(0,230,190,.06)}
         .field input::placeholder,.field textarea::placeholder{color:var(--dim)}
         .field textarea{resize:vertical;min-height:130px;line-height:1.6}
-        /* Flèche custom sur le select */
-        .field select{
-          background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-          background-repeat:no-repeat;background-position:right 13px center;padding-right:36px;cursor:pointer
-        }
+        .field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px;cursor:pointer}
         .field select option{background:var(--bg3);color:var(--text)}
         .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
         @media(max-width:520px){.field-row{grid-template-columns:1fr}}
-        .btn-submit{
-          width:100%;background:var(--cyan);color:#080c10;
-          font-family:var(--d);font-weight:700;font-size:.88rem;
-          padding:12px;border-radius:9px;border:none;cursor:pointer;
-          transition:all .2s;letter-spacing:-.01em;margin-top:.5rem;
-          display:flex;align-items:center;justify-content:center;gap:.5rem
-        }
+        .btn-submit{width:100%;background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:700;font-size:.88rem;padding:13px;border-radius:9px;border:none;cursor:pointer;transition:all .2s;letter-spacing:-.01em;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
         .btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,230,190,.28)}
         .btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
-        .error-msg{
-          font-family:var(--m);font-size:.75rem;color:#ef4444;
-          background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);
-          border-radius:8px;padding:10px 13px;margin-top:.75rem
-        }
+        .error-msg{font-family:var(--m);font-size:.75rem;color:#ef4444;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:8px;padding:10px 13px;margin-top:.75rem}
 
         /* ─────────────────────────────────────────────────────────
            SUCCÈS
         ───────────────────────────────────────────────────────── */
-        .success-card{
-          background:var(--cdim);border:1px solid var(--glow);border-radius:16px;
-          padding:2.5rem;text-align:center;position:relative;overflow:hidden
-        }
-        .success-card::before{
-          content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
-          width:55%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)
-        }
+        .success-card{background:var(--cdim);border:1px solid var(--glow);border-radius:16px;padding:2.5rem;text-align:center;position:relative;overflow:hidden}
+        .success-card::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:55%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
         .success-icon{font-size:2.5rem;display:block;margin-bottom:1rem}
         .success-title{font-size:1.2rem;font-weight:800;letter-spacing:-.02em;color:var(--cyan);margin-bottom:.75rem}
         .success-text{font-family:var(--m);font-size:.75rem;color:var(--muted);line-height:1.65;margin-bottom:1.5rem;font-weight:300}
-        .btn-outline{
-          display:inline-flex;align-items:center;
-          background:transparent;color:var(--cyan);font-family:var(--d);font-weight:700;
-          font-size:.82rem;padding:10px 20px;border-radius:8px;
-          text-decoration:none;border:1px solid var(--glow);transition:all .2s
-        }
+        .btn-outline{display:inline-flex;align-items:center;background:transparent;color:var(--cyan);font-family:var(--d);font-weight:700;font-size:.82rem;padding:10px 20px;border-radius:8px;text-decoration:none;border:1px solid var(--glow);transition:all .2s}
         .btn-outline:hover{background:var(--cdim);transform:translateY(-1px)}
 
         /* ─────────────────────────────────────────────────────────
-           SIDEBAR — raisons + email direct
+           SIDEBAR
         ───────────────────────────────────────────────────────── */
         .sidebar{display:flex;flex-direction:column;gap:1rem}
-        .sec-label{
-          font-family:var(--m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
-          color:var(--cyan);margin-bottom:1.1rem;display:flex;align-items:center;gap:.4rem
-        }
+        .sec-label{font-family:var(--m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.1rem;display:flex;align-items:center;gap:.4rem}
         .sec-label::before{content:'';width:14px;height:1px;background:var(--cyan);display:inline-block}
         .reason-cards{display:flex;flex-direction:column;gap:.65rem}
-        .rcard{
-          background:var(--bg2);border:1px solid var(--border);border-radius:12px;
-          padding:1.1rem;display:flex;gap:.85rem;align-items:flex-start;transition:border-color .18s
-        }
+        .rcard{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.1rem;display:flex;gap:.85rem;align-items:flex-start;transition:border-color .18s}
         .rcard:hover{border-color:var(--glow)}
         .rcard-icon{font-size:1.2rem;flex-shrink:0;margin-top:.05rem}
         .rcard-title{font-family:var(--d);font-size:.86rem;font-weight:700;letter-spacing:-.01em;color:var(--text);margin-bottom:.2rem}
         .rcard-text{font-family:var(--m);font-size:.7rem;color:var(--muted);font-weight:300;line-height:1.55}
-
-        /* Card email direct */
-        .email-card{
-          background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.35rem
-        }
+        .email-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.35rem}
         .email-lbl{font-family:var(--m);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:.45rem}
         .email-addr{font-family:var(--m);font-size:.84rem;color:var(--cyan);font-weight:500;text-decoration:none;display:block;margin-bottom:.85rem;transition:opacity .15s}
         .email-addr:hover{opacity:.75}
         .email-note{font-family:var(--m);font-size:.68rem;color:var(--muted);line-height:1.55;font-weight:300}
-        .resp-badge{
-          display:inline-flex;align-items:center;gap:.35rem;margin-top:.75rem;
-          font-family:var(--m);font-size:.62rem;color:var(--cyan);
-          background:var(--cdim);border:1px solid var(--glow);
-          border-radius:100px;padding:3px 10px
-        }
+        .resp-badge{display:inline-flex;align-items:center;gap:.35rem;margin-top:.75rem;font-family:var(--m);font-size:.62rem;color:var(--cyan);background:var(--cdim);border:1px solid var(--glow);border-radius:100px;padding:3px 10px}
 
         /* ─────────────────────────────────────────────────────────
-           FOOTER
+           FOOTER — identique à HomeClient (3 colonnes)
         ───────────────────────────────────────────────────────── */
-        footer{
-          position:relative;z-index:1;
-          border-top:1px solid var(--border);
-          padding:1.75rem var(--pad);
-          max-width:1000px;margin:0 auto;
-          display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem
-        }
+        footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.25rem var(--pad);max-width:1160px;margin:0 auto}
+        .ft{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2.5rem}
+        @media(max-width:600px){.ft{grid-template-columns:1fr;gap:1.5rem}}
+        .ft-tag{font-family:var(--m);font-size:.7rem;color:var(--muted);font-weight:300;line-height:1.65;max-width:210px;margin-top:.4rem}
+        .ft-col{font-family:var(--m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:.75rem}
+        .ft-ul{list-style:none;display:flex;flex-direction:column;gap:.45rem}
+        .ft-ul a{font-family:var(--m);font-size:.7rem;color:var(--muted);text-decoration:none;transition:color .15s;font-weight:300}
+        .ft-ul a:hover{color:var(--cyan)}
+        .ft-bot{margin-top:1.75rem;padding-top:1.1rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem}
         .ft-copy{font-family:var(--m);font-size:.62rem;color:var(--dim)}
         .ft-copy em{color:var(--cyan);font-style:normal}
-        .ft-links{display:flex;gap:1.25rem;list-style:none}
-        .ft-links a{font-family:var(--m);font-size:.62rem;color:var(--dim);text-decoration:none;transition:color .15s}
-        .ft-links a:hover{color:var(--muted)}
       `}</style>
 
       <div className="bg-grid" />
@@ -394,10 +289,7 @@ export default function ContactClient({ lang }: { lang: Lang }) {
 
         {/* Hero */}
         <div className="hero">
-          <div className="badge">
-            <div className="badge-dot" />
-            {t.badge}
-          </div>
+          <div className="badge"><div className="badge-dot" />{t.badge}</div>
           <h1 className="hero-title">
             {t.title}<br /><span className="ac">{t.titleAccent}</span>
           </h1>
@@ -407,7 +299,7 @@ export default function ContactClient({ lang }: { lang: Lang }) {
         {/* Grille principale */}
         <div className="main-grid">
 
-          {/* Formulaire */}
+          {/* Formulaire ou succès */}
           <div>
             {status === "success" ? (
               <div className="success-card">
@@ -489,12 +381,32 @@ export default function ContactClient({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      {/* Footer */}
+      {/* ── FOOTER — identique HomeClient ── */}
       <footer>
-        <span className="ft-copy">© 2026 <em>Neuriflux</em>. {t.footer.rights} {t.footer.madeWith} <em>♥</em> {t.footer.inFrance}</span>
-        <ul className="ft-links">
-          {t.footer.links.map((x, i) => <li key={i}><a href={l(x.href)}>{x.label}</a></li>)}
-        </ul>
+        <div className="ft">
+          <div>
+            <a href={l("")} className="logo" style={{ fontSize: ".93rem" }}>
+              <div className="logo-dot" />Neuri<em>flux</em>
+            </a>
+            <p className="ft-tag">{t.ftTagline}</p>
+          </div>
+          <div>
+            <div className="ft-col">{t.ftContent}</div>
+            <ul className="ft-ul">
+              {t.ftLinks.map((x, i) => <li key={i}><a href={l(x.h)}>{x.l}</a></li>)}
+            </ul>
+          </div>
+          <div>
+            <div className="ft-col">{t.ftLegal}</div>
+            <ul className="ft-ul">
+              {t.ftLegal2.map((x, i) => <li key={i}><a href={l(x.h)}>{x.l}</a></li>)}
+            </ul>
+          </div>
+        </div>
+        <div className="ft-bot">
+          <span className="ft-copy">© 2026 <em>Neuriflux</em>. {t.ftRights}</span>
+          <span className="ft-copy">{t.ftMade}</span>
+        </div>
       </footer>
     </>
   );

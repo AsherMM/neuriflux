@@ -747,12 +747,6 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
 
       <footer className="art-footer">
         <span className="ft-copy">© 2026 <em>Neuriflux</em>. {lang === "fr" ? "Tous droits réservés." : "All rights reserved."}</span>
-        <ul className="ft-links">
-          <li><a href={l("/blog")}>Blog</a></li>
-          <li><a href={l("/comparatifs")}>{lang === "fr" ? "Comparatifs" : "Comparisons"}</a></li>
-          <li><a href={l("/newsletter")}>Newsletter</a></li>
-          <li><a href={l("/legal")}>{lang === "fr" ? "Mentions légales" : "Legal"}</a></li>
-        </ul>
         <span className="ft-copy">{lang === "fr" ? "Fait avec" : "Made with"} <em>♥</em> {lang === "fr" ? "en France" : "in France"}</span>
       </footer>
     </>
