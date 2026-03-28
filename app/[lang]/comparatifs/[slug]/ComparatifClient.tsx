@@ -13,7 +13,7 @@ const TAG_COLORS: Record<string, string> = {
   Productivity: "#10b981", Audio: "#ef4444", Video: "#a855f7", Vidéo: "#a855f7",
 };
 
-// ─── Slugify (pour les anchors de prose) ──────────────────────────────────────
+// ─── Slugify ──────────────────────────────────────────────────────────────────
 const slugify = (t: string) =>
   t.toLowerCase().replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-");
 
@@ -51,21 +51,17 @@ function RadarChart({ tools, criteria }: { tools: ToolScore[]; criteria: string[
     tool.scores.map((s, i) => { const p = pt((s.value / 10) * R, angles[i]); return `${p.x},${p.y}`; }).join(" ");
   return (
     <svg viewBox="0 0 260 260" style={{ width: "100%", maxWidth: 280 }}>
-      {/* Grid rings */}
       {[0.25, 0.5, 0.75, 1].map(lv => (
         <polygon key={lv}
           points={angles.map(a => { const p = pt(lv * R, a); return `${p.x},${p.y}`; }).join(" ")}
           fill="none" stroke="rgba(255,255,255,0.055)" strokeWidth={1} />
       ))}
-      {/* Spokes */}
       {angles.map((a, i) => { const p = pt(R, a); return <line key={i} x1={cx} y1={cy} x2={p.x} y2={p.y} stroke="rgba(255,255,255,0.055)" strokeWidth={1} />; })}
-      {/* Tool polygons */}
       {tools.map(tool => (
         <polygon key={tool.name} points={poly(tool)}
           fill={`${tool.color}15`} stroke={tool.color} strokeWidth={2}
           strokeLinejoin="round" strokeLinecap="round" />
       ))}
-      {/* Labels */}
       {criteria.map((label, i) => {
         const p = pt(R + 20, angles[i]);
         return (
@@ -92,13 +88,11 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel }: {
       position: "relative" as const, overflow: "hidden", flex: 1, minWidth: 260,
       transition: "box-shadow .2s",
     }}>
-      {/* Winner decorations */}
       {isWinner && <>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: tool.color, boxShadow: `0 0 24px ${tool.color}` }} />
         <div style={{ position: "absolute", top: "-25%", right: "-8%", width: 280, height: 200, background: `radial-gradient(ellipse,${tool.color}09,transparent 68%)`, pointerEvents: "none" }} />
       </>}
 
-      {/* Header — name + score */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" as const, gap: "0.5rem" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
           <div style={{ width: 46, height: 46, background: `${tool.color}18`, border: `2px solid ${tool.color}38`, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.35rem", flexShrink: 0 }}>
@@ -115,14 +109,12 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel }: {
         </div>
       </div>
 
-      {/* Badge */}
       {tool.badge && (
         <div style={{ fontFamily: "var(--m)", fontSize: "0.67rem", color: tool.color, background: `${tool.color}12`, border: `1px solid ${tool.color}28`, borderRadius: 6, padding: "4px 10px", display: "inline-block", alignSelf: "flex-start" as const }}>
           {tool.badge[lang]}
         </div>
       )}
 
-      {/* Critères + barres */}
       <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.65rem" }}>
         {tool.scores.map((s, i) => (
           <div key={i}>
@@ -132,7 +124,6 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel }: {
         ))}
       </div>
 
-      {/* Pros */}
       <div>
         <div style={{ fontFamily: "var(--m)", fontSize: "0.62rem", letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "#10b981", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.35rem" }}>
           <span>✓</span> {proLabel}
@@ -146,7 +137,6 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel }: {
         </ul>
       </div>
 
-      {/* Cons */}
       <div>
         <div style={{ fontFamily: "var(--m)", fontSize: "0.62rem", letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "#ef4444", marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.35rem" }}>
           <span>✗</span> {conLabel}
@@ -160,27 +150,45 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel }: {
         </ul>
       </div>
 
-      {/* Verdict quote */}
       <div style={{ background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: 8, padding: "0.8rem 1rem", fontFamily: "var(--m)", fontSize: "0.73rem", color: "var(--muted)", lineHeight: 1.65, fontWeight: 300, fontStyle: "italic" }}>
         "{tool.verdict[lang]}"
       </div>
 
-      {/* CTA */}
+      {/* ─── ToolCard CTA — haute conversion ─── */}
       {tool.affiliate && (
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.35rem", marginTop: "auto" }}>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.4rem", marginTop: "auto" }}>
+          {/* Badges de confiance pour le gagnant uniquement */}
+          {isWinner && (
+            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "0.35rem", marginBottom: "0.25rem" }}>
+              <span style={{ fontFamily: "var(--m)", fontSize: "0.58rem", color: tool.color, background: `${tool.color}10`, border: `1px solid ${tool.color}22`, borderRadius: 4, padding: "2px 7px" }}>
+                ✓ {lang === "fr" ? "Version gratuite" : "Free plan"}
+              </span>
+              <span style={{ fontFamily: "var(--m)", fontSize: "0.58rem", color: tool.color, background: `${tool.color}10`, border: `1px solid ${tool.color}22`, borderRadius: 4, padding: "2px 7px" }}>
+                ✓ {lang === "fr" ? "Sans carte" : "No card needed"}
+              </span>
+            </div>
+          )}
           <a href={tool.affiliate} target="_blank" rel="noopener noreferrer sponsored" style={{
             display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem",
             background: isWinner ? tool.color : "transparent",
             color: isWinner ? "#080c10" : tool.color,
             border: `1px solid ${tool.color}`,
-            borderRadius: 8, padding: "11px 16px",
-            fontFamily: "var(--d)", fontWeight: 700, fontSize: "0.83rem",
-            textDecoration: "none", transition: "all 0.18s", letterSpacing: "-0.01em",
+            borderRadius: 9, padding: isWinner ? "12px 16px" : "10px 16px",
+            fontFamily: "var(--d)", fontWeight: 800, fontSize: isWinner ? "0.88rem" : "0.82rem",
+            textDecoration: "none", transition: "all 0.2s", letterSpacing: "-0.01em",
             boxShadow: isWinner ? `0 4px 18px ${tool.color}35` : "none",
-          }}>
+          }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = isWinner ? `0 8px 28px ${tool.color}50` : "none"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.transform = "none"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = isWinner ? `0 4px 18px ${tool.color}35` : "none"; }}
+          >
             {isWinner ? "🏆 " : ""}{lang === "fr" ? "Essayer" : "Try"} {tool.name} →
           </a>
-          <div style={{ fontFamily: "var(--m)", fontSize: "0.54rem", color: "var(--dim)", textAlign: "center" as const }}>
+          {isWinner && (
+            <div style={{ fontFamily: "var(--m)", fontSize: "0.58rem", color: "var(--muted)", textAlign: "center" as const }}>
+              {lang === "fr" ? "Accès immédiat · Sans engagement" : "Instant access · No commitment"}
+            </div>
+          )}
+          <div style={{ fontFamily: "var(--m)", fontSize: "0.52rem", color: "var(--dim)", textAlign: "center" as const }}>
             {lang === "fr" ? "Lien affilié" : "Affiliate link"}
           </div>
         </div>
@@ -189,48 +197,75 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel }: {
   );
 }
 
-// ─── Winner CTA bloc ─────────────────────────────────────────────────────────
+// ─── Winner CTA bloc — haute conversion ──────────────────────────────────────
 function WinnerCTA({ winner, lang }: { winner: ToolScore; lang: Lang }) {
   if (!winner.affiliate) return null;
   return (
     <div style={{
-      margin: "2.5rem 0", padding: "2rem 2.25rem",
-      background: `linear-gradient(135deg,${winner.color}08,${winner.color}02)`,
-      border: `1px solid ${winner.color}30`,
-      borderRadius: 16, position: "relative" as const, overflow: "hidden",
+      margin: "2.5rem 0", padding: "2.25rem 2.5rem",
+      background: `linear-gradient(135deg,${winner.color}0a,${winner.color}02)`,
+      border: `1px solid ${winner.color}35`,
+      borderRadius: 18, position: "relative" as const, overflow: "hidden",
     }}>
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg,transparent,${winner.color},transparent)` }} />
-      <div style={{ position: "absolute", top: "-40%", left: "50%", transform: "translateX(-50%)", width: 400, height: 200, background: `radial-gradient(ellipse,${winner.color}06,transparent 70%)`, pointerEvents: "none" as const }} />
-      <div style={{ fontFamily: "var(--m)", fontSize: "0.6rem", letterSpacing: "0.13em", textTransform: "uppercase" as const, color: winner.color, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.45rem" }}>
+      {/* Décorations */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg,transparent,${winner.color} 40%,${winner.color} 60%,transparent)` }} />
+      <div style={{ position: "absolute", top: "-40%", left: "50%", transform: "translateX(-50%)", width: 500, height: 240, background: `radial-gradient(ellipse,${winner.color}07,transparent 68%)`, pointerEvents: "none" as const }} />
+
+      {/* Eyebrow */}
+      <div style={{ fontFamily: "var(--m)", fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase" as const, color: winner.color, marginBottom: "1.1rem", display: "flex", alignItems: "center", gap: "0.4rem", position: "relative" as const, zIndex: 1 }}>
         <span style={{ display: "inline-block", width: 14, height: 1, background: winner.color }} />
         {lang === "fr" ? "🏆 Notre recommandation" : "🏆 Our recommendation"}
+        <span style={{ marginLeft: "0.35rem", color: "#f59e0b", fontSize: "0.78rem", letterSpacing: "1px" }}>★★★★★</span>
       </div>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1.5rem", flexWrap: "wrap" as const, position: "relative", zIndex: 1 }}>
+
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "2rem", flexWrap: "wrap" as const, position: "relative" as const, zIndex: 1 }}>
+        {/* Infos outil */}
         <div style={{ display: "flex", alignItems: "center", gap: "1rem", flex: 1, minWidth: 220 }}>
-          <div style={{ width: 52, height: 52, background: `${winner.color}18`, border: `2px solid ${winner.color}35`, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", flexShrink: 0 }}>
+          <div style={{ width: 56, height: 56, background: `${winner.color}18`, border: `2px solid ${winner.color}35`, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.6rem", flexShrink: 0 }}>
             {winner.logo}
           </div>
           <div>
-            <div style={{ fontFamily: "var(--d)", fontSize: "1.25rem", fontWeight: 800, letterSpacing: "-0.03em", color: "var(--text)", marginBottom: "0.25rem" }}>
+            <div style={{ fontFamily: "var(--d)", fontSize: "1.3rem", fontWeight: 800, letterSpacing: "-0.03em", color: "var(--text)", marginBottom: "0.2rem" }}>
               {winner.name}
-              <span style={{ fontFamily: "var(--m)", fontSize: "0.92rem", fontWeight: 800, color: winner.color, marginLeft: "0.55rem" }}>{winner.globalScore.toFixed(1)}/10</span>
+              <span style={{ fontFamily: "var(--m)", fontSize: "0.95rem", fontWeight: 800, color: winner.color, marginLeft: "0.55rem" }}>{winner.globalScore.toFixed(1)}/10</span>
             </div>
-            <div style={{ fontFamily: "var(--m)", fontSize: "0.72rem", color: "var(--muted)", fontWeight: 300, lineHeight: 1.6 }}>{winner.verdict[lang]}</div>
+            <div style={{ fontFamily: "var(--m)", fontSize: "0.73rem", color: "var(--muted)", fontWeight: 300, lineHeight: 1.6, marginBottom: "0.65rem" }}>{winner.verdict[lang]}</div>
+            {/* Trust signals */}
+            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "0.4rem" }}>
+              {[
+                lang === "fr" ? "✓ Testé 3+ semaines" : "✓ Tested 3+ weeks",
+                lang === "fr" ? "✓ Version gratuite" : "✓ Free plan",
+                lang === "fr" ? "✓ Sans carte bancaire" : "✓ No credit card",
+              ].map((badge, i) => (
+                <span key={i} style={{ fontFamily: "var(--m)", fontSize: "0.6rem", color: winner.color, background: `${winner.color}10`, border: `1px solid ${winner.color}22`, borderRadius: 4, padding: "2px 8px", fontWeight: 500 }}>
+                  {badge}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.38rem", alignItems: "flex-end" }}>
+
+        {/* Actions */}
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.45rem", alignItems: "center", flexShrink: 0 }}>
           <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored" style={{
-            display: "inline-flex", alignItems: "center", gap: "0.45rem",
+            display: "inline-flex", alignItems: "center", gap: "0.5rem",
             background: winner.color, color: "#080c10",
-            fontFamily: "var(--d)", fontWeight: 700, fontSize: "0.92rem",
-            padding: "12px 24px", borderRadius: 10, textDecoration: "none",
-            whiteSpace: "nowrap" as const, boxShadow: `0 4px 20px ${winner.color}30`,
-            transition: "all 0.18s",
-          }}>
-            {lang === "fr" ? "Essayer" : "Try"} {winner.name} →
+            fontFamily: "var(--d)", fontWeight: 800, fontSize: "1rem",
+            padding: "14px 28px", borderRadius: 11, textDecoration: "none",
+            whiteSpace: "nowrap" as const,
+            boxShadow: `0 6px 24px ${winner.color}32`,
+            transition: "all 0.2s",
+          }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = `0 10px 36px ${winner.color}48`; (e.currentTarget as HTMLAnchorElement).style.background = "#00ffce"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.transform = "none"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = `0 6px 24px ${winner.color}32`; (e.currentTarget as HTMLAnchorElement).style.background = winner.color; }}
+          >
+            {lang === "fr" ? "Commencer gratuitement" : "Start for free"} →
           </a>
+          <div style={{ fontFamily: "var(--m)", fontSize: "0.62rem", color: "var(--muted)", textAlign: "center" as const }}>
+            {lang === "fr" ? "Accès immédiat · Sans engagement" : "Instant access · No commitment"}
+          </div>
           <span style={{ fontFamily: "var(--m)", fontSize: "0.54rem", color: "var(--dim)" }}>
-            {lang === "fr" ? "Lien affilié — sans coût supplémentaire" : "Affiliate link — no extra cost"}
+            {lang === "fr" ? "Lien affilié — aucun coût supplémentaire" : "Affiliate link — no extra cost to you"}
           </span>
         </div>
       </div>
@@ -238,10 +273,9 @@ function WinnerCTA({ winner, lang }: { winner: ToolScore; lang: Lang }) {
   );
 }
 
-// ─── Markdown renderer (partagé avec ArticleClient) ──────────────────────────
+// ─── Markdown renderer ────────────────────────────────────────────────────────
 function renderMd(md: string, tagColor = "#00e6be"): string {
   let h = md.trim();
-  // Tables
   h = h.replace(/\|(.+)\|\n\|[-| ]+\|\n((?:\|.+\|\n?)+)/g, (_, hd, body) => {
     const ths = hd.split("|").filter((c: string) => c.trim()).map((c: string) => `<th>${c.trim()}</th>`).join("");
     const rows = body.trim().split("\n").map((row: string) =>
@@ -300,7 +334,6 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
   const [shareUrl, setShareUrl] = useState("");
   const [scrolled, setScrolled] = useState(false);
 
-  // Client-only — zéro hydration mismatch
   useEffect(() => { setShareUrl(window.location.href); }, []);
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60);
@@ -355,7 +388,6 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
     tools: "tools",
   };
 
-  // 404
   if (!data || !comp) {
     return (
       <>
@@ -374,7 +406,6 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
   const criteriaLabels = data.criteria[lang];
   const compUrl = `https://neuriflux.com/${lang}/comparatifs/${slug}`;
 
-  // ─── SEO — 3 schemas JSON-LD ──────────────────────────────────────────────
   const articleSchema = {
     "@context": "https://schema.org", "@type": "Article",
     headline: comp.title, description: comp.intro,
@@ -435,7 +466,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
             linear-gradient(90deg,rgba(0,230,190,.018) 1px,transparent 1px);
           background-size:72px 72px;pointer-events:none;z-index:0}
 
-        /* ─── NAV ──────────────────────────────────────────────── */
+        /* ─── NAVIGATION ────────────────────────────────────────── */
         nav{position:sticky;top:0;z-index:100;
           backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
           background:rgba(8,12,16,.93);border-bottom:1px solid var(--border);
@@ -464,7 +495,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
         @media(max-width:720px){.hb{display:flex}}
         .hb span{display:block;width:18px;height:1.5px;background:var(--muted);border-radius:2px}
 
-        /* ─── LAYOUT ───────────────────────────────────────────── */
+        /* ─── LAYOUT ────────────────────────────────────────────── */
         .layout{position:relative;z-index:1;max-width:1160px;margin:0 auto;
           padding:3.5rem var(--pad) 7rem;
           display:grid;grid-template-columns:1fr 272px;gap:4.5rem;align-items:start}
@@ -472,84 +503,55 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
 
         /* ─── HEADER PAGE ───────────────────────────────────────── */
         .back{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--m);font-size:.7rem;
-          color:var(--muted);text-decoration:none;margin-bottom:2rem;
-          transition:color .15s;letter-spacing:.03em}
+          color:var(--muted);text-decoration:none;margin-bottom:2rem;transition:color .15s;letter-spacing:.03em}
         .back:hover{color:var(--cyan)}
         .art-meta{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:1.1rem}
-        .tag-b{font-family:var(--m);font-size:.6rem;letter-spacing:.1em;
-          text-transform:uppercase;font-weight:700;padding:3px 10px;border-radius:100px}
-        .art-title{font-size:clamp(1.75rem,4vw,2.7rem);font-weight:800;
-          letter-spacing:-.035em;line-height:1.1;margin-bottom:1rem;color:var(--text)}
-        .art-desc{font-family:var(--m);font-size:.83rem;color:var(--muted);font-weight:300;line-height:1.75;
-          padding:1rem 1.4rem;border-radius:0 8px 8px 0;margin-bottom:2rem}
+        .tag-b{font-family:var(--m);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:3px 10px;border-radius:100px}
+        .art-title{font-size:clamp(1.75rem,4vw,2.7rem);font-weight:800;letter-spacing:-.035em;line-height:1.1;margin-bottom:1rem;color:var(--text)}
+        .art-desc{font-family:var(--m);font-size:.83rem;color:var(--muted);font-weight:300;line-height:1.75;padding:1rem 1.4rem;border-radius:0 8px 8px 0;margin-bottom:2rem}
 
         /* ─── WINNER BANNER ─────────────────────────────────────── */
         .winner-banner{border-radius:12px;padding:1.3rem 1.6rem;display:flex;
-          align-items:center;gap:1rem;margin-bottom:2.5rem;
-          flex-wrap:wrap;position:relative;overflow:hidden}
-        .winner-score{font-family:var(--d);font-size:2.1rem;font-weight:800;
-          letter-spacing:-.04em;line-height:1}
+          align-items:center;gap:1rem;margin-bottom:2.5rem;flex-wrap:wrap;position:relative;overflow:hidden}
+        .winner-score{font-family:var(--d);font-size:2.1rem;font-weight:800;letter-spacing:-.04em;line-height:1}
 
         /* ─── TABS ──────────────────────────────────────────────── */
-        .tabs{display:flex;border:1px solid var(--border);border-radius:10px;
-          overflow:hidden;margin-bottom:2rem}
+        .tabs{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:2rem}
         .tab{flex:1;font-family:var(--m);font-size:.72rem;padding:11px 16px;background:transparent;
-          border:none;color:var(--muted);cursor:pointer;transition:all .18s;
-          letter-spacing:.04em;text-align:center}
+          border:none;color:var(--muted);cursor:pointer;transition:all .18s;letter-spacing:.04em;text-align:center}
         .tab:not(:last-child){border-right:1px solid var(--border)}
         .tab:hover{background:var(--bg2);color:var(--text)}
         .tab.active{background:var(--cyan);color:#080c10;font-weight:700}
 
         /* ─── SECTIONS ──────────────────────────────────────────── */
         .tools-grid{display:flex;gap:1.25rem;flex-wrap:wrap;margin-bottom:2.5rem}
-        .radar-section{background:var(--bg2);border:1px solid var(--border);
-          border-radius:16px;padding:2rem;margin-bottom:2.5rem}
+        .radar-section{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-bottom:2.5rem}
         .sec-tag{font-family:var(--m);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
           color:var(--cyan);margin-bottom:1.25rem;display:flex;align-items:center;gap:.4rem}
         .sec-tag::before{content:'';width:14px;height:1px;background:var(--cyan);display:inline-block}
         .radar-wrap{display:flex;flex-direction:column;align-items:center;gap:1.5rem}
         .radar-legend{display:flex;gap:1.25rem;flex-wrap:wrap;justify-content:center}
-        .radar-legend-item{display:flex;align-items:center;gap:.4rem;
-          font-family:var(--m);font-size:.68rem;color:var(--muted)}
+        .radar-legend-item{display:flex;align-items:center;gap:.4rem;font-family:var(--m);font-size:.68rem;color:var(--muted)}
         .radar-legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 
         /* ─── VERDICT ───────────────────────────────────────────── */
-        .verdict-box{background:var(--bg2);border:1px solid rgba(0,230,190,.18);
-          border-radius:16px;padding:2rem 2.25rem;margin-bottom:2.5rem;
-          position:relative;overflow:hidden}
-        .verdict-box::before{content:'';position:absolute;top:0;left:50%;
-          transform:translateX(-50%);width:55%;height:1px;
-          background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
-        .verdict-glow{position:absolute;top:-35%;left:50%;transform:translateX(-50%);
-          width:400px;height:200px;
-          background:radial-gradient(ellipse,rgba(0,230,190,.055),transparent 70%);
-          pointer-events:none}
-        .verdict-text{font-family:var(--m);font-size:.85rem;color:var(--muted);
-          line-height:1.75;font-weight:300;position:relative;z-index:1}
+        .verdict-box{background:var(--bg2);border:1px solid rgba(0,230,190,.18);border-radius:16px;padding:2rem 2.25rem;margin-bottom:2.5rem;position:relative;overflow:hidden}
+        .verdict-box::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:55%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
+        .verdict-glow{position:absolute;top:-35%;left:50%;transform:translateX(-50%);width:400px;height:200px;background:radial-gradient(ellipse,rgba(0,230,190,.055),transparent 70%);pointer-events:none}
+        .verdict-text{font-family:var(--m);font-size:.85rem;color:var(--muted);line-height:1.75;font-weight:300;position:relative;z-index:1}
 
         /* ─── SHARE ─────────────────────────────────────────────── */
-        .share{display:flex;align-items:center;gap:.55rem;margin-top:3.5rem;
-          padding:1.25rem 1.5rem;background:var(--bg2);border:1px solid var(--border);
-          border-radius:var(--r);flex-wrap:wrap}
-        .share-label{font-family:var(--m);font-size:.62rem;color:var(--dim);
-          letter-spacing:.09em;text-transform:uppercase;margin-right:.25rem}
-        .sbtn{font-family:var(--m);font-size:.7rem;padding:6px 12px;border-radius:6px;
-          border:1px solid var(--border);background:transparent;color:var(--muted);
-          cursor:pointer;transition:all .18s;text-decoration:none;
-          display:inline-flex;align-items:center;gap:.35rem}
+        .share{display:flex;align-items:center;gap:.55rem;margin-top:3.5rem;padding:1.25rem 1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);flex-wrap:wrap}
+        .share-label{font-family:var(--m);font-size:.62rem;color:var(--dim);letter-spacing:.09em;text-transform:uppercase;margin-right:.25rem}
+        .sbtn{font-family:var(--m);font-size:.7rem;padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .18s;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem}
         .sbtn:hover{border-color:rgba(0,230,190,.28);color:var(--cyan);background:var(--cdim)}
         .sbtn.done{background:var(--cdim);border-color:rgba(0,230,190,.28);color:var(--cyan)}
 
-        /* ─── PROSE (onglet Analyse) ────────────────────────────── */
+        /* ─── PROSE ─────────────────────────────────────────────── */
         .prose{font-family:var(--body);font-size:1.01rem;line-height:1.88;color:#c8d5e0}
-        .prose h2{font-family:var(--d);font-size:1.35rem;font-weight:800;letter-spacing:-.025em;
-          color:var(--text);margin:2.75rem 0 0;
-          padding:.6rem 0 .6rem 1rem;
-          border-left:3px solid var(--cyan);border-bottom:1px solid var(--border);
-          scroll-margin-top:80px}
+        .prose h2{font-family:var(--d);font-size:1.35rem;font-weight:800;letter-spacing:-.025em;color:var(--text);margin:2.75rem 0 0;padding:.6rem 0 .6rem 1rem;border-left:3px solid var(--cyan);border-bottom:1px solid var(--border);scroll-margin-top:80px}
         .prose h2 + *{margin-top:.85rem}
-        .prose h3{font-family:var(--d);font-size:1.05rem;font-weight:700;
-          color:var(--text);margin:2rem 0 .7rem;scroll-margin-top:80px}
+        .prose h3{font-family:var(--d);font-size:1.05rem;font-weight:700;color:var(--text);margin:2rem 0 .7rem;scroll-margin-top:80px}
         .prose p{margin-bottom:1.25rem}
         .prose strong{color:var(--text);font-weight:600;font-family:var(--d)}
         .prose em{color:var(--muted);font-style:italic}
@@ -558,17 +560,12 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
         .prose li::marker{color:var(--cyan);font-weight:700}
         .prose a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(0,230,190,.28);transition:border-color .15s}
         .prose a:hover{border-color:var(--cyan)}
-        .prose code{font-family:var(--m);font-size:.79rem;background:var(--bg3);
-          border:1px solid var(--border);border-radius:4px;padding:2px 6px;color:var(--cyan)}
-        .prose pre{background:var(--bg3);border:1px solid var(--border);border-radius:8px;
-          padding:1.25rem 1.5rem;margin:1.5rem 0;overflow-x:auto}
+        .prose code{font-family:var(--m);font-size:.79rem;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:2px 6px;color:var(--cyan)}
+        .prose pre{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:1.25rem 1.5rem;margin:1.5rem 0;overflow-x:auto}
         .prose pre code{background:none;border:none;padding:0;color:#a8c0d6;font-size:.79rem;line-height:1.75}
-        .prose blockquote{border-left:3px solid var(--cyan);padding:.8rem 1.25rem;
-          background:var(--bg2);border-radius:0 8px 8px 0;margin:1.75rem 0;
-          font-style:italic;color:var(--muted)}
+        .prose blockquote{border-left:3px solid var(--cyan);padding:.8rem 1.25rem;background:var(--bg2);border-radius:0 8px 8px 0;margin:1.75rem 0;font-style:italic;color:var(--muted)}
         .prose table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-family:var(--m);font-size:.75rem}
-        .prose th{padding:10px 14px;border:1px solid var(--border);color:var(--text);
-          font-weight:600;background:var(--bg3);text-align:left}
+        .prose th{padding:10px 14px;border:1px solid var(--border);color:var(--text);font-weight:600;background:var(--bg3);text-align:left}
         .prose td{padding:10px 14px;border:1px solid var(--border);color:var(--muted)}
         .prose tr:hover td{background:var(--bg2)}
 
@@ -578,46 +575,54 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
         .sbox-hd{padding:.8rem 1.1rem;border-bottom:1px solid var(--border)}
         .sbox-title{font-family:var(--m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
         .sbox-bd{padding:.85rem 1.1rem}
-        .score-row{display:flex;align-items:center;justify-content:space-between;
-          padding:.48rem 0;border-bottom:1px solid var(--border)}
+        .score-row{display:flex;align-items:center;justify-content:space-between;padding:.48rem 0;border-bottom:1px solid var(--border)}
         .score-row:last-child{border-bottom:none}
 
-        /* Sidebar winner */
+        /* ─── SIDEBAR WINNER — haute conversion ─────────────────── */
         .sbox-win{position:relative;overflow:hidden}
-        .sbox-win::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
-          background:linear-gradient(90deg,transparent,var(--wc,var(--cyan)),transparent)}
+        .sbox-win::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--wc,var(--cyan)) 30%,var(--wc,var(--cyan)) 70%,transparent)}
+        .win-checks{display:flex;flex-direction:column;gap:.22rem;margin:.55rem 0 .85rem}
+        .win-check{font-family:var(--m);font-size:.62rem;color:var(--wc,var(--cyan));font-weight:500}
+        /* Bouton winner sidebar — plus grand, avec shadow */
         .win-btn{display:flex;align-items:center;justify-content:center;gap:.4rem;
-          width:100%;font-family:var(--d);font-weight:700;font-size:.78rem;
-          padding:10px;border-radius:7px;text-decoration:none;
-          transition:all .18s;letter-spacing:-.01em}
-        .win-btn:hover{opacity:.87;transform:translateY(-1px)}
-        .aff-note{font-family:var(--m);font-size:.52rem;color:var(--dim);text-align:center;margin-top:.4rem}
+          width:100%;font-family:var(--d);font-weight:800;font-size:.82rem;
+          padding:12px;border-radius:8px;text-decoration:none;
+          transition:all .2s;letter-spacing:-.01em}
+        .win-btn:hover{opacity:.87;transform:translateY(-2px)}
+        .win-btn-sub{font-family:var(--m);font-size:.58rem;color:var(--muted);text-align:center;margin-top:.35rem}
+        .aff-note{font-family:var(--m);font-size:.52rem;color:var(--dim);text-align:center;margin-top:.25rem}
 
         /* Newsletter */
-        .nl-title-s{font-family:var(--d);font-size:.83rem;font-weight:700;
-          color:var(--text);letter-spacing:-.02em;margin-bottom:.3rem}
-        .nl-text{font-family:var(--m);font-size:.68rem;color:var(--muted);
-          line-height:1.65;font-weight:300;margin-bottom:.85rem}
-        .nl-input{width:100%;background:var(--bg3);border:1px solid var(--border);
-          border-radius:6px;padding:8px 11px;color:var(--text);font-family:var(--m);
-          font-size:.74rem;outline:none;margin-bottom:.45rem;transition:border-color .18s}
+        .nl-title-s{font-family:var(--d);font-size:.83rem;font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:.3rem}
+        .nl-text{font-family:var(--m);font-size:.68rem;color:var(--muted);line-height:1.65;font-weight:300;margin-bottom:.85rem}
+        .nl-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 11px;color:var(--text);font-family:var(--m);font-size:.74rem;outline:none;margin-bottom:.45rem;transition:border-color .18s}
         .nl-input:focus{border-color:rgba(0,230,190,.3)}
         .nl-input::placeholder{color:var(--dim)}
-        .nl-btn{width:100%;background:var(--cyan);color:#080c10;font-family:var(--d);
-          font-weight:700;font-size:.76rem;padding:9px;border-radius:6px;
-          border:none;cursor:pointer;transition:opacity .18s;letter-spacing:-.01em}
+        .nl-btn{width:100%;background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:700;font-size:.76rem;padding:9px;border-radius:6px;border:none;cursor:pointer;transition:opacity .18s;letter-spacing:-.01em}
         .nl-btn:hover{opacity:.9}.nl-btn:disabled{opacity:.55;cursor:not-allowed}
         .nl-status{text-align:center;font-family:var(--m);font-size:.74rem;padding:6px 0}
 
-        /* ─── FOOTER ─────────────────────────────────────────────── */
-        .comp-footer{position:relative;z-index:1;border-top:1px solid var(--border);
-          padding:1.75rem var(--pad);max-width:1160px;margin:0 auto;
-          display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem}
+        /* ─── STICKY MOBILE CTA — nouveau ──────────────────────── */
+        .sticky-win{display:none}
+        @media(max-width:960px){
+          .sticky-win{
+            display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+            position:fixed;bottom:0;left:0;right:0;z-index:200;
+            background:rgba(8,12,16,.97);border-top:1px solid rgba(0,230,190,.2);
+            padding:.9rem var(--pad);backdrop-filter:blur(20px)
+          }
+          .sticky-win-info{display:flex;flex-direction:column;gap:.15rem}
+          .sticky-win-name{font-family:var(--d);font-size:.85rem;font-weight:800;color:var(--text);letter-spacing:-.01em}
+          .sticky-win-sub{font-family:var(--m);font-size:.6rem;color:var(--muted)}
+          .sticky-win-btn{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--d);font-weight:800;font-size:.82rem;padding:10px 20px;border-radius:8px;text-decoration:none;white-space:nowrap;flex-shrink:0;transition:all .18s}
+        }
+
+        /* ─── FOOTER ────────────────────────────────────────────── */
+        .comp-footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:1.75rem var(--pad);max-width:1160px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem}
         .ft-copy{font-family:var(--m);font-size:.62rem;color:var(--dim)}
         .ft-copy em{color:var(--cyan);font-style:normal}
         .ft-links{display:flex;gap:1.25rem;list-style:none}
-        .ft-links a{font-family:var(--m);font-size:.62rem;color:var(--dim);
-          text-decoration:none;transition:color .15s}
+        .ft-links a{font-family:var(--m);font-size:.62rem;color:var(--dim);text-decoration:none;transition:color .15s}
         .ft-links a:hover{color:var(--muted)}
       `}</style>
 
@@ -626,7 +631,10 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
 
       {/* ── NAV ── */}
       <nav className={scrolled ? "scrolled" : ""}>
-        <a href={l("")} className="logo"><div className="logo-dot" />Neuri<em>flux</em></a>
+        <a href={l("")} className="logo">
+          <div className="logo-dot" />
+          Neuri<em>flux</em>
+        </a>
         <ul className={`nav-links${menuOpen ? " open" : ""}`}>
           <li><a href={l("/blog")}>Blog</a></li>
           <li><a href={l("/comparatifs")} className="active">{lang === "fr" ? "Comparatifs" : "Comparisons"}</a></li>
@@ -649,7 +657,6 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
         <main>
           <a href={l("/comparatifs")} className="back">{L.back}</a>
 
-          {/* Meta */}
           <div className="art-meta">
             <span className="tag-b" style={{ color: tagColor, background: `${tagColor}18`, border: `1px solid ${tagColor}35` }}>{data.tag}</span>
             <span style={{ fontFamily: "var(--m)", fontSize: "0.68rem", color: "var(--muted)" }}>{data.date[lang]}</span>
@@ -678,7 +685,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
                 </div>
                 {winner.affiliate && (
                   <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored"
-                    style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem", background: winner.color, color: "#080c10", fontFamily: "var(--d)", fontWeight: 700, fontSize: "0.72rem", padding: "7px 14px", borderRadius: 7, textDecoration: "none", whiteSpace: "nowrap" as const }}>
+                    style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem", background: winner.color, color: "#080c10", fontFamily: "var(--d)", fontWeight: 800, fontSize: "0.72rem", padding: "8px 16px", borderRadius: 7, textDecoration: "none", whiteSpace: "nowrap" as const, boxShadow: `0 3px 12px ${winner.color}30` }}>
                     {lang === "fr" ? "Essayer →" : "Try it →"}
                   </a>
                 )}
@@ -698,7 +705,6 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
           {/* ── OVERVIEW ── */}
           {activeTab === "overview" && (
             <div>
-              {/* Radar */}
               <div className="radar-section">
                 <div className="sec-tag">{L.radar}</div>
                 <div className="radar-wrap">
@@ -715,7 +721,6 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
                 </div>
               </div>
 
-              {/* Detailed scores table */}
               <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 16, overflow: "hidden", marginBottom: "2.5rem" }}>
                 <div style={{ padding: "1.1rem 1.5rem", borderBottom: "1px solid var(--border)" }}>
                   <div className="sec-tag" style={{ marginBottom: 0 }}>{L.detailed}</div>
@@ -768,11 +773,33 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
                 </div>
               </div>
 
-              {/* Verdict */}
               <div className="verdict-box">
                 <div className="verdict-glow" />
                 <div className="sec-tag">{L.verdict}</div>
                 <p className="verdict-text">{comp.verdict}</p>
+                {/* ── CTA inline dans le verdict ── */}
+                {winner && winner.affiliate && (
+                  <div style={{ marginTop: "1.5rem", paddingTop: "1.5rem", borderTop: `1px solid ${winner.color}20`, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" as const, gap: "1rem", position: "relative", zIndex: 1 }}>
+                    <div>
+                      <div style={{ fontFamily: "var(--d)", fontSize: "0.88rem", fontWeight: 700, color: "var(--text)", marginBottom: "0.2rem" }}>
+                        {lang === "fr" ? `Notre verdict : ${winner.name} s'impose.` : `Our verdict: ${winner.name} wins.`}
+                      </div>
+                      <div style={{ fontFamily: "var(--m)", fontSize: "0.65rem", color: "var(--muted)", fontWeight: 300 }}>
+                        {lang === "fr" ? "Version gratuite disponible · Sans carte bancaire" : "Free plan available · No credit card needed"}
+                      </div>
+                    </div>
+                    <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored" style={{
+                      display: "inline-flex", alignItems: "center", gap: "0.4rem",
+                      background: winner.color, color: "#080c10",
+                      fontFamily: "var(--d)", fontWeight: 800, fontSize: "0.85rem",
+                      padding: "10px 22px", borderRadius: 9, textDecoration: "none",
+                      whiteSpace: "nowrap" as const, boxShadow: `0 4px 16px ${winner.color}30`,
+                      transition: "all 0.2s", flexShrink: 0,
+                    }}>
+                      {lang === "fr" ? "Essayer gratuitement" : "Try for free"} →
+                    </a>
+                  </div>
+                )}
               </div>
               {winner && <WinnerCTA winner={winner} lang={lang} />}
             </div>
@@ -788,6 +815,53 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
                     isWinner={tool.name === data.winner} proLabel={L.pros} conLabel={L.cons} />
                 ))}
               </div>
+
+              {/* ── CTA "Choix de l'éditeur" entre les cards et le WinnerCTA ── */}
+              {winner && winner.affiliate && (
+                <div style={{
+                  margin: "1.75rem 0",
+                  padding: "1.35rem 1.75rem",
+                  background: `linear-gradient(135deg,${winner.color}0c,${winner.color}03)`,
+                  border: `1px solid ${winner.color}28`,
+                  borderRadius: 12,
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  flexWrap: "wrap" as const, gap: "1.25rem",
+                  position: "relative" as const, overflow: "hidden",
+                }}>
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg,transparent,${winner.color},transparent)` }} />
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flex: 1, minWidth: 200 }}>
+                    <span style={{ fontSize: "1.5rem" }}>{winner.logo}</span>
+                    <div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.2rem" }}>
+                        <span style={{ fontFamily: "var(--m)", fontSize: "0.58rem", letterSpacing: "0.1em", textTransform: "uppercase" as const, color: winner.color }}>
+                          {lang === "fr" ? "Choix de l'éditeur" : "Editor's choice"}
+                        </span>
+                        <span style={{ color: "#f59e0b", fontSize: "0.65rem", letterSpacing: "1px" }}>★★★★★</span>
+                      </div>
+                      <div style={{ fontFamily: "var(--d)", fontSize: "0.95rem", fontWeight: 800, color: "var(--text)", letterSpacing: "-0.02em" }}>{winner.name}</div>
+                      <div style={{ fontFamily: "var(--m)", fontSize: "0.65rem", color: "var(--muted)", fontWeight: 300, marginTop: "0.15rem" }}>
+                        {lang === "fr" ? `Score global : ${winner.globalScore.toFixed(1)}/10 · Version gratuite disponible` : `Overall score: ${winner.globalScore.toFixed(1)}/10 · Free plan available`}
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", gap: "0.3rem", flexShrink: 0 }}>
+                    <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored" style={{
+                      display: "inline-flex", alignItems: "center", gap: "0.45rem",
+                      background: winner.color, color: "#080c10",
+                      fontFamily: "var(--d)", fontWeight: 800, fontSize: "0.88rem",
+                      padding: "11px 24px", borderRadius: 9, textDecoration: "none",
+                      whiteSpace: "nowrap" as const, boxShadow: `0 4px 16px ${winner.color}30`,
+                      transition: "all 0.2s",
+                    }}>
+                      {lang === "fr" ? "Commencer gratuit" : "Start for free"} →
+                    </a>
+                    <div style={{ fontFamily: "var(--m)", fontSize: "0.58rem", color: "var(--dim)", textAlign: "center" as const }}>
+                      {lang === "fr" ? "Accès immédiat · Lien affilié" : "Instant access · Affiliate link"}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {winner && <WinnerCTA winner={winner} lang={lang} />}
             </div>
           )}
@@ -804,7 +878,6 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
             </div>
           )}
 
-          {/* Share */}
           <div className="share">
             <span className="share-label">{lang === "fr" ? "Partager" : "Share"}</span>
             <button className={`sbtn${copied ? " done" : ""}`} onClick={copy}>🔗 {L.share}</button>
@@ -841,25 +914,35 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
             </div>
           </div>
 
-          {/* Winner CTA */}
+          {/* ── Sidebar winner — haute conversion ── */}
           {winner && winner.affiliate && (
             <div className="sbox sbox-win"
-              style={{ "--wc": winner.color, background: `linear-gradient(160deg,${winner.color}08,${winner.color}02)`, border: `1px solid ${winner.color}22` } as React.CSSProperties}>
-              <div className="sbox-hd" style={{ borderBottomColor: `${winner.color}14` }}>
+              style={{ "--wc": winner.color, background: `linear-gradient(160deg,${winner.color}0a,${winner.color}02)`, border: `1px solid ${winner.color}28` } as React.CSSProperties}>
+              <div className="sbox-hd" style={{ borderBottomColor: `${winner.color}15` }}>
                 <div className="sbox-title" style={{ color: winner.color }}>{L.ourPick}</div>
               </div>
               <div className="sbox-bd">
-                <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.85rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.5rem" }}>
                   <span style={{ fontSize: "1.35rem" }}>{winner.logo}</span>
                   <div>
                     <div style={{ fontFamily: "var(--d)", fontSize: "0.92rem", fontWeight: 800, color: "var(--text)", letterSpacing: "-0.02em" }}>{winner.name}</div>
-                    <div style={{ fontFamily: "var(--m)", fontSize: "0.68rem", color: winner.color, fontWeight: 700 }}>{winner.globalScore.toFixed(1)}/10</div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+                      <span style={{ color: "#f59e0b", fontSize: "0.62rem", letterSpacing: "1px" }}>★★★★★</span>
+                      <span style={{ fontFamily: "var(--m)", fontSize: "0.62rem", color: winner.color, fontWeight: 700 }}>{winner.globalScore.toFixed(1)}/10</span>
+                    </div>
                   </div>
                 </div>
+                {/* Trust checks */}
+                <div className="win-checks">
+                  <span className="win-check">✓ {lang === "fr" ? "Testé par Neuriflux" : "Tested by Neuriflux"}</span>
+                  <span className="win-check">✓ {lang === "fr" ? "Version gratuite dispo" : "Free plan available"}</span>
+                  <span className="win-check">✓ {lang === "fr" ? "Sans carte bancaire" : "No credit card needed"}</span>
+                </div>
                 <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored"
-                  className="win-btn" style={{ background: winner.color, color: "#080c10" }}>
-                  {L.tryFree} →
+                  className="win-btn" style={{ background: winner.color, color: "#080c10", boxShadow: `0 4px 16px ${winner.color}28` }}>
+                  {lang === "fr" ? "Commencer gratuit" : "Start free"} →
                 </a>
+                <div className="win-btn-sub">{lang === "fr" ? "Accès immédiat · Sans engagement" : "Instant access · No commitment"}</div>
                 <div className="aff-note">{L.affLink}</div>
               </div>
             </div>
@@ -904,7 +987,21 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
         </aside>
       </div>
 
-      {/* Footer */}
+      {/* ── STICKY MOBILE CTA ── */}
+      {winner && winner.affiliate && (
+        <div className="sticky-win">
+          <div className="sticky-win-info">
+            <div className="sticky-win-name">🏆 {winner.name}</div>
+            <div className="sticky-win-sub">{lang === "fr" ? "Version gratuite disponible" : "Free plan available"}</div>
+          </div>
+          <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored"
+            className="sticky-win-btn"
+            style={{ background: winner.color, color: "#080c10", boxShadow: `0 4px 16px ${winner.color}30` }}>
+            {lang === "fr" ? "Essayer gratuit" : "Try free"} →
+          </a>
+        </div>
+      )}
+
       <footer className="comp-footer">
         <span className="ft-copy">© 2026 <em>Neuriflux</em>. {lang === "fr" ? "Tous droits réservés." : "All rights reserved."}</span>
         <ul className="ft-links">

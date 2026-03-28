@@ -7,31 +7,6 @@ import { useNewsletter } from "@/lib/useNewsletter";
 
 type Lang = "fr" | "en";
 
-// ─── Traductions ───────────────────────────────────────────────────────────────
-const T = {
-  fr: {
-    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
-    badge: "Articles & Analyses",
-    title: "Le blog", accent: "Neuriflux",
-    subtitle: "Tests approfondis, analyses honnêtes et guides pratiques sur les meilleurs outils IA du marché.",
-    search: "Rechercher un article...",
-    all: "Tous", featured: "À la une", allLabel: "Tous les articles",
-    readMore: "Lire →", readTime: "min",
-    noResults: "Aucun article trouvé.",
-  },
-  en: {
-    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
-    badge: "Articles & Analysis",
-    title: "The", accent: "Neuriflux Blog",
-    subtitle: "In-depth reviews, honest analysis and practical guides on the best AI tools on the market.",
-    search: "Search articles...",
-    all: "All", featured: "Featured", allLabel: "All articles",
-    readMore: "Read →", readTime: "min",
-    noResults: "No articles found.",
-  },
-};
-
-
 // ─── Couleurs par tag ──────────────────────────────────────────────────────────
 const TAG_COLORS: Record<string, string> = {
   Chatbots: "#00e6be", Code: "#3b82f6", Rédaction: "#f59e0b",
@@ -128,46 +103,64 @@ function useActiveHeading(headings: string[]) {
   return active;
 }
 
-// ─── CTA milieu d'article ─────────────────────────────────────────────────────
+// ─── CTA milieu d'article — haute conversion ──────────────────────────────────
 function MidCTA({ url, toolName, label, lang }: { url: string; toolName: string; label: string; lang: Lang }) {
   return (
     <div className="mid-cta">
       <div className="mid-cta-stripe" />
       <div className="mid-cta-inner">
-        <div>
-          <div className="mid-cta-eyebrow">{lang === "fr" ? "✦ Recommandé par Neuriflux" : "✦ Recommended by Neuriflux"}</div>
+        <div className="mid-cta-left">
+          <div className="mid-cta-eyebrow">
+            <span className="mid-cta-star">★</span>
+            {lang === "fr" ? "Testé et approuvé par Neuriflux" : "Tested & approved by Neuriflux"}
+          </div>
           <div className="mid-cta-tool">{toolName}</div>
           <div className="mid-cta-label">{label}</div>
+          <div className="mid-cta-badges">
+            <span className="mid-cta-badge">✓ {lang === "fr" ? "Version gratuite disponible" : "Free plan available"}</span>
+            <span className="mid-cta-badge">✓ {lang === "fr" ? "Sans carte bancaire" : "No credit card needed"}</span>
+          </div>
         </div>
-        <a href={url} target="_blank" rel="noopener noreferrer sponsored" className="mid-cta-btn">
-          {lang === "fr" ? "Essayer gratuitement" : "Try for free"} →
-        </a>
+        <div className="mid-cta-right">
+          <a href={url} target="_blank" rel="noopener noreferrer sponsored" className="mid-cta-btn">
+            {lang === "fr" ? "Essayer gratuitement" : "Try for free"} →
+          </a>
+          <div className="mid-cta-sub">{lang === "fr" ? "Accès immédiat · Sans engagement" : "Instant access · No commitment"}</div>
+          <div className="mid-cta-note">{lang === "fr" ? "Lien affilié — sans coût pour vous" : "Affiliate link — no extra cost"}</div>
+        </div>
       </div>
-      <div className="mid-cta-note">{lang === "fr" ? "Lien affilié" : "Affiliate link"}</div>
     </div>
   );
 }
 
-// ─── CTA fin d'article ────────────────────────────────────────────────────────
+// ─── CTA fin d'article — haute conversion ────────────────────────────────────
 function EndCTA({ url, toolName, label, lang }: { url: string; toolName: string; label: string; lang: Lang }) {
   return (
     <div className="end-cta">
       <div className="end-cta-glow" />
       <div className="end-cta-stripe" />
-      <div className="end-cta-eyebrow">
-        <span className="end-cta-line" />
-        {lang === "fr" ? "Notre recommandation" : "Our recommendation"}
+      <div className="end-cta-head">
+        <div className="end-cta-verdict">
+          {lang === "fr" ? "Notre verdict" : "Our verdict"}
+        </div>
+        <div className="end-cta-stars">★★★★★</div>
       </div>
       <div className="end-cta-body">
-        <div>
+        <div className="end-cta-left">
           <div className="end-cta-tool">{toolName}</div>
           <div className="end-cta-label">{label}</div>
+          <div className="end-cta-trust">
+            <span className="end-cta-trust-item">✓ {lang === "fr" ? "Testé 3+ semaines" : "Tested 3+ weeks"}</span>
+            <span className="end-cta-trust-item">✓ {lang === "fr" ? "Version gratuite" : "Free plan"}</span>
+            <span className="end-cta-trust-item">✓ {lang === "fr" ? "Sans engagement" : "No commitment"}</span>
+          </div>
         </div>
         <div className="end-cta-actions">
           <a href={url} target="_blank" rel="noopener noreferrer sponsored" className="end-cta-btn">
-            {lang === "fr" ? "Essayer" : "Try"} {toolName} →
+            {lang === "fr" ? "Commencer gratuitement" : "Start for free"} →
           </a>
-          <span className="end-cta-note">{lang === "fr" ? "Lien affilié — sans coût supplémentaire" : "Affiliate link — no extra cost"}</span>
+          <div className="end-cta-btn-sub">{lang === "fr" ? "Accès immédiat · Sans carte bancaire" : "Instant access · No credit card"}</div>
+          <span className="end-cta-note">{lang === "fr" ? "Lien affilié — aucun coût supplémentaire" : "Affiliate link — no extra cost to you"}</span>
         </div>
       </div>
     </div>
@@ -183,7 +176,6 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
   const [shareUrl, setShareUrl] = useState("");
   const [nlEmail, setNlEmail] = useState("");
   const [scrolled, setScrolled] = useState(false);
-  const t = T[lang];
 
   useEffect(() => { setShareUrl(window.location.href); }, []);
   useEffect(() => {
@@ -312,7 +304,7 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
           --muted:#5a6a7a;
           --dim:#2a3a4a;
           /* Fonts */
-          --d:'Syne',sans-serif;
+          --d:var(--font-syne),'Syne',sans-serif;
           --m:'JetBrains Mono',monospace;
           --body:Georgia,'Times New Roman',serif;
           /* Utilitaires */
@@ -438,32 +430,50 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         .prose tr:hover td{background:var(--bg2)}
 
         /* ─────────────────────────────────────────────────────────
-           MID CTA
+           MID CTA — haute conversion
         ───────────────────────────────────────────────────────── */
-        .mid-cta{margin:2.75rem 0;padding:1.5rem 1.75rem;background:linear-gradient(135deg,rgba(0,230,190,.07),rgba(0,230,190,.02));border:1px solid rgba(0,230,190,.2);border-radius:12px;position:relative;overflow:hidden}
-        .mid-cta-stripe{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
-        .mid-cta-inner{display:flex;align-items:center;justify-content:space-between;gap:1.25rem;flex-wrap:wrap}
-        .mid-cta-eyebrow{font-family:var(--m);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:.35rem}
-        .mid-cta-tool{font-family:var(--d);font-size:.98rem;font-weight:700;color:var(--text);letter-spacing:-.02em}
-        .mid-cta-label{font-family:var(--m);font-size:.68rem;color:var(--muted);font-weight:300;margin-top:.2rem}
-        .mid-cta-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:700;font-size:.82rem;padding:10px 20px;border-radius:8px;text-decoration:none;transition:all .18s;white-space:nowrap;flex-shrink:0}
-        .mid-cta-btn:hover{opacity:.88;transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,230,190,.28)}
-        .mid-cta-note{font-family:var(--m);font-size:.52rem;color:var(--dim);text-align:right;margin-top:.5rem}
+        .mid-cta{margin:2.75rem 0;padding:1.65rem 1.85rem;background:linear-gradient(135deg,rgba(0,230,190,.08),rgba(0,230,190,.02));border:1px solid rgba(0,230,190,.25);border-radius:14px;position:relative;overflow:hidden}
+        .mid-cta-stripe{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan) 40%,var(--cyan) 60%,transparent)}
+        .mid-cta-inner{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
+        .mid-cta-left{flex:1;min-width:200px}
+        .mid-cta-right{display:flex;flex-direction:column;align-items:center;gap:.4rem;flex-shrink:0}
+        .mid-cta-eyebrow{display:flex;align-items:center;gap:.35rem;font-family:var(--m);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:.5rem}
+        .mid-cta-star{color:#f59e0b;font-size:.72rem}
+        .mid-cta-tool{font-family:var(--d);font-size:1.05rem;font-weight:800;color:var(--text);letter-spacing:-.02em;margin-bottom:.3rem}
+        .mid-cta-label{font-family:var(--m);font-size:.72rem;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:.65rem}
+        .mid-cta-badges{display:flex;flex-wrap:wrap;gap:.4rem}
+        .mid-cta-badge{font-family:var(--m);font-size:.6rem;color:var(--cyan);background:rgba(0,230,190,.07);border:1px solid rgba(0,230,190,.18);border-radius:4px;padding:2px 8px;font-weight:500}
+        /* Bouton principal — plus grand, plus visible */
+        .mid-cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:800;font-size:.92rem;padding:13px 26px;border-radius:9px;text-decoration:none;transition:all .2s;white-space:nowrap;letter-spacing:-.01em;box-shadow:0 4px 20px rgba(0,230,190,.22)}
+        .mid-cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,230,190,.38);background:#00ffce}
+        .mid-cta-sub{font-family:var(--m);font-size:.6rem;color:var(--muted);text-align:center}
+        .mid-cta-note{font-family:var(--m);font-size:.55rem;color:var(--dim);text-align:center}
 
         /* ─────────────────────────────────────────────────────────
-           END CTA
+           END CTA — haute conversion
         ───────────────────────────────────────────────────────── */
-        .end-cta{margin:3.5rem 0 0;padding:2rem 2.25rem;background:var(--bg2);border:1px solid rgba(0,230,190,.2);border-radius:16px;position:relative;overflow:hidden}
-        .end-cta-glow{position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:500px;height:280px;background:radial-gradient(ellipse,rgba(0,230,190,.055),transparent 70%);pointer-events:none}
-        .end-cta-stripe{position:absolute;top:0;left:50%;transform:translateX(-50%);width:55%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
-        .end-cta-eyebrow{font-family:var(--m);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:.85rem;display:flex;align-items:center;gap:.45rem;position:relative;z-index:1}
-        .end-cta-line{display:inline-block;width:16px;height:1px;background:var(--cyan)}
-        .end-cta-body{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;position:relative;z-index:1}
-        .end-cta-tool{font-family:var(--d);font-size:1.22rem;font-weight:800;letter-spacing:-.03em;color:var(--text);margin-bottom:.4rem}
-        .end-cta-label{font-family:var(--m);font-size:.75rem;color:var(--muted);font-weight:300;line-height:1.65}
-        .end-cta-actions{display:flex;flex-direction:column;gap:.4rem;align-items:flex-end}
-        .end-cta-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:700;font-size:.9rem;padding:12px 24px;border-radius:10px;text-decoration:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,230,190,.2);transition:all .18s}
-        .end-cta-btn:hover{opacity:.88;transform:translateY(-1px);box-shadow:0 6px 24px rgba(0,230,190,.32)}
+        .end-cta{margin:3.5rem 0 0;padding:2.25rem 2.5rem;background:var(--bg2);border:1px solid rgba(0,230,190,.25);border-radius:18px;position:relative;overflow:hidden}
+        .end-cta-glow{position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:600px;height:320px;background:radial-gradient(ellipse,rgba(0,230,190,.065),transparent 68%);pointer-events:none}
+        .end-cta-stripe{position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
+        /* Tête : verdict + étoiles */
+        .end-cta-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;position:relative;z-index:1;flex-wrap:wrap;gap:.5rem}
+        .end-cta-verdict{font-family:var(--m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);display:flex;align-items:center;gap:.4rem}
+        .end-cta-verdict::before{content:'';width:14px;height:1px;background:var(--cyan);display:inline-block}
+        .end-cta-stars{color:#f59e0b;font-size:.85rem;letter-spacing:2px}
+        /* Corps */
+        .end-cta-body{display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;flex-wrap:wrap;position:relative;z-index:1}
+        .end-cta-left{flex:1;min-width:200px}
+        .end-cta-tool{font-family:var(--d);font-size:1.35rem;font-weight:800;letter-spacing:-.035em;color:var(--text);margin-bottom:.4rem}
+        .end-cta-label{font-family:var(--m);font-size:.76rem;color:var(--muted);font-weight:300;line-height:1.7;margin-bottom:.85rem}
+        /* Checkmarks de confiance */
+        .end-cta-trust{display:flex;flex-direction:column;gap:.3rem}
+        .end-cta-trust-item{font-family:var(--m);font-size:.68rem;color:var(--cyan);font-weight:500;display:flex;align-items:center;gap:.35rem}
+        /* Actions côté droit */
+        .end-cta-actions{display:flex;flex-direction:column;gap:.5rem;align-items:center;flex-shrink:0}
+        /* Bouton principal — le plus imposant de la page */
+        .end-cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:800;font-size:1rem;padding:15px 32px;border-radius:11px;text-decoration:none;white-space:nowrap;box-shadow:0 6px 24px rgba(0,230,190,.28);transition:all .2s;letter-spacing:-.01em}
+        .end-cta-btn:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(0,230,190,.42);background:#00ffce}
+        .end-cta-btn-sub{font-family:var(--m);font-size:.62rem;color:var(--muted);text-align:center}
         .end-cta-note{font-family:var(--m);font-size:.55rem;color:var(--dim)}
 
         /* ─────────────────────────────────────────────────────────
@@ -502,14 +512,39 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         .toc-item a{font-family:var(--m);font-size:.68rem;color:var(--muted);text-decoration:none;font-weight:300;line-height:1.45;transition:all .18s;display:block;padding:5px 10px 5px 12px;border-left:2px solid transparent;border-bottom:1px solid transparent}
         .toc-item a:hover{color:var(--text);background:var(--bg3)}
         .toc-item.active a{color:var(--cyan);border-left-color:var(--cyan);background:var(--cdim);font-weight:500}
-        .sbox-aff{background:linear-gradient(160deg,rgba(0,230,190,.06),rgba(0,230,190,.02));border-color:rgba(0,230,190,.18)!important;position:relative}
-        .sbox-aff .sbox-header{border-bottom-color:rgba(0,230,190,.12)}
-        .sbox-aff::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
-        .aff-tool{font-family:var(--d);font-size:.92rem;font-weight:800;color:var(--text);letter-spacing:-.02em;margin-bottom:.3rem}
-        .aff-label{font-family:var(--m);font-size:.67rem;color:var(--muted);font-weight:300;line-height:1.55;margin-bottom:.9rem}
-        .aff-btn{display:flex;align-items:center;justify-content:center;gap:.4rem;background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:700;font-size:.78rem;padding:9px;border-radius:7px;text-decoration:none;transition:all .18s;letter-spacing:-.01em}
-        .aff-btn:hover{opacity:.88;transform:translateY(-1px)}
-        .aff-note{font-family:var(--m);font-size:.53rem;color:var(--dim);text-align:center;margin-top:.4rem}
+        /* Sidebar affilié — signal fort et visible */
+        .sbox-aff{background:linear-gradient(160deg,rgba(0,230,190,.09),rgba(0,230,190,.02));border-color:rgba(0,230,190,.28)!important;position:relative}
+        .sbox-aff .sbox-header{border-bottom-color:rgba(0,230,190,.15)}
+        .sbox-aff::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan) 30%,var(--cyan) 70%,transparent)}
+        .aff-tool{font-family:var(--d);font-size:.96rem;font-weight:800;color:var(--text);letter-spacing:-.02em;margin-bottom:.25rem}
+        .aff-rating{display:flex;align-items:center;gap:.4rem;margin-bottom:.5rem}
+        .aff-stars{color:#f59e0b;font-size:.72rem;letter-spacing:1px}
+        .aff-rating-label{font-family:var(--m);font-size:.58rem;color:var(--muted)}
+        .aff-label{font-family:var(--m);font-size:.67rem;color:var(--muted);font-weight:300;line-height:1.55;margin-bottom:.65rem}
+        .aff-checks{display:flex;flex-direction:column;gap:.22rem;margin-bottom:.85rem}
+        .aff-check{font-family:var(--m);font-size:.62rem;color:var(--cyan);font-weight:500}
+        /* Bouton sidebar — animation pulse pour attirer l'oeil */
+        .aff-btn{display:flex;align-items:center;justify-content:center;gap:.4rem;background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:800;font-size:.8rem;padding:11px;border-radius:8px;text-decoration:none;transition:all .2s;letter-spacing:-.01em;box-shadow:0 4px 16px rgba(0,230,190,.2)}
+        .aff-btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(0,230,190,.38);background:#00ffce}
+        .aff-btn-sub{font-family:var(--m);font-size:.58rem;color:var(--muted);text-align:center;margin-top:.35rem}
+        .aff-note{font-family:var(--m);font-size:.52rem;color:var(--dim);text-align:center;margin-top:.2rem}
+
+        /* ─────────────────────────────────────────────────────────
+           STICKY MOBILE CTA — apparaît en bas sur mobile
+        ───────────────────────────────────────────────────────── */
+        .sticky-cta{display:none}
+        @media(max-width:960px){
+          .sticky-cta{
+            display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+            position:fixed;bottom:0;left:0;right:0;z-index:200;
+            background:rgba(8,12,16,.97);border-top:1px solid rgba(0,230,190,.2);
+            padding:.9rem var(--pad);backdrop-filter:blur(20px);
+          }
+          .sticky-cta-tool{font-family:var(--d);font-size:.82rem;font-weight:700;color:var(--text);letter-spacing:-.01em}
+          .sticky-cta-label{font-family:var(--m);font-size:.6rem;color:var(--muted);font-weight:300}
+          .sticky-cta-btn{display:inline-flex;align-items:center;gap:.35rem;background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:800;font-size:.82rem;padding:10px 20px;border-radius:8px;text-decoration:none;white-space:nowrap;flex-shrink:0;transition:all .18s}
+          .sticky-cta-btn:hover{box-shadow:0 4px 16px rgba(0,230,190,.3)}
+        }
         .nl-title-s{font-family:var(--d);font-size:.85rem;font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:.3rem}
         .nl-text{font-family:var(--m);font-size:.68rem;color:var(--muted);line-height:1.65;font-weight:300;margin-bottom:.85rem}
         .nl-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 11px;color:var(--text);font-family:var(--m);font-size:.74rem;outline:none;margin-bottom:.45rem;transition:border-color .18s}
@@ -537,20 +572,19 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
 
       <ProgressBar color={color} />
       <div className="bg-grid" />
-      
 
       {/* ── NAVIGATION ── */}
-      <nav>
+      <nav className={scrolled ? "scrolled" : ""}>
         <a href={l("")} className="logo">
           <div className="logo-dot" />
           Neuri<em>flux</em>
         </a>
         <ul className={`nav-links${menuOpen ? " open" : ""}`}>
-          <li><a href={l("/blog")} className="active">{t.nav.blog}</a></li>
-          <li><a href={l("/comparatifs")}>{t.nav.comparatifs}</a></li>
-          <li><a href={l("/newsletter")}>{t.nav.newsletter}</a></li>
-          <li><a href={l("/contact")}>{t.nav.contact}</a></li>
-          <li><a href={l("/about")}>{t.nav.about}</a></li>
+          <li><a href={l("/blog")}>{L.nav.blog}</a></li>
+          <li><a href={l("/comparatifs")}>{L.nav.comparatifs}</a></li>
+          <li><a href={l("/newsletter")}>{L.nav.newsletter}</a></li>
+          <li><a href={l("/contact")}>{L.nav.contact}</a></li>
+          <li><a href={l("/about")}>{L.nav.about}</a></li>
         </ul>
         <div style={{ display: "flex", gap: ".75rem", alignItems: "center" }}>
           <div className="lt">
@@ -655,8 +689,20 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
                 <div className="sbox-header"><div className="sbox-title" style={{ color: "var(--cyan)" }}>{L.ourPick}</div></div>
                 <div className="sbox-body">
                   <div className="aff-tool">{affiliate.toolName}</div>
+                  <div className="aff-rating">
+                    <span className="aff-stars">★★★★★</span>
+                    <span className="aff-rating-label">{lang === "fr" ? "Recommandé" : "Recommended"}</span>
+                  </div>
                   <div className="aff-label">{affiliate.label[lang]}</div>
-                  <a href={affiliate.url} target="_blank" rel="noopener noreferrer sponsored" className="aff-btn">{L.tryFree} →</a>
+                  <div className="aff-checks">
+                    <span className="aff-check">✓ {lang === "fr" ? "Testé par Neuriflux" : "Tested by Neuriflux"}</span>
+                    <span className="aff-check">✓ {lang === "fr" ? "Version gratuite dispo" : "Free plan available"}</span>
+                    <span className="aff-check">✓ {lang === "fr" ? "Sans carte bancaire" : "No credit card needed"}</span>
+                  </div>
+                  <a href={affiliate.url} target="_blank" rel="noopener noreferrer sponsored" className="aff-btn">
+                    {lang === "fr" ? "Essayer gratuitement" : "Try for free"} →
+                  </a>
+                  <div className="aff-btn-sub">{lang === "fr" ? "Accès immédiat · Sans engagement" : "Instant access · No commitment"}</div>
                   <div className="aff-note">{L.affLink}</div>
                 </div>
               </div>
@@ -683,6 +729,19 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
               </div>
             </div>
           </aside>
+        </div>
+      )}
+
+      {/* ── STICKY MOBILE CTA ── */}
+      {affiliate && (
+        <div className="sticky-cta">
+          <div>
+            <div className="sticky-cta-tool">{affiliate.toolName}</div>
+            <div className="sticky-cta-label">{lang === "fr" ? "Version gratuite disponible" : "Free plan available"}</div>
+          </div>
+          <a href={affiliate.url} target="_blank" rel="noopener noreferrer sponsored" className="sticky-cta-btn">
+            {lang === "fr" ? "Essayer gratuit" : "Try for free"} →
+          </a>
         </div>
       )}
 

@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "sora-fermeture-openai-2026",
   "grok-review-2026",
   "deepseek-review-2026",
   "perplexity-ai-review-2026",

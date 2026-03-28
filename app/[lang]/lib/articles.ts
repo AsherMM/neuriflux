@@ -35,6 +35,411 @@ export interface Article {
 }
 
 export const ARTICLES: Article[] = [
+// ─── Sora Fermeture OpenAI 2026 ──────────────────────────────────────────────
+  {
+    slug: "sora-fermeture-openai-2026",
+    tag: "Chatbots",
+    date: { fr: "28 mars 2026", en: "March 28, 2026" },
+    timeMin: "12",
+    featured: true,
+    affiliate: {
+      url: "https://sora.chatgpt.com/explore",
+      toolName: "Sora",
+      label: {
+        fr: "Ferme le 26 Avril 2026",
+        en: "Close April 26, 2026",
+      },
+    },
+
+    fr: {
+      title: "Sora est mort : OpenAI abandonne son générateur vidéo IA (et le deal Disney s'effondre)",
+      desc: "Le 24 mars 2026, OpenAI a fermé Sora — son app de génération vidéo lancée il y a 6 mois. 15 millions de dollars de coûts par jour, 2,1 millions de revenus au total, 1 milliard Disney envolé. L'autopsie complète.",
+      metaTitle: "Sora fermé par OpenAI : pourquoi ça a échoué et quelles alternatives en 2026 | Neuriflux",
+      metaDesc: "OpenAI a fermé Sora le 24 mars 2026. 15M$/jour de coûts, 2,1M$ de revenus totaux, deal Disney annulé. On décortique l'échec et les meilleures alternatives : Runway, Kling, Pika, Veo.",
+      content: `
+## Ce qui s'est passé le 24 mars 2026
+
+Le 24 mars 2026, OpenAI a publié un message laconique sur X. *"We're saying goodbye to Sora. To everyone who created with Sora, shared it, and built community around it: thank you."* Aucune explication détaillée. Aucune date officielle de fermeture. Juste un au revoir.
+
+Six mois après son lancement en fanfare, Sora — l'application de génération vidéo par IA qu'OpenAI avait présentée comme *"le moteur d'imagination le plus puissant jamais créé"* — est morte. Dans sa chute, elle a emporté un accord d'un milliard de dollars avec Disney, l'un des partenariats les plus médiatisés de l'industrie IA.
+
+La surprise n'était pas totale pour ceux qui suivaient les chiffres. Mais pour les 9,6 millions d'utilisateurs qui avaient téléchargé l'app et les créateurs qui avaient construit leur workflow autour de Sora, le choc a été réel. Voici l'autopsie complète.
+
+## La chronologie : de l'euphorie à la fermeture
+
+Comprendre la mort de Sora, c'est d'abord comprendre à quelle vitesse elle est passée de la promesse à la déception.
+
+**Février 2024** : OpenAI dévoile Sora en démo. Les vidéos générées à partir de simples prompts texte font le tour d'internet. Runway, Pika et Kling semblent soudainement dépassés. La promesse est totale : *"une fenêtre sur le monde réel pour les IA"*, selon Sam Altman.
+
+**Décembre 2024** : Sora est rendu accessible aux abonnés ChatGPT Plus (20$/mois) et ChatGPT Pro (200$/mois). Mais le lancement est chaotique — serveurs saturés, files d'attente, et une qualité perçue inférieure aux démonstrations qui avaient fait tant de bruit. Pendant les 10 mois de preview, les concurrents avaient rattrapé leur retard.
+
+**30 septembre 2025** : Sora sort en application standalone sur iOS et Android. C'est un TikTok de l'IA — un fil vertical de vidéos générées, avec une fonctionnalité "characters" permettant de scanner son visage pour se mettre en scène dans des vidéos. En 24 heures, l'app atteint le sommet de l'App Store américain dans la catégorie Photo & Vidéo.
+
+**Novembre 2025** : pic à **3,3 millions de téléchargements** en un mois. Puis le déclin commence.
+
+**Décembre 2025** : Disney annonce un accord historique — **1 milliard de dollars d'investissement** dans OpenAI et une licence de 3 ans permettant à Sora d'utiliser plus de 200 personnages Disney, Marvel, Pixar et Star Wars. L'accord est présenté comme un tournant pour l'industrie. Il ne sera jamais finalisé.
+
+**Janvier 2026** : les téléchargements chutent de **45%**. La nouveauté s'est dissipée.
+
+**Février 2026** : 1,13 million de téléchargements, soit une chute de **66% depuis le pic de novembre**. Les utilisateurs actifs quotidiens ont reculé de 34%.
+
+**24 mars 2026** : fermeture officielle annoncée. Disney annule simultanément son deal. L'accord n'avait jamais été finalisé — aucun centime n'avait changé de mains.
+
+## La réalité des chiffres : un gouffre financier sans précédent
+
+L'histoire de Sora, c'est avant tout une histoire de mathématiques qui ne fonctionnent jamais.
+
+Générer une vidéo de 10 secondes avec Sora coûtait à OpenAI environ **1,30 dollar en ressources de calcul**, selon les analystes de Cantor Fitzgerald. Un chiffre que Bill Peebles, le directeur de l'équipe Sora, avait lui-même qualifié publiquement en octobre 2025 : *"The economics are completely unsustainable right now."* C'est rare d'entendre un cadre parler de son propre produit avec une telle franchise.
+
+En multipliant ce coût par les millions de vidéos générées quotidiennement au pic d'utilisation, Forbes estimait qu'OpenAI brûlait **environ 15 millions de dollars par jour** rien que pour faire tourner l'infrastructure Sora — soit plus de **5,4 milliards de dollars annualisés**.
+
+Face à ces coûts : les revenus totaux générés par Sora sur l'intégralité de sa vie, via les achats in-app, s'élèvent à **2,1 millions de dollars**. C'est moins de 0,04% des coûts d'infrastructure estimés.
+
+| Métrique | Chiffre |
+|---|---|
+| Coût par clip de 10 secondes | ~1,30$ |
+| Coût infrastructure estimé (pic) | ~15M$/jour |
+| Coût annualisé estimé | ~5,4 milliards $ |
+| Revenus in-app (lifetime) | 2,1 millions $ |
+| Téléchargements totaux | 9,6 millions |
+| Pic mensuel de téléchargements (nov. 2025) | 3,3 millions |
+| Téléchargements en fév. 2026 | 1,13 million (-66%) |
+
+Ces chiffres ne sont pas une anomalie — ils révèlent un problème structurel. La génération vidéo est fondamentalement plus coûteuse en calcul que la génération de texte. Là où faire tourner ChatGPT coûtait environ 700 000 dollars par jour en 2023 pour des centaines de millions d'utilisateurs, Sora atteignait 15 millions de dollars par jour pour une fraction de cette base.
+
+## Pourquoi OpenAI a-t-il fermé Sora ? Les vraies raisons
+
+La fermeture de Sora n'est pas due à une seule cause. C'est la convergence de plusieurs dynamiques simultanées.
+
+### 1. Les coûts de calcul étaient insurmontables
+
+La vidéo consomme des ordres de grandeur de ressources de plus que le texte. À l'heure où OpenAI se bat pour sécuriser des GPU pour ses modèles GPT et ses produits enterprise, consacrer l'équivalent de plusieurs milliers de H100 à une app de génération vidéo grand public relevait du luxe intenable. La décision de fermer Sora libère une quantité considérable de ressources de calcul que la compagnie peut réallouer à des produits réellement rentables.
+
+### 2. La croissance s'est effondrée avant même la fermeture
+
+Sora n'a pas été fermé parce qu'il ne fonctionnait pas — il a été fermé parce que la croissance avait déjà cessé. Le pic de novembre 2025 n'a pas été suivi d'une consolidation mais d'une chute libre. Pour une app qui prétendait révolutionner la création vidéo, les signaux de rétention étaient alarmants dès le début du mois de décembre.
+
+### 3. L'IPO change les priorités
+
+OpenAI prépare une introduction en bourse prévue au quatrième trimestre 2026, avec une valorisation cible entre 830 milliards et 1 000 milliards de dollars. Pour attirer des investisseurs institutionnels, la compagnie doit démontrer une discipline financière. Un produit qui brûle 15 millions de dollars par jour pour générer 2,1 millions de dollars de revenus totaux est une ligne difficile à défendre dans un prospectus.
+
+### 4. Anthropic a montré l'alternative
+
+Pendant qu'OpenAI dispersait ses efforts sur Sora, DALL-E, la navigation web et d'autres fonctionnalités grand public, Anthropic a concentré ses ressources sur une chose : Claude. L'approche a payé — Claude a décroché des contrats enterprise majeurs et est devenu la référence chez les développeurs. OpenAI a visiblement pris note.
+
+### 5. Les problèmes de modération étaient devenus un risque légal sérieux
+
+Moins d'un mois après son lancement, Sora avait déjà été utilisé pour générer des deepfakes non consentis de personnalités publiques, des contenus pornographiques, et des vidéos contrefaisant des personnages sous droits d'auteur. OpenAI avait dû mettre en pause certaines fonctionnalités et renforcer sa modération en urgence. Ces incidents multipliaient les risques légaux à un moment où la compagnie se prépare à être soumise à la scrutiny d'une cotation en bourse.
+
+## L'effondrement du deal Disney
+
+L'accord Disney mérite un traitement à part — parce qu'il illustre à quelle vitesse les stratégies peuvent s'inverser dans l'industrie IA.
+
+En décembre 2025, le partenariat semblait représenter une validation définitive de Sora. Disney, l'entreprise la plus notoire pour défendre ses droits de propriété intellectuelle, acceptait non seulement de licencier ses personnages les plus précieux pour une utilisation dans une app IA grand public, mais investissait également 1 milliard de dollars dans OpenAI. L'accord prévoyait l'intégration de contenus générés par Sora directement dans Disney+.
+
+Trois mois plus tard, tout s'est annulé. L'équipe tech de Disney aurait appris le pivot stratégique d'OpenAI le soir du 23 mars 2026 — la veille de l'annonce publique. Aucun centime n'avait changé de mains, l'accord n'ayant jamais été formellement finalisé.
+
+La réponse publique de Disney a été diplomatique : *"As the nascent AI field advances rapidly, we respect OpenAI's decision to exit the video generation business and to shift its priorities elsewhere."* En privé, selon plusieurs sources citées par le Hollywood Reporter, la surprise était totale.
+
+## Ce que ça révèle sur l'industrie IA
+
+La mort de Sora n'est pas qu'une anecdote de plus dans l'histoire de la Silicon Valley. C'est un signal d'alarme pour toute l'industrie de la génération IA grand public.
+
+**La génération vidéo à grande échelle n'est pas encore économiquement viable pour le grand public.** Les coûts d'inférence vidéo sont structurellement incompatibles avec des modèles de pricing accessibles au consommateur lambda. Si OpenAI — avec ses 40 milliards de dollars levés et sa valorisation à 730 milliards — ne peut pas rendre Sora profitable, qui le peut ?
+
+**La virality ne remplace pas la rétention.** Sora a établi des records de téléchargement. Il a dépassé ChatGPT sur la vitesse d'adoption initiale. Mais les utilisateurs sont partis aussi vite qu'ils sont arrivés une fois la nouveauté dissipée. Un million de téléchargements en 5 jours ne vaut rien si le Day-30 retention rate est de 3%.
+
+**Les plateformes IA grand public sont vulnérables.** Les millions de créateurs qui avaient construit des workflows autour de Sora, investi du temps à apprendre ses particularités, et développé une audience autour de leur contenu Sora se retrouvent du jour au lendemain sans outil. Sans préavis suffisant, sans plan de migration clair. La confiance dans les plateformes IA grand public en prend un coup.
+
+## Les alternatives : qui récupère le marché ?
+
+La fermeture de Sora ne signifie pas la fin de la génération vidéo IA. Le marché s'est considérablement développé pendant que Sora stagnait. Voici l'état des lieux en mars 2026 :
+
+### Runway Gen-4 — le leader qualité
+
+Runway est aujourd'hui le benchmark de référence pour la génération vidéo professionnelle. Son modèle Gen-4, sorti en janvier 2026, résout le principal problème des générations précédentes : l'incohérence temporelle, où les objets changent d'apparence entre les frames. Pour la publicité, la pré-visualisation cinématographique et le contenu narratif, Runway s'impose.
+
+**Prix** : à partir de 12$/mois. **API disponible**, mature et stable.
+**Idéal pour** : créateurs professionnels, production vidéo de qualité, VFX.
+
+### Kling 3.0 (Kuaishou) — le meilleur rapport qualité/prix
+
+Développé par le géant chinois Kuaishou, Kling a surpris l'industrie en rattrapant puis en dépassant Sora sur plusieurs critères. Kling 3.0 génère des clips de qualité comparable à Runway à environ 40% du coût. Son avantage principal : la durée — jusqu'à 3 minutes par clip contre quelques secondes pour la plupart des concurrents. Plan gratuit généreux avec 66 crédits quotidiens.
+
+**Prix** : Plan gratuit disponible. Payant à partir de ~10$/mois.
+**Idéal pour** : volume élevé, contenu social, rapport qualité/prix.
+
+### Google Veo 3 — le seul à faire du 4K natif
+
+Google est désormais, selon le Hollywood Reporter, le seul acteur avec une vraie échelle dans la vidéo IA. Veo 3 est le seul modèle grand public à générer des vidéos en 4K natif. Il s'intègre directement à Google Drive, YouTube Studio et Google Ads — un avantage majeur pour les équipes déjà dans l'écosystème Google.
+
+**Prix** : accessible via les abonnements Google One. API via Gemini.
+**Idéal pour** : entreprises dans l'écosystème Google, contenus haute résolution.
+
+### Pika 2.5 — le plus rapide pour le contenu social
+
+Pika ne cherche pas à faire du cinéma. Il cherche à générer le clip TikTok parfait en moins de 30 secondes. Sur les vidéos courtes pour les réseaux sociaux, il est 3 à 5 fois plus rapide que Runway ou Kling pour une qualité souvent suffisante. Son plan gratuit avec 80 crédits suffit pour tester sérieusement.
+
+**Prix** : 80 crédits gratuits. Payant à partir de 8$/mois.
+**Idéal pour** : contenu social court, rapidité, créateurs débutants.
+
+### Seedance 2.0 (ByteDance) — l'option open source
+
+La version ouverte de ByteDance dans la vidéo IA. Seedance se démarque par sa capacité à maintenir la cohérence des personnages sur plusieurs scènes — un point faible des autres outils. Accessible directement en navigateur avec un plan gratuit.
+
+**Prix** : Plan gratuit disponible. Tarification à la seconde produite.
+**Idéal pour** : contenu avec personnages récurrents, animation stylisée.
+
+| Outil | Qualité | Vitesse | Prix mensuel | Cas d'usage |
+|---|---|---|---|---|
+| **Runway Gen-4** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | 12$+ | Pro, publicité, VFX |
+| **Kling 3.0** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Gratuit / ~10$+ | Volume, social |
+| **Google Veo 3** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | Google One | 4K, entreprise |
+| **Pika 2.5** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Gratuit / 8$+ | Social court, rapidité |
+| **Seedance 2.0** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Gratuit / ~5$+ | Personnages, animation |
+
+## Et après ? Le projet "Spud" d'OpenAI
+
+OpenAI ne quitte pas complètement le domaine de la vidéo IA. L'équipe Sora continue selon la compagnie de travailler sur la *"world simulation research"* — la simulation du monde physique pour des applications de robotique. Un nouveau modèle en cours de développement, dont le nom de code interne serait **"Spud"**, serait prévu pour remplacer Sora dans une logique B2B plutôt que grand public.
+
+Sam Altman a évoqué un outil qui va *"really accelerate the economy"* sans donner plus de détails. Le signal est clair : la prochaine itération d'OpenAI dans la vidéo sera orientée productivité enterprise, pas création grand public.
+
+Ce qui est certain en revanche : ChatGPT ne proposera plus de génération vidéo à partir de prompts texte, et l'API Sora sera coupée. Les développeurs qui avaient intégré Sora dans leurs applications sont priés de migrer.
+
+## Notre verdict : que retenir ?
+
+Sora n'était pas un mauvais produit. C'était un produit extraordinairement coûteux à faire fonctionner, lancé sur un marché qui n'était pas prêt à payer ce qu'il coûtait réellement, par une entreprise qui avait d'autres batailles à mener.
+
+La leçon pour les utilisateurs : ne construisez pas de workflow critique autour d'une plateforme IA grand public sans évaluer sa viabilité économique. Sora avait les signaux d'alarme — un coût d'inférence structurellement incompatible avec des prix abordables, une croissance en chute libre dès le deuxième mois, un business model flou. La fermeture aurait pu être anticipée.
+
+Pour les créateurs qui cherchent un remplacement immédiat : **Kling 3.0 est notre recommandation principale** pour la majorité des usages — excellent rapport qualité/prix, plan gratuit généreux, API stable. **Runway Gen-4** pour les exigences professionnelles. **Pika 2.5** pour le contenu social rapide.
+
+L'ère Sora se referme en 6 mois. L'ère de la vidéo IA, elle, ne fait que commencer.
+
+## FAQ
+
+### Sora est-il définitivement fermé ?
+
+Oui. OpenAI a annoncé la fermeture le 24 mars 2026. L'app a été retirée de l'App Store, l'API sera coupée et sora.com sera mis hors ligne. La compagnie a promis des détails sur les délais et la préservation des contenus existants.
+
+### Le deal Disney est-il vraiment annulé ?
+
+Oui, les deux parties ont confirmé que l'accord ne se fera pas. Disney a déclaré respecter "la décision d'OpenAI de quitter le business de la génération vidéo". Aucun des 1 milliard de dollars annoncés n'a jamais changé de mains — l'accord n'avait pas été finalisé.
+
+### Pourquoi OpenAI a-t-il fermé Sora si tôt ?
+
+Les coûts d'infrastructure estimés à 15 millions de dollars par jour étaient insoutenables face à des revenus lifetime de 2,1 millions de dollars. OpenAI prépare son IPO et doit démontrer une discipline financière aux investisseurs institutionnels. La compagnie réalloue ses ressources de calcul vers des produits B2B plus rentables.
+
+### Quelle est la meilleure alternative à Sora en 2026 ?
+
+Pour la qualité pro : Runway Gen-4. Pour le rapport qualité/prix : Kling 3.0. Pour le contenu social rapide : Pika 2.5. Pour les entreprises dans l'écosystème Google : Veo 3. Pour les personnages et l'animation : Seedance 2.0.
+
+### OpenAI va-t-il relancer un outil de génération vidéo ?
+
+Peut-être, sous le nom de code "Spud", mais orienté B2B et productivité enterprise plutôt que grand public. Sam Altman a évoqué un outil qui va "vraiment accélérer l'économie" sans plus de précisions. Aucun lancement n'est annoncé.
+      `,
+      related: [
+        { slug: "runway-vs-kling-vs-pika-2026", tag: "Vidéo IA", title: "Runway vs Kling vs Pika : quel générateur vidéo IA choisir après la mort de Sora ?", timeMin: "10" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", tag: "Chatbots", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", timeMin: "12" },
+        { slug: "deepseek-review-2026", tag: "Chatbots", title: "DeepSeek : avis 2026, le meilleur ChatGPT gratuit venu de Chine ?", timeMin: "12" },
+      ],
+    },
+
+    en: {
+      title: "Sora Is Dead: OpenAI Kills Its AI Video App (And the Disney Deal Collapses)",
+      desc: "On March 24, 2026, OpenAI shut down Sora — the video generation app it launched just 6 months ago. $15 million per day in costs, $2.1 million in total revenue, $1 billion Disney deal gone. The complete post-mortem.",
+      metaTitle: "OpenAI Shuts Down Sora: Why It Failed and Best Alternatives in 2026 | Neuriflux",
+      metaDesc: "OpenAI closed Sora on March 24, 2026. $15M/day in costs, $2.1M lifetime revenue, Disney deal cancelled. Full breakdown of the failure and best alternatives: Runway, Kling, Pika, Veo.",
+      content: `
+## What happened on March 24, 2026
+
+The announcement came without warning. On March 24, 2026, OpenAI posted a brief message on X: *"We're saying goodbye to Sora. To everyone who created with Sora, shared it, and built community around it: thank you."* No detailed explanation. No specific shutdown date. Just a farewell.
+
+Six months after its celebrated launch, Sora — the AI video generation app OpenAI had positioned as *"the most powerful imagination engine ever built"* — was gone. And it took with it a billion-dollar deal with Disney and the credibility of one of the most hyped product launches in recent AI history.
+
+For those watching the numbers, the end wasn't entirely surprising. For the 9.6 million users who had downloaded the app and the creators who had built their workflows around it, the shock was real. Here's the complete post-mortem.
+
+## The timeline: from hype to shutdown
+
+Understanding Sora's death requires tracing how quickly the product moved from promise to disappointment.
+
+**February 2024**: OpenAI unveils Sora as a demo. Text-to-video clips flood the internet. Runway, Pika, and Kling suddenly look outdated. The promise is total — Sam Altman describes it as *"a window into the real world for AI."*
+
+**December 2024**: Sora becomes available to ChatGPT Plus ($20/month) and Pro ($200/month) subscribers. But the rollout is chaotic — overloaded servers, waitlists, and quality that falls short of the demos that had generated so much excitement. Ten months of limited access had given competitors time to catch up.
+
+**September 30, 2025**: Sora launches as a standalone iOS and Android app. The concept: an AI-native TikTok — a vertical video feed of generated content, with a "characters" feature letting users scan their face to appear in videos. Within 24 hours, the app tops the US App Store charts in Photo & Video.
+
+**November 2025**: peak downloads hit **3.3 million in a single month**. Then the decline begins.
+
+**December 2025**: Disney announces a landmark deal — a **$1 billion investment** in OpenAI and a 3-year license giving Sora access to over 200 Disney, Marvel, Pixar, and Star Wars characters. It is framed as a turning point for the industry. It will never close.
+
+**January 2026**: downloads fall **45%**. The novelty has worn off.
+
+**February 2026**: 1.13 million downloads — a **66% collapse from the November peak**. Daily active users are down 34%.
+
+**March 24, 2026**: shutdown announced. Disney simultaneously exits the deal. The agreement had never been formally executed — no money had ever changed hands.
+
+## The numbers: an economic catastrophe
+
+The Sora story is, at its core, a story about math that never worked.
+
+Generating a 10-second video with Sora cost OpenAI approximately **$1.30 in compute**, according to analysts at Cantor Fitzgerald. Bill Peebles, Sora's own head of product, addressed this publicly in October 2025 with unusual candor: *"The economics are completely unsustainable right now."* It is almost unheard of for a senior executive to say this about their own product while it's still live.
+
+Multiply that per-clip cost by the millions of videos generated daily at peak usage, and Forbes estimated OpenAI was burning approximately **$15 million per day** just to keep the Sora infrastructure running — an annualized rate exceeding **$5.4 billion**.
+
+Set against those costs: the app's total lifetime revenue from in-app purchases came to **$2.1 million**. That's less than 0.04% of estimated infrastructure costs.
+
+| Metric | Figure |
+|---|---|
+| Cost per 10-second clip | ~$1.30 |
+| Estimated peak infrastructure cost | ~$15M/day |
+| Annualized estimate | ~$5.4 billion |
+| Lifetime in-app revenue | $2.1 million |
+| Total downloads | 9.6 million |
+| Peak monthly downloads (Nov. 2025) | 3.3 million |
+| Downloads in Feb. 2026 | 1.13 million (−66%) |
+
+These figures reveal a structural problem. Video generation is categorically more compute-intensive than text. ChatGPT cost roughly $700,000 per day to run in 2023 for hundreds of millions of users. Sora was hitting $15 million per day for a fraction of that user base. No subscription pricing model could bridge that gap.
+
+## Why OpenAI shut down Sora: the real reasons
+
+The closure of Sora wasn't caused by any single factor. It was the convergence of several pressures that had been building since the day the app launched.
+
+### 1. Compute costs were simply untenable
+
+Video inference requires orders of magnitude more GPU resources than text. At a moment when OpenAI is competing aggressively for compute capacity to power its GPT models and enterprise products, running thousands of H100s for a consumer video app was a luxury the company could no longer justify. Shutting down Sora frees up significant infrastructure that can be redirected toward products that actually generate revenue.
+
+### 2. Growth had already collapsed before the announcement
+
+Sora wasn't shut down because it stopped working. It was shut down because growth had already stopped. The November 2025 peak was followed not by consolidation but by free fall. For an app claiming to revolutionize video creation, the retention signals were alarming by early December — well before any official pivot was communicated.
+
+### 3. The IPO changes everything
+
+OpenAI is targeting a public offering in Q4 2026 at a valuation between $830 billion and $1 trillion. To attract institutional investors, the company needs to demonstrate financial discipline. A product burning $15 million per day while generating $2.1 million in total lifetime revenue is nearly impossible to explain in a prospectus. Shutting down Sora sends a clear signal to the capital markets: OpenAI is getting serious about unit economics.
+
+### 4. Anthropic showed a different path
+
+While OpenAI was spreading resources across Sora, DALL-E, web browsing, and a growing list of consumer features, Anthropic focused almost exclusively on Claude. The strategy paid off — Claude won major enterprise contracts and became the developer's assistant of choice. OpenAI clearly took notice.
+
+### 5. Content moderation had become a serious legal liability
+
+Within weeks of launch, Sora was being used to generate non-consensual deepfakes of public figures, pornographic content, and videos featuring copyrighted characters without authorization. OpenAI had to pause features and tighten moderation on an emergency basis. These incidents created accumulating legal risk at exactly the moment the company is preparing for the financial scrutiny that comes with going public.
+
+## The Disney collapse
+
+The Disney deal deserves its own section — because it illustrates how quickly AI industry strategies can reverse.
+
+In December 2025, the partnership appeared to be a definitive validation of Sora. Disney — the company most famous for aggressively defending its intellectual property — was not just licensing its most valuable characters to an AI consumer app, but investing $1 billion in OpenAI. The deal included plans to integrate Sora-generated content directly into Disney+.
+
+Three months later, it was over. Disney's tech team reportedly learned of OpenAI's strategic pivot on the evening of March 23, 2026 — the night before the public announcement. No money had changed hands; the agreement had never been formally closed.
+
+Disney's public statement was diplomatically worded: *"As the nascent AI field advances rapidly, we respect OpenAI's decision to exit the video generation business and to shift its priorities elsewhere."* According to multiple sources cited by The Hollywood Reporter, the surprise inside Disney was considerable.
+
+## What this reveals about the AI industry
+
+Sora's death isn't just another Silicon Valley footnote. It's a warning signal for the entire consumer AI generation space.
+
+**Consumer-scale video generation is not yet economically viable.** Video inference costs are structurally incompatible with consumer-friendly pricing. If OpenAI — with $40 billion raised and a $730 billion valuation — can't make Sora profitable, who can?
+
+**Virality does not equal retention.** Sora broke download records. It outpaced ChatGPT's initial adoption speed. But users left as fast as they arrived once the novelty faded. A million downloads in five days is worthless if Day-30 retention is in the low single digits.
+
+**Consumer AI platforms carry real risk.** The millions of creators who built workflows around Sora, invested time learning its quirks, and built audiences around their Sora content found themselves without a tool overnight. With insufficient notice and no clear migration plan. Trust in consumer AI platforms has taken a measurable hit.
+
+## The alternatives: who fills the gap?
+
+Sora's closure does not end AI video generation — the market had already moved significantly while Sora was stagnating. Here's where things stand in March 2026:
+
+### Runway Gen-4 — the quality benchmark
+
+Runway is now the reference standard for professional AI video. Gen-4, released in January 2026, solves the core weakness of previous generative video models: temporal inconsistency, where subjects change appearance and motion artifacts appear between frames. For advertising, pre-visualization, and narrative content, Runway leads.
+
+**Pricing**: from $12/month. **Stable, mature API available.**
+**Best for**: professional creators, high-quality production, VFX.
+
+### Kling 3.0 (Kuaishou) — best value
+
+Developed by Chinese tech giant Kuaishou, Kling quietly caught up to and in several areas surpassed Sora. Kling 3.0 produces Runway-comparable quality at roughly 40% of the cost per second of video. Its key advantage: duration — up to 3 minutes per clip. Generous free tier with 66 daily credits.
+
+**Pricing**: free tier available. Paid from ~$10/month.
+**Best for**: high-volume creators, social content, value.
+
+### Google Veo 3 — the only 4K native option
+
+Google is now, per The Hollywood Reporter, the only player in AI video with genuine scale. Veo 3 is the only consumer model to output native 4K video. It integrates directly with Google Drive, YouTube Studio, and Google Ads — a significant workflow advantage for teams already in the Google ecosystem.
+
+**Pricing**: accessible via Google One subscriptions. API via Gemini.
+**Best for**: enterprise teams in Google ecosystem, high-resolution content.
+
+### Pika 2.5 — fastest for social content
+
+Pika doesn't try to make cinema. It tries to make the perfect TikTok clip in under 30 seconds. On short-form social videos, it's 3 to 5 times faster than Runway or Kling for quality that's often entirely sufficient. The free tier with 80 credits is enough to test it seriously.
+
+**Pricing**: 80 free credits. Paid from $8/month.
+**Best for**: short-form social, speed, beginner creators.
+
+### Seedance 2.0 (ByteDance) — the open-source option
+
+ByteDance's open-weights play in AI video. Seedance distinguishes itself with character consistency across multiple scenes — a weakness in most competing tools. Accessible directly in-browser with a free tier.
+
+**Pricing**: free tier available. Per-second-of-output pricing.
+**Best for**: content with recurring characters, stylized animation.
+
+| Tool | Quality | Speed | Monthly price | Best use case |
+|---|---|---|---|---|
+| **Runway Gen-4** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | $12+ | Pro, advertising, VFX |
+| **Kling 3.0** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Free / ~$10+ | Volume, social |
+| **Google Veo 3** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | Google One | 4K, enterprise |
+| **Pika 2.5** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Free / $8+ | Short social, speed |
+| **Seedance 2.0** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Free / ~$5+ | Characters, animation |
+
+## What's next: OpenAI's "Spud" project
+
+OpenAI isn't entirely abandoning the video space. According to the company, the Sora research team continues working on *"world simulation research"* — physical world modeling with robotics applications. A new model in development, internally codenamed **"Spud"**, is reportedly positioned as a B2B productivity tool rather than a consumer product.
+
+Sam Altman has teased an upcoming model that will *"really accelerate the economy"* without sharing specifics. The signal is clear: whatever OpenAI builds next in video will be enterprise-oriented, not consumer-facing.
+
+What is certain: ChatGPT will no longer generate video from text prompts, and the Sora API will be cut off. Developers who had integrated Sora into their applications need to migrate.
+
+## Our verdict: what to take away
+
+Sora wasn't a bad product. It was an extraordinarily expensive product to operate, launched into a market that wasn't prepared to pay what it actually cost, by a company that had bigger battles to fight elsewhere.
+
+The lesson for users: don't build critical workflows around consumer AI platforms without evaluating their economic sustainability. Sora had the warning signs — inference costs structurally incompatible with affordable pricing, growth collapsing in the second month, no clear business model. The shutdown was foreseeable for anyone reading the numbers.
+
+For creators looking for an immediate replacement: **Kling 3.0 is our top recommendation** for most use cases — excellent quality-to-price ratio, generous free tier, stable API. **Runway Gen-4** for professional-grade requirements. **Pika 2.5** for fast social content.
+
+The Sora era closes in six months. The AI video era is just getting started.
+
+## FAQ
+
+### Is Sora permanently shut down?
+
+Yes. OpenAI announced the closure on March 24, 2026. The app has been removed from the App Store, the API will be cut off, and sora.com will go offline. The company has promised details on timelines and content preservation options.
+
+### Is the Disney deal really cancelled?
+
+Yes, both parties confirmed the deal will not proceed. Disney stated it "respects OpenAI's decision to exit the video generation business." None of the announced $1 billion ever changed hands — the agreement had never been formally executed.
+
+### Why did OpenAI shut down Sora so quickly?
+
+Infrastructure costs estimated at $15 million per day were unsustainable against lifetime revenues of $2.1 million. With an IPO targeting Q4 2026, OpenAI needs to demonstrate financial discipline to institutional investors. The company is reallocating compute resources toward more profitable B2B products.
+
+### What is the best Sora alternative in 2026?
+
+For professional quality: Runway Gen-4. For value: Kling 3.0. For fast social content: Pika 2.5. For teams in the Google ecosystem: Veo 3. For character consistency and animation: Seedance 2.0.
+
+### Will OpenAI launch another video generation tool?
+
+Possibly, under the codename "Spud," but aimed at enterprise productivity rather than consumers. Sam Altman has mentioned a model that will "really accelerate the economy" without further detail. No launch date has been announced.
+      `,
+      related: [
+        { slug: "runway-vs-kling-vs-pika-2026", tag: "AI Video", title: "Runway vs Kling vs Pika: Which AI Video Generator After Sora's Shutdown?", timeMin: "10" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", tag: "Chatbots", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", timeMin: "12" },
+        { slug: "deepseek-review-2026", tag: "Chatbots", title: "DeepSeek Review 2026: The Best Free ChatGPT Alternative?", timeMin: "12" },
+      ],
+    },
+  },
+
 // ─── Grok Review 2026 ────────────────────────────────────────────────────────
   {
     slug: "grok-review-2026",
