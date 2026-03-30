@@ -1,7 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
-  "chatgpt-perd-il-face-a-claude-et-gemini-2026",
+  "chatgpt-claude-gemini-2026",
   "sora-fermeture-openai-2026",
   "grok-review-2026",
   "deepseek-review-2026",

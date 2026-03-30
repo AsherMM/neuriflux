@@ -37,7 +37,7 @@ export interface Article {
 export const ARTICLES: Article[] = [
 // ─── ChatGPT Claude Gemini Marché 2026 ──────────────────────────────────────
 {
-  slug: "chatgpt-perd-il-face-a-claude-et-gemini-2026",
+  slug: "chatgpt-claude-gemini-2026",
   tag: "Chatbots",
   date: { fr: "30 mars 2026", en: "March 30, 2026" },
   timeMin: "16",
