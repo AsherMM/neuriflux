@@ -35,6 +35,299 @@ export interface Article {
 }
 
 export const ARTICLES: Article[] = [
+// ─── ChatGPT Claude Gemini Marché 2026 ──────────────────────────────────────
+{
+  slug: "chatgpt-perd-il-face-a-claude-et-gemini-2026",
+  tag: "Chatbots",
+  date: { fr: "30 mars 2026", en: "March 30, 2026" },
+  timeMin: "16",
+  featured: true,
+  affiliate: {
+    url: "https://claude.ai",
+    toolName: "Claude",
+    label: {
+      fr: "Tester Claude",
+      en: "Try Claude",
+    },
+  },
+
+  fr: {
+    title: "ChatGPT est-il en train de perdre face à Claude et Gemini ? Ce que disent vraiment les chiffres en 2026",
+    desc: "ChatGPT reste le plus gros chatbot IA du marché en 2026. Mais Claude gagne du terrain sur les utilisateurs exigeants, pendant que Gemini avance grâce à la distribution de Google. L’analyse complète du basculement.",
+    metaTitle: "ChatGPT vs Claude vs Gemini 2026 : ChatGPT perd-il vraiment du terrain ? | Neuriflux",
+    metaDesc: "ChatGPT domine encore en 2026, mais Claude progresse sur les utilisateurs avancés et Gemini s’impose avec Google. Chiffres, analyse, dynamiques et verdict complet.",
+    content: `
+## Ce qui est réellement en train de changer en 2026
+
+Pendant longtemps, le marché des chatbots IA était simple à lire. ChatGPT n’était pas seulement le leader : il était le réflexe. Pour une immense majorité d’utilisateurs, essayer l’intelligence artificielle revenait à ouvrir ChatGPT. Le produit d’OpenAI était à la fois le plus connu, le plus utilisé, et celui autour duquel toute l’industrie se comparait.
+
+En mars 2026, cette domination n’a pas disparu. Mais elle a cessé d’être absolue.
+
+C’est une nuance importante, parce qu’elle change complètement la lecture du marché. Non, ChatGPT ne s’effondre pas. OpenAI continue de parler de plus de 800 millions d’utilisateurs actifs hebdomadaires, un chiffre gigantesque qui place encore le produit à une échelle que peu d’outils logiciels atteignent. Oui, ChatGPT reste l’acteur central de la conversation IA. Mais en parallèle, deux dynamiques concurrentes deviennent impossibles à ignorer.
+
+La première vient de Claude. Anthropic n’a pas construit son chatbot comme un clone de ChatGPT destiné à gagner en notoriété grand public. La société a progressivement positionné Claude comme un outil plus crédible pour les utilisateurs qui poussent réellement les modèles : développeurs, équipes produit, rédacteurs intensifs, profils techniques, power users. Ce n’est pas un hasard si Claude a commencé à grimper dans l’App Store américain début mars 2026, au point de dépasser brièvement ChatGPT sur certains classements de téléchargements.
+
+La deuxième vient de Gemini. Là, la menace n’est pas la préférence explicite, mais la distribution implicite. Google n’a pas besoin que Gemini soit le chatbot préféré de tout le monde ; Google a besoin qu’il soit déjà là, dans les produits que des centaines de millions de personnes utilisent tous les jours. C’est une logique plus silencieuse, mais probablement plus puissante à long terme.
+
+Autrement dit, la vraie question n’est plus de savoir si ChatGPT reste numéro un. Il l’est encore. La vraie question, c’est de savoir s’il est toujours le choix évident.
+
+## Les chiffres : pourquoi le leadership de ChatGPT reste réel, mais moins écrasant
+
+Les volumes bruts restent impressionnants en faveur d’OpenAI. ChatGPT revendique plus de 800 millions d’utilisateurs actifs hebdomadaires et Sam Altman a indiqué en février que la croissance mensuelle était repassée au-dessus de 10%. Pris isolément, ces chiffres suffiraient à clore le débat : aucun concurrent n’a encore publiquement annoncé une base comparable sur une base hebdomadaire.
+
+Mais les chiffres ne racontent jamais toute l’histoire, surtout dans un marché qui se mature.
+
+Google a indiqué que l’application Gemini avait dépassé les 750 millions d’utilisateurs mensuels à la fin de 2025. La métrique n’est pas strictement comparable à celle de ChatGPT, puisqu’on parle ici de monthly active users contre weekly active users. Malgré tout, le signal de fond est clair : Gemini n’est plus un outsider. C’est déjà un produit à très grande échelle.
+
+Claude, de son côté, ne publie pas de base totale grand public aussi précise. Mais ses indicateurs de dynamique sont ceux d’un produit en phase d’accélération. Début mars, les estimations Appfigures relayées par TechCrunch montraient Claude à 149 000 téléchargements quotidiens contre 124 000 pour ChatGPT sur mobile aux États-Unis. Ce dépassement n’a pas la même portée qu’une domination mondiale, évidemment, mais il est symboliquement fort : pour la première fois, le leader paraît attaquable sur un terrain visible.
+
+Plus intéressant encore, Anthropic a indiqué que les abonnements payants Claude avaient plus que doublé depuis le début de l’année. Ce point compte beaucoup plus qu’il n’en a l’air. Les téléchargements sont un signal d’attention ; les abonnements sont un signal de préférence réelle. Quand des utilisateurs ne se contentent plus de tester un outil, mais commencent à payer pour lui, on quitte le terrain du buzz pour entrer dans celui de la migration.
+
+On peut donc résumer la situation ainsi :
+
+| Indicateur | ChatGPT | Claude | Gemini |
+|---|---|---|---|
+| Taille publique connue | Très largement leader | Plus opaque | Très grande échelle |
+| Dynamique récente | Forte, mais plus discutée | Très forte sur mobile et payant | Très forte via Google |
+| Force principale | Marque, usage, habitude | Qualité perçue, profondeur, code | Distribution, intégration |
+| Risque principal | Produit devenu trop large | Échelle moins lisible | Dépendance à l’écosystème Google |
+
+Cette lecture est plus honnête que les raccourcis du type “ChatGPT est fini” ou “Claude a déjà gagné”. La réalité, c’est que ChatGPT domine encore en masse, mais ne domine plus seul l’imaginaire du marché.
+
+## Pourquoi Claude gagne du terrain : la revanche de la préférence qualitative
+
+Claude n’a pas grandi en essayant de parler à tout le monde. C’est précisément ce qui fait sa force.
+
+Là où ChatGPT est devenu un produit extrêmement large — assistant généraliste, moteur de recherche conversationnel, outil d’écriture, interface vocale, plateforme de code, surface de monétisation publicitaire — Claude a gardé une image beaucoup plus cohérente. Anthropic l’a progressivement installé comme l’outil que l’on ouvre quand on veut une réponse plus posée, plus stable, plus sérieuse, et souvent plus convaincante sur les tâches longues.
+
+Cette réputation n’est pas qu’un effet de communauté tech. Elle pèse directement sur la manière dont les outils sont adoptés dans les entreprises et les équipes. Dans beaucoup d’environnements professionnels, ce ne sont pas les millions d’utilisateurs occasionnels qui choisissent les outils ; ce sont quelques profils techniques, managers, rédacteurs seniors ou développeurs qui recommandent une solution au reste du groupe. Si Claude devient le favori de cette couche prescriptrice, son poids réel dépasse rapidement sa taille brute.
+
+C’est d’autant plus important que le marché de l’IA conversationnelle est en train de sortir de sa phase purement “waouh”. En 2023, les utilisateurs voulaient surtout savoir ce qu’un chatbot pouvait faire. En 2026, ils cherchent surtout lequel fait le mieux leur travail réel. Et dès qu’on entre sur ce terrain-là, la qualité perçue prend énormément de valeur.
+
+Claude a aussi bénéficié d’un contexte favorable : la couverture médiatique autour des tensions avec le Pentagone a renforcé son image d’acteur plus prudent, plus indépendant, plus aligné avec une certaine idée de la sécurité IA. Ce type de récit médiatique n’explique pas à lui seul sa croissance, mais il a pu accélérer une tendance déjà présente : celle d’un produit qui séduit davantage les utilisateurs exigeants que les utilisateurs occasionnels.
+
+En clair, Claude ne remplace pas ChatGPT. Il lui retire quelque chose de plus dangereux qu’un simple volume : le monopole de la crédibilité chez les utilisateurs qui comptent le plus.
+
+## Gemini : le concurrent le plus sous-estimé parce qu’il joue une autre partie
+
+Si Claude menace ChatGPT par la préférence, Gemini le menace par l’infrastructure.
+
+Google n’a pas besoin que chaque utilisateur se réveille le matin avec l’envie d’ouvrir Gemini. Il lui suffit que Gemini soit intégré dans Gmail, Google Docs, Search, Android, Chrome, Drive, et dans les nouvelles couches d’interface IA que Google déploie progressivement. C’est un avantage structurel qu’OpenAI ne peut pas copier.
+
+Cette différence change complètement la nature du combat concurrentiel.
+
+ChatGPT a popularisé le modèle du chatbot autonome : on ouvre une application, on pose une question, on obtient une réponse. Gemini pousse un autre modèle : l’IA comme fonctionnalité déjà présente dans les outils du quotidien. L’utilisateur n’a plus besoin de “choisir” une IA au sens fort. L’IA devient un composant naturel de ses workflows existants.
+
+C’est une logique moins spectaculaire que celle des classements de téléchargements, mais elle peut s’avérer beaucoup plus décisive. Un utilisateur qui reste toute la journée dans Gmail, Docs et Search peut finir par utiliser Gemini sans même considérer qu’il a changé de plateforme. À long terme, cette présence diffuse réduit le besoin d’ouvrir un chatbot séparé.
+
+Il faut aussi comprendre que cette stratégie s’accorde parfaitement avec la maturité du marché. Plus l’IA devient banale, moins les gens ont envie de sortir de leurs outils pour aller chercher une réponse ailleurs. Le meilleur produit n’est pas toujours celui qui répond le mieux ; c’est souvent celui qui supprime le plus de friction. Et sur ce terrain, Google part avec plusieurs années d’avance structurelle.
+
+C’est pour ça que Gemini reste souvent mal analysé. Beaucoup le jugent uniquement sur sa “qualité perçue” face à ChatGPT ou Claude. Or son enjeu n’est pas seulement là. Son vrai avantage, c’est de rendre l’IA omniprésente avant même que l’utilisateur ait formulé un choix conscient.
+
+## Pourquoi ChatGPT semble moins intouchable qu’en 2023 ou 2024
+
+Il y a une raison simple à ce changement de perception : le marché est devenu plus mature, et ChatGPT est devenu plus vaste.
+
+Au lancement, la polyvalence de ChatGPT était un avantage écrasant. Être capable de répondre à peu près à tout suffisait à dominer un marché encore en découverte. Mais à mesure que l’IA entre dans les usages quotidiens, les attentes deviennent plus précises. Les utilisateurs ne cherchent plus uniquement “une IA”. Ils cherchent la meilleure IA pour coder, la meilleure pour écrire, la meilleure pour s’intégrer dans leur boîte mail, la meilleure pour leur organisation.
+
+Dans ce nouveau cadre, être le plus large n’assure plus d’être le plus désiré.
+
+ChatGPT garde évidemment des atouts immenses : la marque la plus forte, la base utilisateur la plus massive, un écosystème produit très large, et une capacité à monétiser cette audience, comme le montre déjà son pilote publicitaire américain qui a dépassé 100 millions de dollars de revenus annualisés en six semaines. Mais cette puissance commence aussi à produire un effet inverse : le produit paraît parfois moins net, moins spécialisé, moins lisible dans son positionnement. :contentReference[oaicite:1]{index=1}
+
+Pendant ce temps, Claude paraît plus cohérent, et Gemini paraît plus inévitable.
+
+Le risque pour OpenAI n’est donc pas un effondrement brutal du volume. Le risque, c’est de perdre progressivement le statut de plateforme qui allait de soi. Dans les marchés technologiques, cette perte de l’évidence précède souvent les rééquilibrages les plus profonds.
+
+## Ce que cela révèle sur le marché des chatbots IA en 2026
+
+Le marché ne se dirige pas vers un modèle où un seul acteur écrase tous les autres. Il se dirige vers une segmentation plus adulte.
+
+ChatGPT reste le leader grand public, l’outil le plus universel, le plus connu, le plus simple à recommander à quelqu’un qui veut “une IA qui fait un peu de tout”. Claude devient l’outil que l’on conseille plus volontiers dès que le niveau d’exigence monte, notamment sur le code, la rédaction longue, l’analyse ou les workflows professionnels. Gemini s’impose là où l’IA n’est plus un produit à part, mais une couche déjà intégrée dans l’environnement de travail.
+
+Ce basculement est sain pour le marché. Il signifie que l’IA conversationnelle n’est plus une simple catégorie de curiosité dominée par un acteur-star. Elle devient une couche logicielle normale, où plusieurs leaders peuvent coexister selon les usages.
+
+Pour OpenAI, cela veut dire une chose simple : conserver la première place ne suffira plus. Il faudra défendre cette place segment par segment, usage par usage, au lieu de compter uniquement sur la force de la marque et l’inertie de l’habitude.
+
+## Notre verdict : ChatGPT ne perd pas encore le marché, mais il perd son monopole mental
+
+Il faut éviter les conclusions paresseuses.
+
+Dire que ChatGPT perd déjà face à Claude et Gemini serait exagéré. Les volumes restent massivement en faveur d’OpenAI. La notoriété reste largement de son côté. Pour le grand public, ChatGPT demeure encore le nom par défaut de l’IA conversationnelle.
+
+Mais dire que rien ne change serait tout aussi faux.
+
+Claude gagne là où la qualité perçue décide des préférences les plus influentes. Gemini gagne là où la distribution invisible décide des usages futurs. Et ChatGPT, lui, commence à découvrir quelque chose qu’il n’avait pas vraiment connu à cette échelle depuis son explosion : une concurrence crédible sur plusieurs fronts à la fois.
+
+La formulation la plus juste en mars 2026 est sans doute celle-ci :
+
+**ChatGPT reste numéro un.  
+Mais pour la première fois depuis longtemps, il ne ressemble plus à un numéro un incontestable.**
+
+## FAQ
+
+### ChatGPT est-il toujours le plus gros chatbot IA en 2026 ?
+
+Oui. OpenAI affirme que ChatGPT dépasse les 800 millions d’utilisateurs actifs hebdomadaires, ce qui en fait toujours le chatbot IA le plus massif du marché.
+
+### Claude a-t-il vraiment dépassé ChatGPT ?
+
+Pas globalement. En revanche, Claude a brièvement dépassé ChatGPT dans l’App Store américain début mars 2026 et a montré une forte accélération sur les téléchargements mobiles et les abonnements payants.
+
+### Gemini est-il une menace sérieuse pour OpenAI ?
+
+Oui, surtout à moyen et long terme. Son intégration dans les produits Google lui donne un avantage structurel unique que ChatGPT ne peut pas répliquer facilement.
+
+### Quel est le meilleur chatbot IA en 2026 ?
+
+Il n’existe plus une seule réponse universelle. ChatGPT reste le plus polyvalent pour le grand public, Claude séduit davantage les utilisateurs avancés et les développeurs, tandis que Gemini devient très fort pour ceux qui vivent déjà dans l’écosystème Google.
+
+### ChatGPT est-il en train de perdre le marché ?
+
+Pas encore en volume. Ce qu’il perd surtout, c’est l’idée qu’il serait le seul choix évident. Et c’est déjà un changement majeur.
+      `,
+      related: [
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", tag: "Chatbots", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", timeMin: "12" },
+        { slug: "deepseek-review-2026", tag: "Chatbots", title: "DeepSeek : avis 2026, le meilleur ChatGPT gratuit venu de Chine ?", timeMin: "12" },
+        { slug: "sora-fermeture-openai-2026", tag: "Chatbots", title: "Sora est mort : OpenAI abandonne son générateur vidéo IA", timeMin: "12" },
+      ],
+    },
+
+    en: {
+      title: "Is ChatGPT Losing to Claude and Gemini? What the Numbers Actually Say in 2026",
+      desc: "ChatGPT is still the biggest AI chatbot in 2026. But Claude is winning over demanding users, while Gemini is spreading through Google’s distribution power. Here’s the full analysis of the shift.",
+      metaTitle: "ChatGPT vs Claude vs Gemini 2026: Is ChatGPT Really Losing Ground? | Neuriflux",
+      metaDesc: "ChatGPT still leads in 2026, but Claude is gaining with advanced users and Gemini is scaling through Google. Full breakdown, numbers, market dynamics, and verdict.",
+      content: `
+## The question changed in 2026
+
+For most of the last two years, the AI chatbot market was easy to explain. ChatGPT was not just the largest product in the category — it was the category. For mainstream users, trying AI often meant opening ChatGPT, and for competing startups, launching a new model usually meant being compared to OpenAI within minutes.
+
+That is still partly true in March 2026. But only partly.
+
+The important change is not that ChatGPT has collapsed. It clearly has not. OpenAI still says ChatGPT has more than 800 million weekly active users, and that kind of scale is hard to overstate. Very few consumer software products ever reach that level of habitual use. ChatGPT remains the most visible AI brand in the world, and for millions of users it is still the default starting point.
+
+What changed is something more strategic: ChatGPT is no longer the only credible answer to the question of which AI assistant matters most.
+
+Claude has started to win in the part of the market where trust, output quality, and technical reputation carry disproportionate weight. Gemini, meanwhile, is becoming powerful in a very different way: not by outperforming ChatGPT in public conversation, but by embedding itself inside the digital infrastructure people already live in.
+
+That is why the market feels different now. The debate is no longer “Who has heard of ChatGPT?” The debate is “Who owns the next layer of habitual AI use?”
+
+## ChatGPT still leads in scale, but scale is no longer the whole story
+
+The strongest argument in OpenAI’s favor remains obvious: size.
+
+ChatGPT still has the broadest adoption footprint that we can publicly verify. More than 800 million weekly active users is not just a healthy metric — it is a sign of category leadership at a global level. That number alone explains why so many competitors continue to define themselves against ChatGPT rather than the other way around.
+
+But markets do not move on scale alone. They move on momentum, positioning, and where users go when their needs become more specific.
+
+That is why Google’s number matters so much. Gemini passed 750 million monthly active users by the end of 2025, according to Google. Monthly users and weekly users are not identical metrics, so the comparison should not be abused. But the strategic implication is clear enough: Gemini is already operating at a level where it cannot be dismissed as secondary.
+
+Claude’s case is different. Anthropic has not published a consumer base number with that level of visibility, which makes direct scale comparisons difficult. Yet Claude’s recent signals point in one direction: acceleration. Early March data relayed by TechCrunch showed Claude reaching 149,000 daily downloads in the U.S., compared with 124,000 for ChatGPT, based on Appfigures estimates. Around the same period, Claude briefly overtook ChatGPT in the U.S. App Store rankings. That does not mean Claude suddenly became the dominant chatbot in America. But it does mean something symbolically important happened: the category leader looked vulnerable in public.
+
+Then there is the stronger signal underneath the headlines. Anthropic said Claude’s paid subscriptions have more than doubled this year. That matters because downloads can reflect curiosity, while paid subscriptions reflect conviction. Users are not just checking Claude out. A growing share of them appear willing to commit budget to it.
+
+In practical terms, the market now looks less like a monarchy and more like a hierarchy under pressure.
+
+## Why Claude’s rise matters more than its raw size
+
+Claude is not trying to be everything to everyone, and that has become one of its biggest advantages.
+
+Anthropic has spent the past year building a product identity that feels unusually coherent for the AI space. Claude is widely seen as calm, structured, reliable, and strong on long-form reasoning and coding-oriented work. Whether every one of those perceptions is always true in every workflow is almost secondary; in markets like this, perception itself becomes a strategic asset.
+
+That reputation gives Claude a special kind of leverage. It does not need to outgrow ChatGPT across the whole population to become dangerous. It only needs to become the preferred tool among the users who influence everybody else: developers, product teams, technical leads, writers, founders, analysts, and serious power users.
+
+Those people often decide what a team uses, what a startup integrates, what a creator recommends, and what an organization pays for. So when Claude improves its standing among them, its impact can travel much further than its raw user count suggests.
+
+This is also why Claude’s momentum feels different from a typical viral spike. It is not just “more attention.” It is attention concentrated in the most opinion-shaping layer of the market.
+
+That kind of growth tends to be stickier than headline hype.
+
+## Gemini is playing a much bigger game than most people realize
+
+If Claude challenges ChatGPT through preference, Gemini challenges it through environment.
+
+Google’s strategic position is radically different from OpenAI’s or Anthropic’s. OpenAI needs people to keep choosing ChatGPT as a destination. Anthropic needs people to discover Claude, like it, and stick with it. Google, by contrast, can make AI usage happen upstream. It can place Gemini inside Search, Gmail, Docs, Android, Drive, Chrome, and the broader set of interfaces through which people already manage work and life.
+
+That distinction is enormous.
+
+A standalone chatbot asks for intent: open the app, type the prompt, engage with the tool. An embedded assistant removes that friction. The AI is simply there when the user reaches for an existing product. Over time, that can be even more powerful than being perceived as the “best chatbot,” because it shifts behavior without requiring a strong conscious decision.
+
+This is why Gemini is easy to underestimate if you only look at public excitement. Its strategic advantage is not necessarily product love. It is distribution gravity.
+
+And distribution gravity matters even more in mature software markets than in young ones. As AI becomes less of a novelty and more of a routine layer, the winning products may be the ones that reduce choice rather than demand it. Gemini fits that model extremely well.
+
+In that sense, Google is not just competing in chat. It is competing for the default surface through which people will use AI at all.
+
+## Why ChatGPT feels less untouchable now
+
+The most important shift is psychological, not numerical.
+
+In 2023 and 2024, ChatGPT was both the largest tool and the most obvious recommendation. That combination made it feel nearly unassailable. Today, it remains the largest, but it is no longer the obvious answer for every serious use case.
+
+Part of that comes from its own success. ChatGPT has become broader and more ambitious. It is a consumer assistant, a conversational search product, a coding interface, a voice product, a business tool, and increasingly a monetized media surface. OpenAI’s U.S. ad pilot even surpassed $100 million in annualized revenue within six weeks, which shows just how commercially powerful that scale can be. But breadth has a cost: the product can start to feel less sharp, less singular, and less clearly “the best” at any one thing. :contentReference[oaicite:2]{index=2}
+
+At the same time, the market has matured. Users are no longer asking only which AI chatbot is most famous. They are asking which one writes best, which one codes best, which one fits inside their company stack, which one they trust with longer workflows, and which one feels most natural inside the tools they already use.
+
+That kind of market punishes complacency. It does not necessarily remove the leader. But it slowly chips away at the leader’s sense of inevitability.
+
+And that may be the most important sentence in this entire analysis: ChatGPT is still ahead, but it no longer feels inevitable.
+
+## What this tells us about the AI chatbot market in 2026
+
+The category is not moving toward a single all-powerful winner. It is moving toward segmentation.
+
+ChatGPT remains the broad consumer leader, the product most people know, the one most users can start with, and the easiest general recommendation. Claude is becoming the preferred answer in a more professional or demanding context, especially where clarity, depth, and long-form work matter. Gemini is becoming the strongest option where AI is not treated as a destination product, but as an integrated capability across an ecosystem.
+
+That is a more mature market structure. It also means future leadership will not be decided by one number alone.
+
+The winners will be determined by who owns default behavior in different contexts: mainstream prompts, enterprise workflows, creator stacks, technical tasks, search surfaces, inboxes, operating systems, and collaboration suites.
+
+ChatGPT still owns a huge portion of that map. But for the first time, it has to defend multiple fronts at once.
+
+## Our verdict: ChatGPT is still first, but no longer unquestioned
+
+The lazy conclusion would be that Claude is “beating” ChatGPT. The opposite lazy conclusion would be that ChatGPT remains so large that nothing else matters.
+
+Both are wrong.
+
+ChatGPT still leads the market by scale, visibility, and mainstream recognition. That part remains true. But Claude is increasingly capturing the users whose opinions and budgets matter most for premium adoption, and Gemini is building a structural position through Google’s distribution machine that could become even more powerful over time.
+
+So the right conclusion is not that ChatGPT is losing the market today.
+
+It is that ChatGPT has started losing something almost as important: the unquestioned mental monopoly it once had over the category.
+
+And in technology markets, that is often where the real competitive era begins.
+
+## FAQ
+
+### Is ChatGPT still the biggest AI chatbot in 2026?
+
+Yes. OpenAI says ChatGPT has more than 800 million weekly active users, which still makes it the largest consumer AI chatbot brand by publicly available scale.
+
+### Did Claude really overtake ChatGPT?
+
+Not globally. But Claude briefly overtook ChatGPT in the U.S. App Store in early March 2026 and showed stronger short-term momentum in U.S. mobile downloads and paid subscriptions.
+
+### Is Gemini a serious threat to OpenAI?
+
+Yes, especially over the long term. Gemini benefits from Google’s massive distribution advantage across Search, Android, Gmail, Docs, and the wider Google ecosystem.
+
+### Which AI chatbot is best in 2026?
+
+There is no single universal answer anymore. ChatGPT remains the most versatile mainstream choice, Claude is increasingly preferred by advanced users and developers, and Gemini is becoming stronger for users already embedded in Google’s tools.
+
+### Is ChatGPT losing the market?
+
+Not in raw scale. What it is losing is the sense that it is the only obvious choice. That alone is a meaningful competitive shift.
+      `,
+      related: [
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", tag: "Chatbots", title: "ChatGPT vs Claude vs Gemini: which one should you choose in 2026?", timeMin: "12" },
+        { slug: "deepseek-review-2026", tag: "Chatbots", title: "DeepSeek Review 2026: the best free ChatGPT alternative from China?", timeMin: "12" },
+        { slug: "sora-fermeture-openai-2026", tag: "Chatbots", title: "Sora Is Dead: OpenAI kills its AI video app", timeMin: "12" },
+      ],
+    },
+  },
+
 // ─── Sora Fermeture OpenAI 2026 ──────────────────────────────────────────────
   {
     slug: "sora-fermeture-openai-2026",
