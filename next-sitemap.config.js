@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "vibe-coding-tools-2026",
   "chatgpt-claude-gemini-2026",
   "sora-fermeture-openai-2026",
   "grok-review-2026",
@@ -19,6 +20,7 @@ const ARTICLE_SLUGS = [
 ];
 
 const COMPARATIF_SLUGS = [
+  "n8n-vs-make-vs-zapier-2026",
   "runway-vs-kling-vs-pika-2026",
   "chatgpt-vs-claude-vs-gemini",
   "cursor-vs-copilot-vs-codeium",
