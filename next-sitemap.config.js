@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "money-ia-2026",
   "vibe-coding-tools-2026",
   "chatgpt-claude-gemini-2026",
   "sora-fermeture-openai-2026",
