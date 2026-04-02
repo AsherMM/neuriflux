@@ -32,6 +32,307 @@ export interface Article {
 }
 
 export const ARTICLES: Article[] = [
+// ─── Claude Mythos : le prochain modèle Anthropic 2026 ───────────────────────
+  {
+    slug: "claude-mythos-next-anthropic-2026",
+    tag: "Chatbots",
+    date: { fr: "1er avril 2026", en: "April 1, 2026" },
+    timeMin: "12",
+    featured: true,
+    affiliate: {
+      url: "https://claude.ai",
+      toolName: "Claude",
+      label: {
+        fr: "Essayer Claude Opus 4.6 — le meilleur modèle dispo aujourd'hui",
+        en: "Try Claude Opus 4.6 — the best available model today",
+      },
+    },
+    fr: {
+      title: "Claude Mythos : le prochain modèle Anthropic leaké — tout ce qu'on sait en avril 2026",
+      desc: "Le 26 mars 2026, une fuite massive exposait les plans d'Anthropic pour son prochain modèle. Claude Mythos, tier Capybara, risques cybersécurité inédits — on décortique tout ce qui est confirmé.",
+      metaTitle: "Claude Mythos 2026 : le prochain modèle Anthropic leaké, Capybara, cybersécurité | Neuriflux",
+      metaDesc: "Tout ce qu'on sait sur Claude Mythos, le prochain flagship Anthropic leaké en mars 2026. Nouveau tier Capybara au-dessus d'Opus, performances 'step change', risques cybersécurité inédits. Confirmé ou rumeur — on fait le tri.",
+      content: `
+## Le leak qui a secoué l'industrie IA
+
+Le 26 mars 2026, deux chercheurs en cybersécurité — Roy Paz de LayerX Security et Alexandre Pauwels de l'Université de Cambridge — ont découvert quelque chose d'inhabituel : près de **3 000 fichiers internes d'Anthropic** accessibles publiquement sans authentification, dans un data store mal configuré.
+
+Parmi ces fichiers : un brouillon de billet de blog annonçant un nouveau modèle appelé **Claude Mythos**, décrit par Anthropic lui-même comme "de loin le modèle IA le plus puissant que nous ayons jamais développé". Fortune a consulté les documents et informé Anthropic, qui a rapidement restreint l'accès. Mais les captures d'écran avaient déjà circulé.
+
+Quelques jours plus tard, une **deuxième fuite** : Anthropic uploadait accidentellement 500 000 lignes de code source de Claude Code sur npm au lieu de la version compilée. Les deux incidents, distincts, ont fourni des informations complémentaires sur un modèle qu'Anthropic n'avait pas encore l'intention d'annoncer.
+
+Ce guide fait le tri entre ce qu'Anthropic a **officiellement confirmé**, ce qui vient des **documents leakés**, et ce qui reste **inconnu**.
+
+## Ce qu'Anthropic a officiellement confirmé
+
+Un porte-parole d'Anthropic a répondu à Fortune avec une déclaration claire :
+
+*"Nous développons un modèle généraliste avec des avancées significatives en raisonnement, programmation et cybersécurité. Étant donné la puissance de ses capacités, nous sommes délibérément prudents dans la façon dont nous le déployons. Nous considérons ce modèle comme un 'step change' et le plus capable que nous ayons jamais construit."*
+
+C'est tout ce qu'Anthropic a confirmé officiellement. Pas de benchmark, pas de date, pas de pricing. Le reste vient des documents leakés.
+
+## Le tier Capybara : une nouvelle catégorie au-dessus d'Opus
+
+Le point le plus structurant du leak : Mythos n'est pas une version incrémentale d'Opus. C'est un **nouveau tier** dans la hiérarchie Claude.
+
+Actuellement, Anthropic propose trois niveaux de modèles :
+- **Haiku** — le plus rapide et moins cher
+- **Sonnet** — le modèle équilibré
+- **Opus** — le flagship, le plus puissant
+
+Le brouillon leaké décrit **Capybara** comme un quatrième tier, positionné **au-dessus d'Opus** : *"Capybara est un nouveau nom pour un nouveau tier de modèle : plus grand et plus intelligent que nos modèles Opus — qui étaient, jusqu'à maintenant, nos plus puissants."*
+
+Capybara et Mythos semblent désigner le même modèle sous-jacent : Capybara est le nom du tier, Mythos est le nom spécifique du modèle dans ce tier. Deux versions du même brouillon de blog ont été trouvées — l'une titrée "Mythos", l'autre "Capybara" — ce qui suggère qu'Anthropic hésitait encore sur le nom commercial final.
+
+## Tableau comparatif : Mythos vs la gamme Claude actuelle
+
+| Modèle | Tier | Statut | Capacités (selon leak) |
+|---|---|---|---|
+| **Claude Haiku 4.5** | Haiku | Disponible | Rapide, économique |
+| **Claude Sonnet 4.6** | Sonnet | Disponible | Équilibré vitesse/intelligence |
+| **Claude Opus 4.6** | Opus | Disponible | Meilleur modèle actuel, 80.8% SWE-bench |
+| **Claude Mythos** | Capybara (nouveau) | Early access uniquement | "Dramatically higher" que Opus 4.6 |
+
+## Les capacités présumées — ce que disent les documents leakés
+
+Aucun benchmark officiel n'a été publié par Anthropic. Toutes les performances ci-dessous viennent du brouillon leaké, pas de tests indépendants.
+
+### Performances en programmation et raisonnement académique
+
+Le document leaké indique que Capybara obtient *"des scores nettement plus élevés que Claude Opus 4.6 sur les tests de programmation logicielle, de raisonnement académique et de cybersécurité"*. Pour contexte, Opus 4.6 domine déjà SWE-bench Verified à 80,8% et Terminal-Bench 2.0 à 65,4%. "Nettement plus élevé" sans chiffres précis reste à vérifier.
+
+### Cybersécurité — la dimension la plus préoccupante
+
+C'est là que le leak devient sensible. Le brouillon décrit Mythos comme *"actuellement très en avance sur tout autre modèle IA en capacités cyber"* et avertit qu'il *"annonce une prochaine vague de modèles capables d'exploiter des vulnérabilités à une vitesse qui dépasse de loin les efforts des défenseurs"*.
+
+Anthropic ne cache pas sa propre inquiétude. Le document cite explicitement : *"En préparant la sortie de Claude Capybara, nous voulons agir avec une prudence supplémentaire et comprendre les risques qu'il pose."* C'est pour cette raison que le rollout commence par des équipes de sécurité defensive, pas le grand public.
+
+Pour illustrer la réalité de ces risques : Anthropic avait déjà révélé qu'un groupe parrainé par l'État chinois avait utilisé Claude Code pour infiltrer **environ 30 organisations** — entreprises tech, institutions financières, agences gouvernementales — avant d'être détecté. Mythos amplifierait considérablement ces capacités.
+
+### Les conséquences immédiates du leak
+
+La divulgation a eu des effets financiers mesurables. L'ETF iShares Expanded Tech-Software Sector (IGV) a chuté de près de 3% le lendemain. Les actions de CrowdStrike, Palo Alto Networks, Zscaler et Fortinet ont toutes reculé. Bitcoin a glissé vers 66 000$. Anthropic a parallèlement commencé à briefer discrètement des responsables gouvernementaux américains sur les risques que Mythos fait peser sur la cybersécurité nationale.
+
+## Stratégie de déploiement : la prudence comme principe
+
+Le brouillon décrit une approche de rollout délibérément plus lente que pour les modèles précédents :
+
+**Phase 1** : accès restreint à un petit groupe de clients early access, principalement des équipes de cybersécurité défensive. L'objectif : construire des outils de défense avant que les capacités offensives ne soient largement disponibles.
+
+**Phase 2** : expansion progressive via l'API Claude, puis sur les plans Pro, Team et Enterprise.
+
+**Pas de date publique.** Anthropic n'a communiqué aucun calendrier. Le document mentionne que le modèle est *"très coûteux à faire tourner"* et qu'Anthropic travaille à le rendre *"beaucoup plus efficace avant toute publication générale"*. Certaines analyses situent une sortie possible autour de l'IPO ciblée pour Q4 2026, sans confirmation.
+
+## Ce qu'on ne sait pas encore
+
+Pour être rigoureux, voici ce qui reste inconnu et non confirmé :
+
+**Benchmarks précis** : aucun chiffre officiel ni test indépendant. "Dramatically higher" est un qualificatif, pas un score.
+
+**Pricing** : Anthropic n'a rien communiqué. Le tier Capybara sera nécessairement plus cher qu'Opus, mais dans quelle mesure — inconnu.
+
+**Fenêtre de contexte** : le chercheur Roy Paz suggère que le modèle aura probablement des versions "fast" et "slow" basées sur une fenêtre de contexte apparemment plus grande, mais rien n'est confirmé.
+
+**Nom commercial final** : "Mythos" et "Capybara" sont des noms de code internes. Le nom public final n'a pas été arrêté par Anthropic.
+
+**Date de sortie** : aucune. Pas de timeline confirmée.
+
+## Claude Mythos vs la concurrence en 2026
+
+Même sans benchmarks confirmés, le contexte compétitif aide à comprendre l'enjeu.
+
+En mars 2026, Claude Opus 4.6 domine sur SWE-bench Verified (80,8%) et les tâches enterprise knowledge work, avec 144 points Elo d'avance sur GPT-5.2. GPT-5.4 (sorti le 5 mars 2026) répond avec 75% sur OSWorld — dépassant les humains sur l'utilisation de desktop — et un pricing 50% moins cher qu'Opus 4.6. Gemini 3.1 Pro s'impose sur le segment coût/efficacité avec 2 millions de tokens de contexte.
+
+Si Mythos livre ce que le brouillon promet, il redéfinirait à nouveau la frontière. Mais ses concurrents directs — GPT-5.5, Gemini 4 — seront également sur le marché d'ici la fin 2026. La course ne s'arrête pas.
+
+## Faut-il attendre Mythos ?
+
+La réponse courte : non.
+
+Claude Opus 4.6 est en ce moment le meilleur modèle Anthropic disponible, et l'un des plus puissants du marché. Attendre un modèle sans date annoncée, coûteux à faire tourner, et initialement réservé à des partenaires cybersécurité sélectionnés, n'a aucun sens pour la grande majorité des cas d'usage.
+
+Les workflows construits aujourd'hui sur Opus 4.6 seront directement compatibles avec Mythos à sa sortie. Anthropic maintient une continuité API soignée entre les générations. Commencer maintenant, c'est être prêt le jour J.
+
+## Notre verdict sur Claude Mythos
+
+Claude Mythos est réel — Anthropic l'a confirmé. Il est en test avec un petit groupe d'early access. Il représente selon la compagnie un "step change" dans les capacités IA, notamment en cybersécurité. Et il a été révélé non pas par une conférence de presse, mais par deux incidents de sécurité consécutifs en une semaine.
+
+Ce qui est certain : Mythos est le modèle le plus ambitieux qu'Anthropic ait jamais construit. Ce qui reste incertain : quand il sera disponible, à quel prix, et si les performances promettent dans les documents leakés se confirmeront dans des tests indépendants.
+
+En attendant, Claude Opus 4.6 reste la référence.
+
+## FAQ Claude Mythos
+
+### Claude Mythos est-il officiellement confirmé par Anthropic ?
+
+Partiellement. Anthropic a confirmé tester un nouveau modèle qu'il décrit comme "un step change" et "le plus capable que nous ayons jamais construit", avec des "avancées significatives en raisonnement, programmation et cybersécurité". Mais aucun benchmark, prix ou date n'a été communiqué officiellement.
+
+### Qu'est-ce que le tier Capybara ?
+
+Capybara désigne un nouveau tier de modèle positionné au-dessus d'Opus dans la hiérarchie Claude — plus grand, plus capable, et plus coûteux. C'est une nouvelle catégorie, pas une version incrémentale d'Opus. Mythos serait le premier modèle de ce tier.
+
+### Quand Claude Mythos sera-t-il disponible ?
+
+Aucune date n'a été confirmée. Le modèle est actuellement en accès early access pour un petit groupe de clients sélectionnés, principalement dans la cybersécurité défensive. Certaines analyses situent une sortie grand public autour de Q4 2026, en lien avec l'IPO d'Anthropic, mais c'est de la spéculation.
+
+### Pourquoi Anthropic est-il si prudent sur la sortie de Mythos ?
+
+Les capacités cybersécurité du modèle inquiètent Anthropic lui-même. Le brouillon leaké décrit Mythos comme "très en avance sur tout autre modèle IA en capacités cyber" et avertit qu'il pourrait permettre des attaques à une vitesse dépassant les défenseurs. Anthropic priorise d'abord l'accès aux équipes de défense.
+
+### Faut-il attendre Mythos avant d'adopter Claude ?
+
+Non. Claude Opus 4.6 est disponible maintenant, performant, et compatible avec les futurs modèles. Attendre Mythos signifie perdre des mois de productivité sans garantie de date.
+      `,
+      related: [
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "12" },
+        { slug: "deepseek-review-2026", title: "DeepSeek : avis 2026, le meilleur ChatGPT gratuit venu de Chine ?", tag: "Chatbots", timeMin: "12" },
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI : avis 2026, est-il meilleur que ChatGPT et Google ?", tag: "Chatbots", timeMin: "13" },
+      ],
+    },
+    en: {
+      title: "Claude Mythos: Anthropic's Next Model Leaked — Everything Confirmed in April 2026",
+      desc: "On March 26, 2026, a massive data leak exposed Anthropic's plans for its next model. Claude Mythos, the Capybara tier, unprecedented cybersecurity risks — we break down what's actually confirmed.",
+      metaTitle: "Claude Mythos 2026: Anthropic's Next Model Leaked, Capybara Tier, Cybersecurity | Neuriflux",
+      metaDesc: "Everything known about Claude Mythos, Anthropic's next flagship leaked in March 2026. New Capybara tier above Opus, 'step change' performance, unprecedented cybersecurity risks. Confirmed vs rumor — we sort it out.",
+      content: `
+## The leak that shook the AI industry
+
+On March 26, 2026, two cybersecurity researchers — Roy Paz from LayerX Security and Alexandre Pauwels from the University of Cambridge — stumbled onto something they weren't supposed to see: nearly **3,000 internal Anthropic files** sitting in a publicly accessible, unauthenticated data store due to a CMS misconfiguration.
+
+Among those files: a draft blog post announcing a new model called **Claude Mythos**, described by Anthropic itself as "by far the most powerful AI model we've ever developed." Fortune reviewed the documents and notified Anthropic, which quickly locked down access. The screenshots had already spread.
+
+Days later, a **second leak**: Anthropic accidentally uploaded 500,000 lines of Claude Code's original source code to npm instead of the compiled version. The two separate incidents provided overlapping evidence about a model the company had not yet intended to announce.
+
+This guide separates what Anthropic has **officially confirmed**, what comes from **leaked documents**, and what remains **unknown**.
+
+## What Anthropic has officially confirmed
+
+An Anthropic spokesperson responded to Fortune with a clear statement:
+
+*"We're developing a general purpose model with meaningful advances in reasoning, coding, and cybersecurity. Given the strength of its capabilities, we're being deliberate about how we release it. We consider this model a step change and the most capable we've built to date."*
+
+That is everything Anthropic has officially confirmed. No benchmarks, no date, no pricing. Everything else comes from the leaked materials.
+
+## The Capybara tier: a new category above Opus
+
+The most structurally significant detail in the leak: Mythos is not an incremental version of Opus. It is an entirely **new tier** in the Claude hierarchy.
+
+Currently, Anthropic offers three model tiers:
+- **Haiku** — fastest and most affordable
+- **Sonnet** — the balanced model
+- **Opus** — the flagship, most capable
+
+The leaked draft describes **Capybara** as a fourth tier, positioned **above Opus**: *"Capybara is a new name for a new tier of model: larger and more intelligent than our Opus models — which were, until now, our most powerful."*
+
+Capybara and Mythos appear to refer to the same underlying model: Capybara is the tier name, Mythos is the specific model name within that tier. Two versions of the same draft blog post were found — one titled "Mythos," one "Capybara" — suggesting Anthropic hadn't finalized the commercial name.
+
+## Comparison table: Mythos vs the current Claude lineup
+
+| Model | Tier | Status | Capabilities (per leak) |
+|---|---|---|---|
+| **Claude Haiku 4.5** | Haiku | Available | Fast, cost-efficient |
+| **Claude Sonnet 4.6** | Sonnet | Available | Balanced speed/intelligence |
+| **Claude Opus 4.6** | Opus | Available | Best current model, 80.8% SWE-bench |
+| **Claude Mythos** | Capybara (new) | Early access only | "Dramatically higher" than Opus 4.6 |
+
+## Presumed capabilities — what the leaked documents say
+
+No official benchmarks have been published by Anthropic. All performance claims below come from the leaked draft, not independent testing.
+
+### Coding and academic reasoning
+
+The leaked document states that Capybara achieves *"dramatically higher scores than Claude Opus 4.6 on tests of software coding, academic reasoning, and cybersecurity."* For context, Opus 4.6 already leads SWE-bench Verified at 80.8% and Terminal-Bench 2.0 at 65.4%. "Dramatically higher" without specific numbers remains unverifiable.
+
+### Cybersecurity — the most sensitive dimension
+
+This is where the leak becomes serious. The draft describes Mythos as *"currently far ahead of any other AI model in cyber capabilities"* and warns that it *"presages an upcoming wave of models that can exploit vulnerabilities in ways that far outpace the efforts of defenders."*
+
+Anthropic doesn't hide its own concern. The document explicitly states: *"In preparing to release Claude Capybara, we want to act with extra caution and understand the risks it poses."* This is why the rollout begins with defensive security teams, not general users.
+
+The risk isn't hypothetical. Anthropic had already disclosed that a Chinese state-sponsored group had used Claude Code to infiltrate **roughly 30 organizations** — tech companies, financial institutions, government agencies — before being detected. Mythos would significantly amplify those dual-use capabilities.
+
+### Immediate market consequences
+
+The disclosure had measurable financial effects. The iShares Expanded Tech-Software Sector ETF (IGV) fell nearly 3% the following day. CrowdStrike, Palo Alto Networks, Zscaler, and Fortinet all declined. Bitcoin slipped toward $66,000. Anthropic simultaneously began briefing senior U.S. government officials about the national security implications of Mythos's cybersecurity capabilities.
+
+## Deployment strategy: caution as a principle
+
+The leaked draft describes a deliberately slower rollout than previous models:
+
+**Phase 1**: restricted access to a small group of early-access customers, primarily defensive cybersecurity teams. The goal is to build defensive tooling before offensive capabilities become broadly available.
+
+**Phase 2**: staged expansion via the Claude API, then across Pro, Team, and Enterprise plans.
+
+**No public date.** Anthropic has committed to no timeline. The document notes the model is *"very expensive to serve"* and that Anthropic is working to make it *"much more efficient before any general release."* Some analysts link a potential general release to Anthropic's IPO targeting Q4 2026, but this is speculation.
+
+## What we still don't know
+
+To be rigorous, here is what remains unknown:
+
+**Specific benchmarks**: no official figures, no independent testing. "Dramatically higher" is a qualitative descriptor, not a score.
+
+**Pricing**: Anthropic has communicated nothing. The Capybara tier will necessarily cost more than Opus, but by how much — unknown.
+
+**Context window**: researcher Roy Paz suggests the model will likely have "fast" and "slow" versions based on an apparently larger context window, but nothing is confirmed.
+
+**Final commercial name**: "Mythos" and "Capybara" are internal names. The public name hasn't been finalized.
+
+**Release date**: none. No confirmed timeline.
+
+## Claude Mythos vs the competition in 2026
+
+Even without confirmed benchmarks, the competitive landscape helps frame the stakes.
+
+In March 2026, Claude Opus 4.6 leads on SWE-bench Verified (80.8%) and enterprise knowledge work tasks, with a 144 Elo point advantage over GPT-5.2. GPT-5.4 (released March 5, 2026) responded with 75% on OSWorld — exceeding human performance on desktop use — and pricing 50% lower than Opus 4.6. Gemini 3.1 Pro owns the cost-efficiency segment with a 2-million-token context window at aggressive rates.
+
+If Mythos delivers on the leaked draft's promises, it would redefine the frontier again. But by the time it reaches general availability, GPT-5.5 and Gemini 4 will also be on the market. The race doesn't stop.
+
+## Should you wait for Mythos?
+
+The short answer: no.
+
+Claude Opus 4.6 is Anthropic's best available model right now, and one of the most powerful on the market. Waiting for a model with no announced date, expensive to run, and initially restricted to selected cybersecurity partners makes no practical sense for the vast majority of use cases.
+
+Workflows built today on Opus 4.6 will carry over directly when Mythos launches. Anthropic maintains careful API compatibility across generations. Starting now means being ready from day one.
+
+## Our verdict on Claude Mythos
+
+Claude Mythos is real — Anthropic confirmed it. It's in testing with a small early-access group. The company calls it a "step change" in AI capabilities, particularly in cybersecurity. And it was revealed not through a press conference, but through two consecutive security incidents in one week — the kind of accidental disclosure that tends to generate more credible signal than staged launches.
+
+What's certain: Mythos is the most ambitious model Anthropic has ever built. What remains uncertain: when it will be available, at what price, and whether the performance promised in the leaked documents will hold up under independent testing.
+
+Until then, Claude Opus 4.6 remains the reference.
+
+## FAQ Claude Mythos
+
+### Is Claude Mythos officially confirmed by Anthropic?
+
+Partially. Anthropic confirmed it is testing a new model it describes as "a step change" and "the most capable we've built to date," with "meaningful advances in reasoning, coding, and cybersecurity." But no benchmarks, pricing, or release date have been officially communicated.
+
+### What is the Capybara tier?
+
+Capybara refers to a new model tier positioned above Opus in the Claude hierarchy — larger, more capable, and more expensive. It's a new category, not an incremental update to Opus. Mythos would be the first model in this tier.
+
+### When will Claude Mythos be available?
+
+No date has been confirmed. The model is currently in early access for a small, selected group of customers, primarily in defensive cybersecurity. Some analysts link a potential general release to Anthropic's Q4 2026 IPO timeline, but this is speculation.
+
+### Why is Anthropic being so cautious about releasing Mythos?
+
+Anthropic is concerned about the model's own cybersecurity capabilities. The leaked draft describes Mythos as "far ahead of any other AI model in cyber capabilities" and warns it could enable attacks that outpace defenders. Anthropic is prioritizing access for defense teams first.
+
+### Should I wait for Mythos before adopting Claude?
+
+No. Claude Opus 4.6 is available now, performant, and compatible with future models. Waiting for Mythos means losing months of productivity with no release date guarantee.
+      `,
+      related: [
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "12" },
+        { slug: "deepseek-review-2026", title: "DeepSeek Review 2026: The Best Free ChatGPT from China?", tag: "Chatbots", timeMin: "12" },
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI Review 2026: Worth It vs ChatGPT & Google?", tag: "Chatbots", timeMin: "13" },
+      ],
+    },
+  },
+  
 // ─── Gagner de l'argent avec l'IA en 2026 ───────────────────────────────────
 {
   slug: "money-ia-2026",
