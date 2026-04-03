@@ -32,6 +32,313 @@ export interface Article {
 }
 
 export const ARTICLES: Article[] = [
+// ─── OpenAI 122 milliards : levée de fonds record 2026 ───────────────────────
+  {
+    slug: "openai-levee-fonds-852-milliards-2026",
+    tag: "Chatbots",
+    date: { fr: "1er avril 2026", en: "April 1, 2026" },
+    timeMin: "13",
+    featured: true,
+    affiliate: {
+      url: "https://claude.ai",
+      toolName: "Claude",
+      label: {
+        fr: "Tester Claude — l'alternative sérieuse à ChatGPT",
+        en: "Try Claude — the serious ChatGPT alternative",
+      },
+    },
+    fr: {
+      title: "OpenAI lève 122 milliards de dollars : valorisation à 852 milliards, SuperApp et IPO en vue",
+      desc: "Le 31 mars 2026, OpenAI a bouclé la plus grande levée de fonds privée de l'histoire tech. Amazon, Nvidia, SoftBank — on décortique les chiffres, les investisseurs, et ce que ça change vraiment.",
+      metaTitle: "OpenAI lève 122 milliards en 2026 : valorisation 852Md$, SuperApp, IPO — tout comprendre | Neuriflux",
+      metaDesc: "OpenAI a levé 122 milliards de dollars le 31 mars 2026 à une valorisation de 852 milliards. Amazon 50Md$, Nvidia 30Md$, SoftBank 30Md$. Détails, implications pour l'IA, et ce que ça signifie pour les utilisateurs.",
+      content: `
+## Le plus gros tour de table privé de l'histoire de la tech
+
+Le 31 mars 2026, OpenAI a annoncé la clôture d'une levée de fonds de **122 milliards de dollars** à une valorisation post-money de **852 milliards de dollars**. Pour mettre ce chiffre en perspective : c'est plus que la capitalisation boursière de la plupart des entreprises du CAC 40. C'est plus que l'IPO la plus importante jamais réalisée. C'est une transaction qui, selon la directrice financière d'OpenAI Sarah Friar, *"éclipse même la plus grande introduction en bourse jamais effectuée"*.
+
+Ce n'est pas un tour de table ordinaire. C'est un signal de marché massif : en 2026, l'IA est devenue une infrastructure industrielle, et OpenAI en est en train de devenir la colonne vertébrale.
+
+## Les investisseurs et les montants
+
+Le détail des participations révèle la nature stratégique de cette levée — pas uniquement financière.
+
+| Investisseur | Montant | Type de relation |
+|---|---|---|
+| **Amazon** | 50 milliards $ | Cloud + distribution enterprise |
+| **Nvidia** | 30 milliards $ | Fournisseur chips + infrastructure |
+| **SoftBank** | 30 milliards $ | Co-chef de file |
+| **Andreessen Horowitz** | Non divulgué | VC historique |
+| **Microsoft** | Non divulgué | Partenaire historique (13 Md$ déjà investis) |
+| **D.E. Shaw Ventures** | Non divulgué | Institution financière |
+| **MGX** | Non divulgué | Fonds souverain Abu Dhabi |
+| **TPG** | Non divulgué | Private equity |
+| **T. Rowe Price** | Non divulgué | Gestion d'actifs |
+| **ARK Invest** | Non divulgué | ETFs grand public |
+| **Sequoia, BlackRock, Fidelity...** | Non divulgués | Institutions globales |
+| **Investisseurs individuels** | 3 milliards $ | Via canaux bancaires (première fois) |
+
+Trois éléments structurants dans ce tableau :
+
+**Amazon mise 50 milliards** — dont 35 milliards conditionnels à l'IPO ou à l'atteinte de l'AGI. Ce n'est pas un simple chèque financier : l'accord inclut un partenariat cloud massif, une expansion du contrat AWS de 38 milliards de dollars en services de calcul, et un accord de partage de revenus pour la distribution des modèles OpenAI sur Bedrock.
+
+**Nvidia investit 30 milliards** après des mois de rumeurs sur le montant. Les deux entreprises ont formalisé un accord pour que Nvidia fournisse 3GW de capacité d'inférence dédiée et 2GW d'entraînement sur ses systèmes Vera Rubin — un engagement de calcul colossal.
+
+**Les investisseurs individuels entrent pour la première fois**. OpenAI a, pour la première fois, ouvert sa levée aux particuliers via des canaux bancaires, récoltant plus de 3 milliards. L'inclusion dans plusieurs ETFs gérés par ARK Invest de Cathie Wood va encore élargir l'accès retail. C'est un signe clair : OpenAI prépare son terrain pour l'IPO.
+
+## Les chiffres qui justifient la valorisation
+
+Une valorisation de 852 milliards pour une entreprise encore non-rentable peut sembler déconnectée. Les métriques publiées simultanément expliquent la logique des investisseurs.
+
+**2 milliards de dollars de revenus par mois.** OpenAI a généré 13,1 milliards de dollars de revenus en 2025, et atteint désormais un rythme mensuel de 2 milliards. Pour comparaison : en 2024, la compagnie était à 1 milliard par trimestre. Un an plus tôt, à 1 milliard pour l'année entière. La croissance est exponentielle.
+
+**900 millions d'utilisateurs actifs hebdomadaires.** ChatGPT touche presque un milliard de personnes chaque semaine. OpenAI affirme avoir été la plateforme la plus rapide à atteindre 10 millions d'utilisateurs, la plus rapide à 100 millions, et sera bientôt la plus rapide à 1 milliard hebdomadaires.
+
+**Plus de 50 millions d'abonnés payants.** Les recherches sur ChatGPT ont presque triplé en un an.
+
+**L'enterprise monte en puissance.** Le B2B représente aujourd'hui 40% des revenus (contre 30% l'an dernier) et devrait atteindre la parité avec le consommateur grand public d'ici fin 2026. GPT-5.4 est le moteur de cette croissance enterprise via ses capacités agentiques.
+
+**L'API traite 15 milliards de tokens par minute.** Codex, l'outil de développement autonome, dépasse 2 millions d'utilisateurs hebdomadaires — multiplié par 5 en trois mois — avec une croissance de 70% mois sur mois.
+
+**La publicité déjà à 100 millions annualisés en 6 semaines.** OpenAI, qui avait longtemps résisté aux publicités dans ChatGPT, a lancé un pilote publicitaire. Résultat : 100 millions de dollars de revenus récurrents annualisés en moins de six semaines. Une nouvelle source de revenus qui s'annonce significative.
+
+## La stratégie SuperApp : l'ambition derrière les milliards
+
+La levée de fonds n'est pas une fin en soi. Le billet de blog publié par OpenAI le jour de l'annonce révèle l'ambition stratégique qui la sous-tend : **devenir le "SuperApp" de l'IA**.
+
+*"Les utilisateurs ne veulent pas des outils déconnectés. Ils veulent un seul système capable de comprendre leur intention, passer à l'action, et opérer à travers les applications, les données et les workflows"*, écrit OpenAI.
+
+Concrètement, cela signifie fusionner ChatGPT, Codex (l'outil de développement), la navigation web, et les capacités agentiques dans une seule plateforme unifiée. Une application desktop est en développement pour centraliser tout cela — ce qu'OpenAI appelle en interne son "SuperApp".
+
+La logique est claire : ChatGPT est déjà dans les habitudes quotidiennes de 900 millions de personnes. Cette familiarité grand public devient une porte d'entrée vers l'adoption enterprise. En unifiant les surfaces produit, OpenAI peut accélérer la livraison des améliorations de modèles directement aux utilisateurs sans les disperser entre des produits fragmentés.
+
+C'est aussi la réponse stratégique à la fermeture de Sora. Plutôt que de maintenir un outil coûteux sans modèle économique solide, OpenAI concentre ses ressources sur une plateforme intégrée où chaque fonctionnalité renforce les autres.
+
+## L'infrastructure : à quoi va servir l'argent
+
+122 milliards de dollars, ça se dépense. OpenAI a été explicite sur les priorités d'allocation.
+
+**Les puces et les data centers d'abord.** OpenAI a engagé plus de 1 400 milliards de dollars d'investissements en infrastructure physique sur les prochaines années. Cette levée alimente directement ce pipeline. Sur les chips, la stratégie se diversifie au-delà de Nvidia : AMD, AWS Trainium, Cerebras, et un chip personnalisé développé avec Broadcom sont tous dans le portefeuille silicium.
+
+**Cinq clouds, pas un seul.** OpenAI travaille désormais avec Microsoft, Oracle, AWS, CoreWeave et Google Cloud. La dépendance excessive à un seul fournisseur cloud est explicitement évitée — une leçon stratégique des années précédentes.
+
+**La facilité de crédit portée à 4,7 milliards.** En parallèle de la levée, OpenAI a étendu sa ligne de crédit revolving à 4,7 milliards de dollars, supportée par plusieurs banques mondiales de premier rang. Une réserve de liquidité pour absorber les pics de dépenses sans dilution supplémentaire.
+
+## L'IPO en toile de fond
+
+La vraie question que tout le monde se pose : quand OpenAI entre-t-il en bourse ?
+
+La réponse officielle reste prudente. Sarah Friar, la CFO, parle de devenir "public-company capable" comme d'une bonne hygiène opérationnelle, sans s'engager sur une date. Elle évoque l'IPO comme un "moment de construction de la confiance" pour l'entreprise.
+
+Mais les signaux sont clairs. L'ouverture aux investisseurs individuels via des banques. L'inclusion dans des ETFs ARK Invest. L'expansion du crédit syndiqué. Ce sont des préparatifs typiques d'une cotation imminente. Les deux startups IA les plus avancées — OpenAI et Anthropic — sont toutes les deux citées comme candidates à une introduction en bourse en 2026.
+
+La condition sur l'investissement Amazon mérite une mention particulière : 35 milliards de dollars ne seront versés que quand OpenAI sera entré en bourse **ou** aura atteint l'AGI. Amazon a donc littéralement co-financé une course vers l'IPO.
+
+## Ce que ça signifie pour les utilisateurs de ChatGPT
+
+Concrètement, que change cette levée pour quelqu'un qui utilise ChatGPT au quotidien ?
+
+**Plus de capacité.** 122 milliards vont financer des data centers et des chips. Cela se traduit par moins de ralentissements, moins de files d'attente, plus de tokens traités simultanément. L'API traite déjà 15 milliards de tokens par minute — ce chiffre va continuer à croître.
+
+**Un produit unifié.** Le SuperApp en développement va remplacer l'expérience actuelle fragmentée (ChatGPT ici, Codex là, navigation ailleurs). Une interface unique pour tout.
+
+**Probablement de la publicité.** Le pilote pub à 100 millions annualisés en 6 semaines va très probablement se transformer en stratégie pérenne. Les plans gratuits pourraient évoluer vers un modèle ad-financé.
+
+**Une concurrence renforcée avec Anthropic et Google.** Plus OpenAI est capitalisé, plus la pression sur Claude et Gemini est forte — ce qui bénéficie aux utilisateurs via une course à l'innovation accélérée.
+
+## OpenAI vs Anthropic : la course au capital
+
+Pour mettre en perspective, Anthropic — le créateur de Claude — a également levé des fonds massifs, mais à une autre échelle. La compagnie approche les 19 milliards de dollars de revenus annualisés contre 25 milliards pour OpenAI selon les données de mars 2026. La levée de 122 milliards d'OpenAI éclipse les tours d'Anthropic, mais la CFO d'OpenAI elle-même reconnaissait que les deux entreprises ont "tapé dans un groupe d'investisseurs qui se chevauchent".
+
+La vraie dynamique compétitive n'est pas dans le capital — elle est dans les modèles. Claude Opus 4.6 surpasse GPT-5.4 sur plusieurs benchmarks critiques. Les 122 milliards donnent à OpenAI l'infrastructure pour rester dans la course, pas une garantie de victoire.
+
+## Notre lecture de cette levée
+
+La levée de fonds record d'OpenAI dit plusieurs choses simultanément.
+
+**Sur OpenAI** : la croissance est réelle, la monétisation fonctionne, et la plateforme est en train de devenir une infrastructure critique. 2 milliards par mois de revenus avec 900 millions d'utilisateurs hebdomadaires, c'est de la traction, pas de la promesse.
+
+**Sur l'industrie IA** : le capital se concentre massivement sur un petit nombre d'acteurs. 122 milliards pour une seule entreprise non-rentable, c'est un pari civilisationnel sur la place que l'IA va occuper dans l'économie mondiale.
+
+**Sur l'IPO** : c'est une question de quand, pas de si. Tous les signaux pointent vers 2026. Le test sera de savoir si les marchés publics valoriseront une entreprise dont les revenus croissent exponentiellement mais qui brûle encore du cash massivement.
+
+**Pour les utilisateurs** : cette levée accélère l'innovation mais introduit aussi une pression commerciale accrue. La publicité dans ChatGPT n'était pas là il y a un an. Le SuperApp va concentrer encore plus de données et de comportements dans une seule plateforme. Ce sont des développements à suivre autant que les performances des modèles.
+
+## FAQ OpenAI levée de fonds 2026
+
+### Combien OpenAI a-t-il levé en mars 2026 ?
+
+OpenAI a bouclé une levée de 122 milliards de dollars le 31 mars 2026, à une valorisation post-money de 852 milliards de dollars. C'est la plus grande levée de fonds privée de l'histoire de la tech, surpassant le tour précédent de 40 milliards en mars 2025.
+
+### Qui sont les principaux investisseurs de cette levée ?
+
+Les trois ancres stratégiques sont Amazon (50 milliards $), Nvidia (30 milliards $) et SoftBank (30 milliards $). SoftBank a co-dirigé le tour aux côtés d'Andreessen Horowitz, D.E. Shaw, MGX, TPG et T. Rowe Price. Microsoft, Sequoia, BlackRock, Fidelity et ARK Invest ont également participé.
+
+### OpenAI est-il rentable ?
+
+Non. OpenAI génère 2 milliards de dollars de revenus par mois (24 milliards annualisés) mais reste déficitaire en raison des coûts d'infrastructure colossaux — chips, data centers, énergie. La compagnie a dépensé plus de 10 milliards de dollars pour entraîner et déployer ses modèles depuis le lancement de ses produits commerciaux.
+
+### Quand OpenAI va-t-il entrer en bourse ?
+
+Aucune date n'est confirmée, mais tous les signaux pointent vers 2026. L'ouverture aux investisseurs individuels, l'inclusion dans des ETFs ARK Invest, et la condition de l'investissement Amazon (35 milliards conditionnels à l'IPO) suggèrent une cotation imminente.
+
+### Qu'est-ce que le SuperApp d'OpenAI ?
+
+Le SuperApp est la stratégie produit annoncée simultanément à la levée. OpenAI veut fusionner ChatGPT, Codex (outil de développement), la navigation web et les capacités agentiques dans une seule application unifiée. L'objectif : devenir l'interface principale par laquelle les utilisateurs interagissent avec l'IA, aussi bien dans leur vie personnelle que professionnelle.
+      `,
+      related: [
+        { slug: "sora-fermeture-openai-2026", title: "Sora est mort : OpenAI abandonne son générateur vidéo IA", tag: "Chatbots", timeMin: "12" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "12" },
+        { slug: "claude-mythos-next-anthropic-2026", title: "Claude Mythos : le prochain modèle Anthropic leaké", tag: "Chatbots", timeMin: "12" },
+      ],
+    },
+    en: {
+      title: "OpenAI Raises $122 Billion: $852B Valuation, SuperApp, and IPO on the Horizon",
+      desc: "On March 31, 2026, OpenAI closed the largest private funding round in tech history. Amazon, Nvidia, SoftBank — we break down the numbers, the investors, and what this actually changes.",
+      metaTitle: "OpenAI Raises $122 Billion in 2026: $852B Valuation, SuperApp, IPO — Full Breakdown | Neuriflux",
+      metaDesc: "OpenAI raised $122 billion on March 31, 2026, at an $852 billion valuation. Amazon $50B, Nvidia $30B, SoftBank $30B. Full breakdown of the round, what the money buys, and what it means for AI users.",
+      content: `
+## The biggest private funding round in tech history
+
+On March 31, 2026, OpenAI announced the close of a **$122 billion funding round** at a post-money valuation of **$852 billion**. To put that in perspective: it's larger than the market cap of most companies on any major stock index. It surpasses the largest IPO ever completed. According to OpenAI CFO Sarah Friar, the deal *"blows out of the water even the largest IPO that's ever been done."*
+
+This isn't a standard funding round. It's a market signal of the first order: in 2026, AI has become industrial infrastructure, and OpenAI is positioning itself as its backbone.
+
+## The investors and the numbers
+
+The breakdown of participants reveals the strategic — not just financial — logic behind the round.
+
+| Investor | Amount | Relationship type |
+|---|---|---|
+| **Amazon** | $50 billion | Cloud + enterprise distribution |
+| **Nvidia** | $30 billion | Chip supplier + infrastructure |
+| **SoftBank** | $30 billion | Co-lead |
+| **Andreessen Horowitz** | Undisclosed | Historical VC |
+| **Microsoft** | Undisclosed | Historical partner ($13B+ already invested) |
+| **D.E. Shaw Ventures** | Undisclosed | Financial institution |
+| **MGX** | Undisclosed | Abu Dhabi sovereign fund |
+| **TPG** | Undisclosed | Private equity |
+| **T. Rowe Price** | Undisclosed | Asset management |
+| **ARK Invest** | Undisclosed | Retail ETFs |
+| **Sequoia, BlackRock, Fidelity...** | Undisclosed | Global institutions |
+| **Individual investors** | $3 billion | Via bank channels (first time ever) |
+
+Three structural elements stand out.
+
+**Amazon puts in $50 billion** — $35 billion of which is contingent on OpenAI's IPO or achieving AGI. This is not a simple financial bet: the deal includes a massive cloud partnership, an expansion of the existing $38 billion AWS compute services agreement, and a revenue-sharing arrangement for distributing OpenAI models on Bedrock.
+
+**Nvidia commits $30 billion** after months of speculation about the final figure. Both companies formalized an agreement for Nvidia to supply 3GW of dedicated inference capacity and 2GW of training on its Vera Rubin systems — a colossal compute commitment.
+
+**Individual investors participate for the first time.** OpenAI opened the round to private individuals via bank channels, raising more than $3 billion. Inclusion in multiple ARK Invest ETFs will further broaden retail access. The message is clear: OpenAI is building its IPO shareholder base in real time.
+
+## The metrics that justify the valuation
+
+An $852 billion valuation for a company that is not yet profitable can seem disconnected from reality. The metrics published alongside the announcement make the investor logic explicit.
+
+**$2 billion in monthly revenue.** OpenAI generated $13.1 billion in revenue in 2025, and has now reached a monthly run rate of $2 billion. For context: in 2024, the company was at $1 billion per quarter. A year before that, $1 billion for the full year. The growth curve is exponential.
+
+**900 million weekly active users.** ChatGPT reaches almost a billion people every week. OpenAI claims it was the fastest platform to reach 10 million users, the fastest to 100 million, and will soon be the fastest to one billion weekly.
+
+**Over 50 million paying subscribers.** ChatGPT search usage has nearly tripled in the past year.
+
+**Enterprise is taking over.** B2B now represents more than 40% of revenue (up from around 30% last year) and is on track to reach parity with consumer by end of 2026. GPT-5.4 is the engine driving enterprise growth through its agentic capabilities.
+
+**APIs process 15 billion tokens per minute.** Codex, the autonomous coding tool, surpassed 2 million weekly users — up 5x in three months — with usage growing over 70% month over month.
+
+**Advertising hits $100 million annualized in six weeks.** OpenAI, which long resisted advertising inside ChatGPT, launched a pilot. The result: $100 million in annualized recurring revenue in under six weeks. A new revenue stream that signals where things are headed.
+
+## The SuperApp strategy: the ambition behind the billions
+
+The fundraise is not an end in itself. The blog post OpenAI published on announcement day reveals the strategic ambition driving it: **becoming the AI "SuperApp."**
+
+*"Users do not want disconnected tools. They want a single system that can understand intent, take action, and operate across applications, data, and workflows,"* OpenAI wrote.
+
+Concretely, this means merging ChatGPT, Codex, web browsing, and agentic capabilities into a single unified platform. A desktop application is in development to centralize everything — what OpenAI refers to internally as its "SuperApp."
+
+The logic is direct: ChatGPT is already part of the daily habits of 900 million people. That consumer familiarity becomes a gateway into enterprise adoption. By unifying product surfaces, OpenAI can ship model improvements directly to users rather than scattering them across fragmented products.
+
+This is also the strategic answer to Sora's shutdown. Rather than maintaining an expensive tool without a solid business model, OpenAI is concentrating resources on an integrated platform where every feature reinforces the others.
+
+## The infrastructure: where the money actually goes
+
+$122 billion has to go somewhere. OpenAI was explicit about allocation priorities.
+
+**Chips and data centers first.** OpenAI has committed to spending more than $1.4 trillion on physical infrastructure over the coming years. This raise directly funds that pipeline. On the chip side, the strategy diversifies beyond Nvidia: AMD, AWS Trainium, Cerebras, and a custom chip project with Broadcom are all in the silicon portfolio.
+
+**Five clouds, not one.** OpenAI now works with Microsoft, Oracle, AWS, CoreWeave, and Google Cloud. Excessive dependence on a single cloud provider is explicitly avoided — a strategic lesson from previous years.
+
+**Credit facility expanded to $4.7 billion.** Alongside the raise, OpenAI extended its revolving credit facility to $4.7 billion, backed by several top-tier global banks. A liquidity reserve to absorb spending spikes without additional dilution.
+
+## The IPO backdrop
+
+The real question everyone is asking: when does OpenAI go public?
+
+The official answer remains cautious. CFO Sarah Friar speaks of becoming "public-company capable" as good operational hygiene, without committing to a date. She frames an IPO as a "trust-building moment" for the company.
+
+But the signals are unmistakable. The opening to individual investors via banks. Inclusion in ARK Invest ETFs. The expanded bank credit facility. These are standard pre-IPO preparations. Both leading AI startups — OpenAI and Anthropic — are widely cited as 2026 IPO candidates.
+
+The Amazon investment condition is particularly revealing: $35 billion will only be paid when OpenAI either goes public **or** achieves AGI. Amazon has essentially co-funded a race toward a listing.
+
+## What this means for ChatGPT users
+
+What does this raise actually change for someone who uses ChatGPT daily?
+
+**More capacity.** $122 billion funds data centers and chips. That translates to fewer slowdowns, less queuing, more tokens processed simultaneously. The API already handles 15 billion tokens per minute — that number will keep climbing.
+
+**A unified product.** The SuperApp in development will replace the current fragmented experience (ChatGPT here, Codex there, browsing elsewhere). A single interface for everything.
+
+**Likely more advertising.** The ad pilot reaching $100 million annualized in six weeks will almost certainly become a permanent strategy. Free tiers may evolve toward an ad-supported model.
+
+**Intensified competition with Anthropic and Google.** The more capitalized OpenAI becomes, the greater the pressure on Claude and Gemini — which ultimately benefits users through accelerated innovation.
+
+## OpenAI vs Anthropic: the capital race
+
+For context, Anthropic — the company behind Claude — has also raised massive funding, but at a different scale. The company is approaching $19 billion in annualized revenue against OpenAI's $25 billion as of March 2026. OpenAI's $122 billion raise dwarfs Anthropic's rounds, but OpenAI's own CFO acknowledged that both companies have "tapped an overlapping group of investors."
+
+The real competitive dynamic isn't in the capital — it's in the models. Claude Opus 4.6 outperforms GPT-5.4 on several critical benchmarks. The $122 billion gives OpenAI the infrastructure to stay in the race, not a guaranteed win.
+
+## Our take on this raise
+
+OpenAI's record fundraise communicates several things simultaneously.
+
+**About OpenAI**: the growth is real, the monetization works, and the platform is becoming critical infrastructure. $2 billion per month in revenue with 900 million weekly users is traction, not promise.
+
+**About the AI industry**: capital is concentrating massively in a small number of players. $122 billion for a single unprofitable company is a civilizational bet on the role AI will play in the global economy.
+
+**About the IPO**: it's a question of when, not if. All signals point to 2026. The test will be whether public markets value a company with exponentially growing revenue that is still burning cash at massive scale.
+
+**For users**: this raise accelerates innovation but also introduces increased commercial pressure. Advertising in ChatGPT didn't exist a year ago. The SuperApp will concentrate even more data and behavior into a single platform. These are developments worth tracking alongside model performance benchmarks.
+
+## FAQ OpenAI fundraising 2026
+
+### How much did OpenAI raise in March 2026?
+
+OpenAI closed a $122 billion funding round on March 31, 2026, at a post-money valuation of $852 billion. This is the largest private funding round in tech history, surpassing the previous record of $40 billion raised by OpenAI itself in March 2025.
+
+### Who are the main investors in this round?
+
+The three strategic anchors are Amazon ($50 billion), Nvidia ($30 billion), and SoftBank ($30 billion). SoftBank co-led alongside Andreessen Horowitz, D.E. Shaw, MGX, TPG, and T. Rowe Price. Microsoft, Sequoia, BlackRock, Fidelity, and ARK Invest also participated.
+
+### Is OpenAI profitable?
+
+No. OpenAI generates $2 billion in monthly revenue ($24 billion annualized) but remains unprofitable due to colossal infrastructure costs — chips, data centers, energy. The company has spent more than $10 billion training and deploying its models since launching commercial products.
+
+### When will OpenAI go public?
+
+No date is confirmed, but all signals point to 2026. The opening to individual investors, inclusion in ARK Invest ETFs, and the conditional structure of Amazon's investment ($35 billion contingent on IPO) all point toward an imminent listing.
+
+### What is OpenAI's SuperApp?
+
+The SuperApp is the product strategy announced simultaneously with the raise. OpenAI intends to merge ChatGPT, Codex, web browsing, and agentic capabilities into a single unified application. The goal: becoming the primary interface through which users interact with AI — in both personal and professional contexts.
+      `,
+      related: [
+        { slug: "sora-fermeture-openai-2026", title: "Sora Is Dead: OpenAI Kills Its AI Video App", tag: "Chatbots", timeMin: "12" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "12" },
+        { slug: "claude-mythos-next-anthropic-2026", title: "Claude Mythos: Anthropic's Next Model Leaked", tag: "Chatbots", timeMin: "12" },
+      ],
+    },
+  },
+
 // ─── Claude Mythos : le prochain modèle Anthropic 2026 ───────────────────────
   {
     slug: "claude-mythos-next-anthropic-2026",

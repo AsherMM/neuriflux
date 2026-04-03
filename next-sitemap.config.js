@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "openai-fonds-852-milliards-2026",
   "claude-mythos-next-anthropic-2026",
   "money-ia-2026",
   "vibe-coding-tools-2026",
