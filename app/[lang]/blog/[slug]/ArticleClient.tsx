@@ -284,46 +284,29 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
       {faqSchema && faqSchema.mainEntity.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
 
       <style>{`
-        /* ─────────────────────────────────────────────────────────
-           RESET & VARIABLES
-        ───────────────────────────────────────────────────────── */
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         :root{
-          /* Fonds */
           --bg:#080c10;
           --bg2:#0d1117;
           --bg3:#111820;
-          /* Bordures */
           --border:rgba(255,255,255,.065);
           --glow:rgba(0,230,190,.2);
-          /* Couleur accent */
           --cyan:#00e6be;
           --cdim:rgba(0,230,190,.09);
-          /* Texte */
           --text:#edf2f7;
           --muted:#5a6a7a;
           --dim:#2a3a4a;
-          /* Fonts */
           --d:var(--font-syne),'Syne',sans-serif;
           --m:'JetBrains Mono',monospace;
           --body:Georgia,'Times New Roman',serif;
-          /* Utilitaires */
           --r:10px;
           --pad:clamp(1.5rem,5vw,4rem)
         }
         html{scroll-behavior:smooth}
         body{background:var(--bg);color:var(--text);font-family:var(--d);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-
-        /* ─────────────────────────────────────────────────────────
-           FOND : GRILLE
-        ───────────────────────────────────────────────────────── */
         .bg-grid{position:fixed;inset:0;
           background-image:linear-gradient(rgba(0,230,190,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,190,.018) 1px,transparent 1px);
           background-size:72px 72px;pointer-events:none;z-index:0}
-
-        /* ─────────────────────────────────────────────────────────
-           NAVIGATION — identique sur toutes les pages
-        ───────────────────────────────────────────────────────── */
         nav{
           position:sticky;top:0;z-index:100;
           backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
@@ -334,26 +317,14 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
           transition:box-shadow .2s
         }
         nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,.4)}
-        .logo{
-          font-family:var(--d);font-weight:800;font-size:1.15rem;
-          letter-spacing:-.03em;color:var(--text);text-decoration:none;
-          display:flex;align-items:center;gap:.45rem
-        }
+        .logo{font-family:var(--d);font-weight:800;font-size:1.15rem;letter-spacing:-.03em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.45rem}
         .logo em{color:var(--cyan);font-style:normal}
-        .logo-dot{
-          width:6px;height:6px;background:var(--cyan);border-radius:50%;
-          box-shadow:0 0 8px var(--cyan);animation:blink 2s infinite
-        }
+        .logo-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;box-shadow:0 0 8px var(--cyan);animation:blink 2s infinite}
         @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
         .nav-links{display:flex;align-items:center;gap:1.75rem;list-style:none}
         @media(max-width:720px){
           .nav-links{display:none}
-          .nav-links.open{
-            display:flex;flex-direction:column;
-            position:fixed;top:60px;left:0;right:0;
-            background:var(--bg2);border-bottom:1px solid var(--border);
-            padding:1.25rem var(--pad);gap:1rem;z-index:99
-          }
+          .nav-links.open{display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);padding:1.25rem var(--pad);gap:1rem;z-index:99}
         }
         .nav-links a{font-family:var(--m);font-size:.74rem;color:var(--muted);text-decoration:none;letter-spacing:.03em;transition:color .15s}
         .nav-links a:hover,.nav-links a.active{color:var(--cyan)}
@@ -363,28 +334,13 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         .hb{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:5px;background:none;border:none}
         @media(max-width:720px){.hb{display:flex}}
         .hb span{display:block;width:18px;height:1.5px;background:var(--muted);border-radius:2px}
-
-        /* ─────────────────────────────────────────────────────────
-           LAYOUT — grille main + sidebar
-        ───────────────────────────────────────────────────────── */
-        .layout{position:relative;z-index:1;max-width:1160px;margin:0 auto;
-          padding:3.5rem var(--pad) 7rem;
-          display:grid;grid-template-columns:1fr 272px;gap:5rem;align-items:start}
+        .layout{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:3.5rem var(--pad) 7rem;display:grid;grid-template-columns:1fr 272px;gap:5rem;align-items:start}
         @media(max-width:960px){.layout{grid-template-columns:1fr;gap:0}.sidebar{display:none!important}}
-
-        /* ─────────────────────────────────────────────────────────
-           HEADER ARTICLE
-        ───────────────────────────────────────────────────────── */
-        .back{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--m);
-          font-size:.7rem;color:var(--muted);text-decoration:none;
-          margin-bottom:2.25rem;transition:color .15s;letter-spacing:.03em}
+        .back{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--m);font-size:.7rem;color:var(--muted);text-decoration:none;margin-bottom:2.25rem;transition:color .15s;letter-spacing:.03em}
         .back:hover{color:var(--cyan)}
-        .art-header{position:relative;margin-bottom:3rem;padding:2rem 2.25rem;
-          background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-        .art-header::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
-          background:linear-gradient(90deg,transparent,var(--art-color,var(--cyan)) 30%,var(--art-color,var(--cyan)) 70%,transparent)}
-        .art-header-glow{position:absolute;top:-40%;right:-10%;width:400px;height:300px;
-          background:radial-gradient(ellipse,var(--art-glow,rgba(0,230,190,.07)) 0%,transparent 65%);pointer-events:none}
+        .art-header{position:relative;margin-bottom:3rem;padding:2rem 2.25rem;background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+        .art-header::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--art-color,var(--cyan)) 30%,var(--art-color,var(--cyan)) 70%,transparent)}
+        .art-header-glow{position:absolute;top:-40%;right:-10%;width:400px;height:300px;background:radial-gradient(ellipse,var(--art-glow,rgba(0,230,190,.07)) 0%,transparent 65%);pointer-events:none}
         .meta{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;margin-bottom:1.25rem;position:relative;z-index:1}
         .tag-badge{font-family:var(--m);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:3px 10px;border-radius:100px}
         .art-date,.art-time{font-family:var(--m);font-size:.68rem;color:var(--muted)}
@@ -395,10 +351,6 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         .avatar{width:34px;height:34px;background:var(--cdim);border:1px solid rgba(0,230,190,.22);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
         .author-name{font-family:var(--m);font-size:.75rem;color:var(--text);font-weight:500}
         .author-sub{font-family:var(--m);font-size:.62rem;color:var(--dim);font-weight:300;margin-top:.08rem}
-
-        /* ─────────────────────────────────────────────────────────
-           PROSE
-        ───────────────────────────────────────────────────────── */
         .prose{font-family:var(--body);font-size:1.03rem;line-height:1.9;color:#c8d5e0}
         .prose h2{font-family:var(--d);font-size:1.4rem;font-weight:800;letter-spacing:-.025em;color:var(--text);margin:3rem 0 0;padding:.65rem 0 .65rem 1rem;border-left:3px solid var(--art-color,var(--cyan));border-bottom:1px solid var(--border);scroll-margin-top:80px}
         .prose h2 + *{margin-top:.9rem}
@@ -428,10 +380,6 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         .prose th{padding:10px 14px;border:1px solid var(--border);color:var(--text);font-weight:600;background:var(--bg3);text-align:left}
         .prose td{padding:10px 14px;border:1px solid var(--border);color:var(--muted)}
         .prose tr:hover td{background:var(--bg2)}
-
-        /* ─────────────────────────────────────────────────────────
-           MID CTA — haute conversion
-        ───────────────────────────────────────────────────────── */
         .mid-cta{margin:2.75rem 0;padding:1.65rem 1.85rem;background:linear-gradient(135deg,rgba(0,230,190,.08),rgba(0,230,190,.02));border:1px solid rgba(0,230,190,.25);border-radius:14px;position:relative;overflow:hidden}
         .mid-cta-stripe{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan) 40%,var(--cyan) 60%,transparent)}
         .mid-cta-inner{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
@@ -443,51 +391,33 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         .mid-cta-label{font-family:var(--m);font-size:.72rem;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:.65rem}
         .mid-cta-badges{display:flex;flex-wrap:wrap;gap:.4rem}
         .mid-cta-badge{font-family:var(--m);font-size:.6rem;color:var(--cyan);background:rgba(0,230,190,.07);border:1px solid rgba(0,230,190,.18);border-radius:4px;padding:2px 8px;font-weight:500}
-        /* Bouton principal — plus grand, plus visible */
         .mid-cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:800;font-size:.92rem;padding:13px 26px;border-radius:9px;text-decoration:none;transition:all .2s;white-space:nowrap;letter-spacing:-.01em;box-shadow:0 4px 20px rgba(0,230,190,.22)}
         .mid-cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,230,190,.38);background:#00ffce}
         .mid-cta-sub{font-family:var(--m);font-size:.6rem;color:var(--muted);text-align:center}
         .mid-cta-note{font-family:var(--m);font-size:.55rem;color:var(--dim);text-align:center}
-
-        /* ─────────────────────────────────────────────────────────
-           END CTA — haute conversion
-        ───────────────────────────────────────────────────────── */
         .end-cta{margin:3.5rem 0 0;padding:2.25rem 2.5rem;background:var(--bg2);border:1px solid rgba(0,230,190,.25);border-radius:18px;position:relative;overflow:hidden}
         .end-cta-glow{position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:600px;height:320px;background:radial-gradient(ellipse,rgba(0,230,190,.065),transparent 68%);pointer-events:none}
         .end-cta-stripe{position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
-        /* Tête : verdict + étoiles */
         .end-cta-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;position:relative;z-index:1;flex-wrap:wrap;gap:.5rem}
         .end-cta-verdict{font-family:var(--m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);display:flex;align-items:center;gap:.4rem}
         .end-cta-verdict::before{content:'';width:14px;height:1px;background:var(--cyan);display:inline-block}
         .end-cta-stars{color:#f59e0b;font-size:.85rem;letter-spacing:2px}
-        /* Corps */
         .end-cta-body{display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;flex-wrap:wrap;position:relative;z-index:1}
         .end-cta-left{flex:1;min-width:200px}
         .end-cta-tool{font-family:var(--d);font-size:1.35rem;font-weight:800;letter-spacing:-.035em;color:var(--text);margin-bottom:.4rem}
         .end-cta-label{font-family:var(--m);font-size:.76rem;color:var(--muted);font-weight:300;line-height:1.7;margin-bottom:.85rem}
-        /* Checkmarks de confiance */
         .end-cta-trust{display:flex;flex-direction:column;gap:.3rem}
         .end-cta-trust-item{font-family:var(--m);font-size:.68rem;color:var(--cyan);font-weight:500;display:flex;align-items:center;gap:.35rem}
-        /* Actions côté droit */
         .end-cta-actions{display:flex;flex-direction:column;gap:.5rem;align-items:center;flex-shrink:0}
-        /* Bouton principal — le plus imposant de la page */
         .end-cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:800;font-size:1rem;padding:15px 32px;border-radius:11px;text-decoration:none;white-space:nowrap;box-shadow:0 6px 24px rgba(0,230,190,.28);transition:all .2s;letter-spacing:-.01em}
         .end-cta-btn:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(0,230,190,.42);background:#00ffce}
         .end-cta-btn-sub{font-family:var(--m);font-size:.62rem;color:var(--muted);text-align:center}
         .end-cta-note{font-family:var(--m);font-size:.55rem;color:var(--dim)}
-
-        /* ─────────────────────────────────────────────────────────
-           SHARE
-        ───────────────────────────────────────────────────────── */
         .share{display:flex;align-items:center;gap:.55rem;margin-top:3.5rem;padding:1.25rem 1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);flex-wrap:wrap}
         .share-label{font-family:var(--m);font-size:.62rem;color:var(--dim);letter-spacing:.09em;text-transform:uppercase;margin-right:.25rem}
         .sbtn{font-family:var(--m);font-size:.7rem;padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .18s;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem}
         .sbtn:hover{border-color:rgba(0,230,190,.28);color:var(--cyan);background:var(--cdim)}
         .sbtn.done{background:var(--cdim);border-color:rgba(0,230,190,.28);color:var(--cyan)}
-
-        /* ─────────────────────────────────────────────────────────
-           ARTICLES SIMILAIRES
-        ───────────────────────────────────────────────────────── */
         .related{margin-top:4.5rem;padding-top:2.5rem;border-top:1px solid var(--border)}
         .sec-tag{font-family:var(--m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.25rem;display:flex;align-items:center;gap:.4rem}
         .sec-tag::before{content:'';width:14px;height:1px;background:var(--cyan);display:inline-block}
@@ -499,10 +429,6 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         .rcard-tag{font-family:var(--m);font-size:.57rem;letter-spacing:.09em;text-transform:uppercase;font-weight:600;margin-bottom:.5rem}
         .rcard-title{font-size:.85rem;font-weight:700;letter-spacing:-.01em;line-height:1.32;color:var(--text);margin-bottom:.6rem}
         .rcard-time{font-family:var(--m);font-size:.62rem;color:var(--dim)}
-
-        /* ─────────────────────────────────────────────────────────
-           SIDEBAR
-        ───────────────────────────────────────────────────────── */
         .sidebar{position:sticky;top:76px;display:flex;flex-direction:column;gap:.8rem}
         .sbox{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
         .sbox-header{padding:.85rem 1.1rem;border-bottom:1px solid var(--border)}
@@ -512,7 +438,6 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         .toc-item a{font-family:var(--m);font-size:.68rem;color:var(--muted);text-decoration:none;font-weight:300;line-height:1.45;transition:all .18s;display:block;padding:5px 10px 5px 12px;border-left:2px solid transparent;border-bottom:1px solid transparent}
         .toc-item a:hover{color:var(--text);background:var(--bg3)}
         .toc-item.active a{color:var(--cyan);border-left-color:var(--cyan);background:var(--cdim);font-weight:500}
-        /* Sidebar affilié — signal fort et visible */
         .sbox-aff{background:linear-gradient(160deg,rgba(0,230,190,.09),rgba(0,230,190,.02));border-color:rgba(0,230,190,.28)!important;position:relative}
         .sbox-aff .sbox-header{border-bottom-color:rgba(0,230,190,.15)}
         .sbox-aff::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan) 30%,var(--cyan) 70%,transparent)}
@@ -523,23 +448,13 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         .aff-label{font-family:var(--m);font-size:.67rem;color:var(--muted);font-weight:300;line-height:1.55;margin-bottom:.65rem}
         .aff-checks{display:flex;flex-direction:column;gap:.22rem;margin-bottom:.85rem}
         .aff-check{font-family:var(--m);font-size:.62rem;color:var(--cyan);font-weight:500}
-        /* Bouton sidebar — animation pulse pour attirer l'oeil */
         .aff-btn{display:flex;align-items:center;justify-content:center;gap:.4rem;background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:800;font-size:.8rem;padding:11px;border-radius:8px;text-decoration:none;transition:all .2s;letter-spacing:-.01em;box-shadow:0 4px 16px rgba(0,230,190,.2)}
         .aff-btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(0,230,190,.38);background:#00ffce}
         .aff-btn-sub{font-family:var(--m);font-size:.58rem;color:var(--muted);text-align:center;margin-top:.35rem}
         .aff-note{font-family:var(--m);font-size:.52rem;color:var(--dim);text-align:center;margin-top:.2rem}
-
-        /* ─────────────────────────────────────────────────────────
-           STICKY MOBILE CTA — apparaît en bas sur mobile
-        ───────────────────────────────────────────────────────── */
         .sticky-cta{display:none}
         @media(max-width:960px){
-          .sticky-cta{
-            display:flex;align-items:center;justify-content:space-between;gap:.75rem;
-            position:fixed;bottom:0;left:0;right:0;z-index:200;
-            background:rgba(8,12,16,.97);border-top:1px solid rgba(0,230,190,.2);
-            padding:.9rem var(--pad);backdrop-filter:blur(20px);
-          }
+          .sticky-cta{display:flex;align-items:center;justify-content:space-between;gap:.75rem;position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(8,12,16,.97);border-top:1px solid rgba(0,230,190,.2);padding:.9rem var(--pad);backdrop-filter:blur(20px);}
           .sticky-cta-tool{font-family:var(--d);font-size:.82rem;font-weight:700;color:var(--text);letter-spacing:-.01em}
           .sticky-cta-label{font-family:var(--m);font-size:.6rem;color:var(--muted);font-weight:300}
           .sticky-cta-btn{display:inline-flex;align-items:center;gap:.35rem;background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:800;font-size:.82rem;padding:10px 20px;border-radius:8px;text-decoration:none;white-space:nowrap;flex-shrink:0;transition:all .18s}
@@ -553,10 +468,6 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         .nl-btn{width:100%;background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:700;font-size:.76rem;padding:9px;border-radius:6px;border:none;cursor:pointer;transition:opacity .18s;letter-spacing:-.01em}
         .nl-btn:hover{opacity:.9}.nl-btn:disabled{opacity:.55;cursor:not-allowed}
         .nl-status{text-align:center;font-family:var(--m);font-size:.74rem;padding:6px 0}
-
-        /* ─────────────────────────────────────────────────────────
-           404 + FOOTER
-        ───────────────────────────────────────────────────────── */
         .nf{text-align:center;padding:8rem 2rem;position:relative;z-index:1}
         .nf h1{font-size:3rem;font-weight:800;margin-bottom:1rem}
         .nf p{font-family:var(--m);color:var(--muted);margin-bottom:2rem;font-size:.86rem}
@@ -653,10 +564,11 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
               <div className="related">
                 <div className="sec-tag">{L.related}</div>
                 <div className="rgrid">
-                  {article.related.map(r => {
+                  {/* ✅ FIX: key = slug+index pour éviter les doublons entre articles partageant le même related */}
+                  {article.related.map((r, i) => {
                     const rc = getColor(r.tag);
                     return (
-                      <a key={r.slug} href={l(`/blog/${r.slug}`)} className="rcard">
+                      <a key={`${r.slug}-${i}`} href={l(`/blog/${r.slug}`)} className="rcard">
                         <div className="rcard-stripe" style={{ background: rc }} />
                         <div className="rcard-body">
                           <div className="rcard-tag" style={{ color: rc }}>{r.tag}</div>

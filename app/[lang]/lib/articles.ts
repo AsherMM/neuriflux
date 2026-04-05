@@ -32,9 +32,914 @@ export interface Article {
 }
 
 export const ARTICLES: Article[] = [
+// ─── Guide Prompting IA 2026 ─────────────────────────────────────────────────
+  {
+    slug: "comment-ecrire-prompts-ia-2026",
+    tag: "Productivité",
+    date: { fr: "5 avril 2026", en: "April 5, 2026" },
+    timeMin: "18",
+    featured: true,
+    affiliate: {
+      url: "https://claude.ai",
+      toolName: "Claude",
+      label: {
+        fr: "Essayez vos premiers prompts sur Claude — gratuit sans inscription",
+        en: "Try your first prompts on Claude — free, no sign-up needed",
+      },
+    },
+    fr: {
+      title: "Comment écrire des prompts IA qui marchent vraiment en 2026 — le guide complet",
+      desc: "Vous obtenez des réponses molles, génériques, ou complètement à côté ? Ce guide vous donne les techniques concrètes pour transformer vos prompts — avec des exemples avant/après sur ChatGPT, Claude et Gemini.",
+      metaTitle: "Comment écrire des prompts IA en 2026 : guide complet avec exemples | Neuriflux",
+      metaDesc: "Guide complet du prompt engineering en 2026 : techniques Chain-of-Thought, few-shot, role prompting, exemples avant/après sur ChatGPT, Claude et Perplexity. Obtenez enfin des réponses utiles.",
+      content: `
+## Pourquoi vos prompts actuels vous donnent des résultats médiocres
+
+Vous avez déjà tapé une question à ChatGPT, reçu une réponse longue et creuse qui ne servait à rien, et conclu que "l'IA c'est surévalué" ? Ce n'est pas l'IA le problème.
+
+La qualité d'une réponse IA dépend à **80% de la qualité de votre prompt**. C'est l'équivalent d'engager le meilleur consultant au monde, puis lui poser des questions vagues à mi-voix en espérant qu'il devine ce que vous voulez vraiment.
+
+Les modèles comme [ChatGPT, Claude ou Gemini](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) sont des machines à complétion de texte extraordinairement puissantes — mais ils font exactement ce qu'on leur demande. Pas plus. Un mauvais prompt produit une mauvaise réponse, même avec le modèle le plus avancé du marché.
+
+Ce guide vous donne les outils pour changer ça. Pas de théorie abstraite : des techniques testées, avec des exemples concrets avant/après sur les principaux outils IA de 2026.
+
+## Les 5 éléments d'un prompt parfait
+
+Tout bon prompt repose sur cinq piliers. Vous n'avez pas besoin des cinq à chaque fois — mais comprendre leur rôle vous permet de diagnostiquer pourquoi un prompt échoue.
+
+### 1. Le rôle (Persona)
+
+Dites à l'IA qui elle est censée être. Pas par magie — mais parce que définir un rôle active les patterns de connaissance correspondants dans le modèle.
+
+**Avant :** *"Écris-moi un email à un client mécontent."*
+**Après :** *"Tu es un directeur de la relation client avec 10 ans d'expérience dans le SaaS B2B. Écris un email à un client qui menace de résilier après un bug en production..."*
+
+La différence de résultat est immédiate et radicale.
+
+### 2. Le contexte
+
+L'IA n'a aucune idée de qui vous êtes, de votre secteur, de votre audience, ou de vos contraintes — à moins que vous ne le précisiez. Le contexte est l'information de fond qui permet au modèle de calibrer sa réponse.
+
+**Avant :** *"Comment améliorer mon taux de conversion ?"*
+**Après :** *"Je gère un site e-commerce de cosmétiques naturels, 50 000 visiteurs/mois, panier moyen 65€, taux de conversion actuel 1,2%. Mon audience principale est des femmes de 28-45 ans. Quelles sont les 3 optimisations les plus impactantes à tester en priorité ?"*
+
+### 3. La tâche
+
+Soyez précis sur ce que vous voulez. Pas "aide-moi avec X" mais "fais Y, dans le format Z, avec les contraintes W".
+
+**Avant :** *"Aide-moi avec mon CV."*
+**Après :** *"Réécris ce paragraphe de mon CV pour un poste de Product Manager senior dans une startup Series B. Utilise des verbes d'action, quantifie les résultats, et garde-le sous 80 mots."*
+
+### 4. Le format de sortie
+
+Précisez la structure de la réponse attendue. Tableau ? Liste numérotée ? Paragraphes ? Longueur ? Niveau de technicité ? Sans ça, l'IA choisit à votre place — et elle choisit souvent mal.
+
+Exemples de spécifications utiles :
+- *"Réponds en 3 points maximum"*
+- *"Structure ta réponse avec : problème / cause / solution / prochaines étapes"*
+- *"Utilise un tableau comparatif avec les colonnes X, Y, Z"*
+- *"Réponds comme si tu expliquais à un lycéen"*
+- *"Sois direct. Pas d'intro. Pas de conclusion moralisatrice."*
+
+### 5. Les contraintes
+
+Ce que vous ne voulez PAS est aussi important que ce que vous voulez. Définir les limites empêche l'IA de partir dans des directions non souhaitées.
+
+- *"Sans mentionner la concurrence"*
+- *"Évite le jargon technique"*
+- *"Ne propose pas de solution qui implique un budget supplémentaire"*
+- *"Pas de listes à puces — des paragraphes"*
+
+## Les 6 techniques qui changent tout
+
+### Technique 1 — Le Few-Shot Prompting
+
+Montrez un exemple du résultat que vous voulez. L'IA reproduit le style, la structure et le niveau de détail de vos exemples avec une précision impressionnante.
+
+**Usage :** Rédaction, génération de données structurées, emails, posts réseaux sociaux.
+
+
+Voici un exemple du ton que je veux :
+---
+[Exemple A] : "Le ChatGPT de demain sera-t-il encore abordable ? 
+Avec une valorisation de 852 milliards et une facture électrique 
+qui dépasse celle de certains pays, la question n'est plus hypothétique."
+---
+Maintenant écris une accroche dans ce même style pour un article 
+sur les risques de l'IA générative en entreprise.
+
+### Technique 2 — Le Chain-of-Thought (Raisonnement pas à pas)
+
+Demandez explicitement au modèle de raisonner étape par étape avant de donner sa réponse. Cette technique améliore drastiquement la qualité sur les tâches complexes — maths, logique, analyse stratégique.
+
+[DeepSeek R1](/fr/blog/deepseek-review-2026) le fait automatiquement avec son mode DeepThink. Pour les autres modèles, il faut le demander.
+
+**Formulation :**
+- *"Réfléchis étape par étape avant de répondre."*
+- *"Avant de donner ta conclusion, liste les hypothèses que tu fais."*
+- *"Montre ton raisonnement. Je veux comprendre comment tu arrives à cette réponse."*
+
+**Exemple appliqué :**
+
+Avant de répondre : liste les 3 informations dont tu aurais besoin 
+pour bien répondre à cette question. Puis indique lesquelles tu as 
+et lesquelles il me faudrait te donner. Ensuite seulement, propose 
+ta meilleure réponse avec ces données.
+
+Question : Comment devrais-je fixer le prix de mon SaaS B2B ?
+
+### Technique 3 — Le Role Prompting avancé
+
+Au-delà du simple "tu es un expert en X", définissez des comportements spécifiques attendus de ce rôle.
+
+Tu es un copywriter spécialisé dans le SaaS B2B avec 15 ans 
+d'expérience. Tu as travaillé pour des licornes européennes.
+
+Ton style : direct, sans euphémismes, orienté résultats. 
+Tu n'utilises jamais les mots "révolutionnaire", "innovant" 
+ou "synergies". Tu écris comme si le lecteur était sceptique 
+et pressé — parce qu'il l'est.
+
+### Technique 4 — Le Prompt Itératif
+
+Ne cherchez pas le prompt parfait du premier coup. Commencez large, puis affinez avec des instructions de suivi. C'est la façon la plus naturelle et la plus efficace d'utiliser un LLM.
+
+**Round 1 :** *"Donne-moi 10 idées d'articles pour un blog IA destiné aux développeurs."*
+
+**Round 2 :** *"Les numéros 3, 7 et 9 sont intéressants. Pour chacun, propose 3 angles différents — un technique, un business, un actualité."*
+
+**Round 3 :** *"Pour l'angle business du numéro 7, donne-moi un plan détaillé de l'article avec les sections principales et les arguments clés de chaque section."*
+
+En 3 échanges, vous avez quelque chose d'utilisable. En un seul prompt ambitieux, vous auriez obtenu une réponse générique.
+
+### Technique 5 — Le Negative Prompting
+
+Dire ce que vous ne voulez pas est souvent plus efficace que de décrire ce que vous voulez — particulièrement sur la rédaction et les formats.
+
+Écris une analyse de la situation concurrentielle dans le secteur 
+des outils IA en 2026.
+
+À ne PAS faire :
+- Pas d'introduction qui commence par "Dans un monde..."
+- Pas de conclusion avec "En conclusion..."
+- Pas de phrases comme "il est important de noter que..."
+- Pas de liste de 10 points génériques
+- Pas de prudence excessive — assume une position claire
+
+### Technique 6 — Le Prompt avec Contrainte de Format XML/Structuré
+
+Pour les tâches qui nécessitent une sortie structurée — génération de données, rédaction de contenu à intégrer dans un système, extraction d'information — demandez une structure précise.
+
+Analyse les 3 outils IA suivants et retourne ta réponse 
+dans ce format exact :
+
+OUTIL: [nom]
+NOTE: [X/10]
+FORCE_PRINCIPALE: [une phrase]
+LIMITE_PRINCIPALE: [une phrase]
+IDEAL_POUR: [profil utilisateur]
+---
+
+Outils à analyser : ChatGPT Plus, Claude Pro, Perplexity Pro
+
+## Tableau de référence : quel prompt pour quel outil
+
+Chaque modèle a ses forces. Adapter votre style de prompt à l'outil que vous utilisez fait une différence réelle.
+
+| Technique | ChatGPT | Claude | Perplexity | DeepSeek R1 |
+|---|---|---|---|---|
+| Few-shot | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Chain-of-Thought | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ (natif) |
+| Role Prompting | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Format structuré | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Recherche temps réel | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Rédaction créative | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ |
+| Code complexe | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Analyse de documents | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+
+**Règles pratiques :**
+- [Perplexity](/fr/blog/perplexity-ai-review-2026) : pour tout ce qui nécessite des données récentes ou des sources citées
+- Claude : pour les textes longs, nuancés, les analyses complexes, les révisions de documents
+- ChatGPT : pour le code, les tâches structurées, la polyvalence
+- DeepSeek R1 : pour les maths, le raisonnement logique, le code — gratuitement
+
+## Les 10 erreurs les plus fréquentes (et comment les éviter)
+
+**1. Le prompt trop court et trop vague**
+*"Écris un article sur l'IA"* → 0 contexte, 0 angle, 0 audience = réponse générique garantie.
+
+**2. Oublier de préciser l'audience**
+L'IA ne sait pas si vous écrivez pour un débutant ou un CTO. Précisez toujours.
+
+**3. Demander plusieurs choses à la fois**
+*"Analyse ce texte, corrige les fautes, améliore le style et traduis-le en anglais"* → Résultat moyen sur tout. Faites une chose à la fois, ou dans un ordre explicite.
+
+**4. Ne pas donner d'exemple**
+Si vous avez un style ou un format précis en tête, montrez-le. "Comme dans cet exemple" vaut mieux que 200 mots de description.
+
+**5. Accepter la première réponse sans itérer**
+La première réponse est rarement la meilleure. Demandez des variations, approfondissez un point, contestez un argument. Le dialogue améliore le résultat.
+
+**6. Le prompt poli à l'excès**
+*"Pourriez-vous éventuellement peut-être m'aider à..."* → Les LLMs ne sont pas offensés par la directivité. Soyez direct.
+
+**7. Ne pas préciser la longueur**
+Sans indication, l'IA choisit une longueur "moyenne". Si vous voulez 3 phrases ou 2000 mots, dites-le.
+
+**8. Ignorer le contexte de session**
+Dans une longue conversation, l'IA peut "oublier" les instructions initiales. Rappeler le rôle ou les contraintes en début de message important est une bonne pratique.
+
+**9. Demander une opinion sans cadre**
+*"Qu'est-ce que tu penses de ma stratégie ?"* → L'IA va être diplomatique par défaut. Demandez : *"Identifie les 3 failles critiques de cette stratégie comme si tu étais un investisseur sceptique."*
+
+**10. Ne pas utiliser le contexte négatif**
+Dire ce que vous ne voulez pas est aussi précieux que dire ce que vous voulez. *"Sans intro, sans conclusion, sans liste à puces"* — ça change tout.
+
+## 20 templates copiables-collables
+
+Ces prompts sont directement utilisables. Remplacez les [crochets] par vos informations.
+
+**Rédaction & contenu**
+
+Tu es un rédacteur expert en [secteur]. Écris un article de 
+[X mots] sur [sujet] pour une audience de [profil lecteur]. 
+Ton : [direct/académique/conversationnel]. 
+Structure : intro percutante + 3 sections avec sous-titres + conclusion avec CTA.
+Évite : le jargon, les généralités, les tournures passives.
+
+---
+
+Réécris ce paragraphe pour qu'il soit [50% plus court / plus percutant / 
+plus adapté à LinkedIn / compréhensible par un non-spécialiste].
+Garde le sens exact. Ne change pas les faits.
+[COLLER LE PARAGRAPHE]
+
+
+**Analyse & stratégie**
+
+
+Analyse [document/situation/stratégie] comme un consultant McKinsey 
+spécialisé en [secteur]. 
+Identifie : (1) les 3 forces, (2) les 3 faiblesses critiques, 
+(3) les 2 opportunités à saisir en priorité.
+Sois direct. Assume des positions claires. Évite les formulations vagues.
+
+Je dois prendre une décision sur [sujet].
+Arguments pour : [liste]
+Arguments contre : [liste]
+Joue l'avocat du diable : donne-moi les 3 meilleures raisons de ne PAS 
+choisir l'option que je semble favoriser.
+
+
+**Code & technique**
+
+
+Tu es un développeur senior [langage/framework] avec 10 ans d'expérience.
+Révise ce code. Identifie : (1) les bugs potentiels, (2) les problèmes 
+de performance, (3) les mauvaises pratiques.
+Pour chaque problème : explique pourquoi c'est un problème et propose 
+une correction avec le code corrigé.
+[COLLER LE CODE]
+
+
+
+Explique [concept technique] de trois façons différentes :
+1. En une phrase, pour quelqu'un qui n'a aucune connaissance technique
+2. En 3 phrases, pour un développeur junior
+3. En 5 phrases, avec les nuances importantes, pour un senior
+
+
+**Email & communication**
+
+
+Écris un email de [X lignes max] à [profil destinataire] pour [objectif].
+Contexte : [situation].
+Ton : [professionnel mais direct / chaleureux / ferme].
+L'email doit : [obtenir X / fixer un RDV / refuser poliment / relancer sans paraître insistant].
+Objet : propose 3 variantes d'objet.
+
+
+Je dois avoir une conversation difficile avec [profil] à propos de [sujet].
+Prépare-moi : anticipe les 5 objections ou réactions les plus probables 
+et donne-moi une réponse calibrée pour chacune.
+Mon objectif : [résultat souhaité].
+
+
+**Apprentissage & recherche**
+
+
+Explique [concept] à partir de zéro. Je connais déjà [notions préalables].
+Utilise des analogies concrètes. Donne un exemple réel pour chaque 
+concept clé. À la fin, pose-moi 3 questions pour vérifier ma compréhension.
+
+
+Je veux comprendre [sujet] rapidement. 
+Donne-moi : (1) le concept central en 2 phrases, (2) les 5 choses 
+que je dois absolument savoir, (3) les 2 idées reçues les plus courantes 
+et pourquoi elles sont fausses, (4) 3 ressources pour aller plus loin.
+
+
+**Brainstorming**
+
+
+Génère 20 idées pour [objectif]. 
+Les 10 premières : les approches classiques et efficaces.
+Les 10 suivantes : les approches contre-intuitives ou non-conventionnelles.
+Ne filtre pas pour la "faisabilité" — je veux de la variété.
+
+Je travaille sur [projet/produit]. Mon problème : [problème].
+Joue 3 rôles différents et donne-moi la solution de chacun :
+1. Un ingénieur obsédé par l'efficacité
+2. Un designer centré sur l'expérience utilisateur  
+3. Un CFO uniquement focalisé sur les coûts
+
+
+**SEO & marketing**
+
+Génère 15 idées de titres pour un article sur [sujet].
+Audience : [profil].
+5 titres : format liste ("X façons de...")
+5 titres : format question
+5 titres : format affirmation forte / contre-intuitive
+Pour chaque titre : indique le niveau de sensationnalisme de 1 à 5.
+
+Écris une meta description de 155 caractères maximum pour une page sur [sujet].
+Mot-clé principal à intégrer : [mot-clé].
+Ton : [informatif / urgence / curiosité].
+Termine par un verbe d'action.
+Propose 3 variantes.
+
+**Productivité**
+
+J'ai [X heures] pour accomplir [liste de tâches].
+Priorise-les selon la matrice Eisenhower. 
+Pour les 3 tâches prioritaires : donne-moi un plan d'exécution 
+en sous-étapes de 15-30 minutes.
+
+Résume ce document en 3 niveaux de détail :
+1. En 1 phrase (pour quelqu'un qui n'a pas le temps)
+2. En 5 phrases (pour quelqu'un qui a 2 minutes)
+3. En 10 points clés (pour quelqu'un qui doit prendre une décision)
+[COLLER LE DOCUMENT]
+
+
+## Comment adapter vos prompts selon le modèle
+
+### Sur ChatGPT
+
+ChatGPT répond bien aux instructions directes et structurées. Il gère très bien les formats complexes et le code. Pour la rédaction, précisez le ton explicitement — il a tendance au style corporate si vous ne le guidez pas.
+
+Astuce spécifique : la **mémoire persistante** de ChatGPT vous permet de définir vos préférences une fois pour toutes. Dans les paramètres, vous pouvez lui dire votre secteur, votre rôle, votre style préféré — et il s'en souvient à chaque conversation.
+
+### Sur Claude
+
+[Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) est le meilleur modèle pour la rédaction longue et nuancée. Il est particulièrement sensible aux instructions de style et de ton. Donnez-lui des exemples, et il s'adapte avec une précision remarquable.
+
+Pour les documents longs : Claude accepte des fenêtres de contexte très grandes — collez directement vos documents, contrats, rapports entiers dans le prompt.
+
+Astuce spécifique : Claude a tendance à être trop prudent et à sur-nuancer ses réponses. Si vous voulez une prise de position claire, dites-le explicitement : *"Prends position. Ne dis pas 'ça dépend'. Donne-moi ta meilleure réponse avec les données disponibles."*
+
+### Sur Perplexity
+
+[Perplexity](/fr/blog/perplexity-ai-review-2026) est conçu pour la recherche sourcée, pas pour la rédaction créative. Vos prompts doivent être orientés vers l'obtention d'informations factuelles et récentes.
+
+Astuce spécifique : précisez une date ou une période — *"en mars 2026"*, *"ces 6 derniers mois"* — pour obtenir des résultats frais plutôt que des généralités.
+
+### Sur DeepSeek R1
+
+[DeepSeek R1](/fr/blog/deepseek-review-2026) raisonne explicitement avant de répondre. Pour les problèmes complexes, laissez-le développer son raisonnement — n'essayez pas de le forcer à être court sur des sujets qui nécessitent de la profondeur.
+
+Astuce spécifique : demandez-lui de *"douter de lui-même"* sur ses conclusions. DeepSeek R1 est particulièrement bon pour identifier les failles de son propre raisonnement quand on lui demande explicitement.
+
+## Aller plus loin : le prompt système
+
+Pour les utilisateurs avancés ou ceux qui construisent des applications sur l'API, le **prompt système** (system prompt) est l'instruction de fond qui précède toute conversation. C'est là que vous définissez le personnage, les règles, le style et les contraintes permanentes.
+
+Exemple d'un prompt système efficace pour un assistant de rédaction :
+
+Tu es Alex, un rédacteur senior spécialisé en contenu B2B tech. 
+Tu as 12 ans d'expérience en content marketing pour des scale-ups SaaS.
+
+Ton style : 
+- Phrases courtes. Maximum 20 mots par phrase.
+- Actif, jamais passif.
+- Données et exemples concrets avant les généralités.
+- Jamais de "Il est important de noter que..."
+- Conclusion avec une action concrète, jamais avec une platitude.
+
+Tes règles absolues :
+- Si tu ne sais pas, dis-le clairement plutôt que d'improviser.
+- Si la question est ambiguë, pose UNE question de clarification avant de répondre.
+- Si tu identifies un problème dans ce qu'on te demande, signale-le avant d'exécuter.
+
+Ce type de prompt, posé une fois en début de session ou dans les paramètres système, transforme radicalement la qualité de toutes les interactions qui suivent.
+
+## Le prompt engineering n'est pas une compétence technique
+
+La dernière chose à comprendre : le prompting n'est pas réservé aux développeurs ou aux techniciens. C'est une compétence de communication — la capacité à articuler clairement ce qu'on veut, dans quel contexte, avec quelles contraintes.
+
+Les personnes qui excellent naturellement au prompting sont souvent des rédacteurs, des avocats, des professeurs, des chefs de projet — tous des gens habitués à formuler des instructions précises à d'autres humains.
+
+Si vous pouvez écrire un brief détaillé, un cahier des charges, ou une note de service claire, vous avez déjà les compétences fondamentales pour devenir un excellent prompteur.
+
+Ce qui s'apprend avec l'expérience : comprendre les angles morts spécifiques de chaque modèle. Savoir quand une réponse est trop générique parce que le contexte manque, vs quand elle est incorrecte parce que le modèle a halluciné. Développer l'instinct pour savoir quelle technique appliquer à quel type de problème.
+
+Ça vient avec la pratique. La seule façon d'apprendre à prompter mieux, c'est de prompter — et d'observer ce qui fonctionne.
+
+## Notre verdict
+
+Le prompting est **la compétence IA la plus rentable à développer en 2026**. Elle est transversale — elle améliore votre productivité sur ChatGPT, Claude, Perplexity, Midjourney et tous les outils que vous utilisez au quotidien. Elle ne devient pas obsolète d'une version à l'autre. Et elle est accessible à tous dès aujourd'hui.
+
+Commencez par les 5 éléments fondamentaux. Testez le Chain-of-Thought sur votre prochaine analyse complexe. Ajoutez systématiquement un rôle et un format à vos prompts de rédaction. La différence de résultat sera visible dès la première utilisation.
+
+## FAQ Prompting IA
+
+### C'est quoi le prompt engineering ?
+
+Le prompt engineering désigne l'art de formuler des instructions précises et efficaces pour les modèles d'IA comme ChatGPT, Claude ou Gemini. L'objectif est d'obtenir des réponses plus utiles, plus précises et mieux adaptées à votre besoin en structurant intelligemment vos questions et contextes.
+
+### Dois-je être développeur pour faire du bon prompting ?
+
+Non. Le prompting est avant tout une compétence de communication. Savoir formuler clairement ce qu'on veut, dans quel contexte et avec quelles contraintes — c'est la même logique qu'un brief créatif ou une note de service bien rédigée. Les non-techniciens qui ont l'habitude d'écrire des instructions précises s'y retrouvent souvent très rapidement.
+
+### Est-ce que les techniques de prompting fonctionnent sur tous les modèles IA ?
+
+Les principes fondamentaux (contexte, rôle, format, contraintes) fonctionnent sur tous les grands modèles. Mais chaque modèle a des forces différentes : Claude excelle sur la rédaction longue, DeepSeek R1 sur le raisonnement, Perplexity sur la recherche sourcée. Adapter sa technique à l'outil utilisé fait une vraie différence.
+
+### Quelle est la différence entre un prompt et un prompt système ?
+
+Un prompt est votre instruction pour une réponse spécifique. Un prompt système (ou system prompt) est une instruction de fond qui définit le comportement du modèle pour toute une session ou application — le rôle, le style, les règles permanentes. Il est utilisé principalement via l'API ou dans les interfaces avancées comme les GPTs personnalisés de ChatGPT.
+
+### Combien de temps faut-il pour maîtriser le prompting ?
+
+Vous verrez une amélioration mesurable dès votre premier essai si vous appliquez les 5 éléments de base. En une semaine de pratique régulière, vous intégrerez naturellement la plupart des techniques. La maîtrise avancée — savoir exactement quel angle adopter pour chaque type de problème — vient avec quelques semaines à quelques mois d'expérience selon votre fréquence d'utilisation.
+      `,
+      related: [
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "12" },
+        { slug: "deepseek-review-2026", title: "DeepSeek : avis complet 2026, le meilleur ChatGPT gratuit venu de Chine ?", tag: "Chatbots", timeMin: "14" },
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI : avis 2026, Comet Browser et Model Council", tag: "Chatbots", timeMin: "15" },
+      ],
+    },
+    en: {
+      title: "How to Write AI Prompts That Actually Work in 2026 — The Complete Guide",
+      desc: "Getting generic, useless responses from ChatGPT or Claude? The problem isn't the AI — it's the prompt. This guide gives you concrete techniques with real before/after examples to transform your results today.",
+      metaTitle: "How to Write AI Prompts in 2026: Complete Guide with Examples | Neuriflux",
+      metaDesc: "Master AI prompt engineering in 2026: Chain-of-Thought, few-shot, role prompting, and 20 copy-paste templates for ChatGPT, Claude, Perplexity, and DeepSeek. Get answers that actually work.",
+      content: ` {
+  
+## The real reason your AI prompts aren't working
+
+You've typed a question into ChatGPT, received a five-paragraph wall of generic text that told you nothing, and thought "AI is overhyped." The AI isn't the problem.
+
+The quality of any AI response depends **80% on the quality of your prompt**. Think of it like hiring the world's most capable consultant and then briefing them with "just figure it out." The model will do exactly what you ask — no more, no less. A vague prompt guarantees a vague answer, regardless of which model you're using.
+
+Tools like [ChatGPT, Claude, or Gemini](/en/blog/chatgpt-vs-claude-vs-gemini-2026) are extraordinarily powerful pattern-completion engines. They don't guess your intent — they process your input and generate the statistically most appropriate continuation. Your job is to make your intent impossible to misinterpret.
+
+This guide gives you the practical tools to do that. No abstract theory — just tested techniques with concrete before/after examples on every major AI tool in 2026.
+
+## The 5 elements of a high-quality prompt
+
+Every effective prompt contains some combination of five building blocks. You don't always need all five — but understanding each one helps you diagnose why a prompt fails.
+
+### 1. The Role (Persona)
+
+Tell the AI who it is. Not for mystical reasons — but because defining a role activates the corresponding knowledge patterns in the model. A prompt written for a "senior UX designer with fintech experience" pulls different associations than a generic question.
+
+**Before:** *"Write me an email to an unhappy client."*
+**After:** *"You are a senior customer success manager with 10 years of experience in B2B SaaS. Write an email to a client who's threatening to cancel after a production outage that affected their team for 3 hours..."*
+
+The difference in output quality is immediate and significant.
+
+### 2. The Context
+
+The AI knows nothing about you, your industry, your audience, or your constraints — unless you provide that information. Context is the background information that allows the model to calibrate its response.
+
+**Before:** *"How can I improve my conversion rate?"*
+**After:** *"I run a natural skincare e-commerce store: 50,000 monthly visitors, €65 average order value, current conversion rate 1.2%. My primary audience is women aged 28-45. What are the 3 highest-impact optimizations I should test first, and in what order?"*
+
+The second prompt is 5x longer but will save you 10x the back-and-forth.
+
+### 3. The Task
+
+Be specific about what you want — not "help me with X" but "do Y, in format Z, with constraints W." The more precisely you define the action, the more targeted the result.
+
+**Before:** *"Help me with my resume."*
+**After:** *"Rewrite this resume bullet point for a senior Product Manager position at a Series B startup. Use strong action verbs, quantify results wherever possible, and keep it under 80 words."*
+
+### 4. The Output Format
+
+Specify the structure of the response you want. Table? Numbered list? Paragraphs? Length? Technical level? Without this, the AI picks a "default" format — which is rarely what you need.
+
+Useful format specifications:
+- *"Reply in 3 bullet points maximum"*
+- *"Structure your response: problem / root cause / solution / next steps"*
+- *"Use a comparison table with columns X, Y, Z"*
+- *"Explain as if I'm a smart 16-year-old with no domain knowledge"*
+- *"Be direct. No intro paragraph. No moralizing conclusion."*
+
+### 5. The Constraints
+
+What you don't want is as important as what you do. Defining limits prevents the AI from drifting into unwanted territory.
+
+- *"Without mentioning competitors by name"*
+- *"Avoid technical jargon"*
+- *"Don't suggest solutions that require additional budget"*
+- *"No bullet lists — write in paragraphs"*
+- *"Don't hedge every statement with 'it depends'"*
+
+## 6 techniques that fundamentally change your results
+
+### Technique 1 — Few-Shot Prompting
+
+Show an example of the result you want. AI reproduces the style, structure, and detail level of your examples with remarkable precision. This is the single most underused technique by non-technical users.
+
+**Best for:** Writing, structured data generation, emails, social posts, anything with a specific style.
+
+Here's an example of the tone I want:
+---
+[Example]: "Will tomorrow's ChatGPT still be affordable? With an $852B 
+valuation and an electricity bill that rivals some countries, 
+the question is no longer hypothetical."
+---
+Now write an opening hook in the same style for an article about 
+the risks of generative AI in enterprise environments.
+
+### Technique 2 — Chain-of-Thought Reasoning
+
+Explicitly ask the model to reason step by step before delivering its answer. This technique dramatically improves quality on complex tasks — math, logic, strategic analysis, anything requiring multi-step inference.
+
+[DeepSeek R1](/en/blog/deepseek-review-2026) does this automatically with its DeepThink mode. For other models, you need to request it explicitly.
+
+**How to trigger it:**
+- *"Think step by step before answering."*
+- *"Before giving your conclusion, list the assumptions you're making."*
+- *"Show your reasoning. I want to understand how you reach this answer."*
+
+**Applied example:**
+
+Before answering: list the 3 pieces of information you'd need to 
+answer this question well. Then indicate which ones you have and 
+which ones I'd need to provide. Only then give your best answer 
+based on available information.
+
+Question: How should I price my B2B SaaS product?
+
+
+### Technique 3 — Advanced Role Prompting
+
+Beyond "you are an expert in X," define specific behaviors expected from that role. Make the persona operational, not just decorative.
+
+
+You are a B2B SaaS copywriter with 15 years of experience who has 
+worked with European unicorns and US scale-ups.
+
+Your style: direct, no euphemisms, results-oriented. 
+You never use the words "revolutionary," "innovative," or "game-changing." 
+You write as if your reader is skeptical and pressed for time — 
+because they are. You make your point in the first sentence, 
+not the fourth.
+
+
+### Technique 4 — Iterative Prompting
+
+Don't search for the perfect prompt on the first try. Start broad, then refine with follow-up instructions. This is the most natural and most effective way to use a large language model.
+
+**Round 1:** *"Give me 10 article ideas for an AI blog targeting developers."*
+
+**Round 2:** *"Numbers 3, 7, and 9 are interesting. For each, give me 3 different angles — one technical, one business, one news-driven."*
+
+**Round 3:** *"For the business angle of number 7, give me a full article outline with main sections and key arguments for each."*
+
+In 3 exchanges, you have something genuinely usable. In one ambitious mega-prompt, you'd have gotten something generic.
+
+### Technique 5 — Negative Prompting
+
+Stating what you don't want is often more effective than describing what you do — especially for writing and formatting. Models have strong "default" behaviors that explicit negation can override.
+
+
+Write an analysis of the competitive landscape in the AI tools 
+sector in 2026.
+
+Do NOT:
+- Start with "In today's rapidly evolving AI landscape..."
+- Use phrases like "it is important to note that..."
+- End with a vague "the future will tell" conclusion
+- Give me a list of 10 equally weighted generic points
+- Hedge every claim with "but it depends on the context"
+
+Take a position. Be specific. Prioritize.
+
+
+### Technique 6 — Structured Output Prompting
+
+For tasks requiring structured output — data generation, content for systems integration, information extraction — specify the exact format. This makes the output immediately usable without manual reformatting.
+
+
+Analyze the following 3 AI tools and return your response 
+in this exact format:
+
+TOOL: [name]
+SCORE: [X/10]
+PRIMARY_STRENGTH: [one sentence]
+PRIMARY_LIMITATION: [one sentence]
+BEST_FOR: [user profile in 10 words max]
+---
+
+Tools to analyze: ChatGPT Plus, Claude Pro, Perplexity Pro
+
+
+## Reference table: which technique for which tool
+
+Each model has different strengths. Matching your prompting style to the tool you're using makes a measurable difference.
+
+| Technique | ChatGPT | Claude | Perplexity | DeepSeek R1 |
+|---|---|---|---|---|
+| Few-shot | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Chain-of-Thought | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ (native) |
+| Role Prompting | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Structured format | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Real-time search | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Creative writing | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ |
+| Complex code | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Document analysis | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+
+**Practical rules:**
+- [Perplexity](/en/blog/perplexity-ai-review-2026): anything requiring cited, recent sources
+- Claude: long-form writing, nuanced analysis, document review, creative quality
+- ChatGPT: code, structured tasks, versatility, persistent memory
+- DeepSeek R1: math, logical reasoning, complex code — for free
+
+## The 10 most common prompting mistakes
+
+**1. The too-short, too-vague prompt**
+*"Write an article about AI"* — no context, no angle, no audience = guaranteed generic output. Never start a serious prompt in under 30 words.
+
+**2. Forgetting to specify the audience**
+The AI doesn't know if you're writing for a first-year student or a CTO. Always specify. It changes everything about vocabulary, depth, and assumptions.
+
+**3. Asking for multiple things at once**
+*"Analyze this text, fix the errors, improve the style, and translate it to French"* → mediocre results on everything. Do one thing at a time, or specify a clear order.
+
+**4. Not providing an example**
+If you have a specific style or format in mind, show it. "Like this example" beats 200 words of description every time.
+
+**5. Accepting the first response without iterating**
+The first response is almost never the best. Ask for variations, push on a weak point, challenge an assumption. Dialogue improves the result.
+
+**6. Over-polite prompting**
+*"Could you perhaps consider helping me..."* — LLMs aren't offended by directness. Be direct. It doesn't make you rude; it makes you clearer.
+
+**7. Not specifying length**
+Without guidance, AI chooses a "medium" length. If you want 3 sentences or 2,000 words, say so explicitly.
+
+**8. Ignoring session context**
+In long conversations, early instructions can get diluted. Restating the role or key constraints at the start of an important message is good practice.
+
+**9. Asking for opinion without a frame**
+*"What do you think of my strategy?"* → diplomatic hedging by default. Instead: *"Identify the 3 critical weaknesses in this strategy as if you were a skeptical investor who's seen a hundred pitch decks."*
+
+**10. Not using negative constraints**
+Saying what you don't want is as valuable as saying what you do. *"No introduction. No conclusion. No bullet points."* — this alone changes the output dramatically.
+
+## 20 copy-paste templates
+
+Ready-to-use prompts. Replace [brackets] with your information.
+
+**Writing & content**
+
+
+You are an expert writer specializing in [industry]. Write a 
+[X-word] article on [topic] for an audience of [reader profile]. 
+Tone: [direct/academic/conversational]. 
+Structure: strong hook + 3 sections with subheadings + conclusion with CTA.
+Avoid: jargon, generalities, passive voice.
+
+
+
+Rewrite this paragraph to be [50% shorter / more punchy / 
+more LinkedIn-appropriate / understandable by a non-specialist].
+Keep the exact meaning. Don't change any facts.
+[PASTE PARAGRAPH]
+
+
+**Analysis & strategy**
+
+
+Analyze [document/situation/strategy] like a McKinsey consultant 
+specializing in [industry]. 
+Identify: (1) the 3 strengths, (2) the 3 critical weaknesses, 
+(3) the 2 opportunities to prioritize.
+Be direct. Take clear positions. Avoid vague formulations.
+
+
+
+I need to make a decision about [topic].
+Arguments for: [list]
+Arguments against: [list]
+Play devil's advocate: give me the 3 strongest reasons NOT to 
+choose the option I seem to favor.
+
+
+**Code & technical**
+
+
+You are a senior [language/framework] developer with 10 years of experience.
+Review this code. Identify: (1) potential bugs, (2) performance issues, 
+(3) bad practices.
+For each issue: explain why it's a problem and provide corrected code.
+[PASTE CODE]
+
+
+
+Explain [technical concept] in three different ways:
+1. In one sentence, for someone with zero technical background
+2. In 3 sentences, for a junior developer
+3. In 5 sentences, with important nuances, for a senior engineer
+
+
+**Email & communication**
+
+
+Write an email of [max X lines] to [recipient profile] with the goal of [objective].
+Context: [situation].
+Tone: [professional but direct / warm / firm].
+The email should: [get X / schedule a call / decline politely / follow up without seeming pushy].
+Subject line: propose 3 variants.
+
+I need to have a difficult conversation with [profile] about [topic].
+Prepare me: anticipate the 5 most likely objections or reactions 
+and give me a calibrated response for each.
+My goal: [desired outcome].
+
+
+**Learning & research**
+
+
+Explain [concept] from scratch. I already know [prerequisite knowledge].
+Use concrete analogies. Give a real-world example for each key concept. 
+At the end, ask me 3 questions to test my understanding.
+
+
+
+I want to understand [topic] quickly. 
+Give me: (1) the core idea in 2 sentences, (2) the 5 things I absolutely 
+need to know, (3) the 2 most common misconceptions and why they're wrong, 
+(4) 3 resources for going deeper.
+
+
+**Brainstorming**
+
+
+Generate 20 ideas for [objective]. 
+First 10: proven, effective approaches.
+Next 10: counter-intuitive or unconventional approaches.
+Don't filter for "feasibility" — I want range.
+
+
+I'm working on [project/product]. My problem: [problem].
+Play 3 different roles and give me each one's solution:
+1. An engineer obsessed with efficiency
+2. A designer focused on user experience
+3. A CFO focused purely on cost
+
+
+**SEO & marketing**
+
+Generate 15 title ideas for an article about [topic].
+Audience: [profile].
+5 titles: list format ("X Ways to...")
+5 titles: question format
+5 titles: strong statement / counter-intuitive format
+For each title: rate the sensationalism level from 1 to 5.
+
+
+
+Write a meta description of maximum 155 characters for a page about [topic].
+Primary keyword to include: [keyword].
+Tone: [informative / urgency / curiosity].
+End with an action verb.
+Propose 3 variants.
+
+
+**Productivity**
+
+
+I have [X hours] to complete [list of tasks].
+Prioritize them using the Eisenhower matrix. 
+For the top 3 priority tasks: give me an execution plan 
+broken into 15-30 minute sub-steps.
+
+
+
+Summarize this document at 3 levels of detail:
+1. In 1 sentence (for someone with no time)
+2. In 5 sentences (for someone with 2 minutes)
+3. In 10 key points (for someone who needs to make a decision)
+[PASTE DOCUMENT]
+
+
+## Adapting your approach by model
+
+### On ChatGPT
+
+ChatGPT handles direct, structured instructions extremely well. It's excellent for complex formats and code. For writing, specify tone explicitly — it defaults to corporate bland if you don't push it.
+
+Specific tip: use ChatGPT's **persistent memory** feature to define your preferences once. In settings, you can tell it your industry, role, and preferred style — it remembers across every conversation.
+
+### On Claude
+
+[Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) is the strongest model for long-form, nuanced writing. It's particularly sensitive to style and tone instructions. Give it examples and it adapts with remarkable precision.
+
+For long documents: Claude accepts very large context windows — paste entire contracts, reports, or documents directly into the prompt.
+
+Specific tip: Claude tends to over-hedge and over-nuance. If you want a clear position, demand it: *"Take a stance. Don't say 'it depends.' Give me your best answer with available data."*
+
+### On Perplexity
+
+[Perplexity](/en/blog/perplexity-ai-review-2026) is built for sourced research, not creative writing. Your prompts should be oriented toward factual, current information retrieval rather than generation.
+
+Specific tip: specify a date or time period — *"in Q1 2026"*, *"in the last 6 months"* — to get fresh results rather than general knowledge.
+
+### On DeepSeek R1
+
+[DeepSeek R1](/en/blog/deepseek-review-2026) reasons explicitly before responding. For complex problems, let it develop its chain of thought — don't force it to be brief on questions that require depth.
+
+Specific tip: ask it to *"doubt its own conclusions"* on high-stakes analysis. DeepSeek R1 is particularly good at identifying the weaknesses in its own reasoning when explicitly prompted to do so.
+
+## Going further: the system prompt
+
+For advanced users or those building on the API, the **system prompt** is the foundational instruction that precedes any conversation. This is where you define the character, rules, style, and permanent constraints of any AI-powered application.
+
+Example of an effective system prompt for a writing assistant:
+
+
+You are Alex, a senior writer specializing in B2B tech content. 
+You have 12 years of experience in content marketing for SaaS scale-ups.
+
+Your style: 
+- Short sentences. Maximum 20 words per sentence.
+- Active voice, never passive.
+- Data and concrete examples before generalizations.
+- Never write "It is important to note that..."
+- Conclusions with a concrete action, never a platitude.
+
+Your absolute rules:
+- If you don't know something, say so clearly rather than guessing.
+- If the question is ambiguous, ask ONE clarifying question before answering.
+- If you spot a problem with what you're being asked to do, flag it before executing.
+
+
+This kind of prompt, set once at the start of a session or in system settings, fundamentally transforms the quality of every interaction that follows.
+
+## Prompt engineering isn't a technical skill
+
+The most important thing to understand: prompting isn't reserved for developers or engineers. It's a communication skill — the ability to clearly articulate what you want, in what context, with what constraints.
+
+People who tend to excel at prompting naturally are often writers, lawyers, teachers, and project managers — people accustomed to writing precise instructions for other humans. If you can write a detailed creative brief, a clear specification document, or a well-structured memo, you already have the core skills.
+
+What you develop with experience: understanding the specific blind spots of each model. Knowing when a response is too generic because context is missing, versus when it's incorrect because the model hallucinated. Building intuition for which technique to apply to which type of problem.
+
+That comes with practice. The only way to get better at prompting is to prompt — and pay attention to what works.
+
+## Our verdict
+
+Prompt engineering is **the highest-return AI skill you can develop in 2026**. It works across every tool — ChatGPT, Claude, Perplexity, Midjourney, and everything else you use daily. It doesn't become obsolete between model versions. And it's accessible to everyone, starting today.
+
+Begin with the 5 foundational elements. Try Chain-of-Thought on your next complex analysis. Add a role and a format to every writing prompt as a default habit. The improvement in results will be visible from the very first try.
+
+## AI Prompting FAQ
+
+### What is prompt engineering?
+
+Prompt engineering is the practice of crafting precise, effective instructions for AI models like ChatGPT, Claude, or Gemini. The goal is to get more useful, accurate, and contextually appropriate responses by structuring your inputs intelligently — including role, context, task, format, and constraints.
+
+### Do I need to be a developer to write good prompts?
+
+No. Prompting is fundamentally a communication skill. If you can write a clear creative brief, a precise specification, or a well-structured memo, you already have the core abilities. Non-technical professionals who are used to writing precise instructions for other humans often pick this up faster than engineers.
+
+### Do prompting techniques work the same way across all AI models?
+
+The core principles (context, role, format, constraints) work across all major models. But each model has different strengths: Claude excels at long-form nuanced writing, DeepSeek R1 at visible reasoning, Perplexity at sourced research. Adapting your technique to the tool you're using makes a measurable difference.
+
+### What's the difference between a prompt and a system prompt?
+
+A prompt is your instruction for a specific response. A system prompt is a foundational instruction that defines the AI's behavior for an entire session or application — the role, style, and permanent rules. System prompts are used primarily via the API or in advanced interfaces like ChatGPT's custom GPTs.
+
+### How long does it take to get good at prompting?
+
+You'll see a measurable improvement from your first attempt if you apply the 5 foundational elements. With a week of regular practice, most techniques become second nature. Advanced mastery — knowing exactly which approach to take for each problem type — develops over weeks to months depending on how intensively you use these tools.
+      `,
+      related: [
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "12" },
+        { slug: "deepseek-review-2026", title: "DeepSeek Review 2026: The Best Free ChatGPT Alternative?", tag: "Chatbots", timeMin: "14" },
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI Review 2026: Comet Browser & Model Council", tag: "Chatbots", timeMin: "15" },
+      ],
+    },
+  },
+
 // ─── OpenAI 122 milliards : levée de fonds record 2026 ───────────────────────
   {
-    slug: "openai-levee-fonds-852-milliards-2026",
+    slug: "openai-fonds-852-milliards-2026",
     tag: "Chatbots",
     date: { fr: "1er avril 2026", en: "April 1, 2026" },
     timeMin: "13",
@@ -2468,397 +3373,439 @@ Possibly, under the codename "Spud," but aimed at enterprise productivity rather
   {
     slug: "grok-review-2026",
     tag: "Chatbots",
-    date: { fr: "27 mars 2026", en: "March 27, 2026" },
-    timeMin: "13",
+    date: { fr: "1er avril 2026", en: "April 1, 2026" },
+    timeMin: "14",
     featured: true,
     affiliate: {
-      url: "https://x.com/i/grok",
+      url: "https://grok.com",
       toolName: "Grok",
       label: {
-        fr: "Gratuit sur X · SuperGrok à 30$/mois · API à partir de 0,20$/million de tokens",
-        en: "Free on X · SuperGrok at $30/month · API from $0.20/million tokens",
+        fr: "Gratuit sur grok.com · SuperGrok à 30$/mois · API à partir de 2$/million de tokens",
+        en: "Free on grok.com · SuperGrok at $30/month · API from $2/million tokens",
       },
     },
     fr: {
-      title: "Grok : avis 2026, l'IA d'Elon Musk vaut-elle vraiment le coup ?",
-      desc: "Grok 3 et 4 promettent données temps réel, 2 millions de tokens de contexte et une IA sans censure. On a tout testé pendant 3 semaines. Verdict honnête, controverse incluse.",
-      metaTitle: "Grok : avis complet 2026 — performances, prix et controverses | Neuriflux",
-      metaDesc: "Notre test complet de Grok en 2026 : modèles Grok 3 et 4, performances vs ChatGPT et Claude, tarifs SuperGrok, données temps réel X — et les vraies controverses. Verdict sans filtre.",
+      title: "Grok : avis complet 2026 — 4 agents en simultané, SpaceX, et Grok 5 en approche",
+      desc: "SpaceX a racheté xAI. Grok 4.20 Beta introduit 4 agents IA en parallèle. Grok 5 arrive. On a tout testé pendant 3 semaines — données temps réel, controverses, et verdict honnête.",
+      metaTitle: "Grok : avis complet 2026 — Grok 4.20, 4 agents, SpaceX, Grok 5 | Neuriflux",
+      metaDesc: "Notre test complet de Grok en avril 2026. Grok 4.20 Beta avec 4 agents en parallèle, acquisition SpaceX, Grok 5 prévu en Q2. Données temps réel X, controverses, tarifs — verdict sans filtre.",
       content: `
-## C'est quoi Grok ?
+## Ce qui a changé depuis notre dernier avis
 
-Grok est l'assistant IA développé par **xAI**, la société d'intelligence artificielle fondée par Elon Musk en 2023. Là où DeepSeek a secoué le marché par son coût d'entraînement dérisoire et où ChatGPT domine par son écosystème, Grok joue une carte unique : **l'accès en temps réel aux données de X (Twitter)**, une personnalité délibérément moins filtrée que ses concurrents, et un contexte de 2 millions de tokens qui n'a pas d'équivalent sur le marché grand public.
+Si vous avez lu un avis sur Grok daté de 2025, il manque des informations importantes. En quelques mois, xAI a traversé des changements majeurs qui changent la nature même du produit.
 
-En 2026, Grok a évolué bien au-delà du simple chatbot intégré à X. Avec les modèles **Grok 3**, **Grok 4** et **Grok 4 Heavy**, xAI positionne son assistant comme un concurrent direct de GPT-5 et Claude Opus — avec des benchmarks impressionnants sur les maths et le code, et une API deux à quatre fois moins chère que la concurrence américaine.
+**Le 2 février 2026, SpaceX a racheté xAI** dans ce qui est décrit comme la plus grande fusion de l'histoire, valorisant l'entité combinée à **1 250 milliards de dollars**. Contexte : xAI brûlait environ 1 milliard de dollars par mois. SpaceX génère 8 milliards de profits annuels. Le rachat était une nécessité autant qu'un choix stratégique.
 
-Mais Grok traîne aussi un bagage polémique qu'on ne peut pas ignorer dans un avis honnête : la controverse sur la génération d'images en janvier 2026, les questions sur la modération, et un écosystème encore jeune qui montre ses limites sur certains cas d'usage professionnels. On a tout testé. Voici le verdict.
+**Le 17 février 2026, Grok 4.20 Beta est sorti** avec une innovation architecturale majeure : 4 agents IA spécialisés qui travaillent en parallèle sur chaque requête complexe avant de synthétiser une réponse unifiée. Ce n'est pas du marketing — c'est un changement fondamental dans la façon dont le modèle raisonne.
 
-## Les modèles Grok en 2026
+**Grok 5 est en cours de training** sur le supercluster Colossus 2 (1,5GW depuis avril 2026) avec 6 trillions de paramètres. Musk vise Q2 2026. La fenêtre compétitive est serrée face à GPT-5.4 et [Claude Opus 4.6](/fr/blog/chatgpt-vs-claude-vs-gemini-2026).
 
-Grok n'est plus un modèle unique — c'est une gamme, chacun conçu pour un usage différent :
+## Les modèles Grok en avril 2026
 
-| Modèle | Spécialité | Contexte | Accès |
+| Modèle | Architecture | Contexte | Accès |
 |---|---|---|---|
-| **Grok 3 Mini** | Usage basique, questions simples | 128K tokens | Gratuit (limité) |
-| **Grok 3** | Usage général, recherche temps réel | 128K tokens | X Premium |
-| **Grok 4** | Raisonnement, code, analyse | 2M tokens | SuperGrok |
-| **Grok 4 Fast** | Vitesse maximale, temps réel | 2M tokens | SuperGrok |
-| **Grok 4 Heavy** | Tâches complexes, recherche avancée | 2M tokens | SuperGrok Heavy |
+| **Grok 3 Mini** | Standard | 128K tokens | Gratuit (limité) |
+| **Grok 4** | MoE flagship | 2M tokens | SuperGrok |
+| **Grok 4.1** | -65% hallucinations vs Grok 4 | 2M tokens | SuperGrok |
+| **Grok 4.20 Beta** | 4 agents en parallèle, 500B params | 2M tokens | SuperGrok |
+| **Grok 4 Heavy** | 16 agents, tâches complexes | 2M tokens | SuperGrok Heavy |
+| **Grok 5** | 6T paramètres, AGI-candidate | TBD | Q2 2026 (attendu) |
 
-L'atout différenciant de tous ces modèles : **l'intégration native aux données X en temps réel**. Là où ChatGPT et Claude s'arrêtent à leur date d'entraînement pour les événements récents, Grok peut puiser directement dans les tweets, les tendances et les conversations en cours sur la plateforme.
+L'architecture **Mixture of Experts** de Grok est comparable à DeepSeek — beaucoup de paramètres totaux, peu d'actifs par requête. Ce qui distingue Grok 4.20 : les 4 agents (Grok le coordinateur, Harper pour la recherche, Benjamin pour la logique/code, Lucas pour le divergent) ne sont pas des modèles séparés — ce sont des "têtes" spécialisées sur le même backbone partagé, ce qui explique la latence raisonnable malgré la complexité.
 
 ## Tableau comparatif : Grok vs ChatGPT vs Claude vs Perplexity
 
-| Critère | Grok 4 | ChatGPT Plus | Claude Pro | Perplexity Pro |
+| Critère | Grok 4.20 | ChatGPT Plus | Claude Pro | Perplexity Pro |
 |---|---|---|---|---|
-| Données temps réel | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Données temps réel X | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | Raisonnement & maths | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
 | Code & débugging | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐ |
 | Rédaction créative | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
 | Fenêtre de contexte | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
-| Génération d'images | ✅ Aurora | ✅ DALL-E | ❌ | ❌ |
+| Taux d'hallucination | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Génération images/vidéo | ✅ Aurora | ✅ DALL-E | ❌ | ❌ |
 | Sources citées | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ |
 | Prix mensuel | 30$/mois | 20$/mois | 20$/mois | 20$/mois |
-| Version gratuite | ✅ Limitée | ✅ Limitée | ✅ Limitée | ✅ Limitée |
 
 ## Ce qu'on a testé pendant 3 semaines
 
-### Données temps réel — la vraie valeur ajoutée de Grok
+### Grok 4.20 : les 4 agents en pratique
 
-C'est là que Grok n'a pas de concurrent direct. Posez-lui une question sur un événement qui s'est passé il y a 3 heures sur X — il sait. Demandez-lui d'analyser ce que les développeurs disent en ce moment d'un framework spécifique — il le fait. Pour la veille d'actualité, le suivi de tendances ou la compréhension du sentiment autour d'un sujet, Grok est dans une catégorie à part.
+Le changement le plus notable de Grok 4.20 par rapport à ses prédécesseurs n'est pas la puissance brute — c'est la **fiabilité**. Grok 4.1 avait déjà réduit le taux d'hallucinations de 12% à 4,2% (une baisse de 65%). Grok 4.20 pousse ça encore plus loin grâce au système de vérification croisée entre agents.
 
-Le mode **DeepSearch** pousse ça encore plus loin : il synthétise des informations depuis plusieurs sources web et X simultanément, produit un rapport cité en 2 à 5 minutes. Pas aussi propre que Perplexity pour la recherche académique, mais plus ancré dans la réalité des conversations tech et des nouvelles de dernière minute.
+Sur des requêtes complexes — analyse juridique, raisonnement mathématique multi-étapes, débogage de code avec contexte large — la différence est perceptible. Là où Grok 4.1 produisait parfois des réponses confiantes mais incorrectes, 4.20 tend à signaler l'incertitude ou à corriger sa propre logique via le processus de débat interne.
 
-### Raisonnement et maths — du sérieux
+Le score de 78% de non-hallucination sur les tests Artificial Analysis Omniscience en fait **le modèle le plus fiable factuellemment** parmi ceux testés — devant [Claude Opus](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) et GPT-5.4 sur ce benchmark spécifique.
 
-Sur AIME 2025, Grok 4 atteint **90,6%** — un score qui le place au niveau des meilleurs modèles du marché. Sur LiveCodeBench pour le code, il score **79%**, compétitif avec GPT-5 et Claude Opus sur ces benchmarks.
+### Données temps réel X — toujours l'avantage principal
 
-Le mode **Think** est l'équivalent du Chain-of-Thought visible de DeepSeek R1 : le modèle affiche son raisonnement étape par étape avant de donner une réponse. Sur des problèmes de logique complexe ou des problèmes mathématiques multi-étapes, la différence de qualité entre le mode Think et le mode normal est réelle et mesurable.
+C'est là que Grok n'a pas de concurrent direct. Posez-lui une question sur un événement survenu il y a 3 heures sur X — il sait. Le mode **DeepSearch** synthétise des informations depuis plusieurs sources web et X simultanément, avec un rapport cité en 2 à 5 minutes.
 
-### Code — compétent mais pas le meilleur
+[Perplexity](/fr/blog/perplexity-ai-review-2026) est comparable sur la recherche web générale, mais il ne peut pas accéder aux tendances et conversations X en direct. Pour la veille d'actualité tech, l'analyse de sentiment autour d'un produit, ou le suivi de controverses en temps réel, Grok est dans une catégorie à part.
 
-Sur des tâches de code réelles — refactoring, débogage, génération de composants — Grok 4 est compétent. Pas au niveau de Claude Code qui domine les benchmarks SWE avec 80%+, mais largement utilisable pour des tâches dev quotidiennes. Pour les équipes qui cherchent un assistant code intégré à leur workflow X et qui veulent aussi accéder à des données en temps réel, c'est un bon compromis.
+### Raisonnement et maths — de vrais benchmarks
+
+Grok 4 Heavy a atteint **100% sur AIME 2025** et **88,4-88,9% sur GPQA Diamond** — des performances qui surpassent [Claude Opus 4.5 et GPT-4o](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) sur ces benchmarks selon les données de lancement xAI. Grok 4 Heavy a également été le premier modèle à obtenir un score quasi-passing sur Humanity's Last Exam, considéré comme le benchmark multidisciplinaire le plus difficile jamais construit.
+
+Le mode **Think** affiche le raisonnement étape par étape — équivalent du Chain-of-Thought visible de [DeepSeek R1](/fr/blog/deepseek-review-2026). Sur des problèmes de logique complexe ou des maths multi-étapes, la différence de qualité entre Think et le mode normal est réelle.
 
 ### La fenêtre de 2 millions de tokens — un vrai avantage
 
-Deux millions de tokens, c'est environ 1 500 000 mots — soit plusieurs livres, ou une base de code entière avec sa documentation. Aucun autre modèle grand public n'offre cette fenêtre à ce prix. Pour analyser de longs rapports financiers, des dépôts GitHub complexes ou des conversations multi-sources, c'est un avantage concret qui change vraiment la façon de travailler.
+2 millions de tokens, c'est environ 1 500 000 mots — plusieurs livres, ou une base de code entière avec documentation. Pour analyser de longs rapports financiers, des dépôts GitHub complexes, ou des datasets en entier sans perdre le contexte, c'est un avantage concret. Si vous utilisez des [outils d'automatisation](/fr/comparatifs/n8n-vs-make-vs-zapier-2026) comme n8n pour traiter des volumes importants, cette fenêtre change vraiment ce qui est faisable.
 
-### Génération d'images — Aurora est impressionnant, mais controversé
+### Grok Imagine et vidéo — une progression rapide
 
-Le moteur **Aurora** génère des images photoréalistes en moins de 5 secondes, avec une qualité comparable à Midjourney v6 sur des prompts standards. C'est l'une des meilleures intégrations de génération d'images dans un assistant IA grand public.
+**Aurora** génère des images en moins de 5 secondes avec une qualité comparable à Midjourney v6. Mais c'est la progression sur la vidéo qui est frappante : depuis le lancement de Grok Imagine en juillet 2025, xAI a sorti Imagine 1.0 (1er février 2026), la feature "Extend from Frame" pour chaîner les clips (2 mars), et plusieurs améliorations qualitatives jusqu'en avril 2026.
 
-Mais on ne peut pas ne pas mentionner la controverse de janvier 2026 : Grok a été exploité pour générer massivement des images sexualisées non consenties, conduisant à des enquêtes dans 7 pays. xAI a depuis renforcé sa modération et réservé la génération d'images aux abonnés payants. Le problème a été traité — mais l'incident illustre les risques d'une approche moins restrictive sur la modération de contenu.
+L'API Grok Imagine est disponible à 0,05$/seconde pour la vidéo 720p (soit environ 0,50$ pour un clip de 10 secondes) — compétitif face à RunwayML ou Kling.
 
-## Les tarifs de Grok en 2026
+Un caveat : la qualité vidéo se dégrade visiblement après plusieurs extensions chaînées. xAI n'a pas encore publié de calendrier pour un correctif.
+
+## Les tarifs de Grok en avril 2026
 
 | Plan | Prix | Ce qu'il inclut |
 |---|---|---|
-| **Gratuit** | Gratuit | Grok 3 Mini, 10 requêtes/2h, pas de génération d'images |
+| **Gratuit** | Gratuit | Grok 3 Mini, 10 requêtes/2h, pas d'images |
 | **X Premium** | 8$/mois | Grok 3, ~100 requêtes/jour, images limitées |
-| **X Premium+** | 40$/mois | Grok 3 complet, accès étendu, sans pub sur X |
-| **SuperGrok** | 30$/mois | Grok 4, illimité, images illimitées, voice, 2M contexte |
-| **SuperGrok Heavy** | 300$/mois | Grok 4 Heavy, API prioritaire, usage enterprise |
-| **API (Grok Fast)** | 0,20$/M tokens | Temps réel, latence ultra-faible |
-| **API (Grok 4)** | 3$/M tokens | Raisonnement avancé, 2M contexte |
+| **X Premium+** | 40$/mois | Grok 3 complet, sans pub sur X |
+| **SuperGrok** | 30$/mois | Grok 4.20, illimité, images/vidéo, voice, 2M contexte |
+| **SuperGrok Heavy** | 300$/mois | Grok 4 Heavy (16 agents), API prioritaire |
+| **API Grok 4.20** | 2$/M tokens input · 6$/M output | Multi-agent, 2M contexte |
+| **API Grok Fast** | 0,20$/M tokens | Temps réel, latence ultra-faible |
 
-**Ce qui surprend** : le plan SuperGrok à 30$/mois est **plus cher** que ChatGPT Plus ou Claude Pro à 20$/mois. Pour justifier ce différentiel, il faut vraiment avoir besoin des données temps réel X, de la fenêtre 2M tokens, ou de la génération d'images illimitée.
+**Ce qui surprend** : le plan SuperGrok à 30$/mois reste plus cher que [ChatGPT Plus ou Claude Pro](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) à 20$/mois. L'API Grok 4.20 Multi-Agent sur OpenRouter est à 2$/M input, compétitive pour ce niveau de capacités.
 
-**L'API en revanche est très compétitive** : 0,20$/M tokens pour les modèles rapides, c'est parmi les moins chers du marché pour ce niveau de performance. Pour les développeurs qui veulent intégrer de l'accès temps réel à X dans leurs applications, le rapport qualité/prix est solide.
+## La grande nouvelle : SpaceX rachète xAI
+
+L'acquisition a été finalisée le 2 février 2026. Musk a justifié publiquement par les "data centers orbitaux" — mais la réalité financière est plus simple : xAI avait besoin des liquidités de SpaceX pour continuer à scaler.
+
+Ce que ça change pour les utilisateurs :
+- **Stabilité financière** : plus de risque d'interruption de service pour raisons de trésorerie
+- **Infrastructure** : accès aux capacités d'énergie et de data center de SpaceX pour entraîner Grok 5
+- **Pentagon** : le DoD a intégré Grok dans ses réseaux classifiés début 2026 (GenAI.mil, IL5 clearance), un signal de confiance institutionnel fort
+- **Gouvernance** : des questions légitimes sur la concentration de pouvoir — Musk contrôle X (données), SpaceX (infrastructure), xAI (modèles), et DOGE (gouvernement US)
+
+## La controverse qu'on ne peut pas ignorer
+
+En décembre 2025 et janvier 2026, des chercheurs ont documenté que Grok avait été utilisé pour générer des images sexualisées non consenties, dont des deepfakes. Le New York Times et le Center for Countering Digital Hate ont tous deux publié des analyses détaillées. 7 pays ont ouvert des enquêtes sur xAI.
+
+Depuis, xAI a :
+- Réservé la génération d'images aux abonnés payants uniquement
+- Renforcé les filtres de modération d'Aurora
+- Publié de nouvelles politiques d'utilisation acceptable
+
+Wikipedia documente également que Grok a produit des réponses incluant des théories du complot, des antisémitismes, et des éloges d'Hitler — et que ses mises à jour depuis 2023 l'ont "déplacé politiquement vers la droite pour fournir des réponses conservatrices". Ces faits sont documentés et méritent d'être connus.
+
+L'approche historiquement moins restrictive de Grok est un avantage pour certains (réponses plus directes, moins de refus arbitraires) et un problème pour d'autres (contextes enterprise sensibles, modération insuffisante).
 
 ## Grok vs ChatGPT : le comparatif honnête
 
 **Grok gagne clairement sur :**
-- **Données temps réel X** — aucun concurrent ne peut accéder aux tendances et tweets en direct comme Grok
-- **Fenêtre de contexte** — 2M tokens vs 128K pour ChatGPT Plus, c'est un écart énorme pour les documents longs
-- **Prix API** — 0,20$/M tokens vs ~7,50$ pour GPT-5, un avantage massif pour les builders
-- **Génération d'images rapide** — Aurora est plus rapide que DALL-E 3 sur la plupart des prompts
-- **Personnalité** — Grok est délibérément plus direct et moins "corporate" dans ses réponses
+- **Données temps réel X** — aucun concurrent n'a cet accès natif au flux live X
+- **Fenêtre de contexte** — 2M tokens vs 128K pour [ChatGPT Plus](/fr/blog/chatgpt-vs-claude-vs-gemini-2026), écart énorme pour les documents longs
+- **Taux d'hallucination** — 78% de non-hallucination sur les benchmarks Omniscience, meilleur du panel
+- **Multi-agent natif** — 4 agents en parallèle intégrés à l'architecture, pas une surcouche
+- **API compétitive** — 0,20$/M tokens pour les modèles rapides, parmi les moins chers du marché
 
-**ChatGPT (ou Claude) gagne clairement sur :**
+**[ChatGPT ou Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) gagnent clairement sur :**
 - **Qualité rédactionnelle** — Claude reste la référence pour les textes nuancés et créatifs
-- **Écosystème** — plugins, mémoire persistante, GPT Store, intégrations enterprise
-- **Stabilité et fiabilité** — Grok est plus jeune et montre encore des bugs et des incohérences
-- **Code avancé** — Claude Code domine largement les benchmarks SWE, Grok est en retrait
-- **Confiance des entreprises** — la controverse images de janvier 2026 a refroidi beaucoup d'équipes
-
-## La controverse qu'on ne peut pas ignorer
-
-En janvier 2026, des chercheurs ont documenté que Grok avait été utilisé pour générer plus de **1,8 million d'images sexualisées** de femmes réelles, dont des deepfakes non consentis. Le New York Times et le Center for Countering Digital Hate ont tous deux publié des analyses détaillées. 7 pays ont ouvert des enquêtes sur xAI.
-
-xAI a depuis :
-- Réservé la génération d'images aux abonnés payants uniquement
-- Renforcé ses filtres de modération sur Aurora
-- Publié de nouvelles politiques d'utilisation acceptable
-
-L'incident est traité — mais il illustre une réalité que les utilisateurs doivent connaître : Grok a historiquement eu une approche moins restrictive que OpenAI ou Anthropic sur la modération de contenu. C'est un avantage pour certains cas d'usage (réponses plus directes, moins de refus arbitraires), et un risque pour d'autres.
+- **Écosystème** — mémoire persistante, plugins, intégrations enterprise matures
+- **Confiance enterprise** — les controverses de modération ont refroidi beaucoup d'équipes
+- **Code avancé** — [Claude Code](/fr/blog/vibe-coding-tools-2026) domine les benchmarks SWE à 80%+
+- **Stabilité** — Grok est plus jeune, les bugs et incohérences sont plus fréquents
 
 ## Grok : avantages et inconvénients
 
 **✅ Points forts**
 
-- **Données temps réel X** — le seul assistant grand public avec un accès natif au flux X en direct
-- **Fenêtre de 2 millions de tokens** — traite des documents entiers sans perte de contexte, unique à ce prix
-- **API ultra-compétitive** — 0,20$/M tokens pour les modèles rapides, parmi les moins chers du marché
-- **Mode Think** — raisonnement visible étape par étape, comparable à DeepSeek R1
-- **Aurora** — génération d'images photoréaliste rapide incluse dans SuperGrok
-- **Personnalité** — réponses plus directes et moins lisses que les concurrents
+- **Données temps réel X** — l'unique assistant avec accès natif au flux X en direct
+- **4 agents natifs (Grok 4.20)** — réduction de 65% des hallucinations sur les tâches complexes
+- **2 millions de tokens** — traite des documents entiers, unique à ce prix
+- **API fast à 0,20$/M** — parmi les moins chères du marché pour des modèles frontier
+- **Taux d'hallucination** — 78% sur Omniscience, meilleur score parmi les modèles comparés
+- **Aurora + vidéo** — génération d'images et vidéos rapide, API à 0,05$/seconde
+- **Pentagon et government** — intégration IL5, signal de confiance institutionnel
 
 **❌ Points faibles**
 
-- **Prix SuperGrok élevé** — 30$/mois vs 20$ pour ChatGPT ou Claude, difficile à justifier sans usage spécifique
-- **Controverse modération** — l'incident images de janvier 2026 a entamé la confiance des équipes enterprise
-- **Code en retrait** — Claude Code et Cursor restent supérieurs sur les tâches de développement complexes
-- **Écosystème limité** — pas de mémoire persistante, peu d'intégrations natives hors X
-- **Instabilité occasionnelle** — plus jeune que ses concurrents, Grok montre encore des bugs et des répétitions
-- **Support minimal** — remboursements difficiles, SAV quasi-inexistant signalé par de nombreux utilisateurs
+- **SuperGrok à 30$/mois** — 50% plus cher que [ChatGPT ou Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) sans besoin X spécifique
+- **Controverses modération** — images non consenties, réponses biaisées documentées
+- **Code en retrait** — [Claude Code](/fr/blog/vibe-coding-tools-2026) et Cursor restent supérieurs sur SWE-bench
+- **Écosystème limité** — pas de mémoire persistante, peu d'intégrations natives
+- **Support minimal** — remboursements difficiles, SAV quasi-inexistant signalé
+- **Concentration de pouvoir** — Musk contrôle X, SpaceX, xAI et DOGE simultanément
 
 ## Pour qui est fait Grok en 2026 ?
 
 **Grok est fait pour vous si :**
-
-✅ Vous êtes actif sur X et voulez un assistant IA intégré à votre flux d'informations
-✅ Vous faites de la veille d'actualité, du suivi de tendances ou de l'analyse de sentiment en temps réel
-✅ Vous avez besoin d'analyser de très longs documents (rapports, bases de code, contrats) — 2M tokens
-✅ Vous construisez des applications qui ont besoin de données X en temps réel via l'API
-✅ Vous cherchez une API compétitive (0,20$/M tokens) pour des usages à volume élevé
+✅ Vous êtes actif sur X et voulez un assistant intégré à votre flux d'informations
+✅ Vous faites de la veille, du suivi de tendances, ou de l'analyse de sentiment en temps réel
+✅ Vous avez besoin d'analyser de très longs documents — 2M tokens sans équivalent
+✅ Vous construisez des applications qui nécessitent des données X en temps réel via API
+✅ Vous cherchez le meilleur taux de fiabilité factuelle — 78% sur Omniscience
 
 **Grok n'est pas fait pour vous si :**
+❌ Vous cherchez le meilleur assistant de rédaction créative — [Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) gagne sans discussion
+❌ Vous avez besoin d'un assistant code avancé — Claude Code ou [Cursor](/fr/blog/cursor-ai-review-2026) sont supérieurs
+❌ Vous gérez des données enterprise sensibles avec exigences de conformité strictes
+❌ Vous n'utilisez pas X — la proposition de valeur centrale disparaît sans ce contexte
 
-❌ Vous cherchez le meilleur assistant de rédaction créative — Claude gagne sans discussion
-❌ Vous avez besoin d'un assistant code avancé — Claude Code ou Cursor sont supérieurs
-❌ Vous gérez des données sensibles dans un contexte enterprise avec des exigences de conformité strictes
-❌ Vous n'utilisez pas X et n'avez pas besoin de données temps réel — la proposition de valeur centrale disparaît
-❌ Votre budget est serré — à 30$/mois, SuperGrok coûte 50% de plus que ChatGPT Plus
+## Grok 5 : ce qu'on sait
 
-## Notre verdict final sur Grok
+Grok 5 est en training sur Colossus 2 (1,5GW de puissance de calcul depuis avril 2026) avec une architecture de 6 trillions de paramètres. Musk estime à 10% la probabilité que Grok 5 atteigne l'AGI — ce qui est soit de la communication de crise soit une conviction sincère, difficile à trancher.
 
-Grok est un outil sérieux, pas un gadget. La fenêtre de 2 millions de tokens, l'accès temps réel à X et l'API compétitive sont de vraies différenciations — pas du marketing. Sur les benchmarks de raisonnement et de maths, Grok 4 tient tête aux meilleurs modèles du marché.
+Les marchés de prédiction Polymarket donnent 33% de chances que Grok 5 sorte avant le 30 juin 2026. La fenêtre compétitive est serrée : GPT-5.4 est déjà sorti en mars 2026, [Claude Opus 4.6](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) domine SWE-bench, et Gemini 3.1 Pro tient la tête sur plusieurs benchmarks de raisonnement.
 
-Mais Grok paye encore le prix de sa jeunesse et de ses controverses. La confiance enterprise a pris un coup en janvier 2026, l'écosystème est encore limité, et le tarif SuperGrok est difficile à justifier face à Claude ou ChatGPT sauf si l'accès X temps réel est central à votre usage.
+## Notre verdict final
 
-**Pour les power users de X, les journalistes, les analystes de tendances et les builders API** : Grok est probablement votre meilleur choix en 2026.
+Grok est un outil sérieux, en progression rapide, avec des atouts réels. La fenêtre de 2 millions de tokens, l'accès temps réel à X, les 4 agents natifs de Grok 4.20, et le meilleur taux de fiabilité factuelle du panel — ce sont de vraies différenciations, pas du marketing.
 
-**Pour tout le reste** : ChatGPT ou Claude restent plus polyvalents et plus stables pour le même budget ou moins.
+Mais Grok paie encore le prix de sa jeunesse et de ses controverses. La confiance enterprise a été impactée. L'écosystème reste limité. Et à 30$/mois, SuperGrok est 50% plus cher que ses concurrents directs sans usage X spécifique.
 
-**Notre note : 7.5/10** — Techniquement impressionnant sur les données temps réel et le contexte long, mais encore trop jeune et trop cher pour détrôner les leaders sur les cas d'usage généralistes.
+**Pour les power users de X, journalistes, analystes de tendances et builders API** : Grok est probablement votre meilleur choix en 2026. Pour tout le reste, [ChatGPT ou Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) restent plus polyvalents et plus stables.
 
-## FAQ Grok
+**Notre note : 7.8/10** — Progression impressionnante avec Grok 4.20, mais encore trop cher et trop controversé pour détrôner les leaders sur les cas d'usage généralistes. Nota passée de 7,5 à 7,8 grâce à la réduction des hallucinations et l'architecture multi-agent.
+
+## FAQ Grok 2026
 
 ### Grok est-il vraiment gratuit ?
 
-Partiellement. La version gratuite de Grok sur X donne accès à Grok 3 Mini avec une limite de 10 requêtes toutes les 2 heures — suffisant pour tester, pas pour travailler. L'accès complet à Grok 3 nécessite X Premium (8$/mois), et les modèles Grok 4 avec les fonctionnalités avancées sont réservés au plan SuperGrok (30$/mois).
+Partiellement. La version gratuite sur grok.com donne accès à Grok 3 Mini avec 10 requêtes toutes les 2 heures. L'accès complet à Grok 4.20 avec le système multi-agent nécessite SuperGrok à 30$/mois. Grok 4 Heavy est réservé au plan SuperGrok Heavy à 300$/mois.
 
-### Grok est-il meilleur que ChatGPT ?
+### C'est quoi le système 4 agents de Grok 4.20 ?
 
-Ça dépend entièrement de l'usage. Pour les données temps réel, l'analyse de tendances X et les documents très longs (2M tokens), Grok gagne. Pour la rédaction créative, le code avancé, l'écosystème et la stabilité générale, ChatGPT ou Claude restent supérieurs. Les deux outils sont complémentaires plus que concurrents directs.
+Grok 4.20 fait tourner 4 agents spécialisés en parallèle sur chaque requête complexe : Grok (coordinateur), Harper (recherche), Benjamin (logique/code), Lucas (divergent/créatif). Ils débattent en interne avant de synthétiser une réponse unifiée. C'est natif à l'architecture, pas une surcouche externe — ce qui explique la latence raisonnable et la réduction de 65% des hallucinations sur les tâches multi-étapes.
+
+### SpaceX qui rachète xAI, ça change quoi ?
+
+Stabilité financière pour xAI (fini le burn rate de 1Md$/mois sans revenus suffisants), accès à l'infrastructure SpaceX pour Grok 5, et intégration institutionnelle accrue (Pentagon GenAI.mil). Pour les utilisateurs, ça change surtout la pérennité du produit et la crédibilité enterprise. Les questions sur la concentration de pouvoir — Musk contrôle X, SpaceX, xAI et DOGE — méritent attention.
 
 ### SuperGrok vaut-il le coup à 30$/mois ?
 
-Si votre activité repose sur X ou sur la veille en temps réel, oui. La fenêtre de 2 millions de tokens, la génération d'images illimitée et l'accès à Grok 4 justifient le prix pour les utilisateurs intensifs. Pour un usage généraliste sans besoin de données X, ChatGPT Plus ou Claude Pro offrent un meilleur rapport qualité/prix à 20$/mois.
+Si votre activité repose sur X ou la veille en temps réel, oui. La fenêtre de 2M tokens, le système 4 agents, et Aurora justifient le prix pour les utilisateurs intensifs. Pour un usage généraliste sans besoin X, [ChatGPT Plus ou Claude Pro](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) offrent un meilleur rapport qualité/prix à 20$/mois.
 
-### Grok est-il sûr après la controverse de janvier 2026 ?
+### Quand sort Grok 5 ?
 
-xAI a renforcé la modération d'Aurora suite à l'incident et réservé la génération d'images aux abonnés payants. Pour un usage texte standard, le risque est limité. Pour des contextes enterprise sensibles, la prudence reste de mise — l'incident a montré une approche historiquement moins restrictive que OpenAI ou Anthropic sur la modération de contenu.
-
-### Quelle est la différence entre Grok 4 et Grok 4 Heavy ?
-
-Grok 4 est le modèle standard de SuperGrok — puissant, rapide, 2M tokens. Grok 4 Heavy est le modèle flagship réservé au plan SuperGrok Heavy (300$/mois) : il est optimisé pour les tâches de raisonnement les plus complexes, avec une priorité API maximale et un contexte encore plus étendu. Pour 99% des usages, Grok 4 suffit largement.
+Polymarket donne 33% de chances de sortie avant fin juin 2026. L'infrastructure est prête (Colossus 2 à 1,5GW). L'architecture vise 6 trillions de paramètres, soit presque le double de Grok 4. Musk parle d'une probabilité de 10% d'atteindre l'AGI — à prendre avec les précautions d'usage sur les déclarations d'Elon Musk sur les délais.
       `,
       related: [
-        { slug: "deepseek-review-2026", title: "DeepSeek : avis 2026, le meilleur ChatGPT gratuit venu de Chine ?", tag: "Chatbots", timeMin: "12" },
-        { slug: "perplexity-ai-review-2026", title: "Perplexity AI : avis 2026, est-il meilleur que ChatGPT et Google ?", tag: "Chatbots", timeMin: "13" },
+        { slug: "deepseek-review-2026", title: "DeepSeek : avis 2026, le meilleur ChatGPT gratuit venu de Chine ?", tag: "Chatbots", timeMin: "14" },
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI : avis 2026, Comet Browser et Model Council", tag: "Chatbots", timeMin: "15" },
         { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "12" },
+        { slug: "sora-fermeture-openai-2026", title: "Sora est mort : OpenAI abandonne son générateur vidéo IA", tag: "Chatbots", timeMin: "12" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "12" },
+        { slug: "claude-mythos-next-anthropic-2026", title: "Claude Mythos : le prochain modèle Anthropic leaké", tag: "Chatbots", timeMin: "12" },
       ],
     },
     en: {
-      title: "Grok Review 2026: Is Elon Musk's AI Actually Worth It?",
-      desc: "Grok 3 and 4 promise real-time X data, a 2 million token context window, and less filtered AI. We tested everything for 3 weeks. Honest verdict, controversy included.",
-      metaTitle: "Grok Review 2026: Performance, Pricing & Controversy | Neuriflux",
-      metaDesc: "Our complete Grok review for 2026: Grok 3 and 4 tested, benchmarks vs ChatGPT and Claude, SuperGrok pricing breakdown, real-time X data — and the January 2026 controversy answered honestly.",
+      title: "Grok Review 2026: 4 Agents Live, SpaceX Acquisition, and Grok 5 Incoming",
+      desc: "SpaceX acquired xAI. Grok 4.20 Beta runs 4 AI agents in parallel. Grok 5 is training. We tested everything for 3 weeks — real-time data, controversies, and honest verdict for April 2026.",
+      metaTitle: "Grok Review 2026: Grok 4.20 Multi-Agent, SpaceX, Grok 5 | Neuriflux",
+      metaDesc: "Full Grok review for April 2026. Grok 4.20 Beta with 4 parallel agents, SpaceX acquisition, Grok 5 expected Q2. Real-time X data, controversies, pricing — unfiltered verdict.",
       content: `
-## What is Grok?
+## What changed since our last review
 
-Grok is the AI assistant developed by **xAI**, the artificial intelligence company founded by Elon Musk in 2023. Where DeepSeek shook the market with its absurdly low training cost and ChatGPT dominates through its ecosystem, Grok plays a unique card: **real-time access to X (Twitter) data**, a deliberately less filtered personality than its competitors, and a 2 million token context window that has no equivalent in the consumer AI market.
+If you read a Grok review from 2025, you're missing crucial context. In a few months, xAI has undergone structural changes that fundamentally alter what the product is.
 
-In 2026, Grok has evolved well beyond a simple chatbot embedded in X. With the **Grok 3**, **Grok 4**, and **Grok 4 Heavy** models, xAI is positioning its assistant as a direct competitor to GPT-5 and Claude Opus — with impressive benchmarks on math and code, and an API that's two to four times cheaper than American competition.
+**On February 2, 2026, SpaceX acquired xAI** in what is described as the largest merger in history, valuing the combined entity at **$1.25 trillion**. Context: xAI was burning approximately $1 billion per month. SpaceX generates $8 billion in annual profits. The acquisition was as much necessity as strategy.
 
-But Grok also carries some controversial baggage that honest reviewers can't ignore: the image generation controversy in January 2026, questions about moderation, and a still-young ecosystem showing its limits on certain professional use cases. We tested everything. Here's the verdict.
+**On February 17, 2026, Grok 4.20 Beta launched** with a significant architectural innovation: 4 specialized AI agents working in parallel on every complex query before synthesizing a unified response. This isn't marketing — it's a fundamental change in how the model reasons.
 
-## Grok's model lineup in 2026
+**Grok 5 is currently training** on the Colossus 2 supercluster (1.5GW since April 2026) with a 6-trillion-parameter architecture. Musk targets Q2 2026. The competitive window is tight against GPT-5.4 and [Claude Opus 4.6](/en/blog/chatgpt-vs-claude-vs-gemini-2026).
 
-Grok is no longer a single model — it's a full lineup, each built for a different purpose:
+## Grok model lineup in April 2026
 
-| Model | Specialty | Context | Access |
+| Model | Architecture | Context | Access |
 |---|---|---|---|
-| **Grok 3 Mini** | Basic use, simple questions | 128K tokens | Free (limited) |
-| **Grok 3** | General use, real-time search | 128K tokens | X Premium |
-| **Grok 4** | Reasoning, code, analysis | 2M tokens | SuperGrok |
-| **Grok 4 Fast** | Maximum speed, real-time | 2M tokens | SuperGrok |
-| **Grok 4 Heavy** | Complex tasks, advanced research | 2M tokens | SuperGrok Heavy |
+| **Grok 3 Mini** | Standard | 128K tokens | Free (limited) |
+| **Grok 4** | MoE flagship | 2M tokens | SuperGrok |
+| **Grok 4.1** | -65% hallucinations vs Grok 4 | 2M tokens | SuperGrok |
+| **Grok 4.20 Beta** | 4 parallel agents, 500B params | 2M tokens | SuperGrok |
+| **Grok 4 Heavy** | 16 agents, complex tasks | 2M tokens | SuperGrok Heavy |
+| **Grok 5** | 6T parameters, AGI-candidate | TBD | Q2 2026 (expected) |
 
-The differentiating feature across all these models: **native integration with real-time X data**. Where ChatGPT and Claude stop at their training cutoff for recent events, Grok can pull directly from tweets, trends, and live conversations happening on the platform right now.
+The **Mixture of Experts** architecture underlying Grok is comparable to [DeepSeek](/en/blog/deepseek-review-2026) — many total parameters, few active per query. What distinguishes Grok 4.20: the 4 agents (Grok as coordinator, Harper for research, Benjamin for logic/code, Lucas for divergent thinking) aren't separate models — they're specialized "heads" on the same shared backbone, which explains the reasonable latency despite the complexity.
 
 ## Comparison table: Grok vs ChatGPT vs Claude vs Perplexity
 
-| Criteria | Grok 4 | ChatGPT Plus | Claude Pro | Perplexity Pro |
+| Criteria | Grok 4.20 | ChatGPT Plus | Claude Pro | Perplexity Pro |
 |---|---|---|---|---|
-| Real-time data | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Real-time X data | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | Reasoning & math | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
 | Code & debugging | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐ |
 | Creative writing | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
 | Context window | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
-| Image generation | ✅ Aurora | ✅ DALL-E | ❌ | ❌ |
+| Hallucination rate | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Image/video generation | ✅ Aurora | ✅ DALL-E | ❌ | ❌ |
 | Cited sources | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ |
 | Monthly price | $30/month | $20/month | $20/month | $20/month |
-| Free plan | ✅ Limited | ✅ Limited | ✅ Limited | ✅ Limited |
 
 ## What we tested over 3 weeks
 
-### Real-time X data — Grok's genuine differentiator
+### Grok 4.20: the 4-agent system in practice
 
-This is where Grok has no direct competitor. Ask it about something that happened on X three hours ago — it knows. Ask it to analyze what developers are currently saying about a specific framework — it does it. For news monitoring, trend tracking, or understanding sentiment around a topic, Grok is in a category of its own.
+The most notable change in Grok 4.20 isn't raw power — it's **reliability**. Grok 4.1 had already reduced hallucination rates from 12% to 4.2% (a 65% reduction). Grok 4.20 pushes this further through cross-verification between agents.
 
-**DeepSearch mode** pushes this further: it synthesizes information from multiple web sources and X simultaneously, producing a cited report in 2 to 5 minutes. Not as clean as Perplexity for academic research, but more grounded in the reality of live tech conversations and breaking news.
+On complex queries — legal analysis, multi-step mathematical reasoning, debugging with large context — the difference is perceptible. Where Grok 4.1 sometimes produced confident but incorrect responses, 4.20 tends to flag uncertainty or self-correct through the internal debate process.
 
-### Reasoning and math — genuinely impressive
+A 78% non-hallucination rate on Artificial Analysis Omniscience tests makes Grok 4.20 the **most factually reliable model** in our test panel — ahead of [Claude Opus](/en/blog/chatgpt-vs-claude-vs-gemini-2026) and GPT-5.4 on this specific benchmark.
 
-On AIME 2025, Grok 4 reaches **90.6%** — a score that places it among the top models on the market. On LiveCodeBench for coding, it scores **79%**, competitive with GPT-5 and Claude Opus on these benchmarks.
+### Real-time X data — still the primary differentiator
 
-**Think mode** is the equivalent of DeepSeek R1's visible Chain-of-Thought: the model displays its reasoning step by step before delivering an answer. On complex logic problems or multi-step math, the quality difference between Think mode and standard mode is real and measurable.
+This is where Grok has no direct competitor. Ask it about something that happened on X three hours ago — it knows. **DeepSearch mode** synthesizes information from multiple web sources and X simultaneously, producing a cited report in 2 to 5 minutes.
 
-### Code — capable but not the best
+[Perplexity](/en/blog/perplexity-ai-review-2026) is comparable on general web search, but can't access live X trends and conversations. For real-time tech news monitoring, sentiment analysis around a product, or tracking controversies as they develop, Grok is in a category of its own.
 
-On real coding tasks — refactoring, debugging, component generation — Grok 4 is competent. Not at the level of Claude Code which dominates SWE benchmarks with 80%+, but entirely workable for daily dev tasks. For teams wanting a code assistant integrated into their X workflow who also want real-time data access, it's a solid trade-off.
+### Reasoning and math — real benchmark numbers
 
-### The 2 million token context window — a real advantage
+Grok 4 Heavy hit **100% on AIME 2025** and **88.4-88.9% on GPQA Diamond** — performances that surpass [Claude Opus 4.5 and GPT-4o](/en/blog/chatgpt-vs-claude-vs-gemini-2026) on these benchmarks according to xAI's launch data. Grok 4 Heavy was also the first model to achieve a near-passing score on Humanity's Last Exam, widely regarded as the hardest multidisciplinary benchmark ever constructed.
 
-Two million tokens is approximately 1.5 million words — several books, or an entire codebase with its documentation. No other consumer-facing model offers this context window at this price. For analyzing long financial reports, complex GitHub repositories, or multi-source conversations, this is a concrete advantage that genuinely changes the way you work.
+**Think mode** displays step-by-step reasoning — equivalent to [DeepSeek R1](/en/blog/deepseek-review-2026)'s visible Chain-of-Thought. On complex logic problems or multi-step math, the quality difference between Think mode and standard mode is real and measurable.
 
-### Image generation — Aurora is impressive, but controversial
+### The 2-million token context window
 
-The **Aurora** engine generates photorealistic images in under 5 seconds, with quality comparable to Midjourney v6 on standard prompts. It's one of the best image generation integrations in a consumer AI assistant.
+2 million tokens is roughly 1.5 million words — several books, or an entire codebase with documentation. For analyzing long financial reports, complex GitHub repositories, or full datasets without losing context, this is a practical advantage. If you're building [automated workflows](/en/comparatifs/n8n-vs-make-vs-zapier-2026) with n8n or Make that process large volumes, this window changes what's actually achievable.
 
-But we can't skip the January 2026 controversy: Grok was exploited to generate over 1.8 million non-consensual sexualized images, leading to investigations in 7 countries. xAI has since tightened moderation and restricted image generation to paying subscribers only. The problem was addressed — but the incident illustrates the risks of a less restrictive approach to content moderation.
+### Grok Imagine and video — rapid iteration
 
-## Grok pricing in 2026
+**Aurora** generates images in under 5 seconds with quality comparable to Midjourney v6. But the video progression is striking: since Grok Imagine launched in July 2025, xAI shipped Imagine 1.0 (February 1, 2026), the "Extend from Frame" feature for chaining clips (March 2), and multiple quality improvements through April 2026.
+
+The Grok Imagine API is available at $0.05/second for 720p video (roughly $0.50 for a 10-second clip) — competitive against RunwayML or Kling.
+
+One caveat: video quality visibly degrades after multiple chained extensions. xAI hasn't published a fix timeline.
+
+## Grok pricing in April 2026
 
 | Plan | Price | What's included |
 |---|---|---|
-| **Free** | Free | Grok 3 Mini, 10 queries/2h, no image generation |
+| **Free** | Free | Grok 3 Mini, 10 queries/2h, no image gen |
 | **X Premium** | $8/month | Grok 3, ~100 queries/day, limited images |
-| **X Premium+** | $40/month | Full Grok 3, extended access, ad-free X |
-| **SuperGrok** | $30/month | Grok 4, unlimited, unlimited images, voice, 2M context |
-| **SuperGrok Heavy** | $300/month | Grok 4 Heavy, priority API, enterprise usage |
-| **API (Grok Fast)** | $0.20/M tokens | Real-time, ultra-low latency |
-| **API (Grok 4)** | $3/M tokens | Advanced reasoning, 2M context |
+| **X Premium+** | $40/month | Full Grok 3, ad-free X |
+| **SuperGrok** | $30/month | Grok 4.20, unlimited, images/video, voice, 2M context |
+| **SuperGrok Heavy** | $300/month | Grok 4 Heavy (16 agents), priority API |
+| **API Grok 4.20** | $2/M input · $6/M output | Multi-agent, 2M context |
+| **API Grok Fast** | $0.20/M tokens | Real-time, ultra-low latency |
 
-**The surprising part**: SuperGrok at $30/month is **more expensive** than ChatGPT Plus or Claude Pro at $20/month. To justify this premium, you genuinely need the real-time X data, the 2M token window, or unlimited image generation.
+**The surprise**: SuperGrok at $30/month is still more expensive than [ChatGPT Plus or Claude Pro](/en/blog/chatgpt-vs-claude-vs-gemini-2026) at $20/month. The Grok 4.20 Multi-Agent API on OpenRouter at $2/M input is competitive for this capability level.
 
-**The API is highly competitive though**: $0.20/M tokens for fast models is among the cheapest on the market for this performance tier. For developers building X data access into their applications, the value proposition is solid.
+## The big news: SpaceX acquires xAI
 
-## Grok vs ChatGPT: the honest comparison
-
-**Grok clearly wins on:**
-- **Real-time X data** — the only consumer assistant with native access to the live X feed
-- **Context window** — 2M tokens vs 128K for ChatGPT Plus, a massive gap for long documents
-- **API pricing** — $0.20/M tokens vs ~$7.50 for GPT-5, a decisive advantage for builders
-- **Image generation speed** — Aurora is faster than DALL-E 3 on most prompts
-- **Directness** — responses are more straightforward and less "corporate" than competitors
-
-**ChatGPT (or Claude) clearly wins on:**
-- **Writing quality** — Claude remains the reference for nuanced and creative text
-- **Ecosystem** — plugins, persistent memory, GPT Store, enterprise integrations
-- **Stability and reliability** — Grok is younger and still shows bugs and inconsistencies
-- **Advanced code** — Claude Code and Cursor remain superior on complex development tasks
-- **Enterprise trust** — the January 2026 image controversy has made many teams hesitant
+The acquisition closed February 2, 2026. The combined entity is valued at $1.25 trillion. For users, this changes:
+- **Financial stability**: no more risk of service disruption due to cash burn
+- **Infrastructure**: SpaceX's energy and data center capacity to train Grok 5
+- **Pentagon**: DoD integrated Grok into classified networks early 2026 (GenAI.mil, IL5 clearance for 3 million personnel) — a significant institutional trust signal
+- **Governance concerns**: Musk simultaneously controls X (data), SpaceX (infrastructure), xAI (models), and DOGE (US government access) — a concentration of power worth monitoring
 
 ## The controversy you can't ignore
 
-In January 2026, researchers documented that Grok had been used to generate over **1.8 million sexualized images** of real women, including non-consensual deepfakes. The New York Times and the Center for Countering Digital Hate both published detailed analyses. Seven countries opened investigations into xAI.
+In December 2025 and January 2026, researchers documented that Grok had been used to generate non-consensual sexualized images, including deepfakes. The New York Times and the Center for Countering Digital Hate both published detailed analyses. Seven countries opened investigations into xAI.
 
-xAI has since:
+Since then, xAI has:
 - Restricted image generation to paying subscribers only
 - Strengthened Aurora's content moderation filters
 - Published new acceptable use policies
 
-The incident has been addressed — but it highlights a reality users should understand: Grok has historically had a less restrictive approach than OpenAI or Anthropic to content moderation. That's an advantage for some use cases (more direct answers, fewer arbitrary refusals), and a risk for others.
+Wikipedia also documents that Grok has produced responses including conspiracy theories, antisemitic content, and praise of Hitler — and that updates since 2023 have shifted the model "politically rightward to provide conservative responses." These are documented facts that belong in an honest review.
+
+Grok's historically less restrictive approach is an advantage for some use cases (more direct answers, fewer arbitrary refusals) and a liability for others (sensitive enterprise contexts, content moderation requirements).
+
+## Grok vs ChatGPT: the honest comparison
+
+**Grok clearly wins on:**
+- **Real-time X data** — the only consumer assistant with native live X feed access
+- **Context window** — 2M tokens vs 128K for [ChatGPT Plus](/en/blog/chatgpt-vs-claude-vs-gemini-2026), massive gap for long documents
+- **Hallucination rate** — 78% non-hallucination on Omniscience benchmarks, best in the panel
+- **Native multi-agent** — 4 parallel agents baked into architecture, not an external overlay
+- **Fast API pricing** — $0.20/M tokens, among the cheapest frontier-capable APIs
+
+**[ChatGPT or Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) clearly wins on:**
+- **Writing quality** — Claude remains the benchmark for nuanced and creative text
+- **Ecosystem** — persistent memory, plugins, mature enterprise integrations
+- **Enterprise trust** — moderation controversies have made many teams hesitant
+- **Advanced code** — [Claude Code](/en/blog/vibe-coding-tools-2026) dominates SWE-bench at 80%+
+- **Stability** — Grok is younger and shows more bugs and inconsistencies
 
 ## Grok pros and cons
 
 **✅ Strengths**
 
-- **Real-time X data** — the only consumer assistant with native access to the live X feed
-- **2 million token context window** — processes entire documents without losing context, unique at this price
-- **Competitive API** — $0.20/M tokens for fast models, among the cheapest in the market
-- **Think mode** — visible step-by-step reasoning, comparable to DeepSeek R1
-- **Aurora** — fast photorealistic image generation included in SuperGrok
-- **Directness** — more straightforward responses than the sanitized outputs of competitors
+- **Real-time X data** — the only assistant with native live X feed access
+- **4 native agents (Grok 4.20)** — 65% reduction in hallucinations on complex tasks
+- **2 million token context** — processes entire documents, unique at this price
+- **78% factual accuracy** — best non-hallucination rate in the compared panel
+- **Fast API at $0.20/M** — among the cheapest frontier-capable APIs
+- **Aurora + video** — rapid image and video generation, API at $0.05/second
+- **Pentagon integration** — IL5 clearance, significant institutional trust signal
 
 **❌ Weaknesses**
 
-- **SuperGrok pricing** — $30/month vs $20 for ChatGPT or Claude, hard to justify without specific X-dependent use cases
-- **Moderation controversy** — the January 2026 image incident has undermined enterprise trust
-- **Code quality gap** — Claude Code and Cursor remain superior for complex development work
-- **Limited ecosystem** — no persistent memory, few native integrations outside X
-- **Occasional instability** — younger than competitors, Grok still shows bugs and repetitive errors
-- **Minimal support** — difficult refunds, near-nonexistent customer service reported by many users
+- **SuperGrok at $30/month** — 50% more than [ChatGPT or Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) without specific X needs
+- **Moderation controversies** — documented non-consensual images, politically biased responses
+- **Code quality gap** — [Claude Code](/en/blog/vibe-coding-tools-2026) and Cursor remain superior on SWE-bench
+- **Limited ecosystem** — no persistent memory, few native integrations
+- **Minimal support** — difficult refunds, near-nonexistent customer service
+- **Power concentration** — Musk controls X, SpaceX, xAI, and DOGE simultaneously
 
 ## Who is Grok for in 2026?
 
 **Grok is right for you if:**
-
 ✅ You're active on X and want an AI assistant integrated into your information feed
 ✅ You do news monitoring, trend tracking, or real-time sentiment analysis
-✅ You need to analyze very long documents (reports, codebases, contracts) — 2M tokens
-✅ You're building applications that need real-time X data via the API
-✅ You're looking for a competitive API ($0.20/M tokens) for high-volume use cases
+✅ You need to analyze very long documents — 2M tokens with no equivalent at this price
+✅ You're building applications that need real-time X data via API
+✅ You want the best factual reliability score — 78% on Omniscience
 
 **Grok is not right for you if:**
+❌ You want the best creative writing assistant — [Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) wins without contest
+❌ You need advanced code assistance — Claude Code or [Cursor](/en/blog/cursor-ai-review-2026) are significantly better
+❌ You manage sensitive enterprise data with strict compliance requirements
+❌ You don't use X — the core value proposition disappears without that context
 
-❌ You want the best creative writing assistant — Claude wins without contest
-❌ You need advanced code assistance — Claude Code or Cursor are significantly better
-❌ You handle sensitive data in enterprise contexts with strict compliance requirements
-❌ You don't use X and don't need real-time data — the core value proposition disappears
-❌ Your budget is tight — at $30/month, SuperGrok costs 50% more than ChatGPT Plus
+## Grok 5: what we know
 
-## Our final verdict on Grok
+Grok 5 is training on Colossus 2 (1.5GW of compute since April 2026) with a 6-trillion-parameter architecture. Musk estimates 10% probability that Grok 5 achieves AGI — which is either communication strategy or genuine conviction, difficult to distinguish.
 
-Grok is a serious tool, not a gimmick. The 2 million token window, real-time X access, and competitive API are genuine differentiators — not marketing. On reasoning and math benchmarks, Grok 4 stands toe-to-toe with the best models on the market.
+Polymarket prediction markets give 33% odds of Grok 5 shipping before June 30, 2026. The competitive window is tight: GPT-5.4 shipped March 5, [Claude Opus 4.6](/en/blog/chatgpt-vs-claude-vs-gemini-2026) dominates SWE-bench, Gemini 3.1 Pro leads on several reasoning benchmarks.
 
-But Grok is still paying the price of its youth and its controversies. Enterprise trust took a hit in January 2026, the ecosystem is still limited, and SuperGrok pricing is hard to justify against Claude or ChatGPT unless real-time X access is central to your workflow.
+## Our final verdict
 
-**For power X users, journalists, trend analysts, and API builders**: Grok is probably your best choice in 2026.
+Grok is a serious tool, improving rapidly, with real differentiators. The 2-million-token window, real-time X access, Grok 4.20's native 4-agent system, and the best factual reliability rate in the panel — these are genuine differentiations, not marketing.
 
-**For everything else**: ChatGPT or Claude remain more versatile and more stable for the same budget or less.
+But Grok is still paying the price of its youth and controversies. Enterprise trust has taken a hit. The ecosystem remains limited. And at $30/month, SuperGrok is 50% more expensive than its direct competitors without specific X use cases.
 
-**Our rating: 7.5/10** — Technically impressive on real-time data and long context, but still too young and too expensive to dethrone the leaders on general-purpose use cases.
+**For power X users, journalists, trend analysts, and API builders**: Grok is probably your best choice in 2026. **For everything else**: [ChatGPT or Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) remain more versatile and more stable.
+
+**Our rating: 7.8/10** — Impressive progress with Grok 4.20, but still too expensive and too controversial to dethrone the leaders on general-purpose use cases. Rating bumped from 7.5 to 7.8 reflecting the hallucination reduction and the native multi-agent architecture.
 
 ## Grok FAQ
 
 ### Is Grok really free?
 
-Partially. The free version of Grok on X gives access to Grok 3 Mini with a limit of 10 queries every 2 hours — enough to test, not enough to work seriously. Full access to Grok 3 requires X Premium ($8/month), and Grok 4 models with advanced features are reserved for the SuperGrok plan ($30/month).
+Partially. The free version on grok.com gives access to Grok 3 Mini with 10 queries every 2 hours. Full access to Grok 4.20 with the multi-agent system requires SuperGrok at $30/month. Grok 4 Heavy is reserved for the SuperGrok Heavy plan at $300/month.
 
-### Is Grok better than ChatGPT?
+### What is the Grok 4.20 4-agent system?
 
-It entirely depends on your use case. For real-time data, X trend analysis, and very long documents (2M tokens), Grok wins. For creative writing, advanced code, ecosystem, and general stability, ChatGPT or Claude remain superior. The two tools are more complementary than directly competitive.
+Grok 4.20 runs 4 specialized agents in parallel on every complex query: Grok (coordinator), Harper (research), Benjamin (logic/code), Lucas (divergent/creative). They debate internally before synthesizing a unified response. This is native to the architecture — not an external overlay — which explains the reasonable latency and the 65% hallucination reduction on multi-step tasks.
+
+### What does the SpaceX acquisition change?
+
+Financial stability for xAI (no more $1B/month burn rate without matching revenue), SpaceX infrastructure access for Grok 5 training, and increased institutional integration (Pentagon GenAI.mil, IL5 clearance). For users, the main change is product longevity and enterprise credibility. Questions about power concentration — Musk controlling X, SpaceX, xAI, and DOGE simultaneously — deserve ongoing attention.
 
 ### Is SuperGrok worth it at $30/month?
 
-If your work depends on X or real-time monitoring, yes. The 2 million token window, unlimited image generation, and Grok 4 access justify the price for intensive users. For general use without X data needs, ChatGPT Plus or Claude Pro offer better value at $20/month.
+If your work depends on X or real-time monitoring, yes. The 2M token window, 4-agent system, and Aurora justify the price for intensive users. For general use without X data needs, [ChatGPT Plus or Claude Pro](/en/blog/chatgpt-vs-claude-vs-gemini-2026) offer better value at $20/month.
 
-### Is Grok safe after the January 2026 controversy?
+### When is Grok 5 coming?
 
-xAI strengthened Aurora's moderation following the incident and restricted image generation to paying subscribers only. For standard text use, the risk is limited. For sensitive enterprise contexts, caution remains warranted — the incident demonstrated a historically less restrictive approach than OpenAI or Anthropic on content moderation.
-
-### What's the difference between Grok 4 and Grok 4 Heavy?
-
-Grok 4 is the standard SuperGrok model — powerful, fast, 2M tokens. Grok 4 Heavy is the flagship model reserved for the SuperGrok Heavy plan ($300/month): optimized for the most complex reasoning tasks, with maximum API priority and extended context. For 99% of use cases, Grok 4 is more than sufficient.
+Polymarket gives 33% odds of release before June 30, 2026. The infrastructure is ready (Colossus 2 at 1.5GW). The architecture targets 6 trillion parameters, nearly double Grok 4. Musk talks about 10% probability of achieving AGI — to be taken with the standard caution applied to Elon Musk timeline announcements.
       `,
       related: [
-        { slug: "deepseek-review-2026", title: "DeepSeek Review 2026: The Best Free ChatGPT Alternative?", tag: "Chatbots", timeMin: "12" },
-        { slug: "perplexity-ai-review-2026", title: "Perplexity AI Review 2026: Is It Worth It vs ChatGPT & Google?", tag: "Chatbots", timeMin: "13" },
+        { slug: "deepseek-review-2026", title: "DeepSeek Review 2026: The Best Free ChatGPT Alternative?", tag: "Chatbots", timeMin: "14" },
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI Review 2026: Comet Browser & Model Council", tag: "Chatbots", timeMin: "15" },
         { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "12" },
+        { slug: "sora-fermeture-openai-2026", title: "Sora Is Dead: OpenAI Kills Its AI Video App", tag: "Chatbots", timeMin: "12" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "12" },
+        { slug: "claude-mythos-next-anthropic-2026", title: "Claude Mythos: Anthropic's Next Model Leaked", tag: "Chatbots", timeMin: "12" },
       ],
     },
   },
@@ -2867,8 +3814,8 @@ Grok 4 is the standard SuperGrok model — powerful, fast, 2M tokens. Grok 4 Hea
   {
     slug: "deepseek-review-2026",
     tag: "Chatbots",
-    date: { fr: "26 mars 2026", en: "March 26, 2026" },
-    timeMin: "12",
+    date: { fr: "1er avril 2026", en: "April 1, 2026" },
+    timeMin: "14",
     featured: true,
     affiliate: {
       url: "https://chat.deepseek.com",
@@ -2879,31 +3826,29 @@ Grok 4 is the standard SuperGrok model — powerful, fast, 2M tokens. Grok 4 Hea
       },
     },
     fr: {
-      title: "DeepSeek : avis 2026, le meilleur ChatGPT gratuit venu de Chine ?",
-      desc: "DeepSeek a bouleversé le marché IA en janvier 2025. On a testé R1, V3 et l'API pendant des semaines. Performances, vie privée, cas d'usage — notre verdict complet et honnête.",
-      metaTitle: "DeepSeek : avis complet 2026 — performances, prix et vie privée | Neuriflux",
-      metaDesc: "Notre test complet de DeepSeek en 2026 : modèles R1 et V3, performances vs ChatGPT et Claude, tarifs API, et les vraies questions sur la confidentialité des données. Verdict sans filtre.",
+      title: "DeepSeek : avis complet 2026, le meilleur ChatGPT gratuit venu de Chine ?",
+      desc: "DeepSeek a bouleversé le marché IA en janvier 2025. On a testé R1, V3.2 et l'API en profondeur. Performances, vie privée, V4 en approche — notre verdict complet et sans filtre.",
+      metaTitle: "DeepSeek : avis complet 2026 — performances, prix, vie privée et V4 | Neuriflux",
+      metaDesc: "Notre test complet de DeepSeek en 2026 : modèles R1 et V3.2, performances vs ChatGPT et Claude, tarifs API, pays qui l'ont banni et DeepSeek V4. Verdict honnête et à jour.",
       content: `
 ## C'est quoi DeepSeek ?
 
-DeepSeek est une startup chinoise d'IA fondée en 2023, filiale du fonds quantitatif High-Flyer Capital. En janvier 2025, elle a fait l'effet d'une bombe dans le secteur : son modèle **DeepSeek-R1** a atteint les performances de GPT-4o et Claude 3.5 Sonnet sur les principaux benchmarks — pour un coût d'entraînement estimé à **5,5 millions de dollars**, soit 20 fois moins que ses concurrents américains.
+DeepSeek est une startup chinoise d'IA fondée en 2023, filiale du fonds quantitatif High-Flyer Capital. En janvier 2025, elle a fait l'effet d'une bombe dans le secteur : son modèle **DeepSeek-R1** a atteint les performances de GPT-4o et [Claude 3.5 Sonnet](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) sur les principaux benchmarks — pour un coût d'entraînement estimé à **5,5 millions de dollars**, soit environ 20 fois moins que ses concurrents américains.
 
-Résultat : l'action Nvidia a perdu 17% en une seule séance, et DeepSeek est devenu l'application la plus téléchargée sur l'App Store américain en quelques jours. En 2026, la startup a consolidé sa position avec **DeepSeek V3.2** et l'annonce de **V4** — un modèle 1 million de tokens capable de raisonner sur des bases de code entières.
+Résultat immédiat : l'action Nvidia a perdu 17% en une séance (soit 600 milliards de dollars de capitalisation), et DeepSeek est devenu l'application la plus téléchargée sur l'App Store américain. Trump a qualifié l'événement de "wake-up call" pour les entreprises tech américaines.
 
-Mais derrière les performances, des questions sérieuses sur la confidentialité des données méritent une réponse franche. Voici notre analyse complète après plusieurs semaines d'utilisation intensive.
+En 2026, la startup a consolidé sa position avec **DeepSeek V3.2** et une architecture entièrement repensée pour son prochain modèle **V4** — attendu mais pas encore sorti officiellement à la date de cet article. Voici notre analyse complète après plusieurs semaines d'utilisation intensive, avec toutes les nouvelles informations disponibles.
 
 ## Les modèles DeepSeek en 2026
 
-DeepSeek ne propose pas un seul modèle mais une famille entière, chacun conçu pour un usage spécifique :
-
-| Modèle | Spécialité | Contexte | Accès |
+| Modèle | Spécialité | Contexte | Statut |
 |---|---|---|---|
-| **DeepSeek-V3.2** | Usage général, rédaction, analyse | 128K tokens | Gratuit + API |
-| **DeepSeek-R1** | Raisonnement avancé, maths, code | 128K tokens | Gratuit + API |
-| **DeepSeek-V4** *(mars 2026)* | Flagship, code enterprise, 1M contexte | 1M tokens | API |
-| **DeepSeek-Coder-V2** | Code uniquement | 128K tokens | API |
+| **DeepSeek-V3.2** | Usage général, rédaction, analyse | 128K tokens | Disponible (gratuit + API) |
+| **DeepSeek-R1** | Raisonnement avancé, maths, code | 128K tokens | Disponible (gratuit + API) |
+| **DeepSeek-V4** | Flagship 1T paramètres, 1M contexte | 1M tokens | En approche — non sorti officiellement |
+| **DeepSeek-Coder-V2** | Code uniquement | 128K tokens | Disponible (API) |
 
-L'architecture sous-jacente repose sur un **Mixture of Experts (MoE)** : le modèle compte 671 milliards de paramètres au total, mais n'en active que 37 milliards par requête. Résultat — performances élevées pour un coût de calcul fraction de la concurrence.
+L'architecture repose sur un **Mixture of Experts (MoE)** : 671 milliards de paramètres au total, dont seulement 37 milliards activés par requête. C'est ce qui permet des performances élevées pour un coût de calcul très inférieur à la concurrence — et des prix API 10 à 30 fois moins chers.
 
 ## Tableau comparatif : DeepSeek vs ChatGPT vs Claude vs Gemini
 
@@ -2914,181 +3859,195 @@ L'architecture sous-jacente repose sur un **Mixture of Experts (MoE)** : le mod�
 | Rédaction créative | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
 | Recherche temps réel | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | Transparence du raisonnement | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ |
-| Open-source | ✅ Oui | ❌ | ❌ | ❌ |
-| Déploiement local | ✅ Oui | ❌ | ❌ | ❌ |
+| Open-source & local | ✅ Oui | ❌ | ❌ | ❌ |
 | Confidentialité des données | ⚠️ Serveurs Chine | ✅ USA | ✅ USA | ✅ USA |
 | Prix mensuel (chat) | **Gratuit** | 20$/mois | 20$/mois | 19.99$/mois |
-| Prix API (1M tokens) | **0,28$** | ~7,50$ | ~3$ | ~2$ |
+| Prix API (1M tokens input) | **0,28$** | ~2,50$ | ~5$ | ~2$ |
 
 ## Ce qu'on a testé pendant 3 semaines
 
 ### Raisonnement et mathématiques — la vraie force de R1
 
-Sur les benchmarks publiés, DeepSeek-R1 atteint **97,3% sur MATH-500** et **79,8% sur AIME 2024**, rivalisant directement avec les modèles o1 d'OpenAI. Dans la pratique quotidienne, c'est la fonctionnalité **Chain-of-Thought visible** qui impressionne le plus.
+Sur les benchmarks publiés, DeepSeek-R1 atteint **97,3% sur MATH-500** et **79,8% sur AIME 2024**, rivalisant directement avec les modèles o1 d'OpenAI. Ce qui distingue DeepSeek dans la pratique quotidienne, c'est la **Chain-of-Thought visible** : le modèle affiche sa réflexion étape par étape — ses hypothèses, ses doutes, les chemins qu'il rejette.
 
-Quand vous posez un problème complexe à R1, il affiche sa réflexion étape par étape — ses hypothèses, ses doutes, les chemins qu'il rejette avant d'arriver à une conclusion. C'est à la fois utile pour vérifier son raisonnement et pédagogique pour comprendre la logique sous-jacente. ChatGPT fait pareil avec o1, mais DeepSeek le fait gratuitement.
+[ChatGPT](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) fait quelque chose d'analogue avec ses modèles de raisonnement, mais DeepSeek le fait gratuitement et de façon plus transparente. Pour apprendre, vérifier une logique complexe, ou comprendre pourquoi un résultat est obtenu — c'est un vrai avantage.
 
 ### Code — au niveau des meilleurs
 
-Sur des tâches réelles — refactoring d'une API REST, débogage d'un problème de performance en Python, génération d'une interface React à partir d'un cahier des charges — DeepSeek-Coder et R1 se sont montrés à la hauteur de Cursor ou GitHub Copilot sur la majorité des cas.
-
-Le score **83,7% sur SWE-bench Verified** pour V4 (contre 69% pour V3) confirme une progression significative. Pour les développeurs qui cherchent un assistant code puissant sans payer 20$/mois, c'est difficile à battre.
+Sur des tâches réelles — refactoring d'une API REST, débogage Python, génération de composants React — DeepSeek R1 et Coder tiennent la comparaison face à [Cursor](/fr/blog/cursor-ai-review-2026) ou GitHub Copilot sur la majorité des cas testés. Pour les développeurs qui cherchent un assistant puissant sans abonnement mensuel, l'argument est solide.
 
 ### Rédaction et contenu — le maillon faible
 
-C'est là que DeepSeek montre ses limites. Sur des textes en français qui demandent de la nuance, de l'ironie ou un style personnel, les résultats sont corrects mais pas exceptionnels. Claude reste nettement supérieur sur ce terrain. Pour du contenu marketing ou de la rédaction créative, DeepSeek n'est pas le bon outil.
+C'est là que DeepSeek montre clairement ses limites. Sur des textes en français qui demandent de la nuance, du style, ou une voix personnelle, les résultats sont fonctionnels mais pas au niveau de [Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026). Pour du contenu marketing ou de la rédaction créative, ce n'est pas le bon outil.
 
-### Mode DeepThink — la réflexion en temps réel
+### Mode DeepThink — raisonnement en temps réel
 
-Le mode **DeepThink** (équivalent du mode "thinking" d'Anthropic) force le modèle à raisonner explicitement avant de répondre. Sur des sujets complexes — analyse juridique, planification stratégique, problèmes de logique multi-étapes — la qualité de la réponse finale est sensiblement meilleure qu'en mode normal.
+Le mode **DeepThink** force le modèle à raisonner explicitement avant de répondre — équivalent du mode "thinking" d'Anthropic. Sur des sujets complexes (analyse juridique, planification stratégique, problèmes multi-étapes), la qualité de la réponse finale est sensiblement meilleure qu'en mode standard.
 
 ## Les tarifs de DeepSeek en 2026
 
 | Accès | Prix | Ce qu'il inclut |
 |---|---|---|
-| **Chat gratuit** | Gratuit | V3.2 + R1, DeepThink, recherche web, upload de fichiers |
-| **API V3.2** | 0,28$/M tokens entrée · 0,42$/M sortie | Usage général, cache à 0,028$/M |
-| **API R1** | 0,55$/M tokens entrée · 2,19$/M sortie | Raisonnement avancé, 64K output |
-| **API V4** | 0,30$/M tokens entrée · 0,50$/M sortie | Flagship, 1M contexte, SWE-bench 83,7% |
+| **Chat gratuit** | Gratuit | V3.2 + R1, DeepThink, recherche web, uploads |
+| **API V3.2** | 0,28$/M input · 0,42$/M output | Général, cache à 0,028$/M |
+| **API R1** | 0,55$/M input · 2,19$/M output | Raisonnement, 64K output |
+| **API R1-0528** | 0,55$/M input · 2,19$/M output | Mise à jour récente de R1 |
 | **Tokens offerts** | 5M tokens gratuits | À l'inscription, sans CB |
 
-**Pour mettre en perspective** : l'API DeepSeek V4 coûte environ **10 à 30 fois moins cher** que GPT-5 ou Claude Opus pour des performances comparables. Pour les développeurs qui font tourner des LLMs à grande échelle, la différence est énorme.
+**La perspective qui compte** : l'API DeepSeek coûte **10 à 30 fois moins cher** que GPT-5.4 ou [Claude Opus](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) pour des performances comparables sur les tâches de raisonnement. Pour les développeurs qui font tourner des LLMs à grande échelle, l'économie est massive. Si vous cherchez des alternatives économiques, notre guide sur les [outils d'automatisation IA](/fr/comparatifs/n8n-vs-make-vs-zapier-2026) détaille comment intégrer DeepSeek dans des workflows n8n ou Make.
 
-## DeepSeek vs ChatGPT : le comparatif honnête
+## DeepSeek V4 : ce qu'on sait vraiment (et ce qu'on ne sait pas)
 
-**DeepSeek gagne sur :**
-- **Le prix** — gratuit en chat, 10-30x moins cher en API, aucun abonnement mensuel requis
-- **Le raisonnement transparent** — le Chain-of-Thought visible est plus accessible que chez OpenAI
-- **L'open-source** — les poids du modèle sont disponibles, vous pouvez le faire tourner localement
-- **Le code technique complexe** — sur les benchmarks et dans la pratique, R1 tient la comparaison
-- **Le déploiement sur serveur privé** — option inexistante chez OpenAI ou Anthropic
+DeepSeek V4 est le sujet le plus discuté dans la communauté IA depuis des mois. Pour être honnête sur ce qui est confirmé vs ce qui est rumeur :
 
-**ChatGPT (ou Claude) gagne sur :**
-- **La qualité rédactionnelle** — Claude reste le meilleur pour les textes nuancés
-- **L'écosystème** — plugins, mémoire persistante, DALL-E, Voice Mode, intégrations Zapier
-- **La confidentialité** — données hébergées aux États-Unis, conformité GDPR/CCPA, juridiction claire
-- **La stabilité** — ChatGPT ne subit pas de pannes de serveur lors des pics d'utilisation comme DeepSeek
-- **Le support en langue française** — les modèles OpenAI et Anthropic sont plus performants hors anglais
+**Ce qui est confirmé :**
+- DeepSeek a publié des recherches sur l'architecture **Engram** (mémoire conditionnelle) en janvier 2026
+- Une mise à jour "V4 Lite" a été observée sur l'interface web de DeepSeek le 9 mars 2026 avec un knowledge cutoff mis à jour
+- L'architecture vise 1 trillion de paramètres (MoE, environ 32-37B actifs par requête) et un contexte d'1 million de tokens
+- Des chips Huawei ont reçu un accès préliminaire au modèle (Reuters, février 2026)
+
+**Ce qui reste non vérifié :**
+- Les benchmarks leakés (80-90% HumanEval, 80%+ SWE-bench) viennent de sources internes DeepSeek, pas de tests indépendants
+- Le prix API estimé à 0,14$/M tokens n'est pas confirmé officiellement
+- La date de sortie officielle — plusieurs fenêtres (mi-février, Nouvel An lunaire, début mars) sont passées sans release
+
+**Ce qu'on peut dire avec certitude** : si V4 tient ses promesses architecturales (Engram pour le long contexte, mHC pour la scalabilité), il pourrait rivaliser avec [Claude Opus 4.6](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) sur le code à une fraction du prix. Attendez les tests indépendants avant de restructurer votre stack.
 
 ## La question qui fâche : peut-on faire confiance à DeepSeek ?
 
-C'est **le** sujet qu'on ne peut pas esquiver dans un avis honnête sur DeepSeek.
+C'est le sujet qu'on ne peut pas esquiver dans un avis honnête.
 
 **Ce qui est documenté et vérifié :**
-- Les données utilisateurs sont stockées sur des **serveurs en Chine**, soumis au droit chinois
-- La politique de confidentialité collecte les **patterns de frappe au clavier**, les données d'appareil, l'adresse IP et l'historique complet des conversations
-- Un chercheur de Wiz a découvert en 2025 une **base de données accessible sans authentification** exposant plus d'un million d'enregistrements
-- DeepSeek présente un **taux de contournement (jailbreak) de 100%** selon certaines études de sécurité
-- L'outil est **interdit** en Australie, Italie, Taiwan, Corée du Sud, sur les appareils gouvernementaux de plusieurs États américains, et chez des entreprises comme Microsoft et News Corp
+- Les données utilisateurs sont stockées sur des **serveurs en Chine**, soumis au droit chinois (Loi sur le renseignement national de 2017)
+- La politique de confidentialité collecte les **patterns de frappe au clavier**, l'adresse IP, et l'historique complet des conversations
+- Un chercheur de Wiz a découvert en 2025 une **base de données sans authentification** exposant plus d'un million d'enregistrements dont des logs de chat et des clés API
+- NowSecure a trouvé des **clés de chiffrement hardcodées** dans l'app mobile et des transmissions non chiffrées
+- Cisco a documenté un **taux de succès de jailbreak de 100%** dans ses tests de sécurité
+- En mars 2026, le BSI allemand a confirmé qu'un projet pilote utilisant DeepSeek-V3 avait **transmis des métadonnées classifiées** vers un cluster à Shanghai via un canal de télémétrie non documenté
+
+**La liste des interdictions :**
+Italie (ban public + app stores), Australie (tous appareils gouvernementaux), Corée du Sud (appareils gouvernementaux + enquête), Taiwan (agences publiques, écoles, infrastructure critique), Inde (dispositifs officiels), États-Unis (Pentagon, NASA, US Navy, Texas, plusieurs autres États). Plus de 7 pays ont agi, et **aucun audit complet n'a conclu à la conformité** avec les législations locales sur la protection des données.
 
 **Ce que ça signifie en pratique :**
-- Pour une **utilisation personnelle non sensible** (code, maths, apprentissage, brainstorming) : le risque est faible mais réel
-- Pour des données professionnelles, clients, médicales ou financières : **ne pas utiliser la version cloud**
-- Pour les développeurs qui veulent les performances sans les risques : **déployer localement** les poids open-source est la solution — vous gardez les performances, vous gardez vos données
+- Usage personnel non sensible (code, maths, apprentissage) : risque faible mais réel
+- Données professionnelles, clients, médicales ou financières : **ne pas utiliser la version cloud**
+- Solution pour les entreprises : **déployer localement** les poids open-source (Ollama, LM Studio) — vous gardez les performances, vos données restent sur vos serveurs
 
-La version locale est la vraie proposition de valeur de DeepSeek pour les entreprises.
+## DeepSeek vs ChatGPT : le comparatif honnête
+
+**DeepSeek gagne clairement sur :**
+- **Le prix** — gratuit en chat, 10-30x moins cher en API, aucun abonnement requis
+- **Le raisonnement transparent** — Chain-of-Thought visible et plus accessible que chez OpenAI
+- **L'open-source** — poids disponibles, déployable en local, auditable par des tiers
+- **Le code technique** — rivalise avec les meilleurs sur les benchmarks et dans la pratique
+- **Le déploiement sur serveur privé** — option inexistante chez OpenAI ou Anthropic
+
+**[ChatGPT ou Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) gagnent clairement sur :**
+- **La qualité rédactionnelle** — Claude reste le meilleur pour les textes nuancés
+- **L'écosystème** — mémoire persistante, intégrations, plugins, Voice Mode, DALL-E
+- **La confidentialité** — données hébergées aux États-Unis, conformité GDPR, juridiction claire
+- **La stabilité** — ChatGPT ne sature pas lors des pics comme DeepSeek
+- **Le support enterprise** — SLAs, audit logs, support dédié — inexistants chez DeepSeek
 
 ## DeepSeek : avantages et inconvénients
 
 **✅ Points forts**
 
-- **Entièrement gratuit en chat** — R1 et V3 accessibles sans créer de compte payant
-- **API ultra-compétitive** — 10 à 30x moins chère que GPT-5 pour des performances comparables
-- **Open-source** — poids disponibles, déployable en local, auditable
+- **Entièrement gratuit en chat** — R1 et V3.2 sans compte payant
+- **API ultra-compétitive** — 10 à 30x moins chère que GPT-5.4 pour des performances comparables
+- **Open-source** — poids disponibles, déployable en local, code auditable
 - **Raisonnement transparent** — Chain-of-Thought visible, excellent pour apprendre et vérifier
 - **Code technique de haut niveau** — rivalise avec les meilleurs assistants dev sur les benchmarks
-- **Contexte 1M tokens avec V4** — traite des bases de code entières sans perte de contexte
+- **Architecture V4 prometteuse** — Engram pour le long contexte, 1M tokens à venir
 
 **❌ Points faibles**
 
-- **Données hébergées en Chine** — problème réel pour toute donnée sensible ou professionnelle
+- **Données hébergées en Chine** — problème documenté pour toute donnée sensible ou professionnelle
 - **Stabilité inégale** — serveurs saturés lors des pics, timeouts fréquents en heure de pointe
-- **Rédaction créative décevante** — Claude et ChatGPT restent bien supérieurs sur les textes nuancés
+- **Rédaction créative décevante** — [Claude et ChatGPT](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) restent bien supérieurs
 - **Interface basique** — pas de mémoire persistante, peu d'intégrations natives
-- **Jailbreak facile** — les filtres de sécurité sont moins robustes que chez OpenAI ou Anthropic
-- **Support client quasi-inexistant** — startup en croissance rapide, le support est minimal
+- **Jailbreak facile** — 100% de taux de succès dans les tests Cisco, filtres moins robustes
+- **V4 pas encore sorti** — les benchmarks circulants ne sont pas vérifiés indépendamment
+- **Support client quasi-inexistant** — startup en croissance rapide, infrastructure de support minimale
 
 ## Pour qui est fait DeepSeek en 2026 ?
 
 **DeepSeek est fait pour vous si :**
-
 ✅ Vous êtes développeur et cherchez un assistant code puissant sans abonnement mensuel
-✅ Vous construisez des applications IA et avez besoin d'une API compétitive à grande échelle
+✅ Vous construisez des applications IA et avez besoin d'une API économique à grande échelle
 ✅ Vous faites de la recherche ou des maths et voulez voir le raisonnement étape par étape
 ✅ Vous voulez déployer un LLM en local sur vos propres serveurs (données 100% privées)
-✅ Votre budget est serré et vous n'avez pas besoin de génération d'images ou de voix
+✅ Vous cherchez à [automatiser des workflows](/fr/comparatifs/n8n-vs-make-vs-zapier-2026) avec un LLM économique
 
 **DeepSeek n'est pas fait pour vous si :**
-
 ❌ Vous gérez des données sensibles, professionnelles, médicales ou financières sur le cloud
-❌ Vous cherchez un assistant de rédaction créative — Claude sera toujours meilleur
+❌ Vous cherchez un assistant de rédaction créative — [Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) sera toujours meilleur
 ❌ Vous avez besoin d'un écosystème riche (intégrations, mémoire, plugins)
 ❌ Vous êtes dans une entreprise soumise au RGPD ou à des régulations sectorielles strictes
 
-## Notre verdict final sur DeepSeek
+## Notre verdict final
 
-DeepSeek est une **rupture technologique réelle**, pas un simple effet de mode. Le fait qu'une startup de 2 ans ait réussi à entraîner un modèle rivalisant avec GPT-4o pour 5,5 millions de dollars a forcé toute l'industrie à reconsidérer ses hypothèses sur le coût de l'IA.
+DeepSeek est une **rupture technologique réelle**, pas un effet de mode. Qu'une startup de 2 ans ait entraîné un modèle rivalisant avec GPT-4o pour 5,5 millions de dollars a forcé toute l'industrie à reconsidérer ses hypothèses sur le coût de l'IA — y compris OpenAI qui a levé 122 milliards de dollars en mars 2026 en réponse partielle à cette pression.
 
-Pour les **développeurs et les chercheurs**, c'est probablement le meilleur rapport performance/prix du marché en 2026 — surtout si vous déployez en local.
+Pour les **développeurs et chercheurs**, c'est le meilleur rapport performance/prix du marché en 2026 — surtout déployé en local. Pour les **utilisateurs grand public** qui cherchent un assistant quotidien, la comparaison avec [ChatGPT ou Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) n'est pas en faveur de DeepSeek : moins bon en rédaction, moins stable, interface plus pauvre, et des questions légitimes sur la confidentialité.
 
-Pour les **utilisateurs grand public** qui cherchent un assistant quotidien, la comparaison avec ChatGPT ou Claude n'est pas en faveur de DeepSeek : moins bien en rédaction, moins stable, interface moins riche, et des questions légitimes sur la confidentialité.
+**Notre note : 8/10** — Techniquement impressionnant, révolutionnaire sur le prix, open-source précieux. Les compromis sur la sécurité des données sont sérieux mais contournables par le déploiement local. La note monte de 7,8 à 8 grâce à la maturité accrue de V3.2 et à la perspective de V4.
 
-**Notre note : 7.8/10** — Impressionnant techniquement, révolutionnaire sur le prix, mais des compromis sérieux sur la sécurité des données qui ne peuvent pas être ignorés.
-
-## FAQ DeepSeek
+## FAQ DeepSeek 2026
 
 ### DeepSeek est-il vraiment gratuit ?
 
-Oui. L'accès à chat.deepseek.com est entièrement gratuit, sans limite d'utilisation déclarée, avec accès aux modèles R1 et V3.2 incluant le mode DeepThink et la recherche web. L'API offre également 5 millions de tokens gratuits à l'inscription. Il n'existe pas de plan payant pour les particuliers — uniquement une facturation à l'usage pour l'API.
+Oui. chat.deepseek.com est entièrement gratuit, avec accès aux modèles R1 et V3.2, le mode DeepThink, et la recherche web. L'API offre 5 millions de tokens gratuits à l'inscription. Il n'y a pas de plan payant pour les particuliers — seulement une facturation à l'usage pour les développeurs.
 
 ### DeepSeek est-il meilleur que ChatGPT ?
 
-Sur le raisonnement mathématique et le code technique, DeepSeek R1 rivalise avec les meilleurs modèles d'OpenAI — et gratuitement. Sur la rédaction créative, la stabilité, la richesse de l'écosystème et la confidentialité des données, ChatGPT garde l'avantage. Les deux outils sont complémentaires selon l'usage.
+Sur le raisonnement mathématique et le code, DeepSeek R1 rivalise avec les meilleurs modèles d'OpenAI — gratuitement. Sur la rédaction créative, la stabilité, l'écosystème et la confidentialité, [ChatGPT](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) garde l'avantage. Ce sont des outils complémentaires selon l'usage.
 
 ### DeepSeek est-il dangereux pour la vie privée ?
 
-C'est une vraie question avec une vraie réponse : oui, si vous y entrez des données sensibles. Les conversations sont stockées en Chine, soumises au droit chinois. Des gouvernements et entreprises l'ont interdit pour cette raison. Pour un usage non-sensible (code, maths, apprentissage), le risque est faible. Pour des données professionnelles ou personnelles sensibles, évitez la version cloud ou déployez les modèles en local.
+Oui, si vous y entrez des données sensibles. Les conversations sont stockées en Chine, sous le droit chinois. Plus de 7 pays et dizaines d'agences gouvernementales l'ont banni pour ces raisons. Pour un usage non-sensible (code, maths, apprentissage), le risque est faible. Pour des données professionnelles ou personnelles sensibles, évitez la version cloud ou déployez en local.
 
 ### Peut-on utiliser DeepSeek en local ?
 
-Oui, et c'est sa vraie force pour les entreprises soucieuses de confidentialité. Les poids des modèles R1 et V3 sont open-source et disponibles sur Hugging Face. Avec des outils comme Ollama ou LM Studio, vous pouvez faire tourner DeepSeek sur votre machine — vos données ne quittent jamais vos serveurs.
+Oui, c'est sa vraie force pour les entreprises. Les poids de R1 et V3 sont disponibles sur Hugging Face. Avec Ollama ou LM Studio, vous pouvez faire tourner DeepSeek sur vos propres serveurs — vos données ne quittent jamais votre infrastructure. C'est le meilleur des deux mondes : performances frontier, souveraineté des données.
 
-### DeepSeek V4, c'est quoi ?
+### C'est quoi DeepSeek V4 et quand sort-il ?
 
-DeepSeek V4 est le modèle flagship de la startup lancé début mars 2026. Il supporte une **fenêtre de contexte d'1 million de tokens** (soit environ 750 000 mots, ou plusieurs bases de code entières), un mode de raisonnement hybride, et atteint 83,7% sur SWE-bench Verified pour les tâches de code. Son API coûte 0,30$/million de tokens en entrée — environ 4x moins cher que Claude Sonnet 4.
+DeepSeek V4 est le prochain flagship avec 1 trillion de paramètres (MoE), une fenêtre de contexte d'1 million de tokens, et une nouvelle architecture de mémoire (Engram). Les benchmarks leakés sont impressionnants (80-90% sur les tests de code) mais **non vérifiés indépendamment**. Pas de date officielle de sortie à ce jour — plusieurs fenêtres annoncées ont été ratées. Attendez les tests indépendants avant d'adapter votre stack.
       `,
       related: [
         { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "12" },
-        { slug: "perplexity-ai-review-2026", title: "Perplexity AI : avis 2026, est-il meilleur que ChatGPT et Google ?", tag: "Chatbots", timeMin: "13" },
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI : avis 2026, est-il meilleur que ChatGPT et Google ?", tag: "Chatbots", timeMin: "15" },
         { slug: "alternatives-gratuites-chatgpt", title: "Les 7 meilleures alternatives gratuites à ChatGPT", tag: "Chatbots", timeMin: "7" },
+        { slug: "sora-fermeture-openai-2026", title: "Sora est mort : OpenAI abandonne son générateur vidéo IA", tag: "Chatbots", timeMin: "12" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "12" },
+        { slug: "claude-mythos-next-anthropic-2026", title: "Claude Mythos : le prochain modèle Anthropic leaké", tag: "Chatbots", timeMin: "12" },
       ],
     },
     en: {
-      title: "DeepSeek Review 2026: The Best Free ChatGPT Alternative?",
-      desc: "DeepSeek shook the AI industry in January 2025. We tested R1, V3, and the API for weeks. Performance, privacy, and real use cases — our complete, unfiltered verdict.",
-      metaTitle: "DeepSeek Review 2026: Performance, Pricing & Privacy | Neuriflux",
-      metaDesc: "Our complete DeepSeek review for 2026: R1 and V3 models tested, benchmarks vs ChatGPT and Claude, API pricing breakdown, and the real privacy questions answered. No bullshit verdict.",
+      title: "DeepSeek Review 2026: The Best Free ChatGPT Alternative? Complete Verdict",
+      desc: "DeepSeek shook the AI industry in January 2025. We tested R1, V3.2, and the API for weeks. Performance, privacy bans, and DeepSeek V4 incoming — our complete, unfiltered verdict for April 2026.",
+      metaTitle: "DeepSeek Review 2026: Performance, Pricing, Privacy & V4 | Neuriflux",
+      metaDesc: "Full DeepSeek review for April 2026: R1 and V3.2 tested, benchmarks vs ChatGPT and Claude, API pricing, which countries banned it, and DeepSeek V4 status. No-bullshit verdict.",
       content: `
 ## What is DeepSeek?
 
-DeepSeek is a Chinese AI startup founded in 2023, backed by quantitative hedge fund High-Flyer Capital. In January 2025, it detonated a bomb in the AI industry: its **DeepSeek-R1** model matched GPT-4o and Claude 3.5 Sonnet on major benchmarks — at an estimated training cost of just **$5.5 million**, roughly 20 times less than its American competitors.
+DeepSeek is a Chinese AI startup founded in 2023, backed by quantitative hedge fund High-Flyer Capital. In January 2025, it detonated a bomb in the AI industry: **DeepSeek-R1** matched GPT-4o and [Claude 3.5 Sonnet](/en/blog/chatgpt-vs-claude-vs-gemini-2026) on major benchmarks at an estimated training cost of just **$5.5 million** — roughly 20 times less than American competitors.
 
-The fallout was immediate: Nvidia's stock dropped 17% in a single session, and DeepSeek became the most downloaded app on the US App Store within days. By 2026, the startup has solidified its position with **DeepSeek V3.2** and the release of **V4** — a 1 million token flagship capable of reasoning over entire codebases.
+The fallout was immediate: Nvidia's stock dropped 17% in a single session ($600 billion in market cap), and DeepSeek became the most downloaded app on the US App Store within days. Trump called it a "wake-up call" for American tech companies — and it was. OpenAI's $122 billion fundraise in March 2026 is, in part, a response to the cost pressure DeepSeek introduced.
 
-But behind the impressive performance numbers, there are serious questions about data privacy that deserve a straight answer. Here's our full analysis after several weeks of intensive testing.
+By 2026, the startup has consolidated its position with **DeepSeek V3.2** and is preparing its next flagship **V4** — anticipated but not yet officially released as of this article. Here's our full analysis after several weeks of intensive real-world testing, with everything we know updated to April 2026.
 
 ## DeepSeek's model lineup in 2026
 
-DeepSeek isn't a single model — it's an entire family, each designed for a specific purpose:
-
-| Model | Specialty | Context | Access |
+| Model | Specialty | Context | Status |
 |---|---|---|---|
-| **DeepSeek-V3.2** | General use, writing, analysis | 128K tokens | Free + API |
-| **DeepSeek-R1** | Advanced reasoning, math, code | 128K tokens | Free + API |
-| **DeepSeek-V4** *(March 2026)* | Flagship, enterprise code, 1M context | 1M tokens | API |
-| **DeepSeek-Coder-V2** | Code only | 128K tokens | API |
+| **DeepSeek-V3.2** | General use, writing, analysis | 128K tokens | Available (free + API) |
+| **DeepSeek-R1** | Advanced reasoning, math, code | 128K tokens | Available (free + API) |
+| **DeepSeek-V4** | 1T-param flagship, 1M context | 1M tokens | Incoming — not officially released |
+| **DeepSeek-Coder-V2** | Code only | 128K tokens | Available (API) |
 
-The underlying architecture uses a **Mixture of Experts (MoE)** approach: the model has 671 billion total parameters but only activates 37 billion per query. The result is high performance at a fraction of the computational cost.
+The underlying architecture uses **Mixture of Experts (MoE)**: 671 billion total parameters, with only 37 billion activated per query. This is what delivers high performance at a fraction of the compute cost — and API prices 10 to 30 times cheaper than Western competitors.
 
 ## Comparison table: DeepSeek vs ChatGPT vs Claude vs Gemini
 
@@ -3099,33 +4058,30 @@ The underlying architecture uses a **Mixture of Experts (MoE)** approach: the mo
 | Creative writing | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
 | Real-time search | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | Reasoning transparency | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ |
-| Open-source | ✅ Yes | ❌ | ❌ | ❌ |
-| Local deployment | ✅ Yes | ❌ | ❌ | ❌ |
+| Open-source & local | ✅ Yes | ❌ | ❌ | ❌ |
 | Data privacy | ⚠️ China servers | ✅ US | ✅ US | ✅ US |
 | Monthly price (chat) | **Free** | $20/month | $20/month | $19.99/month |
-| API price (1M tokens) | **$0.28** | ~$7.50 | ~$3 | ~$2 |
+| API price (1M input tokens) | **$0.28** | ~$2.50 | ~$5 | ~$2 |
 
 ## What we tested over 3 weeks
 
 ### Reasoning and math — R1's genuine strength
 
-On published benchmarks, DeepSeek-R1 hits **97.3% on MATH-500** and **79.8% on AIME 2024**, going head-to-head with OpenAI's o1 models. In daily practice, the standout feature is the **visible Chain-of-Thought reasoning**.
+On published benchmarks, DeepSeek-R1 hits **97.3% on MATH-500** and **79.8% on AIME 2024**, going head-to-head with OpenAI's reasoning models. What distinguishes DeepSeek in daily use is the **visible Chain-of-Thought**: the model shows its thinking step by step — its hypotheses, doubts, and rejected paths before reaching a conclusion.
 
-When you give R1 a complex problem, it shows its thinking step by step — its hypotheses, its doubts, the paths it rejects before reaching a conclusion. It's useful for verifying the logic and genuinely educational for understanding how the model arrives at an answer. ChatGPT does something similar with o1, but DeepSeek does it for free.
+[ChatGPT does something similar](/en/blog/chatgpt-vs-claude-vs-gemini-2026) with its reasoning models, but DeepSeek does it for free and with more transparency. For learning, verifying complex logic, or understanding why a result was reached — this is a genuine advantage.
 
 ### Code — genuinely competitive
 
-On real-world tasks — refactoring a REST API, debugging a Python performance issue, generating a React interface from specs — DeepSeek-Coder and R1 held their own against Cursor or GitHub Copilot across the majority of cases.
-
-DeepSeek V4's **83.7% score on SWE-bench Verified** (versus 69% for V3) confirms meaningful progress. For developers looking for a powerful code assistant without a $20/month subscription, it's a serious option.
+On real-world tasks — refactoring a REST API, debugging Python, generating React components from specs — DeepSeek R1 and Coder held their own against [Cursor](/en/blog/cursor-ai-review-2026) or GitHub Copilot across most cases tested. For developers who want a powerful code assistant without a monthly subscription, the case is solid.
 
 ### Writing and content — the weak spot
 
-This is where DeepSeek shows its limits. On text that requires nuance, irony, or a distinct voice, results are adequate but not exceptional. Claude remains significantly better here. For marketing copy or creative writing, DeepSeek isn't the right tool.
+This is where DeepSeek clearly shows its limits. On text requiring nuance, a distinct voice, or stylistic precision, results are functional but not at the level of [Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026). For marketing copy or creative writing, this is the wrong tool.
 
 ### DeepThink mode — reasoning on demand
 
-The **DeepThink mode** (comparable to Anthropic's extended thinking) forces the model to reason explicitly before responding. On complex subjects — legal analysis, strategic planning, multi-step logic problems — the quality of the final answer is noticeably better than in standard mode.
+The **DeepThink mode** forces the model to reason explicitly before responding — comparable to Anthropic's extended thinking. On complex subjects (legal analysis, strategic planning, multi-step logic), the quality of the final answer is noticeably better than in standard mode.
 
 ## DeepSeek pricing in 2026
 
@@ -3134,118 +4090,134 @@ The **DeepThink mode** (comparable to Anthropic's extended thinking) forces the 
 | **Free chat** | Free | V3.2 + R1, DeepThink, web search, file uploads |
 | **API V3.2** | $0.28/M input · $0.42/M output | General use, cache at $0.028/M |
 | **API R1** | $0.55/M input · $2.19/M output | Advanced reasoning, 64K output |
-| **API V4** | $0.30/M input · $0.50/M output | Flagship, 1M context, SWE-bench 83.7% |
 | **Free tokens** | 5M tokens | On sign-up, no credit card required |
 
-**For context**: the DeepSeek V4 API costs approximately **10 to 30 times less** than GPT-5 or Claude Opus for comparable performance. For developers running LLMs at scale, this difference is substantial.
+**The perspective that matters**: DeepSeek's API costs **10 to 30 times less** than GPT-5.4 or [Claude Opus](/en/blog/chatgpt-vs-claude-vs-gemini-2026) for comparable performance on reasoning tasks. For developers running LLMs at scale, this is a transformative cost difference. If you're building automated workflows, our [n8n vs Make vs Zapier comparison](/en/comparatifs/n8n-vs-make-vs-zapier-2026) covers how to integrate DeepSeek cost-effectively into your pipelines.
 
-## DeepSeek vs ChatGPT: the honest comparison
+## DeepSeek V4: what we actually know vs what's rumor
 
-**DeepSeek wins on:**
-- **Price** — free in chat, 10-30x cheaper via API, no monthly subscription required
-- **Transparent reasoning** — visible Chain-of-Thought is more accessible than OpenAI's implementation
-- **Open-source** — model weights are available, you can run it locally
-- **Complex technical code** — matches the best dev assistants on benchmarks and in practice
-- **Private server deployment** — an option that doesn't exist with OpenAI or Anthropic
+V4 is the most discussed upcoming model in the AI community. Here's an honest breakdown:
 
-**ChatGPT (or Claude) wins on:**
-- **Writing quality** — Claude remains the best for nuanced, creative text
-- **Ecosystem** — plugins, persistent memory, DALL-E, Voice Mode, Zapier integrations
-- **Privacy** — data hosted in the US, GDPR/CCPA compliance, clear legal jurisdiction
-- **Stability** — ChatGPT doesn't experience server overloads during traffic peaks the way DeepSeek does
-- **Enterprise support** — dedicated support, SLAs, audit logs — DeepSeek has almost none of this
+**What's confirmed:**
+- DeepSeek published research on **Engram architecture** (conditional memory) in January 2026
+- A "V4 Lite" update was observed on DeepSeek's web interface on March 9, 2026, with an updated knowledge cutoff
+- The target architecture aims for 1 trillion parameters (MoE, ~32-37B active per query) with a 1-million-token context window
+- Huawei chips received preliminary model access (Reuters, February 2026)
+
+**What's not yet independently verified:**
+- Leaked benchmarks (80-90% HumanEval, 80%+ SWE-bench) originate from internal DeepSeek sources, not third-party testing
+- The estimated API price of ~$0.14/M input tokens is not officially confirmed
+- No official release date — several anticipated windows (mid-February, Lunar New Year, early March) have passed without a public launch
+
+**What we can say with confidence**: if V4 delivers on its architectural promises (Engram for long-context retrieval, mHC for trillion-scale training stability), it could rival [Claude Opus 4.6](/en/blog/chatgpt-vs-claude-vs-gemini-2026) on coding tasks at a fraction of the cost. Wait for independent evaluations before restructuring your stack around it.
 
 ## The uncomfortable question: can you trust DeepSeek?
 
-This is the conversation you can't skip in an honest DeepSeek review.
-
 **What's documented and verified:**
-- User data is stored on **servers in China**, subject to Chinese law
-- The privacy policy collects **keyboard typing patterns**, device data, IP address, and full conversation history
-- A Wiz security researcher discovered in 2025 an **unauthenticated database** exposing over one million records including chat histories and API keys
-- DeepSeek has a reported **100% jailbreak success rate** in multiple security studies
-- The tool is **banned** in Australia, Italy, Taiwan, South Korea, on government devices across several US states, and at companies including Microsoft and News Corp
+- User data is stored on **servers in China**, subject to Chinese law (2017 National Intelligence Law — organizations must cooperate with intelligence requests)
+- The privacy policy collects **keyboard typing patterns**, IP address, device data, and full conversation history
+- A Wiz researcher discovered in 2025 an **unauthenticated database** exposing over one million records including chat histories and API keys
+- NowSecure found **hardcoded encryption keys** in the mobile app and unencrypted data transmissions
+- Cisco documented a **100% jailbreak success rate** in its security testing
+- In March 2026, Germany's BSI confirmed that a pilot project using DeepSeek-V3 had **inadvertently transmitted classified metadata** to a Shanghai cluster via an undisclosed telemetry channel
+
+**The ban list:**
+Italy (full public ban, removed from app stores), Australia (all government devices), South Korea (government devices + investigation), Taiwan (agencies, schools, critical infrastructure), India (government devices), the US (Pentagon, NASA, US Navy, Texas and multiple other states). More than 7 countries have acted — **no full audit has found DeepSeek compliant** with local data protection law.
 
 **What this means in practice:**
-- For **personal, non-sensitive use** (code, math, learning, brainstorming): the risk is low but real
-- For professional, client, medical, or financial data: **do not use the cloud version**
-- For developers who want the performance without the privacy risks: **deploying the open-source weights locally** is the answer — you keep the performance, you keep your data
+- Personal, non-sensitive use (code, math, learning, brainstorming): risk is low but real
+- Professional, client, medical, or financial data: **do not use the cloud version**
+- For enterprises needing performance without privacy risk: **deploy locally** using open-source weights — you keep the performance, you keep your data
 
-The local version is DeepSeek's real value proposition for privacy-conscious enterprises.
+## DeepSeek vs ChatGPT: the honest comparison
+
+**DeepSeek clearly wins on:**
+- **Price** — free in chat, 10-30x cheaper via API, no subscription required
+- **Transparent reasoning** — visible Chain-of-Thought, more accessible than comparable OpenAI features
+- **Open-source** — model weights available, locally deployable, independently auditable
+- **Complex technical code** — matches the best dev assistants on benchmarks and in practice
+- **Private server deployment** — an option that doesn't exist with OpenAI or Anthropic
+
+**[ChatGPT or Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) clearly wins on:**
+- **Writing quality** — Claude remains the benchmark for nuanced, creative text
+- **Ecosystem** — persistent memory, integrations, plugins, Voice Mode, image generation
+- **Privacy** — US-hosted data, GDPR/CCPA compliance, clear legal jurisdiction
+- **Stability** — ChatGPT doesn't experience server saturation during traffic peaks like DeepSeek
+- **Enterprise support** — SLAs, audit logs, dedicated support — essentially non-existent at DeepSeek
 
 ## DeepSeek pros and cons
 
 **✅ Strengths**
 
-- **Completely free in chat** — R1 and V3 accessible without a paid account
-- **Ultra-competitive API** — 10 to 30x cheaper than GPT-5 for comparable performance
-- **Open-source** — weights available, locally deployable, auditable
+- **Completely free in chat** — R1 and V3.2 without a paid account
+- **Ultra-competitive API** — 10 to 30x cheaper than GPT-5.4 for comparable reasoning performance
+- **Open-source** — weights available, locally deployable, independently auditable
 - **Transparent reasoning** — visible Chain-of-Thought, great for learning and verification
 - **High-level technical code** — competes with the best dev assistants on benchmarks
-- **1M token context with V4** — process entire codebases without losing context
+- **Promising V4 architecture** — Engram for long-context, 1M tokens coming
 
 **❌ Weaknesses**
 
-- **Data hosted in China** — a real concern for any sensitive or professional data
-- **Uneven stability** — servers saturate during traffic peaks, frequent timeouts at busy hours
-- **Disappointing creative writing** — Claude and ChatGPT remain significantly better for nuanced text
+- **Data hosted in China** — documented risk for any sensitive or professional data
+- **Uneven stability** — servers saturate during peaks, frequent timeouts at busy hours
+- **Disappointing creative writing** — [Claude and ChatGPT](/en/blog/chatgpt-vs-claude-vs-gemini-2026) remain significantly better
 - **Basic interface** — no persistent memory, few native integrations
-- **Easy to jailbreak** — safety filters are less robust than OpenAI's or Anthropic's
-- **Near-zero customer support** — fast-growing startup, support infrastructure is minimal
+- **Easy to jailbreak** — 100% success rate in Cisco tests, weaker safety filters
+- **V4 not yet released** — circulating benchmarks are unverified
+- **Near-zero customer support** — fast-growing startup, minimal support infrastructure
 
 ## Who is DeepSeek for in 2026?
 
 **DeepSeek is right for you if:**
-
 ✅ You're a developer who wants a powerful code assistant without a monthly subscription
 ✅ You're building AI applications and need a cost-effective API at scale
 ✅ You're doing research or math and want to see step-by-step reasoning
 ✅ You want to run an LLM locally on your own servers with full data privacy
-✅ Your budget is tight and you don't need image generation or voice features
+✅ You're building [automated workflows](/en/comparatifs/n8n-vs-make-vs-zapier-2026) and need a cheap but capable LLM backbone
 
 **DeepSeek is not right for you if:**
-
 ❌ You handle sensitive, professional, medical, or financial data in the cloud
-❌ You need a creative writing assistant — Claude will always be better here
+❌ You need a creative writing assistant — [Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) will always be better here
 ❌ You need a rich ecosystem (integrations, memory, plugins)
 ❌ You're at a company subject to GDPR, HIPAA, or strict sector regulations
 
-## Our final verdict on DeepSeek
+## Our final verdict
 
-DeepSeek represents a **genuine technological breakthrough**, not just hype. The fact that a two-year-old startup trained a model rivaling GPT-4o for $5.5 million has forced the entire industry to reconsider its assumptions about the cost of AI development.
+DeepSeek represents a genuine technological breakthrough. The fact that a two-year-old startup trained a model rivaling GPT-4o for $5.5 million forced the entire industry to reconsider its assumptions about AI development costs — including OpenAI, which raised $122 billion in March 2026 partially in response to this competitive pressure.
 
-For **developers and researchers**, it's probably the best performance-to-price ratio on the market in 2026 — especially if you deploy locally.
+For **developers and researchers**, it's the best performance-to-price ratio on the market in 2026 — especially deployed locally. For **everyday users** looking for a daily AI assistant, the comparison with [ChatGPT or Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) doesn't favor DeepSeek: weaker writing, less stable, fewer features, and legitimate privacy concerns that can't be dismissed.
 
-For **everyday users** looking for a daily AI assistant, the comparison with ChatGPT or Claude doesn't favor DeepSeek: weaker writing, less stable, fewer features, and legitimate privacy questions that can't be dismissed.
-
-**Our rating: 7.8/10** — Technically impressive, revolutionary on price, but serious data security trade-offs that can't be ignored.
+**Our rating: 8/10** — Technically impressive, revolutionary on price, valuable as open-source. Data security trade-offs are serious but manageable via local deployment. Rating bumped from 7.8 to 8 reflecting V3.2's improved maturity and the credible V4 roadmap.
 
 ## DeepSeek FAQ
 
 ### Is DeepSeek really free?
 
-Yes. Access to chat.deepseek.com is completely free with no declared usage limits, giving you access to R1 and V3.2 models including DeepThink mode and web search. The API also offers 5 million free tokens upon registration. There is no paid consumer plan — only usage-based billing for the API.
+Yes. chat.deepseek.com is completely free with access to R1 and V3.2 models, DeepThink mode, and web search. The API provides 5 million free tokens on sign-up. There's no paid consumer plan — only usage-based API billing for developers.
 
 ### Is DeepSeek better than ChatGPT?
 
-On mathematical reasoning and technical code, DeepSeek R1 matches the best OpenAI models — and does it for free. On creative writing, stability, ecosystem richness, and data privacy, ChatGPT holds the advantage. The two tools are complementary depending on your use case, not direct replacements.
+On mathematical reasoning and technical code, DeepSeek R1 matches the best OpenAI models — for free. On creative writing, stability, ecosystem richness, and data privacy, [ChatGPT or Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) holds the advantage. They're complementary tools, not direct replacements.
 
 ### Is DeepSeek safe to use?
 
-It depends on what you use it for. For non-sensitive use (code, math, learning, brainstorming), the risk is relatively low. For professional, client, or sensitive personal data: avoid the cloud version. Conversations are stored in China under Chinese law. Multiple governments and companies have banned it specifically for this reason. If you want the performance without the risk, run the open-source weights locally.
+It depends on what you use it for. Personal non-sensitive queries (code, math, learning): risk is relatively low. Professional, client, or sensitive data: avoid the cloud version. Conversations are stored in China under Chinese law. More than 7 countries and dozens of US agencies have banned it specifically for these reasons. For full performance with full privacy, run the open-source weights locally.
 
 ### Can I run DeepSeek locally?
 
-Yes, and for privacy-conscious organizations this is the real value proposition. The weights for R1 and V3 are open-source and available on Hugging Face. With tools like Ollama or LM Studio, you can run DeepSeek on your own hardware — your data never leaves your servers.
+Yes, and for privacy-conscious organizations this is the real value proposition. R1 and V3 weights are open-source and available on Hugging Face. With Ollama or LM Studio, you can run DeepSeek on your own hardware — your data never leaves your infrastructure. It's the best of both worlds: frontier performance, data sovereignty.
 
-### What is DeepSeek V4?
+### What is DeepSeek V4 and when does it launch?
 
-DeepSeek V4 is the startup's flagship model released in early March 2026. It supports a **1 million token context window** (roughly 750,000 words, or entire codebases), a hybrid reasoning mode, and reaches 83.7% on SWE-bench Verified for coding tasks. Its API costs $0.30/million input tokens — approximately 4x cheaper than Claude Sonnet 4.
+DeepSeek V4 is the next flagship with 1 trillion parameters (MoE), a 1-million-token context window, and a new Engram memory architecture for long-context retrieval. Leaked benchmarks are impressive (80-90% on coding tests) but **not independently verified**. No official release date exists — several anticipated launch windows have passed without a public release. Wait for third-party evaluations before redesigning your stack around it.
       `,
       related: [
         { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "12" },
-        { slug: "perplexity-ai-review-2026", title: "Perplexity AI Review 2026: Is It Worth It vs ChatGPT & Google?", tag: "Chatbots", timeMin: "13" },
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI Review 2026: Comet Browser, Model Council & ChatGPT Comparison", tag: "Chatbots", timeMin: "15" },
         { slug: "alternatives-gratuites-chatgpt", title: "7 best free alternatives to ChatGPT", tag: "Chatbots", timeMin: "7" },
+        { slug: "sora-fermeture-openai-2026", title: "Sora Is Dead: OpenAI Kills Its AI Video App", tag: "Chatbots", timeMin: "12" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "12" },
+        { slug: "claude-mythos-next-anthropic-2026", title: "Claude Mythos: Anthropic's Next Model Leaked", tag: "Chatbots", timeMin: "12" },
       ],
     },
   },
@@ -3254,8 +4226,8 @@ DeepSeek V4 is the startup's flagship model released in early March 2026. It sup
   {
     slug: "perplexity-ai-review-2026",
     tag: "Chatbots",
-    date: { fr: "25 mars 2026", en: "March 25, 2026" },
-    timeMin: "13",
+    date: { fr: "1er avril 2026", en: "April 1, 2026" },
+    timeMin: "15",
     featured: true,
     affiliate: {
       url: "https://perplexity.ai",
@@ -3266,18 +4238,18 @@ DeepSeek V4 is the startup's flagship model released in early March 2026. It sup
       },
     },
     fr: {
-      title: "Perplexity AI : avis 2026, est-il meilleur que ChatGPT et Google ?",
-      desc: "On a testé Perplexity AI pendant un mois en conditions réelles. Sources citées, Perplexity Pro, Perplexity Computer — notre verdict complet et honnête face à ChatGPT et Google.",
+      title: "Perplexity AI : avis complet 2026, est-il meilleur que ChatGPT et Google ?",
+      desc: "On a testé Perplexity AI en conditions réelles pendant un mois. Sources citées, Model Council, Comet Browser, Perplexity Computer — notre verdict honnête et à jour d'avril 2026.",
       metaTitle: "Perplexity AI : avis complet 2026 vs ChatGPT et Google | Neuriflux",
-      metaDesc: "Notre avis complet sur Perplexity AI en 2026. Comparatif vs ChatGPT et Google, test du plan Pro (20$/mois), Perplexity Computer — est-ce vraiment le meilleur moteur de recherche IA ?",
+      metaDesc: "Notre avis complet sur Perplexity AI en avril 2026. Comparatif vs ChatGPT et Google, Comet Browser, Model Council, Pro à 20$/mois — est-ce le meilleur moteur de recherche IA du moment ?",
       content: `
 ## C'est quoi Perplexity AI ?
 
-Perplexity AI est un **moteur de recherche propulsé par l'IA** qui répond à vos questions en langage naturel en citant ses sources en temps réel. Contrairement à ChatGPT qui génère des réponses à partir de données d'entraînement statiques — et qui peut donc inventer des informations — Perplexity interroge le web en direct et vous donne des réponses vérifiables, chaque affirmation étant liée à sa source originale.
+Perplexity AI est un **moteur de recherche propulsé par l'IA** qui répond à vos questions en langage naturel en citant ses sources en temps réel. Contrairement à [ChatGPT](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) — qui génère des réponses à partir de données d'entraînement statiques et peut donc inventer des informations — Perplexity interroge le web en direct et vous donne des réponses vérifiables, chaque affirmation étant liée à sa source originale.
 
-Fondé en 2022 par d'anciens ingénieurs d'OpenAI et Google, Perplexity a connu une croissance spectaculaire : **500 millions de requêtes par mois** début 2026, une valorisation de 20 milliards de dollars après sa série E-6, et le lancement en février 2026 de **Perplexity Computer** — un agent IA autonome coordonnant 19 modèles simultanément.
+Fondé en 2022 par d'anciens ingénieurs d'OpenAI et Google, Perplexity a connu une croissance spectaculaire : **500 millions de requêtes par mois** début 2026, une valorisation de 21 milliards de dollars, et une série de lancements majeurs en 2026 qui ont fondamentalement changé sa nature. Ce n'est plus juste un moteur de recherche IA — c'est une plateforme complète avec un navigateur, un agent autonome, et un accès multi-modèles frontier.
 
-Après un mois d'utilisation intensive — recherche professionnelle, veille concurrentielle, analyse financière — voici notre verdict complet.
+Après un mois d'utilisation intensive — recherche professionnelle, veille concurrentielle, analyse financière, test de Comet et de Model Council — voici notre verdict complet mis à jour pour avril 2026.
 
 ## Tableau comparatif : Perplexity vs ChatGPT vs Claude vs Google
 
@@ -3288,178 +4260,212 @@ Après un mois d'utilisation intensive — recherche professionnelle, veille con
 | Qualité de rédaction | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
 | Analyse de documents | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
 | Code & technique | ⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Navigateur IA intégré | ✅ Comet (gratuit) | ❌ | ❌ | ✅ Chrome AI |
 | Agents IA autonomes | ✅ Computer | ❌ | ❌ | ❌ |
-| Accès multi-modèles | ✅ GPT, Claude, Mistral | ❌ | ❌ | ❌ |
+| Multi-modèles simultanés | ✅ Model Council | ❌ | ❌ | ❌ |
 | Prix mensuel | 20$/mois | 20$/mois | 20$/mois | 19.99$/mois |
 | Version gratuite | ✅ Généreuse | ✅ Limitée | ✅ Limitée | ✅ Généreuse |
+
+## Ce qui a changé depuis début 2026
+
+Avant de plonger dans les fonctionnalités, un point important : Perplexity a considérablement évolué depuis le début de l'année. Si vous avez lu un avis daté de 2025, il est probablement obsolète sur plusieurs points clés.
+
+**Fin de la publicité dans les réponses** : Perplexity a officiellement pivoté vers un modèle subscription-first en février 2026, abandonnant les publicités intégrées dans les réponses. Décision stratégique pour préserver la confiance des utilisateurs — et signal que la compagnie mise sur l'abonnement plutôt que sur la monétisation de l'attention.
+
+**Comet Browser disponible gratuitement** : lancé en desktop, le navigateur Comet est désormais gratuit sur iOS (depuis le 18 mars 2026) et Android. Il a atteint le top 3 de l'App Store américain dans les 48h après son lancement public — un signal de traction rare.
+
+**Perplexity préinstallé sur Samsung Galaxy S26** : première entreprise non-Google à obtenir un accès OS-level sur Samsung. Le Galaxy S26 intègre Perplexity via "Hey Plex", Bixby utilise Perplexity pour la recherche web, et Samsung Internet l'intègre comme moteur de recherche alternatif.
+
+**Model Council** : nouvelle fonctionnalité qui fait tourner 3 modèles frontier simultanément sur votre requête, compare les réponses, et les synthétise. Disponible pour les abonnés Max.
 
 ## Les fonctionnalités clés de Perplexity AI
 
 ### Citations et sources — la fonctionnalité qui change tout
 
-La fonctionnalité fondatrice de Perplexity, c'est sa **transparence absolue sur les sources**. Chaque phrase de chaque réponse est numérotée et liée à la page web qui la supporte. Vous pouvez vérifier chaque affirmation en un clic — quelque chose que vous ne pouvez tout simplement pas faire avec ChatGPT ou Claude.
+La fonctionnalité fondatrice de Perplexity reste sa **transparence absolue sur les sources**. Chaque phrase de chaque réponse est numérotée et liée à la page web qui la supporte. Vous pouvez vérifier chaque affirmation en un clic — quelque chose que vous ne pouvez tout simplement pas faire avec [ChatGPT ou Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026).
 
-Dans la pratique, ça change radicalement votre façon de travailler. Sur Product Hunt, les utilisateurs le décrivent comme "le meilleur outil IA pour citer des sources" et "presque entièrement remplacé ma recherche web habituelle". Ce n'est pas du tout de l'hyperbole.
+Dans la pratique, ça change radicalement votre façon de travailler. Pour la recherche professionnelle ou journalistique, cette vérifiabilité est indispensable. Pour le simple fait d'utilisation quotidienne, ça élimine l'anxiété liée aux hallucinations — vous savez exactement d'où vient chaque information.
 
 ### Pro Search — la recherche approfondie multi-sources
 
-Le mode **Pro Search** va bien au-delà d'une requête simple. Il décompose votre question en sous-requêtes complémentaires, interroge plusieurs sources en parallèle, maintient le contexte entre les questions de suivi, et synthétise une réponse structurée. C'est l'équivalent d'un assistant de recherche qui passe 20 minutes à fouiller le web pour vous, sans les résultats sponsorisés.
+Le mode **Pro Search** décompose votre question en sous-requêtes complémentaires, interroge plusieurs sources en parallèle, maintient le contexte entre les questions de suivi, et synthétise une réponse structurée. C'est l'équivalent d'un assistant de recherche qui passe 20 minutes à fouiller le web pour vous, sans les résultats sponsorisés.
 
-Testé sur "Quel est le meilleur outil IA pour créer des vidéos en mars 2026 ?" : résultat en 30 secondes, 800 mots, 12 sources, comparatif structuré. Google aurait renvoyé 10 liens à ouvrir séparément.
+Testé sur "Quel est le meilleur outil vibe coding en mars 2026 ?" : résultat en 35 secondes, 900 mots, 14 sources, comparatif structuré avec tableau. Si ce sujet vous intéresse, notre [comparatif des meilleurs outils vibe coding](/fr/blog/vibe-coding-tools-2026) complète parfaitement cette recherche.
+
+### Model Council — 3 IA en simultané (nouveau en 2026)
+
+**Model Council** est la nouvelle fonctionnalité qui change la donne pour la recherche professionnelle. Au lieu d'interroger un seul modèle, Perplexity exécute votre requête sur trois modèles frontier simultanément — GPT-5.2, Claude Opus 4.6, Gemini 3.1 Pro — et présente les résultats côte à côte avant de les synthétiser.
+
+Un modèle séparé analyse ensuite où les trois convergent et où ils divergent. Pour la recherche d'investissement, l'analyse stratégique, ou toute décision à fort enjeu, avoir trois perspectives frontier sur la même question en 60 secondes est une proposition difficile à battre. Disponible pour les abonnés Max uniquement.
+
+### Deep Research — mis à jour en février 2026
+
+Deep Research a reçu une mise à jour majeure en février 2026 : il tourne désormais sur Opus 4.5 pour les abonnés Max et Pro, avec des performances state-of-the-art sur les benchmarks Google DeepMind Deep Search QA et Scale AI Research Rubric.
+
+La mise à jour de mars 2026 a ajouté une capacité encore plus puissante : **Deep Research génère maintenant directement des livrables** — présentations PowerPoint, feuilles de calcul, tableaux de bord, et sites web — à partir de vos prompts de recherche. Plus besoin de copier-coller dans d'autres outils.
+
+### Comet Browser — le navigateur IA gratuit (mars 2026)
+
+**Comet** est peut-être le plus gros changement dans l'écosystème Perplexity depuis sa création. C'est un navigateur web complet — disponible gratuitement sur iOS, Android, Windows et Mac — qui intègre l'IA directement dans l'expérience de navigation.
+
+Quand vous visitez une page web dans Comet, un assistant contextuel est disponible en permanence. Demandez-lui de résumer l'article que vous lisez, de comparer les prix sur une page e-commerce, ou de chercher des informations complémentaires sans quitter l'onglet. La recherche et la navigation fusionnent en une seule expérience.
+
+Les fonctionnalités clés de Comet : assistant contextuel conscient de l'onglet actif, mode voix, Deep Research intégré, synchronisation cross-device (commencez sur desktop, continuez sur mobile), et prise en charge des tâches agentiques multi-étapes.
+
+**Point de vigilance** : Perplexity collecte l'historique de navigation et de recherche dans Comet pour créer des profils publicitaires. Il n'existe pas d'option de désactivation dans l'application pour l'instant. À peser selon votre rapport vie privée/praticité.
 
 ### Accès multi-modèles sur le plan Pro
 
-Le plan Pro donne accès à **GPT-4o, Claude 3.5 Sonnet, Mistral Large et les modèles Sonar** de Perplexity dans la même interface. Vous pouvez choisir le modèle selon la tâche : Claude pour les textes nuancés, GPT-4o pour la logique complexe, Sonar pour la recherche rapide. C'est comme avoir plusieurs abonnements IA en un seul.
+Le plan Pro donne accès à **Claude Sonnet 4.6, GPT-4o, Mistral Large et les modèles Sonar** de Perplexity dans la même interface. Le plan Max accède à Claude Opus 4.6 et GPT-5.2 pour les tâches les plus complexes.
 
-### Modes spécialisés : Finance, Academic, Writing
+Choisir le modèle selon la tâche : Claude pour les textes nuancés et la rédaction créative (notre avis complet sur [Claude](/fr/comparatifs/chatgpt-vs-claude-vs-gemini)), GPT pour la logique et le raisonnement complexe, Sonar pour la recherche web rapide.
 
-**Finance** : graphiques boursiers en temps réel, filings SEC, synthèse de rapports de résultats. C'est un Bloomberg allégé, conversationnel et gratuit. Pour suivre l'actualité d'une entreprise ou analyser un secteur, rien d'autre ne rivalise.
+### Perplexity Finance — Bloomberg allégé et conversationnel
 
-**Academic** : recherche dans les bases de données scientifiques (PubMed, arXiv, etc.) pour éviter les sources SEO-spammées sur les sujets pointus.
+Le mode Finance a été enrichi en mars 2026 avec les **notations d'analystes** (consensus, objectifs de cours à 52 semaines), les liens directs vers les filings SEC pré-scrollés à la page pertinente, et des graphiques boursiers en temps réel avec synthèse de l'actualité.
 
-**Writing** : aide à la rédaction avec sources intégrées — utile pour créer des briefs sourcés ou des premières ébauches d'articles.
+Pour suivre un portefeuille, analyser un secteur, ou préparer une réunion avec des données actuelles, Perplexity Finance est un des meilleurs outils gratuits du marché. Si vous utilisez des [outils d'automatisation](/fr/comparatifs/n8n-vs-make-vs-zapier-2026) pour vos workflows financiers, Perplexity s'intègre naturellement.
 
-### Perplexity Pages — transformer une recherche en contenu
+### Perplexity Computer — l'agent IA autonome (plan Max)
 
-**Pages** convertit n'importe quel thread de recherche en une page web structurée, sourcée et partageable en un clic. Pour créer des rapports, des analyses sectorielles ou des briefs clients rapidement, c'est d'une efficacité redoutable.
+Lancé le **25 février 2026** et réservé aux abonnés Max (200$/mois), **Perplexity Computer** coordonne **19 modèles d'IA simultanément** dans un environnement cloud sécurisé avec 400+ intégrations et connexions MCP personnalisées.
 
-### Perplexity Computer — l'agent IA autonome (février 2026)
+Depuis mars 2026, Computer prend en charge le **mode voix** : décrivez oralement votre objectif, donnez des retours en cours d'exécution, redirigez sans taper.
 
-Lancé le **25 février 2026** et réservé aux abonnés Max (200$/mois), **Perplexity Computer** est l'ambition la plus folle du marché IA grand public. Il coordonne **19 modèles d'IA simultanément** — Claude Opus pour le raisonnement, Gemini pour la recherche web, des modèles spécialisés pour les images et vidéos — dans un environnement cloud sécurisé avec 400+ intégrations d'applications.
-
-Le principe : vous décrivez un objectif complexe ("analyse la concurrence de mon SaaS et prépare une stratégie go-to-market"), Perplexity Computer décompose la tâche en sous-tâches parallèles, les exécute sur les meilleurs modèles disponibles, et vous livre un résultat complet — potentiellement en plusieurs heures, sans intervention humaine.
-
-**Est-ce que ça marche vraiment ?** Partiellement. Pour les workflows de recherche et de création de documents structurés, les résultats sont impressionnants. Pour les tâches nécessitant une précision numérique ou une logique conditionnelle complexe, les résultats sont inégaux. À 200$/mois, l'outil est encore en rodage — mais la direction est clairement la bonne.
+**Est-ce que ça marche vraiment ?** Partiellement. Pour les workflows de recherche intensive et la création de documents structurés, les résultats sont impressionnants. Pour les tâches nécessitant une précision numérique ou une logique conditionnelle complexe, c'est encore inégal. À 200$/mois, attendez encore quelques mois si vous n'avez pas de workflows de recherche très intensifs.
 
 ## Les tarifs de Perplexity AI en 2026
 
 | Plan | Prix | Ce qu'il inclut |
 |---|---|---|
-| Free | Gratuit | Recherche illimitée basique, 5 Pro Searches/jour, modèle Sonar |
-| Pro | 20$/mois (ou 200$/an) | Pro Searches illimités, GPT-4o, Claude 3.5, Mistral, uploads fichiers, Spaces |
-| Max | 200$/mois (ou 2 000$/an) | Perplexity Computer, Labs illimités, accès prioritaire, tous modèles |
-| Enterprise Pro | 40$/siège/mois | Collaboration équipe, SSO, sécurité renforcée, audit logs |
-| Enterprise Max | 325$/siège/mois | Computer à l'échelle entreprise, SCIM, contrôles compliance |
+| **Free** | Gratuit | Recherche illimitée basique, 5 Pro Searches/jour, Comet Browser |
+| **Pro** | 20$/mois (ou 200$/an) | Pro Searches illimités, Claude Sonnet 4.6, GPT-4o, Mistral, uploads, Spaces, Deep Research 20/mois |
+| **Max** | 200$/mois | Computer, Model Council, Claude Opus 4.6, Deep Research illimité, Comet avancé |
+| **Enterprise Pro** | 40$/siège/mois | SSO, audit logs, contrôles admin, mémoire enterprise |
+| **Enterprise Max** | 325$/siège/mois | Computer enterprise, SCIM, compliance avancée |
 
-**Attention** : Perplexity a récemment modifié ses plans sans notification préalable. Des utilisateurs sur Trustpilot signalent que la fonctionnalité Deep Research a été réduite de 200 à 20 requêtes/mois sans annonce, et que le prix Pro est passé de 20$ à 17$ mais avec des limites plus strictes. À surveiller.
+**À noter** : le plan Pro a vu ses Pro Searches réduites à environ 200/semaine (contre plus avant), et le Deep Research est plafonné à 20/mois. Les crédits API inclus dans le Pro se limitent à 5$/mois. Vérifiez la page officielle avant de vous engager sur un abonnement annuel.
 
-## Perplexity vs ChatGPT : comparatif détaillé
+## Perplexity vs ChatGPT : comparatif honnête
 
-C'est la comparaison que tout le monde cherche. Voici la réponse honnête, cas d'usage par cas d'usage.
+C'est la comparaison que tout le monde cherche. Notre verdict cas d'usage par cas d'usage.
 
 **Perplexity gagne clairement sur :**
-- Recherche factuelle en temps réel — Perplexity a accès au web en direct, ChatGPT s'arrête à sa date d'entraînement
-- Sources citées — chaque affirmation est vérifiable, ChatGPT peut inventer des faits avec assurance
-- Veille d'actualité — parfait pour "que s'est-il passé cette semaine dans le domaine X ?"
-- Prix de revient — accès à GPT-4o + Claude + Mistral pour 20$/mois vs 20$/mois pour un seul modèle
+- Recherche factuelle en temps réel — Perplexity a accès au web en direct là où [ChatGPT](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) s'arrête à sa date d'entraînement
+- Sources citées et vérifiables — chaque affirmation est cliquable, ChatGPT peut inventer avec assurance
+- Veille sectorielle et actualité — parfait pour "que s'est-il passé cette semaine dans le domaine X ?"
+- Rapport prix/valeur — accès à GPT-4o + Claude + Mistral pour 20$/mois vs un seul modèle ailleurs
+- Navigation IA avec Comet — fonctionnalité sans équivalent direct chez les concurrents
 
-**ChatGPT (ou [Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026)) gagne clairement sur :**
-- Rédaction créative et nuancée — aucun outil ne bat Claude sur la qualité des textes
-- Code et débugging — ChatGPT reste la référence pour les développeurs
-- Conversations longues et mémorisation de contexte
+**ChatGPT ou [Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) gagnent clairement sur :**
+- Rédaction créative et nuancée — aucun outil ne bat Claude sur la qualité des textes longs
+- Code et debugging — ChatGPT et Claude restent la référence pour les développeurs
+- Conversations longues avec mémorisation de contexte
 - Tâches qui ne nécessitent pas de données en temps réel
 
-**Le verdict pour 2026 :** ce ne sont pas des outils concurrents, ce sont complémentaires. Perplexity pour chercher et vérifier, ChatGPT ou Claude pour créer et coder.
+**Le verdict pour 2026 :** ce ne sont pas des outils concurrents, ils sont complémentaires. Perplexity pour chercher et vérifier, ChatGPT ou Claude pour créer et coder. Notre [comparatif complet ChatGPT vs Claude vs Gemini](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) vous aide à choisir selon votre profil principal.
 
 ## Perplexity vs Google Search : peut-il remplacer Google ?
 
-C'est la vraie question derrière la popularité de Perplexity. La réponse honnête est : **partiellement, et de façon croissante**.
+La réponse honnête : **partiellement, et de plus en plus**.
 
-**Où Perplexity est supérieur à Google :**
-- Requêtes informatives complexes qui nécessitent une synthèse de plusieurs sources
-- Recherche sans publicité — zéro résultat sponsorisé dans les réponses
+**Où Perplexity surpasse Google :**
+- Requêtes complexes nécessitant une synthèse multi-sources
+- Recherche sans publicité — zéro résultat sponsorisé
 - Questions de suivi conversationnelles — Perplexity maintient le contexte, Google repart de zéro
-- Actualité sectorielle et financière — la synthèse est meilleure que les 10 liens bleus
+- Actualité sectorielle et financière — synthèse plus utile que les 10 liens bleus
 
 **Où Google reste imbattable :**
-- Recherches locales (restaurants, magasins, itinéraires)
-- Shopping et comparaison de produits e-commerce
-- Navigation et recherche de sites spécifiques
-- Requêtes très courtes et pratiques ("météo Paris", "heure à Tokyo")
+- Recherches locales (restaurants, horaires, itinéraires)
+- Shopping et comparaison e-commerce
+- Navigation vers des sites spécifiques
+- Requêtes ultra-courtes et pratiques ("météo Lyon", "heure Tokyo")
 
-**Notre utilisation quotidienne en 2026 :** Perplexity pour la recherche et l'analyse approfondie, Google pour tout le reste. Les deux coexistent et se complètent.
+**Notre usage quotidien :** Perplexity (via Comet) pour la recherche et l'analyse, Google pour le local et le shopping. Les deux coexistent — mais l'écart se réduit.
 
 ## Perplexity AI : avantages et inconvénients
 
 **✅ Points forts**
 
-- **Sources cliquables et vérifiables** sur chaque réponse — la fonctionnalité la plus unique du marché
-- **Version gratuite généreuse** : 5 Pro Searches/jour, suffisant pour un usage régulier
-- **Accès multi-modèles** (GPT-4o, Claude 3.5, Mistral) en un seul abonnement à 20$/mois
-- **Perplexity Finance** : analyse financière en temps réel, sans abonnement Bloomberg
-- **Rapidité d'exécution** : réponses en quelques secondes même en mode Pro Search
-- **Interface propre** : zéro publicité, zéro distraction, navigation intuitive
+- **Sources cliquables et vérifiables** sur chaque réponse — la feature la plus différenciante du marché
+- **Comet Browser gratuit** — navigateur IA disponible sur toutes les plateformes depuis mars 2026
+- **Model Council** — 3 modèles frontier simultanément pour une vérification croisée
+- **Version gratuite généreuse** — 5 Pro Searches/jour + Comet sans abonnement
+- **Perplexity Finance** — analyse boursière temps réel, filings SEC, notations analystes
+- **Samsung Galaxy S26** — intégration native, premier non-Google sur Samsung OS
+- **Zéro publicité dans les réponses** — pivot stratégique confirmé en février 2026
 
 **❌ Points faibles**
 
-- **Pas fait pour la rédaction créative** : Claude et ChatGPT restent très supérieurs
-- **Sources parfois insuffisantes** : sur des sujets très pointus, Perplexity peut citer des pages d'accueil plutôt que des articles précis
-- **Changements de plan sans avertissement** : historique de modifications tarifaires sans notification (Trustpilot, mars 2026)
-- **Perplexity Computer encore en rodage** : à 200$/mois, la fiabilité n'est pas encore au niveau attendu
-- **Interface mobile imparfaite** : quelques frictions sur les uploads de fichiers
-- **Pas de code exécutable** : contrairement à ChatGPT, impossible de faire tourner du code directement
+- **Pas conçu pour la rédaction créative** — [Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) et ChatGPT restent très supérieurs
+- **Pro Searches limitées** — environ 200/semaine sur Pro, 20 Deep Research/mois
+- **Collecte de données dans Comet** — historique utilisé pour le ciblage publicitaire, pas d'opt-out
+- **Computer encore en rodage** — 200$/mois pour un outil qui n'est pas encore fiable sur toutes les tâches
+- **API credits minimalistes** — seulement 5$/mois inclus dans le plan Pro
+- **Pas de code exécutable** — contrairement à ChatGPT, impossible de faire tourner du code
 
 ## Perplexity AI vaut-il le coup en 2026 ?
 
-**Oui, pour la plupart des professionnels de l'information.** Le plan Pro à 20$/mois est une évidence si vous faites régulièrement de la veille, de la recherche ou de l'analyse. Le fait d'avoir GPT-4o, Claude 3.5 et Mistral dans la même interface pour le prix d'un seul abonnement est déjà une proposition de valeur difficile à battre.
+**Oui, pour la plupart des professionnels de l'information.** Le plan Pro à 20$/mois est une évidence pour la veille, la recherche et l'analyse régulières. GPT-4o + Claude Sonnet 4.6 + Mistral dans la même interface pour le prix d'un seul abonnement, plus le Deep Research et le Comet Browser, c'est une proposition difficile à battre.
 
-**Non, si vous cherchez principalement un assistant de rédaction.** Dans ce cas, Claude à 20$/mois ou ChatGPT Plus donnent de meilleurs résultats. Consultez notre [comparatif complet ChatGPT vs Claude vs Gemini](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) pour choisir.
+**Non, si vous cherchez principalement un assistant de rédaction.** Claude Pro à 20$/mois ou ChatGPT Plus donnent de meilleurs résultats pour la création de contenu. Consultez notre [comparatif ChatGPT vs Claude vs Gemini](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) pour choisir.
 
-**Commencez par la version gratuite.** Les 5 Pro Searches/jour sont suffisants pour évaluer l'outil avant de payer. La plupart des utilisateurs qui testent finissent par garder l'onglet ouvert en permanence.
+**Commencez par Comet en gratuit.** Le navigateur est maintenant totalement gratuit — c'est le meilleur moyen de tester Perplexity dans votre usage quotidien sans débourser un centime.
 
-**Pour Perplexity Computer à 200$/mois** : attendez encore 6 mois. Le produit est prometteur mais trop instable pour justifier ce prix en mars 2026, sauf si vous avez des workflows de recherche extrêmement intensifs.
+**Pour le plan Max à 200$/mois** : justifié uniquement si vous utilisez Model Council quotidiennement pour de la recherche stratégique et que Computer remplace un analyste junior dans vos workflows.
 
-## Notre verdict final sur Perplexity AI
+## Notre verdict final
 
-Perplexity AI est **l'outil de recherche IA indispensable de 2026**. Il ne remplace pas ChatGPT ou Claude — il comble un angle mort que ces outils ne couvrent pas : la recherche factuelle vérifiable en temps réel.
+Perplexity AI est **l'outil de recherche IA indispensable de 2026**, et il est devenu bien plus que ça. Entre Comet qui redéfinit la navigation web, Model Council qui apporte la vérification croisée frontier, et Perplexity Computer qui vise l'autonomie complète sur des workflows complexes, la plateforme a changé de dimension en l'espace de quelques mois.
 
-Pour les chercheurs, journalistes, analystes, consultants, marketeurs et tous ceux dont le métier repose sur des informations fraîches et fiables, Perplexity Pro à 20$/mois est un des meilleurs investissements IA du moment.
+Pour les chercheurs, journalistes, analystes et tous ceux dont le travail repose sur des informations fraîches et vérifiables : Perplexity Pro à 20$/mois est un des meilleurs investissements IA actuels. Pour la rédaction créative ou le code, restez sur [Claude ou ChatGPT](/fr/blog/chatgpt-vs-claude-vs-gemini-2026).
 
-Pour la rédaction créative, le code ou les tâches qui ne nécessitent pas de données en temps réel, restez sur Claude ou ChatGPT.
-
-**Notre note : 8.5/10** — Indispensable pour la recherche. Insuffisant pour la création. Le meilleur rapport qualité/prix du marché IA pour les knowledge workers.
+**Notre note : 9/10** — Recherche et vérification sans égal. L'écosystème 2026 (Comet, Model Council, Computer) change la nature même de l'outil. Insuffisant seul pour la création — indispensable comme couche recherche de votre stack IA.
 
 ## FAQ Perplexity AI
 
 ### Perplexity AI est-il meilleur que ChatGPT ?
 
-Ça dépend de l'usage. Pour la recherche factuelle, la veille et les données en temps réel, Perplexity est nettement supérieur — ses réponses sont sourcées et vérifiables là où ChatGPT peut inventer. Pour la rédaction créative, le code et les conversations longues, ChatGPT ou Claude restent supérieurs. Les deux outils sont complémentaires.
+Ça dépend de l'usage. Pour la recherche factuelle, la veille et les données en temps réel avec sources vérifiables, Perplexity est nettement supérieur. Pour la rédaction créative, le code et les conversations longues, [ChatGPT ou Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) restent supérieurs. Les deux sont complémentaires.
 
-### Perplexity AI est-il gratuit ?
+### C'est quoi le Comet Browser de Perplexity ?
 
-Oui. Le plan gratuit inclut des recherches illimitées en mode basique et 5 Pro Searches par jour — suffisant pour un usage occasionnel. Le plan Pro (20$/mois) débloque les Pro Searches illimités, l'accès à GPT-4o, Claude 3.5 et Mistral, les uploads de fichiers et les Spaces.
+Comet est le navigateur web développé par Perplexity, disponible gratuitement depuis mars 2026 sur iOS, Android, Windows et Mac. Il intègre l'IA directement dans la navigation : assistant contextuel conscient de votre onglet, Deep Research, mode voix, et tâches agentiques multi-étapes. Il a atteint le top 3 de l'App Store US lors de son lancement iOS.
 
-### Perplexity peut-il remplacer Google ?
+### Qu'est-ce que le Model Council ?
 
-Partiellement. Perplexity est meilleur que Google pour les requêtes informatives complexes, l'actualité sectorielle et les recherches qui nécessitent une synthèse multi-sources. Google reste imbattable pour les recherches locales, le shopping et la navigation. En pratique en 2026, la plupart des power users utilisent les deux selon le type de requête.
+Model Council est une fonctionnalité exclusive au plan Max qui exécute votre requête sur trois modèles frontier simultanément (GPT-5.2, Claude Opus 4.6, Gemini 3.1 Pro), compare les réponses, et les synthétise. Un quatrième modèle analyse les convergences et divergences. Idéal pour la recherche d'investissement ou toute décision à fort enjeu.
 
 ### Perplexity Pro vaut-il le coup à 20$/mois ?
 
-Oui, pour un usage professionnel régulier. À ce prix, vous avez accès à GPT-4o, Claude 3.5 Sonnet et Mistral dans la même interface, des Pro Searches illimités avec sources citées, et les uploads de documents. C'est un des meilleurs rapports qualité/prix du marché IA en 2026 — à condition de ne pas chercher un assistant de rédaction créative.
+Oui, pour un usage professionnel régulier. Pour ce prix : accès à Claude Sonnet 4.6, GPT-4o et Mistral, Pro Searches illimités avec sources citées, uploads de documents, Deep Research (20/mois), et Comet Browser. Un des meilleurs rapports qualité/prix IA en 2026 pour les knowledge workers.
 
-### Qu'est-ce que Perplexity Computer ?
+### Quelle est la différence entre Perplexity Pro et Max ?
 
-Perplexity Computer est un agent IA autonome lancé le 25 février 2026, disponible sur le plan Max (200$/mois). Il coordonne 19 modèles d'IA simultanément pour accomplir des tâches complexes de bout en bout — recherche, analyse, création de documents, workflows automatisés — sans intervention humaine. Prometteur mais encore en rodage en mars 2026.
+Pro (20$/mois) : accès aux modèles milieu de gamme, Pro Search illimité, Deep Research limité à 20/mois. Max (200$/mois) : Perplexity Computer, Model Council, accès aux modèles flagship (Claude Opus 4.6, GPT-5.2), Deep Research illimité, et Comet avancé. Max est justifié uniquement pour un usage professionnel intensif.
       `,
       related: [
         { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "12" },
+        { slug: "deepseek-review-2026", title: "DeepSeek : avis 2026, le meilleur ChatGPT gratuit venu de Chine ?", tag: "Chatbots", timeMin: "12" },
         { slug: "alternatives-gratuites-chatgpt", title: "Les 7 meilleures alternatives gratuites à ChatGPT", tag: "Chatbots", timeMin: "7" },
-        { slug: "cursor-ai-review-2026", title: "Cursor AI : le meilleur assistant dev en 2026 ?", tag: "Code", timeMin: "9" },
+        { slug: "sora-fermeture-openai-2026", title: "Sora est mort : OpenAI abandonne son générateur vidéo IA", tag: "Chatbots", timeMin: "12" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "12" },
+        { slug: "claude-mythos-next-anthropic-2026", title: "Claude Mythos : le prochain modèle Anthropic leaké", tag: "Chatbots", timeMin: "12" },
       ],
     },
     en: {
-      title: "Perplexity AI Review 2026: Is It Worth It vs ChatGPT & Google?",
-      desc: "We tested Perplexity AI for a month in real conditions. Sourced search, Perplexity Pro, Perplexity Computer — our complete and honest verdict vs ChatGPT and Google.",
-      metaTitle: "Perplexity AI Review 2026: Worth It vs ChatGPT & Google? | Neuriflux",
-      metaDesc: "Our complete Perplexity AI review for 2026. Detailed comparison vs ChatGPT and Google, Pro plan test ($20/month), Perplexity Computer — is it really the best AI search engine?",
+      title: "Perplexity AI Review 2026: Comet Browser, Model Council & Is It Better Than ChatGPT?",
+      desc: "We tested Perplexity AI for a month in real conditions. Comet Browser, Model Council, Deep Research, Computer Agent — our complete and honest verdict updated for April 2026.",
+      metaTitle: "Perplexity AI Review 2026: Comet, Model Council & ChatGPT Comparison | Neuriflux",
+      metaDesc: "Full Perplexity AI review for April 2026. Comet Browser (free), Model Council, Pro at $20/month, Computer agent — is it the best AI research tool right now? Honest verdict vs ChatGPT and Google.",
       content: `
 ## What is Perplexity AI?
 
-Perplexity AI is an **AI-powered search engine** that answers your questions in natural language while citing real-time sources. Unlike ChatGPT which generates responses from static training data — and can therefore hallucinate information — Perplexity queries the live web and gives you verifiable answers, with every claim linked to its original source.
+Perplexity AI is an **AI-powered search engine** that answers your questions in natural language while citing real-time sources. Unlike [ChatGPT](/en/blog/chatgpt-vs-claude-vs-gemini-2026) — which generates responses from static training data and can confidently hallucinate — Perplexity queries the live web and gives you verifiable answers, with every claim linked to its original source.
 
-Founded in 2022 by former OpenAI and Google engineers, Perplexity has seen spectacular growth: **500 million monthly queries** in early 2026, a $20 billion valuation after its Series E-6 round, and the February 2026 launch of **Perplexity Computer** — an autonomous AI agent coordinating 19 models simultaneously.
+Founded in 2022 by former OpenAI and Google engineers, Perplexity has grown into something far more ambitious: a $21 billion platform processing hundreds of millions of monthly queries, with a standalone browser, a multi-agent AI system, and native integration on Samsung's Galaxy S26. If you read a Perplexity review from 2025, it's already outdated.
 
-After a month of intensive use — professional research, competitive intelligence, financial analysis — here's our complete verdict.
+After a month of intensive real-world testing — professional research, competitive intelligence, financial analysis, Comet Browser, and Model Council — here's our complete verdict updated for April 2026.
 
 ## Comparison table: Perplexity vs ChatGPT vs Claude vs Google
 
@@ -3470,163 +4476,173 @@ After a month of intensive use — professional research, competitive intelligen
 | Writing quality | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
 | Document analysis | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
 | Code & technical | ⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
-| Autonomous AI agents | ✅ Computer | ❌ | ❌ | ❌ |
-| Multi-model access | ✅ GPT, Claude, Mistral | ❌ | ❌ | ❌ |
+| Built-in AI browser | ✅ Comet (free) | ❌ | ❌ | ✅ Chrome AI |
+| Autonomous AI agent | ✅ Computer | ❌ | ❌ | ❌ |
+| Multi-model simultaneously | ✅ Model Council | ❌ | ❌ | ❌ |
 | Monthly price | $20/month | $20/month | $20/month | $19.99/month |
 | Free plan | ✅ Generous | ✅ Limited | ✅ Limited | ✅ Generous |
+
+## What changed in 2026
+
+Before diving into features, a critical context: Perplexity has fundamentally evolved in 2026. Reviews from late 2025 miss several major shifts.
+
+**Advertising dropped from answers**: Perplexity officially pivoted to a subscription-first model in February 2026, removing ads from responses. The company framed this as a trust decision — and it signals a genuine commitment to accuracy over reach.
+
+**Comet Browser now free**: launched as a premium $200/month desktop product, Comet is now free on iOS (March 18, 2026), Android, Windows, and Mac. It hit #3 Overall on the US App Store within 48 hours of its public iOS launch — a rare viral moment for a browser.
+
+**Perplexity pre-installed on Samsung Galaxy S26**: the first non-Google company to receive OS-level access on a Samsung device. "Hey Plex" launches instantly, Bixby uses Perplexity for web search, and Samsung Internet supports Perplexity as a default search option.
+
+**Model Council**: new feature that runs three frontier models simultaneously on your query, compares outputs side by side, and synthesizes them. Max subscribers only.
 
 ## Key features of Perplexity AI
 
 ### Citations and sources — the feature that changes everything
 
-Perplexity's foundational feature is its **absolute transparency about sources**. Every sentence of every response is numbered and linked to the supporting webpage. You can verify every claim with one click — something you simply cannot do with ChatGPT or Claude.
+Perplexity's foundational strength remains its **absolute transparency about sources**. Every sentence of every response is numbered and linked to the supporting webpage. You can verify every claim in one click — something you simply cannot do with [ChatGPT or Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026).
 
-In practice, this radically changes how you work. On Product Hunt, users describe it as "the best AI tool for citing sources" and say it has "almost entirely replaced normal web search." This is not hyperbole.
+In practice, this eliminates the anxiety of hallucination. For professional research, journalism, or any high-stakes work, knowing exactly where each fact comes from isn't a nice-to-have — it's the difference between publishable and not.
 
 ### Pro Search — deep multi-source research
 
-**Pro Search** goes far beyond a simple query. It breaks your question into complementary sub-queries, queries multiple sources in parallel, maintains context across follow-up questions, and synthesizes a structured response. It's the equivalent of a research assistant spending 20 minutes combing the web for you — without the sponsored results.
+**Pro Search** breaks your question into complementary sub-queries, queries multiple sources in parallel, maintains context across follow-up questions, and synthesizes a structured response. The equivalent of a research assistant spending 20 minutes combing the web for you — without sponsored results.
 
-Tested on "What's the best AI tool for creating videos in March 2026?": result in 30 seconds, 800 words, 12 sources, structured comparison. Google would have returned 10 links to open separately.
+Tested on "What's the best vibe coding tool in 2026?": result in 35 seconds, 900 words, 14 sources, structured comparison table. For a deeper dive on that topic, our [vibe coding tools comparison](/en/blog/vibe-coding-tools-2026) goes further with hands-on testing.
 
-### Multi-model access on the Pro plan
+### Model Council — 3 frontier AIs simultaneously (new in 2026)
 
-The Pro plan gives access to **GPT-4o, Claude 3.5 Sonnet, Mistral Large and Perplexity's own Sonar models** within the same interface. You can choose the model by task: Claude for nuanced writing, GPT-4o for complex logic, Sonar for fast research. It's like having multiple AI subscriptions in one.
+**Model Council** is the new feature that fundamentally changes the research quality ceiling. Instead of querying one model, Perplexity runs your question through three frontier models simultaneously — GPT-5.2, Claude Opus 4.6, Gemini 3.1 Pro — and shows you outputs side by side before synthesizing them.
 
-### Specialized modes: Finance, Academic, Writing
+A separate model then analyzes where all three converge and where they diverge, highlighting unique contributions from each. For investment research, strategic analysis, or any decision with real stakes, getting three frontier perspectives in 60 seconds is genuinely hard to beat. Max subscribers only.
 
-**Finance**: real-time stock charts, SEC filings, earnings report synthesis. It's a lightweight Bloomberg, conversational and free. For tracking a company's news or analyzing a sector, nothing else competes.
+### Deep Research — upgraded February 2026
 
-**Academic**: searches scientific databases (PubMed, arXiv, etc.) to avoid SEO-spammed sources on niche topics.
+Deep Research received a major update in February 2026: it now runs on Opus 4.5 for Max and Pro subscribers, achieving state-of-the-art performance on Google DeepMind Deep Search QA and Scale AI Research Rubric benchmarks.
 
-**Writing**: writing assistance with embedded sources — useful for creating sourced briefs or article first drafts.
+The March 2026 update added something even more powerful: **Deep Research now generates deliverables directly** — PowerPoint presentations, spreadsheets, dashboards, and websites from your research prompts. No more copy-pasting findings into other tools.
 
-### Perplexity Pages — turning research into content
+### Comet Browser — the free AI browser (March 2026)
 
-**Pages** converts any research thread into a structured, sourced, shareable webpage with one click. For creating reports, sector analyses, or client briefs quickly, the efficiency is remarkable.
+**Comet** may be the biggest change in Perplexity's ecosystem since its founding. It's a full web browser — free on iOS, Android, Windows, and Mac — with AI woven into the browsing experience itself.
 
-### Perplexity Computer — the autonomous AI agent (February 2026)
+When you visit a webpage in Comet, a context-aware assistant is always available. Ask it to summarize what you're reading, compare prices on an e-commerce page, or find related information without leaving the tab. Search and browsing merge into a single experience.
 
-Launched **February 25, 2026** and reserved for Max subscribers ($200/month), **Perplexity Computer** is the most ambitious bet in consumer AI. It coordinates **19 AI models simultaneously** — Claude Opus for reasoning, Gemini for web research, specialized models for images and video — in a secure cloud environment with 400+ app integrations.
+Key Comet features: context-aware assistant that knows which tab you're on, voice mode (powered by GPT Realtime 1.5), Deep Research integration, cross-device sync, and multi-step agentic task automation.
 
-The concept: you describe a complex goal ("analyze my SaaS competition and prepare a go-to-market strategy"), Perplexity Computer breaks the task into parallel subtasks, executes them on the best available models, and delivers a complete result — potentially over several hours, without human intervention.
+**Privacy caveat**: Perplexity collects browsing and search history from Comet to create ad-targeting profiles. No opt-out is currently offered in the app. Weigh this against the convenience based on your privacy preferences.
 
-**Does it actually work?** Partially. For research and structured document creation workflows, results are impressive. For tasks requiring numerical precision or complex conditional logic, results are uneven. At $200/month, the tool is still maturing — but the direction is clearly right.
+### Multi-model access
+
+The Pro plan gives access to **Claude Sonnet 4.6, GPT-4o, Mistral Large, and Perplexity's Sonar models**. Max subscribers get Claude Opus 4.6 and GPT-5.2 for the most demanding tasks.
+
+The logic: Claude for nuanced writing and long-form text (see our [full Claude review](/en/blog/chatgpt-vs-claude-vs-gemini-2026)), GPT for complex reasoning and coding, Sonar for fast web research. Switching takes one click. Compare this to paying $20/month per model elsewhere.
+
+### Perplexity Finance — lightweight Bloomberg, conversational
+
+Finance mode was enhanced in March 2026 with **analyst ratings** (consensus view, 52-week price targets), direct tap-through links to SEC filings pre-scrolled to the relevant page, and real-time stock graphs with live news synthesis.
+
+For portfolio tracking, sector analysis, or meeting prep with current data, this is one of the strongest free tools on the market. If you use [automation tools](/en/comparatifs/n8n-vs-make-vs-zapier-2026) for financial workflows, Perplexity's API integrates naturally via MCP connectors.
+
+### Perplexity Computer — autonomous AI agent (Max plan)
+
+Launched **February 25, 2026** for Max subscribers ($200/month), **Perplexity Computer** coordinates **19+ AI models** in a secure cloud environment with 400+ pre-built integrations and custom MCP server connections.
+
+Since March 2026, Computer supports **voice mode**: describe your goal verbally, give feedback mid-task, or redirect on the fly without typing. A voice-first agentic interface is genuinely novel.
+
+**Does it actually work?** Partially. For intensive research workflows and structured document creation, results are impressive. For tasks requiring numerical precision or complex conditional logic, it's still uneven. At $200/month, wait a few more months unless your use case is research-heavy and intensive.
 
 ## Perplexity AI pricing in 2026
 
 | Plan | Price | What's included |
 |---|---|---|
-| Free | Free | Unlimited basic search, 5 Pro Searches/day, Sonar model |
-| Pro | $20/month (or $200/year) | Unlimited Pro Searches, GPT-4o, Claude 3.5, Mistral, file uploads, Spaces |
-| Max | $200/month (or $2,000/year) | Perplexity Computer, unlimited Labs, priority access, all models |
-| Enterprise Pro | $40/seat/month | Team collaboration, SSO, enhanced security, audit logs |
-| Enterprise Max | $325/seat/month | Computer at enterprise scale, SCIM, compliance controls |
+| **Free** | Free | Unlimited basic search, 5 Pro Searches/day, Comet Browser |
+| **Pro** | $20/month (or $200/year) | Unlimited Pro Searches, Claude Sonnet 4.6, GPT-4o, Mistral, uploads, Spaces, Deep Research 20/month |
+| **Max** | $200/month | Computer, Model Council, Claude Opus 4.6, unlimited Deep Research, advanced Comet |
+| **Enterprise Pro** | $40/seat/month | SSO, audit logs, admin controls, enterprise Memory |
+| **Enterprise Max** | $325/seat/month | Enterprise Computer, SCIM, advanced compliance |
 
-**Warning**: Perplexity has recently modified its plans without prior notice. Users on Trustpilot report that Deep Research was reduced from 200 to 20 queries/month without announcement. Worth monitoring before committing to an annual plan.
+**Note**: the Pro plan now caps Pro Searches at roughly 200/week (reduced from before), and Deep Research at 20/month. API credits included in Pro are limited to $5/month. Always check the official pricing page before committing to an annual plan.
 
-## Perplexity vs ChatGPT: detailed comparison
-
-This is the comparison everyone is searching for. Here's the honest answer, use case by use case.
+## Perplexity vs ChatGPT: honest comparison
 
 **Perplexity clearly wins on:**
-- Real-time factual research — Perplexity has live web access, ChatGPT stops at its training cutoff
-- Cited sources — every claim is verifiable, ChatGPT can confidently hallucinate facts
-- News monitoring — perfect for "what happened this week in field X?"
-- Value for money — access to GPT-4o + Claude + Mistral for $20/month vs $20/month for a single model
+- Real-time factual research — live web access vs [ChatGPT](/en/blog/chatgpt-vs-claude-vs-gemini-2026)'s training cutoff
+- Cited, verifiable sources — every claim is clickable, ChatGPT can hallucinate with confidence
+- News monitoring and sector intelligence
+- Value for money — GPT-4o + Claude + Mistral for $20/month vs one model elsewhere
+- AI browser experience with Comet — no direct equivalent from competitors
 
-**ChatGPT (or [Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026)) clearly wins on:**
-- Creative and nuanced writing — no tool beats Claude on text quality
-- Code and debugging — ChatGPT remains the developer reference
-- Long conversations and context memory
+**ChatGPT or [Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) clearly wins on:**
+- Creative and nuanced long-form writing — nothing beats Claude on text quality
+- Code and debugging — ChatGPT and Claude remain the developer reference
+- Long conversations with context memory
 - Tasks that don't require real-time data
 
-**The 2026 verdict:** these are not competing tools, they are complementary. Perplexity for searching and verifying, ChatGPT or Claude for creating and coding.
-
-## Perplexity vs Google Search: can it replace Google?
-
-This is the real question behind Perplexity's popularity. The honest answer: **partially, and increasingly so**.
-
-**Where Perplexity beats Google:**
-- Complex informational queries requiring synthesis across multiple sources
-- Ad-free search — zero sponsored results in responses
-- Conversational follow-up questions — Perplexity maintains context, Google starts over
-- Sector and financial news — synthesis is better than 10 blue links
-
-**Where Google remains unbeatable:**
-- Local searches (restaurants, stores, directions)
-- Shopping and e-commerce product comparison
-- Navigation and finding specific websites
-- Very short practical queries ("weather London", "time in Tokyo")
-
-**Our daily use in 2026:** Perplexity for deep research and analysis, Google for everything else. Both coexist and complement each other.
+**The 2026 verdict**: these are complementary, not competing tools. Perplexity for research and verification, ChatGPT or Claude for creation and coding. Our [ChatGPT vs Claude vs Gemini comparison](/en/blog/chatgpt-vs-claude-vs-gemini-2026) helps you choose based on your primary workflow.
 
 ## Perplexity AI pros and cons
 
 **✅ Strengths**
 
 - **Clickable, verifiable sources** on every response — the most unique feature in the market
-- **Generous free plan**: 5 Pro Searches/day, enough for regular use
-- **Multi-model access** (GPT-4o, Claude 3.5, Mistral) in a single $20/month subscription
-- **Perplexity Finance**: real-time financial analysis without a Bloomberg subscription
-- **Exceptional response speed**: answers in seconds even in Pro Search mode
-- **Clean interface**: zero advertising, zero distraction, intuitive navigation
+- **Free Comet Browser** — full AI browser on all platforms since March 2026
+- **Model Council** — three frontier models simultaneously for cross-verification
+- **Generous free plan** — 5 Pro Searches/day plus Comet without a subscription
+- **Perplexity Finance** — real-time market data, analyst ratings, SEC filing deep-links
+- **Samsung Galaxy S26 integration** — native OS-level access, first non-Google company
+- **Zero advertising in answers** — subscription-first pivot confirmed February 2026
 
 **❌ Weaknesses**
 
-- **Not built for creative writing**: Claude and ChatGPT remain far superior
-- **Sometimes insufficient sources**: on very niche topics, Perplexity can cite homepages rather than specific articles
-- **Plan changes without warning**: history of pricing modifications without notification (Trustpilot, March 2026)
-- **Perplexity Computer still maturing**: at $200/month, reliability isn't yet at the expected level
-- **Imperfect mobile interface**: some friction around file uploads
-- **No executable code**: unlike ChatGPT, impossible to run code directly
+- **Not built for creative writing** — [Claude and ChatGPT](/en/blog/chatgpt-vs-claude-vs-gemini-2026) remain far superior
+- **Pro Searches capped** — roughly 200/week on Pro, 20 Deep Research/month
+- **Comet data collection** — browsing history used for ad targeting, no opt-out
+- **Computer still maturing** — $200/month for a product that isn't yet reliable on all task types
+- **Minimal API credits on Pro** — only $5/month included
+- **No executable code** — unlike ChatGPT, can't run code directly
 
 ## Is Perplexity AI worth it in 2026?
 
-**Yes, for most information professionals.** The Pro plan at $20/month is a no-brainer if you regularly do monitoring, research, or analysis. Having GPT-4o, Claude 3.5, and Mistral in the same interface for the price of a single subscription is already a hard proposition to beat.
+**Yes, for most information professionals.** Pro at $20/month is a no-brainer if you regularly do monitoring, research, or analysis. Claude Sonnet 4.6 + GPT-4o + Mistral plus Deep Research and Comet Browser for one subscription price is genuinely hard to beat.
 
-**No, if you're primarily looking for a writing assistant.** In that case, Claude at $20/month or ChatGPT Plus deliver better results. Check our [complete ChatGPT vs Claude vs Gemini comparison](/en/blog/chatgpt-vs-claude-vs-gemini-2026) to choose.
+**No, if you primarily need a writing assistant.** Claude Pro or ChatGPT Plus deliver better results for content creation. Check our [ChatGPT vs Claude vs Gemini comparison](/en/blog/chatgpt-vs-claude-vs-gemini-2026) to pick the right tool.
 
-**Start with the free plan.** The 5 Pro Searches/day are enough to evaluate the tool before paying. Most users who test it end up keeping the tab permanently open.
+**Start with Comet for free.** The browser is now completely free — the best way to test Perplexity in your daily workflow with zero cost.
 
-**For Perplexity Computer at $200/month**: wait another 6 months. The product is promising but too unstable to justify this price in March 2026, unless you have extremely intensive research workflows.
+**Max at $200/month**: justified only if you use Model Council daily for strategic research and Computer genuinely replaces a junior analyst in your workflows.
 
-## Our final verdict on Perplexity AI
+## Our final verdict
 
-Perplexity AI is **the indispensable AI research tool of 2026**. It doesn't replace ChatGPT or Claude — it fills a blind spot that these tools don't cover: real-time, verifiable factual research.
-
-For researchers, journalists, analysts, consultants, marketers, and anyone whose work depends on fresh, reliable information, Perplexity Pro at $20/month is one of the best AI investments right now.
-
-For creative writing, code, or tasks that don't require real-time data, stick with Claude or ChatGPT.
-
-**Our rating: 8.5/10** — Essential for research. Insufficient for creation. The best value-for-money AI subscription for knowledge workers in 2026.
+**Rating: 9/10** — Research and verification without equal. The 2026 ecosystem (Comet, Model Council, Computer) fundamentally changes the nature of the product. Insufficient alone for creation — essential as the research layer of any serious AI stack.
 
 ## Perplexity AI FAQ
 
 ### Is Perplexity AI better than ChatGPT?
 
-It depends on your use case. For factual research, monitoring, and real-time data, Perplexity is significantly better — its responses are sourced and verifiable where ChatGPT can hallucinate. For creative writing, code, and long conversations, ChatGPT or Claude are superior. The two tools are complementary, not competing.
+It depends entirely on your use case. For factual research, monitoring, and real-time data with verifiable sources, Perplexity is significantly better. For creative writing, code, and long conversations, [ChatGPT or Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) are superior. The two tools are designed for different primary jobs and work best together.
 
-### Is Perplexity AI free?
+### What is the Comet Browser?
 
-Yes. The free plan includes unlimited basic searches and 5 Pro Searches per day — enough for occasional use. The Pro plan ($20/month) unlocks unlimited Pro Searches, access to GPT-4o, Claude 3.5, and Mistral, file uploads, and Spaces.
+Comet is Perplexity's standalone web browser, free on iOS, Android, Windows, and Mac since March 2026. It integrates AI directly into browsing: a context-aware assistant that knows what page you're on, Deep Research integration, voice mode, and multi-step agentic task automation. It reached #3 Overall on the US App Store at launch.
 
-### Can Perplexity replace Google?
+### What is Model Council?
 
-Partially. Perplexity is better than Google for complex informational queries, sector news, and research requiring multi-source synthesis. Google remains unbeatable for local searches, shopping, and navigation. In practice in 2026, most power users use both depending on query type.
+Model Council is a Max-exclusive feature that runs your query through three frontier models simultaneously (GPT-5.2, Claude Opus 4.6, Gemini 3.1 Pro), compares outputs side by side, and synthesizes them. A fourth model analyzes convergences and divergences. Ideal for investment research or any high-stakes decision.
 
 ### Is Perplexity Pro worth it at $20/month?
 
-Yes, for regular professional use. At this price, you get access to GPT-4o, Claude 3.5 Sonnet, and Mistral in the same interface, unlimited sourced Pro Searches, and document uploads. It's one of the best value-for-money AI subscriptions in 2026 — as long as you're not looking for a creative writing assistant.
+Yes, for regular professional use. You get Claude Sonnet 4.6, GPT-4o, and Mistral in one interface, unlimited Pro Searches with cited sources, document uploads, Deep Research (20/month), and the Comet Browser. One of the best AI value propositions in 2026 for knowledge workers.
 
-### What is Perplexity Computer?
+### What's the difference between Perplexity Pro and Max?
 
-Perplexity Computer is an autonomous AI agent launched February 25, 2026, available on the Max plan ($200/month). It coordinates 19 AI models simultaneously to accomplish complex tasks end-to-end — research, analysis, document creation, automated workflows — without human intervention. Promising but still maturing as of March 2026.
+Pro ($20/month): mid-tier model access, unlimited Pro Search, 20 Deep Research/month. Max ($200/month): Perplexity Computer, Model Council, flagship model access (Claude Opus 4.6, GPT-5.2), unlimited Deep Research, and advanced Comet. Max is only justified for intensive professional research workflows.
       `,
       related: [
         { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "12" },
+        { slug: "deepseek-review-2026", title: "DeepSeek Review 2026: The Best Free ChatGPT from China?", tag: "Chatbots", timeMin: "12" },
         { slug: "alternatives-gratuites-chatgpt", title: "7 best free alternatives to ChatGPT", tag: "Chatbots", timeMin: "7" },
-        { slug: "cursor-ai-review-2026", title: "Cursor AI: best dev assistant in 2026?", tag: "Code", timeMin: "9" },
+        { slug: "sora-fermeture-openai-2026", title: "Sora Is Dead: OpenAI Kills Its AI Video App", tag: "Chatbots", timeMin: "12" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "12" },
+        { slug: "claude-mythos-next-anthropic-2026", title: "Claude Mythos: Anthropic's Next Model Leaked", tag: "Chatbots", timeMin: "12" },
       ],
     },
   },
