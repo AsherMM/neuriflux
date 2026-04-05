@@ -34,8 +34,8 @@ export interface Article {
 export const ARTICLES: Article[] = [
 // ─── Guide Prompting IA 2026 ─────────────────────────────────────────────────
   {
-    slug: "comment-ecrire-prompts-ia-2026",
-    tag: "Productivité",
+    slug: "prompts-ia-2026",
+    tag: "Productivity",
     date: { fr: "5 avril 2026", en: "April 5, 2026" },
     timeMin: "18",
     featured: true,
