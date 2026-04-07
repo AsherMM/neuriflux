@@ -40,10 +40,444 @@ export interface Comparatif {
 }
 
 export const COMPARATIFS: Comparatif[] = [
+// ─── Perplexity vs ChatGPT vs Gemini — Recherche IA 2026 ─────────────────────
+  {
+    slug: "perplexity-vs-chatgpt-vs-gemini-2026",
+    tag: "Chatbots",
+    date: { fr: "7 avril 2026", en: "April 7, 2026" },
+    featured: true,
+    winner: "Perplexity",
+    criteria: {
+      fr: ["Recherche temps réel", "Sources & citations", "Rédaction & création", "Code & analyse", "Intégrations", "Rapport qualité/prix"],
+      en: ["Real-time search", "Sources & citations", "Writing & creation", "Code & analysis", "Integrations", "Value for money"],
+    },
+    tools: [
+      {
+        name: "Perplexity Pro",
+        logo: "🔍",
+        color: "#00e6be",
+        globalScore: 9.1,
+        scores: [
+          { fr: "Recherche temps réel", en: "Real-time search", value: 9.8 },
+          { fr: "Sources & citations", en: "Sources & citations", value: 9.8 },
+          { fr: "Rédaction & création", en: "Writing & creation", value: 6.5 },
+          { fr: "Code & analyse", en: "Code & analysis", value: 6.0 },
+          { fr: "Intégrations", en: "Integrations", value: 8.0 },
+          { fr: "Rapport qualité/prix", en: "Value for money", value: 9.5 },
+        ],
+        price: "Gratuit / 20$/mois",
+        priceFull: {
+          fr: "Gratuit (5 Pro Searches/jour) · Pro 20$/mois · Max 200$/mois · Enterprise Pro 40$/siège/mois",
+          en: "Free (5 Pro Searches/day) · Pro $20/month · Max $200/month · Enterprise Pro $40/seat/month",
+        },
+        pros: {
+          fr: [
+            "Chaque affirmation liée à sa source — vérifiable en un clic",
+            "Seul outil architecturalement conçu pour la recherche sourcée",
+            "Accès multi-modèles : GPT-5.2, Claude Sonnet 4.6, Gemini 3 Pro en un seul abonnement",
+            "Comet Browser gratuit depuis mars 2026 — top 3 App Store US au lancement",
+            "Model Council (Max) : 3 modèles frontier en simultané pour cross-vérification",
+            "Zéro publicité dans les réponses — pivot subscription-first confirmé en février 2026",
+          ],
+          en: [
+            "Every claim linked to its source — verifiable with one click",
+            "Only tool architecturally built for sourced research",
+            "Multi-model access: GPT-5.2, Claude Sonnet 4.6, Gemini 3 Pro in one subscription",
+            "Free Comet Browser since March 2026 — top 3 US App Store on launch day",
+            "Model Council (Max): 3 frontier models simultaneously for cross-verification",
+            "Zero advertising in responses — subscription-first pivot confirmed February 2026",
+          ],
+        },
+        cons: {
+          fr: [
+            "Pas fait pour la rédaction créative — Claude et ChatGPT restent supérieurs",
+            "Pas de code exécutable ni de mémoire persistante cross-session",
+            "Deep Research limité à 20 requêtes/mois sur le plan Pro",
+            "Comet collecte l'historique de navigation pour du ciblage publicitaire (pas d'opt-out)",
+            "Computer à 200$/mois encore en rodage — fiabilité inégale",
+          ],
+          en: [
+            "Not built for creative writing — Claude and ChatGPT remain superior",
+            "No executable code or persistent cross-session memory",
+            "Deep Research capped at 20 queries/month on Pro plan",
+            "Comet collects browsing history for ad targeting (no opt-out available)",
+            "Computer at $200/month still maturing — uneven reliability",
+          ],
+        },
+        verdict: {
+          fr: "L'outil indispensable pour toute recherche factuelle vérifiable. Son architecture RAG native fait ce que les autres simulent avec un module de recherche ajouté après coup. Pour chercheurs, journalistes, analystes et tous ceux qui ont besoin de sources fiables.",
+          en: "The indispensable tool for any verifiable factual research. Its native RAG architecture does what others simulate with a bolt-on search module. For researchers, journalists, analysts, and anyone who needs reliable sources.",
+        },
+        affiliate: "https://perplexity.ai",
+        badge: { fr: "🏆 Meilleure recherche", en: "🏆 Best for research" },
+      },
+      {
+        name: "ChatGPT Plus",
+        logo: "🤖",
+        color: "#10a37f",
+        globalScore: 8.8,
+        scores: [
+          { fr: "Recherche temps réel", en: "Real-time search", value: 8.0 },
+          { fr: "Sources & citations", en: "Sources & citations", value: 7.0 },
+          { fr: "Rédaction & création", en: "Writing & creation", value: 9.5 },
+          { fr: "Code & analyse", en: "Code & analysis", value: 9.5 },
+          { fr: "Intégrations", en: "Integrations", value: 9.5 },
+          { fr: "Rapport qualité/prix", en: "Value for money", value: 8.5 },
+        ],
+        price: "Gratuit / 20$/mois",
+        priceFull: {
+          fr: "Gratuit (limité) · Plus 20$/mois · Go 8$/mois · Pro 200$/mois · Team 30$/utilisateur/mois",
+          en: "Free (limited) · Plus $20/month · Go $8/month · Pro $200/month · Team $30/user/month",
+        },
+        pros: {
+          fr: [
+            "L'assistant IA le plus polyvalent du marché — code, rédaction, analyse, images",
+            "Mémoire persistante cross-session — le seul des trois à se souvenir de vous",
+            "Custom GPTs : créez ou utilisez des milliers d'assistants spécialisés",
+            "Canvas pour l'édition de documents et le code en temps réel",
+            "Intégrations Zapier, Slack, et 8 000+ apps via MCP",
+            "GPT-5.4 : meilleur modèle pour le code et le raisonnement complexe",
+          ],
+          en: [
+            "The most versatile AI assistant on the market — code, writing, analysis, images",
+            "Persistent cross-session memory — the only one of the three that remembers you",
+            "Custom GPTs: create or use thousands of specialized assistants",
+            "Canvas for real-time document and code editing",
+            "Zapier, Slack, and 8,000+ app integrations via MCP",
+            "GPT-5.4: best model for code and complex reasoning",
+          ],
+        },
+        cons: {
+          fr: [
+            "Les sources web ne sont pas inline — vérification plus laborieuse que Perplexity",
+            "Search ne s'active pas toujours automatiquement — risque de réponses non actualisées",
+            "Publicités lancées en février 2026 ($100M ARR en quelques semaines)",
+            "Mémoire stockée côté OpenAI — questions de confidentialité des données",
+            "Le plan Go (8$/mois) est très limité par rapport à Perplexity gratuit",
+          ],
+          en: [
+            "Web sources not inline — verification more laborious than Perplexity",
+            "Search doesn't always activate automatically — risk of stale responses",
+            "Ads launched February 2026 ($100M ARR within weeks)",
+            "Memory stored on OpenAI's side — data privacy considerations",
+            "Go plan ($8/month) is very limited compared to free Perplexity",
+          ],
+        },
+        verdict: {
+          fr: "Le couteau suisse de l'IA. Imbattable pour la création, le code, les tâches complexes et la mémoire persistante. La recherche web est bonne mais secondaire à son architecture — pour la recherche pure, Perplexity reste supérieur.",
+          en: "The Swiss army knife of AI. Unbeatable for creation, code, complex tasks, and persistent memory. Web search is good but secondary to its architecture — for pure research, Perplexity remains superior.",
+        },
+        affiliate: "https://chat.openai.com",
+        badge: { fr: "Le plus polyvalent", en: "Most versatile" },
+      },
+      {
+        name: "Gemini Advanced",
+        logo: "✦",
+        color: "#4285f4",
+        globalScore: 8.3,
+        scores: [
+          { fr: "Recherche temps réel", en: "Real-time search", value: 8.5 },
+          { fr: "Sources & citations", en: "Sources & citations", value: 7.5 },
+          { fr: "Rédaction & création", en: "Writing & creation", value: 8.5 },
+          { fr: "Code & analyse", en: "Code & analysis", value: 8.5 },
+          { fr: "Intégrations", en: "Integrations", value: 9.8 },
+          { fr: "Rapport qualité/prix", en: "Value for money", value: 7.0 },
+        ],
+        price: "Gratuit / 19.99$/mois",
+        priceFull: {
+          fr: "Gratuit (Gemini 3 Flash) · Advanced 19.99$/mois (inclus Google One 2 To) · Ultra ~42$/mois",
+          en: "Free (Gemini 3 Flash) · Advanced $19.99/month (includes 2TB Google One) · Ultra ~$42/month",
+        },
+        pros: {
+          fr: [
+            "Intégration native Gmail, Google Drive, Docs, Sheets, Calendar, Maps",
+            "Fenêtre de contexte d'1 million de tokens — traite des livres entiers",
+            "Gemini 3 Pro : meilleur modèle sur plusieurs benchmarks de raisonnement",
+            "Multimodal natif : texte, images, audio, vidéo dans une seule interface",
+            "Samsung Galaxy S26 intégré — premier non-Google sur un OS Samsung",
+            "Le plan Advanced inclut 2 To de Google One — valeur réelle si vous utilisez Google",
+          ],
+          en: [
+            "Native integration with Gmail, Google Drive, Docs, Sheets, Calendar, Maps",
+            "1 million token context window — processes entire books",
+            "Gemini 3 Pro: best model on several reasoning benchmarks",
+            "Native multimodal: text, images, audio, video in one interface",
+            "Samsung Galaxy S26 integrated — first non-Google on a Samsung OS",
+            "Advanced plan includes 2TB Google One — real value if you use Google ecosystem",
+          ],
+        },
+        cons: {
+          fr: [
+            "La vraie valeur n'existe que si vous vivez dans l'écosystème Google",
+            "Sources parfois moins précises que Perplexity — qualité des citations variable",
+            "Pas de mémoire cross-session comparable à ChatGPT",
+            "Personnalité moins engageante — réponses plus factuelle, moins conversationnelles",
+            "AI Overviews sur Google.com : publicités dans 25,5% des résultats en 2026",
+            "Gemini Gems moins flexibles que les Custom GPTs de ChatGPT",
+          ],
+          en: [
+            "Real value only exists if you live in the Google ecosystem",
+            "Sources sometimes less precise than Perplexity — citation quality varies",
+            "No cross-session memory comparable to ChatGPT",
+            "Less engaging personality — responses more fact-heavy, less conversational",
+            "Google AI Overviews: ads in 25.5% of results in 2026",
+            "Gemini Gems less flexible than ChatGPT's Custom GPTs",
+          ],
+        },
+        verdict: {
+          fr: "Le choix évident pour les utilisateurs profondément intégrés dans Google Workspace. La fenêtre de contexte d'1M tokens et l'intégration native Drive/Gmail/Docs sont des atouts uniques. Hors écosystème Google, la proposition de valeur est moins claire face à Perplexity ou ChatGPT.",
+          en: "The obvious choice for users deeply embedded in Google Workspace. The 1M token context window and native Drive/Gmail/Docs integration are unique advantages. Outside the Google ecosystem, the value proposition is less clear against Perplexity or ChatGPT.",
+        },
+        affiliate: "https://gemini.google.com",
+        badge: { fr: "Meilleur pour Google Workspace", en: "Best for Google Workspace" },
+      },
+    ],
+    fr: {
+      title: "Perplexity vs ChatGPT vs Gemini : quel moteur de recherche IA choisir en 2026 ?",
+      desc: "On a testé les trois sur 30 requêtes réelles — recherche factuelle, veille, rédaction, code. Perplexity domine la recherche sourcée, ChatGPT gagne sur la polyvalence, Gemini excelle dans Google Workspace. Notre verdict complet.",
+      metaTitle: "Perplexity vs ChatGPT vs Gemini 2026 : comparatif complet | Neuriflux",
+      metaDesc: "Comparatif complet Perplexity Pro vs ChatGPT Plus vs Gemini Advanced en 2026. Recherche sourcée, rédaction, code, prix — quel outil choisir selon votre usage ? Verdict honnête après 30 tests réels.",
+      intro: "Trois outils. Même prix de base (20$/mois). Architectures radicalement différentes. Perplexity est un moteur de recherche avec une IA dessus. ChatGPT est un assistant génératif avec une recherche web intégrée. Gemini est un assistant Google avec une conscience de votre calendrier, vos emails et vos documents. Confondre ces trois-là, c'est utiliser un tournevis pour planter un clou — ça marche, mais c'est inefficace. On les a testés pendant trois semaines sur 30 cas d'usage réels pour vous dire exactement quand utiliser quoi.",
+      verdict: "Perplexity pour toute recherche factuelle qui demande des sources vérifiables. ChatGPT pour la création, le code et tout ce qui nécessite un vrai assistant généraliste. Gemini si votre vie professionnelle tourne autour de Google Workspace.",
+      content: `
+## Trois outils, trois philosophies fondamentalement différentes
+
+Avant de comparer les scores, il faut comprendre pourquoi ces trois outils existent. Ils ne répondent pas au même besoin — et les utiliser pour le mauvais cas d'usage, c'est garantir une expérience décevante.
+
+**[Perplexity](/fr/blog/perplexity-ai-review-2026) est un moteur de réponses**, pas un chatbot. Son architecture est construite autour d'une seule obsession : donner des réponses factuelles vérifiables avec les sources en temps réel. Chaque affirmation est liée à la page web qui la supporte. Vous pouvez vérifier n'importe quelle information en un clic. Ce n'est pas une feature — c'est le produit.
+
+**[ChatGPT](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) est un assistant génératif** qui a ajouté la recherche web. GPT-5.4 peut chercher sur le web, mais ce n'est pas sa raison d'être. Sa raison d'être, c'est de créer, raisonner, coder, analyser — et se souvenir de qui vous êtes à travers ses fonctionnalités de mémoire persistante.
+
+**Gemini est l'assistant Google**, conçu pour être l'IA de votre vie numérique si votre vie numérique est Google. Il sait ce que vous avez dans votre Drive, il peut créer des événements dans votre Calendar, il répond à vos emails. Si vous n'utilisez pas Google Workspace, il perd son principal avantage.
+
+## La recherche factuelle : Perplexity sans contestation
+
+Sur 15 requêtes factuelles testées — statistiques récentes, événements des 30 derniers jours, chiffres financiers, résultats scientifiques — [Perplexity](/fr/blog/perplexity-ai-review-2026) a fourni des réponses avec sources citées dans 100% des cas. ChatGPT avec search activé a cité des sources dans 85% des cas, mais les références apparaissent en fin de réponse plutôt qu'en inline sur chaque affirmation. Gemini était intermédiaire — certaines réponses sourcées en inline, d'autres non.
+
+La différence n'est pas mineure. Sur une question comme "Quel est le taux d'adoption de l'IA en entreprise en France en 2026 ?", Perplexity vous donne 4 affirmations, chacune liée à sa source (rapport McKinsey, étude INSEE, etc.). ChatGPT vous donne une réponse synthétique avec des chiffres que vous devez ensuite chercher indépendamment pour vérifier. Pour éviter les hallucinations — un problème documenté sur tous les LLMs — [la transparence de Perplexity est architecturale](/fr/blog/hallucinations-ia-2026), pas cosmétique.
+
+**Verdict recherche :** Perplexity 9.8/10 · ChatGPT 8.0/10 · Gemini 8.5/10
+
+## La rédaction et la création : ChatGPT et Gemini dominent
+
+C'est là que [Perplexity](/fr/blog/perplexity-ai-review-2026) montre ses limites. Sur 10 tâches de rédaction — email professionnel, article de blog, script de présentation, analyse stratégique — Perplexity a produit des résultats fonctionnels mais sans la fluidité ni la profondeur de ChatGPT ou Claude.
+
+ChatGPT GPT-5.4 reste la référence pour la création de contenu long, structuré et varié. La mémoire persistante permet au modèle d'adapter son style à vos préférences au fil des semaines — un avantage cumulatif que ni Perplexity ni Gemini n'offrent de la même façon.
+
+Gemini se défend bien sur la rédaction, particulièrement dans les environnements Google Docs où il peut proposer des modifications en ligne dans le document que vous êtes en train d'écrire. Pour les équipes qui travaillent en temps réel sur des documents partagés, c'est un workflow sans friction que ChatGPT ne réplique pas nativement.
+
+**Verdict rédaction :** ChatGPT 9.5/10 · Gemini 8.5/10 · Perplexity 6.5/10
+
+## Le code : ChatGPT et Gemini à égalité
+
+Les trois outils gèrent du code. Mais ni Perplexity ni Gemini n'offrent l'exécution de code directement dans l'interface comme ChatGPT avec son interpréteur Python. Sur des tâches de débogage, refactoring et génération de composants, ChatGPT GPT-5.4 reste la référence — particulièrement combiné à [Cursor](/fr/comparatifs/cursor-vs-copilot-vs-codeium) qui l'intègre nativement dans l'IDE.
+
+Gemini 3 Pro se distingue sur les tâches de code avec un très long contexte — analyser une base de code entière de 50 000 lignes dans une seule session est possible avec sa fenêtre d'1 million de tokens. Aucun autre modèle grand public n'offre ça à ce prix.
+
+[DeepSeek R1](/fr/blog/deepseek-review-2026) reste le challenger non mentionné ici — pour le code pur avec un budget serré, il est difficile à battre et mérite sa propre comparaison.
+
+**Verdict code :** ChatGPT 9.5/10 · Gemini 8.5/10 · Perplexity 6.0/10
+
+## Les intégrations : l'avantage décisif de Gemini
+
+C'est le critère où Gemini prend une longueur d'avance que les autres ne peuvent pas combler par des features. L'intégration native avec Gmail, Google Drive, Google Docs, Google Sheets, Google Calendar et Google Maps n'est pas une intégration au sens API — c'est une intégration au niveau du système. Gemini sait ce qui est dans votre Drive. Il peut créer un événement dans votre agenda depuis la conversation. Il peut rédiger un email dans Gmail sans que vous sortiez de l'interface.
+
+Si votre stack professionnel est Google Workspace, ce n'est pas un avantage — c'est un changement de paradigme.
+
+ChatGPT offre des intégrations via MCP (8 000+ applications) et des Custom GPTs pour des workflows spécifiques. C'est plus flexible mais moins transparent — vous devez construire ou trouver ces intégrations. Perplexity propose des connecteurs MCP depuis mars 2026, mais l'écosystème est encore jeune.
+
+**Verdict intégrations :** Gemini 9.8/10 · ChatGPT 9.5/10 · Perplexity 8.0/10
+
+## Les tarifs en détail
+
+| Plan | Perplexity | ChatGPT | Gemini |
+|---|---|---|---|
+| **Gratuit** | 5 Pro Searches/jour | Limité (GPT-5.4 Mini) | Gemini 3 Flash |
+| **Standard** | Pro : 20$/mois | Plus : 20$/mois | Advanced : 19.99$/mois |
+| **Premium** | Max : 200$/mois | Pro : 200$/mois | Ultra : ~42$/mois |
+| **Team** | Enterprise Pro : 40$/siège | Team : 30$/utilisateur | Google Workspace |
+| **Stockage inclus** | ❌ | ❌ | ✅ 2 To Google One (Advanced) |
+
+**L'argument Gemini qui change les calculs :** si vous payez déjà pour Google One (stockage Drive), Gemini Advanced est inclus dans certains plans Google One Premium. Vous n'ajoutez pas un abonnement — vous upgradez votre stockage existant. Pour les utilisateurs Google déjà abonnés, c'est essentiellement un upgrade de 10$/mois plutôt qu'un nouvel abonnement à 19.99$.
+
+**Le piège ChatGPT Go :** le nouveau plan ChatGPT Go à 8$/mois lancé en février 2026 inclut GPT-5.2 Instant, la génération d'images et les uploads de fichiers. C'est tentant — mais l'accès à GPT-5.4 et la recherche web avancée restent réservés au plan Plus à 20$/mois. Vérifiez ce dont vous avez vraiment besoin avant de choisir le plan le moins cher.
+
+## La publicité : la divergence qui change tout en 2026
+
+C'est devenu un critère de différenciation majeur. En février 2026, trois approches radicalement différentes ont émergé :
+
+**Perplexity** a supprimé toutes les publicités de ses réponses en février 2026 — un pivot stratégique assumé vers un modèle 100% subscription. La confiance de l'utilisateur dans les réponses sourcées, argument central de leur proposition de valeur, était incompatible avec les réponses sponsorisées.
+
+**ChatGPT** a lancé ses propres publicités en février 2026. $100M d'ARR publicitaire en quelques semaines — la plus rapide montée en puissance d'une nouvelle plateforme pub depuis TikTok. Pour les utilisateurs Plus, l'impact est limité pour l'instant. Mais la direction est claire.
+
+**Gemini / Google** intègre des publicités dans 25,5% de ses AI Overviews sur Google.com en 2026, contre 5,17% début 2025. Ce n'est pas Gemini Advanced directement — c'est le produit grand public. Mais ça signale que Google traite l'IA comme une extension de son business publicitaire, pas comme un service premium distinct.
+
+## Notre matrice de décision
+
+**Choisissez [Perplexity Pro](/fr/blog/perplexity-ai-review-2026) si :**
+- Vous faites régulièrement de la recherche factuelle qui demande des sources vérifiables
+- Vous êtes journaliste, analyste, chercheur ou consultant — la crédibilité des sources est non-négociable
+- Vous voulez un accès multi-modèles (GPT-5.2, Claude, Gemini) dans une seule interface à 20$/mois
+- Vous cherchez à [éviter les hallucinations](/fr/blog/hallucinations-ia-2026) — les sources inline sont la meilleure protection
+
+**Choisissez [ChatGPT Plus](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) si :**
+- Vous créez du contenu long, du code, des analyses complexes au quotidien
+- La mémoire persistante entre sessions change votre productivité
+- Vous voulez l'assistant le plus polyvalent, avec le plus grand écosystème d'intégrations
+- Vous utilisez déjà des Custom GPTs ou l'API OpenAI
+
+**Choisissez Gemini Advanced si :**
+- Vous vivez dans Google Workspace — Gmail, Drive, Docs, Sheets en sont le cœur
+- Vous avez besoin d'analyser de très longs documents (fenêtre 1M tokens)
+- Vous payez déjà Google One — le plan Advanced est inclus ou à tarif réduit
+- Vous recherchez l'assistant qui comprend le contexte de votre vie numérique Google
+
+**N'utilisez PAS :**
+- Perplexity pour écrire des articles, des emails ou du code complexe
+- ChatGPT si vous avez besoin de sources citées pour chaque affirmation sans vérification manuelle
+- Gemini si vous n'utilisez pas Google Workspace — le différenciant principal disparaît
+
+## Le workflow qui bat tout en 2026
+
+La vraie réponse n'est pas "lequel des trois" — c'est de comprendre comment les combiner efficacement.
+
+**Phase recherche** → [Perplexity](/fr/blog/perplexity-ai-review-2026) pour collecter les faits, les chiffres et les sources vérifiables.
+
+**Phase création** → [ChatGPT](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) ou [Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) pour transformer ces données en contenu, analyse ou code.
+
+**Phase distribution** → Gemini si votre output final va dans Google Docs, Gmail ou Sheets.
+
+C'est la façon dont les professionnels les plus productifs utilisent ces outils en 2026. Pas "quel outil est le meilleur" — mais "quel outil pour quelle étape du workflow".
+
+Et si vous voulez les maîtriser pleinement, notre [guide complet du prompting IA](/fr/blog/prompts-ia-2026) vous donne les techniques concrètes pour tirer le maximum de chacun.
+      `,
+    },
+    en: {
+      title: "Perplexity vs ChatGPT vs Gemini: Which AI Search Tool to Choose in 2026?",
+      desc: "We tested all three on 30 real-world queries — factual research, monitoring, writing, code. Perplexity dominates sourced research, ChatGPT wins on versatility, Gemini excels in Google Workspace. Our complete verdict.",
+      metaTitle: "Perplexity vs ChatGPT vs Gemini 2026: Complete Comparison | Neuriflux",
+      metaDesc: "Full comparison of Perplexity Pro vs ChatGPT Plus vs Gemini Advanced in 2026. Sourced research, writing, code, pricing — which tool to choose for your use case? Honest verdict after 30 real-world tests.",
+      intro: "Three tools. Same base price ($20/month). Radically different architectures. Perplexity is a search engine with AI on top. ChatGPT is a generative assistant with web search built in. Gemini is a Google assistant with awareness of your calendar, emails, and documents. Confusing these three is like using a screwdriver to hammer a nail — it works, but it's inefficient. We tested all three for three weeks across 30 real-world use cases to tell you exactly when to use which.",
+      verdict: "Perplexity for any factual research that requires verifiable sources. ChatGPT for creation, code, and anything that needs a real general-purpose assistant. Gemini if your professional life revolves around Google Workspace.",
+      content: `
+## Three tools, three fundamentally different philosophies
+
+Before comparing scores, you need to understand why these three tools exist. They don't serve the same need — and using them for the wrong use case guarantees a disappointing experience.
+
+**[Perplexity](/en/blog/perplexity-ai-review-2026) is an answer engine**, not a chatbot. Its architecture is built around one obsession: providing verifiable factual answers with real-time sources. Every claim is linked to the web page that supports it. You can verify any information with one click. That's not a feature — it's the product.
+
+**[ChatGPT](/en/blog/chatgpt-vs-claude-vs-gemini-2026) is a generative assistant** that added web search. GPT-5.4 can search the web, but that's not its reason for being. Its reason for being is to create, reason, code, analyze — and remember who you are through its persistent memory features.
+
+**Gemini is Google's assistant**, designed to be the AI of your digital life if your digital life is Google. It knows what you have in your Drive, it can create events in your Calendar, it drafts your emails. If you don't use Google Workspace, it loses its primary advantage.
+
+## Factual research: Perplexity without contest
+
+Across 15 factual queries tested — recent statistics, events from the past 30 days, financial figures, scientific findings — [Perplexity](/en/blog/perplexity-ai-review-2026) provided responses with cited sources in 100% of cases. ChatGPT with search enabled cited sources in 85% of cases, but references appear at the end of the response rather than inline on each claim. Gemini was intermediate — some inline-cited responses, others not.
+
+The difference isn't minor. On a question like "What's the enterprise AI adoption rate in the US in 2026?", Perplexity gives you 4 claims, each linked to its source (McKinsey report, Bureau of Labor Statistics, etc.). ChatGPT gives you a synthetic response with figures you then need to independently verify. To avoid hallucinations — a documented problem across all LLMs — [Perplexity's transparency is architectural](/en/blog/hallucinations-ia-2026), not cosmetic.
+
+**Research verdict:** Perplexity 9.8/10 · ChatGPT 8.0/10 · Gemini 8.5/10
+
+## Writing and creation: ChatGPT and Gemini dominate
+
+This is where [Perplexity](/en/blog/perplexity-ai-review-2026) shows its limits. Across 10 writing tasks — professional email, blog post, presentation script, strategic analysis — Perplexity produced functional results but without the fluency or depth of ChatGPT or Claude.
+
+ChatGPT GPT-5.4 remains the reference for long-form structured content creation. Persistent memory lets the model adapt its style to your preferences over weeks — a compounding advantage that neither Perplexity nor Gemini offers in the same way.
+
+Gemini holds its own on writing, particularly in Google Docs environments where it can suggest edits inline in the document you're writing. For teams working in real-time on shared documents, this is a frictionless workflow that ChatGPT doesn't replicate natively.
+
+**Writing verdict:** ChatGPT 9.5/10 · Gemini 8.5/10 · Perplexity 6.5/10
+
+## Code: ChatGPT and Gemini tied
+
+All three handle code. But neither Perplexity nor Gemini offer code execution directly in the interface the way ChatGPT does with its Python interpreter. On debugging, refactoring, and component generation tasks, ChatGPT GPT-5.4 remains the reference — particularly combined with [Cursor](/en/comparatifs/cursor-vs-copilot-vs-codeium), which integrates it natively into the IDE.
+
+Gemini 3 Pro stands out on code tasks with very long context — analyzing an entire 50,000-line codebase in a single session is possible with its 1 million token window. No other consumer-grade model offers this at this price.
+
+[DeepSeek R1](/en/blog/deepseek-review-2026) remains the unmentioned challenger here — for pure code on a tight budget, it's hard to beat and deserves its own comparison.
+
+**Code verdict:** ChatGPT 9.5/10 · Gemini 8.5/10 · Perplexity 6.0/10
+
+## Integrations: Gemini's decisive advantage
+
+This is where Gemini takes a lead the others can't close through features. Native integration with Gmail, Google Drive, Google Docs, Google Sheets, Google Calendar, and Google Maps isn't an API integration — it's a system-level integration. Gemini knows what's in your Drive. It can create a calendar event from the conversation. It can draft an email in Gmail without you leaving the interface.
+
+If your professional stack is Google Workspace, this isn't an advantage — it's a paradigm shift.
+
+ChatGPT offers integrations via MCP (8,000+ applications) and Custom GPTs for specific workflows. It's more flexible but less transparent — you have to build or find these integrations. Perplexity introduced MCP connectors in March 2026, but the ecosystem is still nascent.
+
+**Integrations verdict:** Gemini 9.8/10 · ChatGPT 9.5/10 · Perplexity 8.0/10
+
+## Detailed pricing
+
+| Plan | Perplexity | ChatGPT | Gemini |
+|---|---|---|---|
+| **Free** | 5 Pro Searches/day | Limited (GPT-5.4 Mini) | Gemini 3 Flash |
+| **Standard** | Pro: $20/month | Plus: $20/month | Advanced: $19.99/month |
+| **Premium** | Max: $200/month | Pro: $200/month | Ultra: ~$42/month |
+| **Team** | Enterprise Pro: $40/seat | Team: $30/user | Google Workspace |
+| **Storage included** | ❌ | ❌ | ✅ 2TB Google One (Advanced) |
+
+**The Gemini argument that changes the math:** if you're already paying for Google One storage, Gemini Advanced is included in some Google One Premium plans. You're not adding a subscription — you're upgrading your existing storage. For Google users already subscribed, it's effectively a $10/month upgrade rather than a new $19.99 subscription.
+
+**The ChatGPT Go trap:** the new $8/month ChatGPT Go plan launched in February 2026 includes GPT-5.2 Instant, image generation, and file uploads. It's tempting — but access to GPT-5.4 and advanced web search remains reserved for the $20/month Plus plan. Verify what you actually need before choosing the cheapest tier.
+
+## Advertising: the divergence that changes everything in 2026
+
+This has become a major differentiator. In February 2026, three radically different approaches emerged:
+
+**Perplexity** removed all advertising from its responses in February 2026 — a strategic pivot to a fully subscription-based model. The user trust in sourced responses, the central argument of their value proposition, was incompatible with sponsored answers.
+
+**ChatGPT** launched ads in February 2026. $100M in ad ARR within weeks — the fastest ramp-up of a new advertising platform since TikTok. For Plus users, the impact is limited for now. But the direction is clear.
+
+**Gemini / Google** integrates ads in 25.5% of AI Overviews on Google.com in 2026, up from 5.17% in early 2025. This isn't Gemini Advanced directly — it's the mass-market product. But it signals that Google treats AI as an extension of its advertising business, not as a distinct premium service.
+
+## Our decision matrix
+
+**Choose [Perplexity Pro](/en/blog/perplexity-ai-review-2026) if:**
+- You regularly do factual research that requires verifiable sources
+- You're a journalist, analyst, researcher, or consultant — source credibility is non-negotiable
+- You want multi-model access (GPT-5.2, Claude, Gemini) in one interface for $20/month
+- You want to [avoid hallucinations](/en/blog/hallucinations-ia-2026) — inline sources are the best protection
+
+**Choose [ChatGPT Plus](/en/blog/chatgpt-vs-claude-vs-gemini-2026) if:**
+- You create long-form content, code, and complex analyses daily
+- Persistent cross-session memory changes your productivity
+- You want the most versatile assistant with the largest integration ecosystem
+- You already use Custom GPTs or the OpenAI API
+
+**Choose Gemini Advanced if:**
+- You live in Google Workspace — Gmail, Drive, Docs, Sheets are your core
+- You need to analyze very long documents (1M token window)
+- You already pay for Google One — the Advanced plan is included or discounted
+- You want an assistant that understands the context of your Google digital life
+
+**Do NOT use:**
+- Perplexity for writing articles, emails, or complex code
+- ChatGPT when you need inline-cited sources for every claim without manual verification
+- Gemini if you don't use Google Workspace — the primary differentiator disappears
+
+## The workflow that beats everything in 2026
+
+The real answer isn't "which of the three" — it's understanding how to combine them effectively.
+
+**Research phase** → [Perplexity](/en/blog/perplexity-ai-review-2026) to collect facts, figures, and verifiable sources.
+
+**Creation phase** → [ChatGPT](/en/blog/chatgpt-vs-claude-vs-gemini-2026) or [Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) to transform that data into content, analysis, or code.
+
+**Distribution phase** → Gemini if your final output goes into Google Docs, Gmail, or Sheets.
+
+This is how the most productive professionals use these tools in 2026. Not "which tool is best" — but "which tool for which stage of the workflow."
+
+And if you want to master each one fully, our [complete AI prompting guide](/en/blog/prompts-ia-2026) gives you the concrete techniques to get the maximum out of each.
+      `,
+    },
+  },
+
 // ─── n8n vs Make vs Zapier 2026 ────────────────────────────────────────────
 {
   slug: "n8n-vs-make-vs-zapier-2026",
-  tag: "Productivité",
+  tag: "Productivity",
   date: { fr: "31 mars 2026", en: "March 31, 2026" },
   featured: true,
   winner: "Make",

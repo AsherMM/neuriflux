@@ -32,6 +32,524 @@ export interface Article {
 }
 
 export const ARTICLES: Article[] = [
+// ─── Hallucinations IA 2026 ───────────────────────────────────────────────────
+  {
+    slug: "ia-2026",
+    tag: "Productivité",
+    date: { fr: "7 avril 2026", en: "April 7, 2026" },
+    timeMin: "16",
+    featured: true,
+    affiliate: {
+      url: "https://perplexity.ai",
+      toolName: "Perplexity AI",
+      label: {
+        fr: "Chaque réponse, une source. La solution aux hallucinations — gratuit",
+        en: "Every answer, a source. The fix for hallucinations — free",
+      },
+    },
+    fr: {
+      title: "Pourquoi l'IA invente des choses — et comment ne plus se faire avoir en 2026",
+      desc: "ChatGPT a cité un article qui n'existe pas. Claude vous a donné un chiffre faux avec une confiance absolue. DeepSeek a inventé un auteur. Voici pourquoi ça arrive, comment le détecter — et les techniques concrètes pour s'en protéger.",
+      metaTitle: "Hallucinations IA : pourquoi ChatGPT invente et comment s'en protéger | Neuriflux",
+      metaDesc: "Tout comprendre sur les hallucinations des IA en 2026 : pourquoi ChatGPT, Claude et Gemini inventent des faits, comment les détecter et 8 techniques concrètes pour ne plus se faire avoir.",
+      content: `
+## L'IA vous a déjà menti. Avec une totale confiance.
+
+Un avocat américain a soumis un mémoire au tribunal en 2023. Six des affaires citées n'existaient pas. ChatGPT les avait inventées — numéros de dossier inclus, juges fictifs, jugements fabriqués de toutes pièces — avec la même assurance que s'il récitait la jurisprudence de la Cour suprême.
+
+L'avocat a failli être radié.
+
+Ce n'est pas un incident isolé. C'est le comportement normal d'un modèle de langage qui fonctionne exactement comme prévu — et c'est précisément le problème.
+
+Depuis, les modèles ont progressé. [Claude Opus 4.6](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) affiche un taux de non-hallucination de plus de 90% sur les benchmarks factuels. Grok 4.20 revendique 78% sur les tests Omniscience. Mais "moins souvent" n'est pas "jamais" — et les hallucinations restent la raison numéro un pour laquelle les gens font encore confiance à une IA à tort.
+
+Ce guide explique pourquoi ça arrive mécaniquement, comment reconnaître une hallucination en temps réel, et les 8 techniques concrètes pour travailler avec l'IA sans se faire piéger.
+
+## Ce qu'une "hallucination" signifie vraiment
+
+Le mot est trompeur. "Hallucination" évoque une IA qui délire, qui voit des choses qui n'existent pas. La réalité est plus banale — et plus instructive.
+
+Un grand modèle de langage comme [ChatGPT ou Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) n'a pas de base de données de faits vérifiés. Il n'a pas non plus de conscience de ce qu'il "sait" ou "ne sait pas". Ce qu'il fait, c'est prédire le prochain token le plus probable étant donné tout ce qui précède dans la conversation.
+
+Dit autrement : l'IA génère du texte qui ressemble à une réponse correcte plutôt que du texte qui est une réponse correcte. La distinction semble subtile. Elle change tout.
+
+Quand vous demandez à ChatGPT "Quel est le taux de chômage en France en mars 2026 ?", il ne cherche pas dans une base de données. Il génère la suite de tokens la plus statistiquement cohérente avec votre question, son entraînement, et le contexte de la conversation. Si ce chiffre correspond à la réalité, c'est une coïncidence heureuse. Pas une garantie.
+
+**Les hallucinations se produisent dans trois grandes catégories :**
+
+Les **hallucinations factuelles** — chiffres inventés, dates erronées, attributions incorrectes. "Le PIB de l'Allemagne en 2025 était de 4 800 milliards d'euros" (inventé). "Cet article a été publié dans Nature en 2023" (n'existe pas).
+
+Les **hallucinations de raisonnement** — conclusions logiquement incorrectes présentées comme évidentes. L'IA "saute" une étape de raisonnement et arrive à une conclusion fausse avec un air de certitude.
+
+Les **hallucinations de citation** — l'exemple classique de l'avocat. Sources, auteurs, URLs, numéros de pages — tout inventé, tout présenté avec la même précision que du vrai.
+
+## Pourquoi les modèles s'améliorent — mais ne guériront jamais complètement
+
+Il serait tentant de croire que le problème va disparaître avec les nouvelles versions. C'est partiellement vrai — et partiellement faux.
+
+Les progrès sont réels. Les techniques de **RLHF** (Reinforcement Learning from Human Feedback) et les approches comme le **Constitutional AI** d'Anthropic entraînent les modèles à signaler leur incertitude plutôt que d'inventer. Le **Retrieval-Augmented Generation** (RAG) connecte les modèles à des bases de données factuelles pour ancrer leurs réponses dans des sources vérifiables. [Perplexity AI](/fr/blog/perplexity-ai-review-2026) est l'exemple le plus visible de cette approche : chaque affirmation est liée à sa source originale.
+
+Mais la contrainte fondamentale persiste. Tant que les LLMs fonctionneront sur la prédiction de tokens, ils auront une probabilité non nulle de générer des tokens plausibles mais faux. Les benchmarks s'améliorent. Le risque zéro n'existe pas.
+
+**Ce qui a changé en 2026, c'est la nature du risque** — pas son existence. Les modèles actuels hallucinent moins sur les faits courants et plus sur les informations rares, récentes, ou très spécifiques. C'est là que vous devez concentrer votre vigilance.
+
+## Les 7 situations à haut risque d'hallucination
+
+Tous les sujets ne sont pas égaux. Voici où les LLMs trébuchent le plus souvent en 2026 :
+
+**1. Les chiffres précis**
+Statistiques, pourcentages, montants financiers, dates exactes. L'IA a une propension à "compléter" un chiffre flou avec de la précision inventée. "Le marché de l'IA vaut X milliards" avec X qui change selon le modèle et le prompt.
+
+**2. Les citations et références académiques**
+C'est le domaine le plus dangereux. Les modèles génèrent des titres d'articles, des noms d'auteurs et des DOIs qui n'existent pas, avec une précision terrifiante. La règle absolue : ne jamais citer une référence IA sans la vérifier dans Google Scholar ou PubMed.
+
+**3. Les événements récents**
+Au-delà de leur date de coupure de connaissance, les modèles extrapolent. Ils savent que certaines choses se produisent généralement — élections, lancements de produits, résultats financiers — et peuvent "inventer" des événements plausibles. [Perplexity](/fr/blog/perplexity-ai-review-2026) avec ses sources en temps réel est la solution directe à ce problème.
+
+**4. Les personnalités peu connues**
+Les grands noms sont bien couverts dans les données d'entraînement. Les experts de niche, les chercheurs régionaux, les PDG de PME — le modèle peut confondre des personnes, inventer des biographies, attribuer des citations à tort.
+
+**5. Le droit, la médecine et la fiscalité**
+Trois domaines où la précision n'est pas optionnelle et où les conséquences d'une erreur sont tangibles. Les LLMs ont ingéré beaucoup de contenu juridique et médical — suffisamment pour paraître crédibles, pas suffisamment pour être fiables.
+
+**6. Les codes et formules**
+Le code généré par une IA peut sembler correct tout en contenant des bugs subtils ou des fonctions inexistantes. Le problème est particulièrement fréquent avec les bibliothèques moins populaires que le modèle connaît mal.
+
+**7. Les traductions spécialisées**
+Dans les domaines techniques, juridiques ou médicaux, une traduction peut sembler fluide tout en introduisant des glissements de sens significatifs.
+
+## Comment détecter une hallucination en temps réel
+
+Avant même de vérifier, il existe des signaux dans le comportement du modèle qui doivent déclencher votre vigilance.
+
+**Signal 1 : La précision excessive sur un sujet flou**
+Si vous posez une question vague et recevez une réponse avec des chiffres très précis, méfiez-vous. La précision n'est pas un signe de fiabilité — c'est souvent le contraire. "Il y a exactement 4 718 applications IA dans ce secteur" est suspect. "Il y en a plusieurs milliers, les estimations varient selon les critères" est honnête.
+
+**Signal 2 : L'absence totale d'incertitude**
+Les bons modèles modernes signalent leur incertitude. "Je ne suis pas certain de ce chiffre" ou "Ma date de coupure est août 2025, cette information peut avoir évolué" sont des signaux de santé. Un modèle qui répond à tout avec une confiance absolue est un modèle qui hallucine sans le savoir.
+
+**Signal 3 : Les détails qui sonnent trop bien**
+Une citation parfaitement formulée. Un chiffre qui arrive exactement au bon moment dans l'argument. Un nom d'auteur qui sonne plausible mais que vous n'avez jamais entendu. L'IA est très bonne pour générer du contenu qui *sonne* vrai.
+
+**Signal 4 : La réponse trop rapide sur un sujet complexe**
+Sur des questions qui mériteraient une nuance, une hésitation, ou une demande de clarification, une réponse immédiate et assurée est suspecte.
+
+**Signal 5 : Les URLs et liens**
+Ne cliquez jamais sur un lien fourni par une IA sans le vérifier d'abord. Les modèles génèrent des URLs plausibles qui n'existent pas. Copiez l'URL, collez-la dans votre navigateur, vérifiez.
+
+## Les 8 techniques pour travailler sans se faire piéger
+
+### Technique 1 — Exigez les sources, toujours
+
+La première ligne de défense est aussi la plus simple : demandez à l'IA de citer ses sources pour chaque affirmation factuelle importante.
+
+
+Réponds à cette question en citant des sources spécifiques 
+pour chaque fait avancé. Si tu n'as pas de source fiable 
+pour une affirmation, dis-le explicitement plutôt que d'inventer.
+
+
+Mais attention : une IA qui cite une source peut très bien citer une source inventée. L'étape suivante est indispensable.
+
+**Alternative radicale** : utilisez [Perplexity AI](/fr/blog/perplexity-ai-review-2026) pour les questions factuelles. Chaque affirmation est liée à sa source web réelle, cliquable, vérifiable. C'est architecturalement différent d'un LLM standard — ce n'est pas que Perplexity "essaie de ne pas halluciner", c'est qu'il ne peut pas vous donner une affirmation sans la lier à une page qui existe.
+
+### Technique 2 — Vérifiez les faits critiques indépendamment
+
+Aucune information critique ne devrait reposer uniquement sur la parole d'une IA. Pour chaque fait qui aura un impact sur une décision importante, vérifiez dans une source primaire :
+
+- **Chiffres et statistiques** → site officiel de l'organisation, rapport annuel, base de données gouvernementale
+- **Citations académiques** → Google Scholar, PubMed, CrossRef (les DOIs sont vérifiables en quelques secondes)
+- **Événements récents** → moteur de recherche sur la période précise
+- **Informations juridiques et médicales** → professionnels qualifiés, sources officielles
+
+Le principe n'est pas de ne jamais utiliser une IA pour les faits — c'est de ne jamais utiliser une IA *uniquement* pour les faits importants.
+
+### Technique 3 — Demandez au modèle d'évaluer sa propre incertitude
+
+Certains modèles peuvent signaler leur incertitude de façon fiable quand on leur demande explicitement. [DeepSeek R1](/fr/blog/deepseek-review-2026) avec son Chain-of-Thought visible est particulièrement bon à cet exercice.
+
+
+Pour chaque affirmation factuelle dans ta réponse, indique 
+ton niveau de confiance : Élevé (quasi-certain), Moyen 
+(probable mais à vérifier), Faible (incertain, à vérifier absolument).
+
+
+Ce n'est pas une garantie — un modèle peut avoir une confiance élevée dans quelque chose de faux. Mais ça oriente votre vigilance vers les bonnes affirmations.
+
+### Technique 4 — Le test de contradiction
+
+Posez la même question sous deux angles opposés et comparez. Si le modèle vous donne des réponses cohérentes entre elles, c'est bon signe. Si les chiffres ou les faits changent selon la formulation, c'est un signal d'alarme.
+
+**Exemple pratique :**
+
+Prompt A : "Quel est le taux de croissance du marché de l'IA en Europe en 2025 ?"
+Prompt B : "Le marché de l'IA en Europe a-t-il vraiment crû aussi vite qu'annoncé en 2025 ? Quelles sont les estimations les plus pessimistes ?"
+
+Si le chiffre change radicalement entre les deux, il était probablement inventé.
+
+### Technique 5 — Ne demandez pas de prouver, demandez de nuancer
+
+Les LLMs ont un biais de confirmation — ils ont tendance à soutenir la thèse implicite dans votre question. Si vous demandez "Prouve que X est vrai", vous obtiendrez des arguments pour X, parfois fabriqués.
+
+La formulation correcte : "Quels sont les arguments pour ET contre X ? Quelles sont les limites des données disponibles ?"
+
+Cette formulation force le modèle à évaluer plutôt qu'à défendre, ce qui réduit les hallucinations soutenant une position préétablie.
+
+### Technique 6 — Segmentez les questions complexes
+
+Une question complexe qui demande plusieurs informations factuelles en une seule réponse multiplie les points de défaillance. Segmentez.
+
+**Au lieu de :** "Donne-moi un rapport complet sur le marché de l'IA en Europe avec les chiffres clés, les acteurs principaux, les régulations et les tendances 2026."
+
+**Faites :** Posez chaque question séparément. Vérifiez les chiffres de chaque réponse avant de passer à la suivante. La segmentation vous donne un contrôle précis sur chaque affirmation.
+
+### Technique 7 — Utilisez l'IA pour vérifier l'IA
+
+C'est contre-intuitif mais efficace. Après avoir obtenu une réponse factuelle, soumettez-la à un second modèle — ou au même modèle dans une nouvelle session — avec cette instruction :
+
+
+Voici une réponse que j'ai obtenue sur [sujet]. 
+Identifie toute affirmation qui te semble douteuse, imprécise, 
+ou impossibleà vérifier. Signale les affirmations pour lesquelles 
+tu as des doutes sur la précision.
+
+[COLLER LA RÉPONSE]
+
+
+Ce n'est pas infaillible, mais un second modèle attrape souvent des erreurs que le premier a manquées — particulièrement sur les détails numériques et les attributions.
+
+### Technique 8 — Adaptez l'outil au risque
+
+Toutes les tâches n'ont pas le même niveau de risque d'hallucination, et tous les outils ne gèrent pas le risque de la même façon.
+
+| Niveau de risque | Type de tâche | Outil recommandé |
+|---|---|---|
+| **Critique** | Faits, chiffres, citations, droit, médecine | [Perplexity](/fr/blog/perplexity-ai-review-2026) (sources citées) + vérification humaine |
+| **Élevé** | Analyses sectorielles, événements récents | Perplexity ou ChatGPT avec web search activé |
+| **Modéré** | Synthèse de documents que vous fournissez | [Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) (analyse du contexte fourni, pas de sa mémoire) |
+| **Faible** | Rédaction, reformulation, brainstorming | N'importe quel modèle — l'hallucination factuelle n'est pas le risque principal |
+
+La règle clé : **fournissez le contexte vous-même quand le risque est élevé**. Un modèle qui résume un document que vous lui avez collé hallucine beaucoup moins qu'un modèle qui répond de mémoire.
+
+## Ce que les modèles font mieux en 2026 — et ce qui reste risqué
+
+### Ce qui s'est vraiment amélioré
+
+Les LLMs actuels sont nettement plus fiables sur les **faits très répandus** — ceux qui apparaissent des milliers de fois dans les données d'entraînement. Capitale de la France, date de la Seconde Guerre mondiale, syntaxe Python de base — le risque est minime.
+
+Le **signalement de l'incertitude** s'est amélioré. [Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026), GPT-5.4 et Gemini 3.1 disent plus souvent "je ne suis pas certain" que leurs prédécesseurs. Ce n'est pas parfait, mais c'est mesurable.
+
+Le **raisonnement logique** sur des problèmes bien définis est plus fiable. Les erreurs de raisonnement pur ont diminué avec les modèles de la génération o1/Sonnet 4.6.
+
+### Ce qui reste dangereux
+
+Les **informations spécialisées et de niche** restent risquées. Un modèle peut sembler expert dans un sous-domaine très précis tout en mélangeant des détails — parce qu'il a ingéré suffisamment de contenu pour paraître crédible, pas assez pour être exact.
+
+Les **événements post-coupure** sont toujours extrapolés. Vérifiez systématiquement avec un outil comme [Perplexity](/fr/blog/perplexity-ai-review-2026) pour tout ce qui s'est passé après la date d'entraînement du modèle.
+
+La **cohérence à long terme** dans une très longue conversation peut se dégrader. Le modèle peut "oublier" un fait qu'il avait correctement établi 50 messages plus tôt et le remplacer par une variante inventée.
+
+Les **citations et références académiques** restent le point le plus dangereux. En 2026, aucun modèle ne devrait être utilisé comme source d'autorité bibliographique sans vérification systématique.
+
+## Le vrai problème : la confiance mal calibrée
+
+La hallucination en elle-même n'est pas le problème principal. Le problème, c'est que l'IA délivre les fausses informations avec exactement le même ton et la même assurance que les vraies.
+
+Un humain qui incerte dit "je crois que..." ou "si je me souviens bien...". Un LLM dit "Le taux de chômage en France était de 7,2% au quatrième trimestre 2025" avec la même fluidité que "Paris est la capitale de la France". La forme est identique. La fiabilité ne l'est pas.
+
+C'est ce qu'on appelle la **confiance mal calibrée** — et c'est intentionnel dans la conception des modèles actuels, qui ont été entraînés à sembler compétents et utiles. La solution n'est pas de faire moins confiance à l'IA en général. C'est de comprendre dans quelles situations spécifiques cette confiance est justifiée — et dans lesquelles elle ne l'est pas.
+
+La règle pratique la plus utile que vous pouvez retenir : **plus une information est précise, rare, ou récente, plus vous devez la vérifier**. Plus elle est générale, courante, et ancienne, plus vous pouvez vous y fier.
+
+## Notre verdict
+
+Les hallucinations ne vont pas disparaître — pas dans les 12 prochains mois, probablement pas dans les 5 ans qui viennent. Tant que les LLMs fonctionneront sur la prédiction de tokens, la probabilité zéro n'existe pas.
+
+Ce qui change en votre faveur, c'est votre compréhension du phénomène. Un utilisateur qui comprend pourquoi et quand les modèles hallucinent peut travailler avec ces outils de façon fiable — non pas en leur faisant aveuglément confiance, mais en sachant exactement où porter son regard critique.
+
+Utilisez [Perplexity](/fr/blog/perplexity-ai-review-2026) pour les faits et les sources. Utilisez [Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) ou ChatGPT pour raisonner sur du contexte que vous fournissez vous-même. Demandez l'incertitude explicitement. Vérifiez ce qui est critique. Et ne citez jamais une référence académique sans avoir vérifié qu'elle existe.
+
+C'est tout. Ces quatre habitudes éliminent la grande majorité du risque.
+
+## FAQ Hallucinations IA
+
+### Pourquoi ChatGPT invente-t-il des informations ?
+
+ChatGPT génère du texte en prédisant le token suivant le plus probable — il n'a pas de base de données de faits vérifiés. Quand une information précise n'est pas bien représentée dans ses données d'entraînement, il génère quelque chose de plausible plutôt que d'avouer son ignorance. Ce n'est pas un bug, c'est le comportement normal d'un modèle de langage.
+
+### Comment savoir si une réponse IA est une hallucination ?
+
+Les signaux d'alerte : précision excessive sur un sujet flou, absence totale d'incertitude exprimée, citations ou URLs très précises sur des sujets que vous connaissez mal, chiffres qui changent selon la formulation de la question. Pour les informations critiques, la seule certitude est la vérification dans une source primaire.
+
+### Quel outil IA hallucine le moins ?
+
+En 2026, [Perplexity AI](/fr/blog/perplexity-ai-review-2026) est le plus fiable pour les faits, car chaque affirmation est liée à une source web vérifiable. Parmi les LLMs classiques, Claude et GPT-5.4 ont les meilleurs taux de non-hallucination sur les benchmarks factuels. Mais "le moins" n'est jamais "jamais".
+
+### Est-ce que le problème des hallucinations va disparaître ?
+
+Pas complètement. Tant que les LLMs fonctionnent sur la prédiction de tokens, la probabilité zéro d'hallucination n'existe pas. Les modèles s'améliorent et signalent mieux leur incertitude — mais la vigilance de l'utilisateur reste nécessaire pour les informations critiques.
+
+### Comment utiliser l'IA sans risquer de répandre des fausses informations ?
+
+Trois règles pratiques : (1) ne publiez jamais un fait issu d'une IA sans le vérifier dans une source primaire, (2) utilisez [Perplexity](/fr/blog/perplexity-ai-review-2026) pour toute recherche factuelle — les sources sont cliquables et vérifiables, (3) fournissez le contexte vous-même quand c'est possible — un modèle qui résume vos propres documents hallucine beaucoup moins qu'un modèle qui répond de mémoire.
+      `,
+      related: [
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI : avis 2026, la solution aux hallucinations ?", tag: "Chatbots", timeMin: "15" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "12" },
+        { slug: "prompts-ia-2026", title: "Comment écrire des prompts IA qui marchent vraiment", tag: "Productivité", timeMin: "18" },
+      ],
+    },
+    en: {
+      title: "Why AI Makes Things Up — And How to Stop Getting Fooled in 2026",
+      desc: "ChatGPT cited a paper that doesn't exist. Claude gave you a wrong statistic with complete confidence. DeepSeek invented an author. Here's the actual mechanics of why it happens, how to spot it in real time, and 8 concrete techniques to work with AI without getting burned.",
+      metaTitle: "AI Hallucinations 2026: Why ChatGPT Lies and How to Protect Yourself | Neuriflux",
+      metaDesc: "The complete guide to AI hallucinations in 2026: why ChatGPT, Claude, and Gemini invent facts, how to detect them in real time, and 8 practical techniques to work with AI without getting burned.",
+      content: `
+## The AI already lied to you. With total confidence.
+
+In 2023, a US lawyer submitted a legal brief to federal court. Six of the cases cited didn't exist. ChatGPT had fabricated them — case numbers, fictitious judges, invented rulings — delivered with the same calm authority as established case law.
+
+He nearly lost his license.
+
+This wasn't a bug. It wasn't an accident. It was a language model doing exactly what it was designed to do — and that's the part most people still don't understand.
+
+Since then, models have improved dramatically. [Claude Opus 4.6](/en/blog/chatgpt-vs-claude-vs-gemini-2026) claims over 90% non-hallucination rates on factual benchmarks. Grok 4.20 reports 78% on Omniscience tests. But "less often" is not "never" — and hallucinations remain the single biggest reason people misplace their trust in AI.
+
+This guide explains the actual mechanics of why hallucinations happen, how to recognize them in real time, and the 8 concrete techniques that let you work with AI without getting caught out.
+
+## What "hallucination" actually means
+
+The word is misleading. "Hallucination" suggests an AI that's confused, that perceives things that don't exist. The reality is more mundane — and more instructive.
+
+A large language model like [ChatGPT or Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) has no database of verified facts. It also has no awareness of what it "knows" versus what it doesn't know. What it does is predict the next most probable token given everything that came before in the conversation.
+
+In plain terms: the AI generates text that *looks like* a correct answer rather than text that *is* a correct answer. The distinction seems subtle. It changes everything.
+
+When you ask ChatGPT "What was France's unemployment rate in March 2026?", it doesn't query a database. It generates the most statistically coherent continuation of your question, given its training and the conversation context. If that figure matches reality, it's a happy coincidence. Not a guarantee.
+
+**Hallucinations fall into three main categories:**
+
+**Factual hallucinations** — invented numbers, wrong dates, incorrect attributions. "The AI market was worth X billion in 2025" where X varies by model and prompt phrasing.
+
+**Reasoning hallucinations** — logically incorrect conclusions presented as obvious. The model skips a reasoning step and arrives at a wrong conclusion with an air of certainty.
+
+**Citation hallucinations** — the lawyer example. Paper titles, author names, DOIs, page numbers — all fabricated, all delivered with the same precision as real references.
+
+## Why models are improving — but will never be cured
+
+It's tempting to assume the problem disappears with each new version. That's partially true and partially misleading.
+
+The progress is real. **RLHF** (Reinforcement Learning from Human Feedback) and approaches like Anthropic's **Constitutional AI** train models to flag uncertainty rather than confabulate. **Retrieval-Augmented Generation** (RAG) connects models to factual databases to ground responses in verifiable sources. [Perplexity AI](/en/blog/perplexity-ai-review-2026) is the most visible consumer application of this approach — every claim is linked to its original source.
+
+But the fundamental constraint remains. As long as LLMs operate on token prediction, they have a non-zero probability of generating plausible-but-wrong tokens. Benchmarks improve. Zero risk doesn't exist.
+
+**What changed in 2026 is the nature of the risk** — not its existence. Current models hallucinate less on common facts and more on rare, recent, or highly specific information. That's where you need to concentrate your vigilance.
+
+## The 7 high-risk hallucination situations
+
+Not all topics are equal. Here's where LLMs fail most consistently in 2026:
+
+**1. Precise numbers**
+Statistics, percentages, financial figures, exact dates. AI has a tendency to "complete" a vague figure with invented precision. "The AI market is worth exactly X billion" where X shifts depending on how you ask.
+
+**2. Academic citations and references**
+The highest-risk zone. Models generate paper titles, author names, and DOIs that don't exist with terrifying precision. Absolute rule: never cite an AI-sourced reference without verifying it in Google Scholar or PubMed.
+
+**3. Recent events**
+Beyond their knowledge cutoff, models extrapolate. They know that certain things typically happen — elections, product launches, earnings — and can "invent" plausible events. [Perplexity](/en/blog/perplexity-ai-review-2026) with real-time sources is the direct solution to this specific problem.
+
+**4. Obscure individuals**
+Major public figures are well-covered in training data. Niche experts, regional researchers, SME executives — the model can conflate people, invent biographies, misattribute quotes.
+
+**5. Law, medicine, and taxation**
+Three domains where precision is non-optional and errors have tangible consequences. LLMs have ingested enormous amounts of legal and medical content — enough to sound credible, not enough to be reliable.
+
+**6. Code with obscure libraries**
+AI-generated code can look correct while containing subtle bugs or referencing functions that don't exist. This is especially common with less popular libraries the model knows poorly.
+
+**7. Specialized translations**
+In technical, legal, or medical domains, a translation can read fluently while introducing significant shifts in meaning that only a domain expert would catch.
+
+## How to detect a hallucination in real time
+
+Before you even start verifying, there are behavioral signals from the model itself that should trigger your alert.
+
+**Signal 1: Excessive precision on a vague topic**
+If you ask a broad question and receive an answer with very specific numbers, be suspicious. Precision isn't a sign of reliability — it's often the opposite. "There are exactly 4,718 AI applications in this sector" is suspect. "There are several thousand, estimates vary by methodology" is honest.
+
+**Signal 2: Complete absence of uncertainty**
+Good modern models flag their uncertainty. "I'm not certain of this figure" or "My knowledge cutoff is August 2025, this may have changed" are signs of calibration. A model that answers everything with total confidence is a model hallucinating without knowing it.
+
+**Signal 3: Details that sound too good**
+A perfectly phrased quote. A figure that arrives at exactly the right moment in the argument. An author name that sounds plausible but you've never heard of. AI is extremely good at generating content that *sounds* true.
+
+**Signal 4: Instant answers on complex questions**
+On questions that should warrant nuance, hesitation, or a clarifying question, an immediate and assured answer is suspicious.
+
+**Signal 5: URLs and links**
+Never click an AI-provided link without verifying it first. Models generate plausible-looking URLs that don't exist. Copy the URL, paste it in your browser, check before you trust.
+
+## 8 techniques to work without getting burned
+
+### Technique 1 — Demand sources, always
+
+The first line of defense is also the simplest: ask the AI to cite specific sources for every important factual claim.
+
+
+Answer this question citing specific sources for each fact you 
+state. If you don't have a reliable source for a claim, say so 
+explicitly rather than inventing one.
+
+
+But be careful: an AI that cites a source can very well cite an invented one. The next step is non-negotiable.
+
+**Radical alternative**: use [Perplexity AI](/en/blog/perplexity-ai-review-2026) for factual questions. Every claim is linked to a real, clickable, verifiable web source. This is architecturally different from a standard LLM — it's not that Perplexity "tries not to hallucinate," it's that it structurally cannot give you a claim without linking it to a page that exists.
+
+### Technique 2 — Verify critical facts independently
+
+No critical information should rest on AI alone. For any fact that will influence an important decision, verify in a primary source:
+
+- **Numbers and statistics** → official organization website, annual report, government database
+- **Academic references** → Google Scholar, PubMed, CrossRef (DOIs are verifiable in seconds)
+- **Recent events** → search engine on the precise time period
+- **Legal and medical information** → qualified professionals, official sources
+
+The principle isn't to never use AI for facts — it's to never use AI *only* for important facts.
+
+### Technique 3 — Ask the model to rate its own uncertainty
+
+Some models can flag their uncertainty reliably when explicitly asked. [DeepSeek R1](/en/blog/deepseek-review-2026) with its visible Chain-of-Thought is particularly useful for this exercise.
+
+
+For each factual claim in your response, indicate your confidence 
+level: High (near-certain), Medium (likely but worth checking), 
+Low (uncertain — verify before using).
+
+
+This isn't foolproof — a model can have high confidence in something false. But it steers your scrutiny toward the right claims.
+
+### Technique 4 — The contradiction test
+
+Ask the same question from two opposing angles and compare. If the model gives consistent answers, that's a good sign. If numbers or facts change depending on framing, that's a red flag.
+
+**Practical example:**
+
+Prompt A: "What was the AI market growth rate in Europe in 2025?"
+Prompt B: "Was the European AI market really growing as fast as reported in 2025? What are the most skeptical estimates?"
+
+If the figure changes radically between the two, it was probably invented.
+
+### Technique 5 — Ask for nuance, not proof
+
+LLMs have a confirmation bias — they tend to support the thesis implied in your question. If you ask "prove that X is true," you'll get arguments for X, sometimes fabricated.
+
+The correct framing: "What are the arguments for AND against X? What are the limitations of the available data?"
+
+This forces the model to evaluate rather than defend, which reduces hallucinations that support a predetermined position.
+
+### Technique 6 — Segment complex questions
+
+A complex question requiring multiple factual claims in a single answer multiplies failure points. Segment it.
+
+**Instead of:** "Give me a complete report on the European AI market with key figures, major players, regulations, and 2026 trends."
+
+**Do:** Ask each question separately. Verify each response before moving to the next. Segmentation gives you precise control over each individual claim.
+
+### Technique 7 — Use AI to check AI
+
+Counter-intuitive but effective. After getting a factual response, submit it to a second model — or the same model in a fresh session — with this instruction:
+
+Here's a response I received on [topic]. Identify any claim 
+that seems doubtful, imprecise, or impossible to verify. 
+Flag claims where you have doubts about accuracy.
+
+[PASTE THE RESPONSE]
+
+This isn't foolproof, but a second model often catches errors the first one missed — particularly on numerical details and attributions.
+
+### Technique 8 — Match the tool to the risk level
+
+Not all tasks carry the same hallucination risk, and not all tools handle that risk the same way.
+
+| Risk Level | Task Type | Recommended Tool |
+|---|---|---|
+| **Critical** | Facts, numbers, citations, law, medicine | [Perplexity](/en/blog/perplexity-ai-review-2026) (cited sources) + human verification |
+| **High** | Industry analysis, recent events | Perplexity or ChatGPT with web search enabled |
+| **Moderate** | Synthesizing documents you provide | [Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) (analyzing provided context, not memory) |
+| **Low** | Writing, reformulation, brainstorming | Any model — factual hallucination isn't the primary risk |
+
+The key rule: **provide the context yourself when the risk is high**. A model summarizing a document you paste in halluccinates far less than a model answering from memory.
+
+## What models do better in 2026 — and what's still dangerous
+
+### What has genuinely improved
+
+Current LLMs are significantly more reliable on **widely distributed facts** — information that appears thousands of times in training data. The capital of France, the date of World War II, basic Python syntax — the risk is minimal.
+
+**Signaling uncertainty** has improved. [Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026), GPT-5.4, and Gemini 3.1 say "I'm not sure" more often than their predecessors. It's not perfect, but it's measurable.
+
+**Logical reasoning** on well-defined problems is more reliable. Pure reasoning errors have decreased with the o1/Sonnet 4.6 generation of models.
+
+### What's still dangerous
+
+**Specialized and niche information** remains risky. A model can appear expert in a very precise sub-domain while mixing up details — because it ingested enough content to sound credible, not enough to be accurate.
+
+**Post-cutoff events** are still extrapolated. Systematically verify with a tool like [Perplexity](/en/blog/perplexity-ai-review-2026) for anything that happened after a model's training date.
+
+**Long-context consistency** can degrade in very long conversations. The model can "forget" a fact it correctly established 50 messages earlier and replace it with an invented variant.
+
+**Academic citations and references** remain the most dangerous category. In 2026, no model should be used as a bibliographic authority without systematic verification.
+
+## The real problem: miscalibrated confidence
+
+The hallucination itself isn't the core problem. The problem is that AI delivers false information with exactly the same tone and assurance as true information.
+
+A human who's uncertain says "I think..." or "if I recall correctly..." An LLM says "France's unemployment rate was 7.2% in Q4 2025" with the same fluency as "Paris is the capital of France." The form is identical. The reliability is not.
+
+This is called **miscalibrated confidence** — and it's a design outcome of current models, which have been trained to appear competent and helpful. The solution isn't to trust AI less in general. It's to understand in which specific situations that trust is warranted — and in which it isn't.
+
+The most useful practical rule you can take away: **the more precise, rare, or recent an information claim is, the more you need to verify it**. The more general, common, and old it is, the more you can rely on it.
+
+## Our verdict
+
+Hallucinations are not going away — not in the next 12 months, probably not in the next five years. As long as LLMs operate on token prediction, zero probability of hallucination doesn't exist.
+
+What changes in your favor is your understanding of the phenomenon. A user who understands why and when models hallucinate can work with these tools reliably — not by blindly trusting them, but by knowing exactly where to direct their critical attention.
+
+Use [Perplexity](/en/blog/perplexity-ai-review-2026) for facts and sources. Use [Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) or ChatGPT to reason over context you provide yourself. Ask for uncertainty explicitly. Verify what's critical. And never cite an academic reference without checking it exists.
+
+That's it. These four habits eliminate the vast majority of the risk.
+
+## AI Hallucinations FAQ
+
+### Why does ChatGPT make things up?
+
+ChatGPT generates text by predicting the most probable next token — it has no database of verified facts. When precise information isn't well-represented in its training data, it generates something plausible rather than admitting ignorance. This isn't a bug; it's the normal behavior of a language model.
+
+### How can I tell if an AI response is a hallucination?
+
+Red flags: excessive precision on a vague topic, complete absence of expressed uncertainty, very precise citations or URLs on subjects you know poorly, figures that change depending on how you phrase the question. For critical information, the only certainty is verification in a primary source.
+
+### Which AI tool hallucinates least?
+
+In 2026, [Perplexity AI](/en/blog/perplexity-ai-review-2026) is most reliable for facts, as every claim is linked to a verifiable web source. Among traditional LLMs, Claude and GPT-5.4 have the best non-hallucination rates on factual benchmarks. But "least" is never "never."
+
+### Will the hallucination problem eventually disappear?
+
+Not completely. As long as LLMs operate on token prediction, zero hallucination probability doesn't exist. Models are improving and signaling uncertainty better — but user vigilance remains necessary for critical information.
+
+### How do I use AI without spreading misinformation?
+
+Three practical rules: (1) Never publish a fact from AI without verifying it in a primary source. (2) Use [Perplexity](/en/blog/perplexity-ai-review-2026) for any factual research — sources are clickable and verifiable. (3) Provide context yourself when possible — a model summarizing your own documents hallucinates far less than a model answering from memory.
+      `,
+      related: [
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI Review 2026: The Fix for AI Hallucinations?", tag: "Chatbots", timeMin: "15" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "12" },
+        { slug: "prompts-ia-2026", title: "How to Write AI Prompts That Actually Work in 2026", tag: "Productivité", timeMin: "18" },
+      ],
+    },
+  },
+
 // ─── Guide Prompting IA 2026 ─────────────────────────────────────────────────
   {
     slug: "prompts-ia-2026",
@@ -1554,7 +2072,7 @@ No. Claude Opus 4.6 is available now, performant, and compatible with future mod
 // ─── Gagner de l'argent avec l'IA en 2026 ───────────────────────────────────
 {
   slug: "money-ia-2026",
-  tag: "Productivité",
+  tag: "Productivity",
   date: { fr: "1er avril 2026", en: "April 1, 2026" },
   timeMin: "14",
   featured: true,

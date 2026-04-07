@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "ia-2026",
   "prompts-ia-2026",
   "openai-fonds-852-milliards-2026",
   "claude-mythos-next-anthropic-2026",
@@ -24,6 +25,7 @@ const ARTICLE_SLUGS = [
 ];
 
 const COMPARATIF_SLUGS = [
+  "perplexity-vs-chatgpt-vs-gemini-2026",
   "n8n-vs-make-vs-zapier-2026",
   "runway-vs-kling-vs-pika-2026",
   "chatgpt-vs-claude-vs-gemini",
