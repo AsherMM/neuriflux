@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "laude-code-review-2026",
   "ia-2026",
   "prompts-ia-2026",
   "openai-fonds-852-milliards-2026",

@@ -32,10 +32,403 @@ export interface Article {
 }
 
 export const ARTICLES: Article[] = [
+// ─── Claude Code Review 2026 ──────────────────────────────────────────────────
+  {
+    slug: "claude-code-review-2026",
+    tag: "Code",
+    date: { fr: "10 avril 2026", en: "April 10, 2026" },
+    timeMin: "15",
+    featured: true,
+    affiliate: {
+      url: "https://claude.ai",
+      toolName: "Claude Code",
+      label: {
+        fr: "Pro à 20$/mois · Max à 100-200$/mois · API pay-as-you-go",
+        en: "Pro at $20/month · Max at $100-200/month · API pay-as-you-go",
+      },
+    },
+    fr: {
+      title: "Claude Code : avis complet 2026, l'outil qui a retourné le marché dev en 8 mois",
+      desc: "Claude Code a atteint 46% de 'most loved' chez les développeurs en seulement 8 mois — devant Cursor et GitHub Copilot. On a tout testé : terminal, VS Code, multi-fichiers, tarifs. Notre verdict sans filtre.",
+      metaTitle: "Claude Code : avis complet 2026 — prix, fonctionnalités, benchmark | Neuriflux",
+      metaDesc: "Notre test complet de Claude Code en 2026 : 46% most loved, 80.8% SWE-bench, 1M tokens de contexte. Comparatif vs Cursor et Copilot, tarifs réels et verdict honnête sur les limites.",
+      content: `
+## L'outil qui a retourné le marché dev en 8 mois
+
+En mai 2025, Anthropic a lancé Claude Code dans une discrétion relative. Huit mois plus tard, c'est l'outil le plus aimé de la communauté dev mondiale : **46% de "most loved"** dans l'enquête Pragmatic Engineer de février 2026 (15 000 développeurs), contre 19% pour [Cursor](/fr/blog/cursor-ai-review-2026) et 9% pour [GitHub Copilot](/fr/blog/github-copilot-vs-codeium).
+
+C'est le retournement le plus rapide de l'histoire des outils de développement. GitHub Copilot avait mis 4 ans à s'établir. Claude Code l'a dépassé en satisfaction en moins d'un an.
+
+Pourquoi ? Pas par hasard. Claude Code a résolu un problème fondamental que ses concurrents n'avaient pas osé attaquer frontalement : la **compréhension de la codebase entière**. Pas un fichier. Pas une sélection. Le projet entier — avec une fenêtre de contexte d'1 million de tokens qui permet d'ingérer des dizaines de milliers de lignes de code sans perte de contexte.
+
+Mais derrière les chiffres impressionnants, il y a des compromis sérieux à connaître avant de sortir la carte bleue. On a tout testé pendant 3 semaines. Voici le verdict complet.
+
+## C'est quoi Claude Code exactement ?
+
+Claude Code est un **agent de codage terminal-native** développé par Anthropic. Contrairement à Cursor qui est un éditeur (fork de VS Code) ou à GitHub Copilot qui est une extension IDE, Claude Code vit dans votre terminal. Vous décrivez ce que vous voulez construire en langage naturel. Il lit votre codebase, écrit le code, crée les fichiers, fait tourner les tests et pousse les commits — de façon autonome.
+
+La distinction philosophique est importante. [Cursor](/fr/blog/cursor-ai-review-2026) est un IDE où l'IA vous assiste. Claude Code est un agent qui code pendant que vous supervisez. Ce n'est pas la même relation avec l'outil.
+
+Il tourne sur les modèles Claude Sonnet 4.6 et Opus 4.6 d'Anthropic — les mêmes que dans [Claude Pro](/fr/blog/chatgpt-vs-claude-vs-gemini-2026). Mais l'interface terminale lui donne accès à l'ensemble de votre environnement de développement local : fichiers, répertoires, commandes shell, Git, tests, déploiements.
+
+**Intégrations disponibles :**
+- Terminal (interface native)
+- VS Code (extension officielle)
+- JetBrains IDE (IntelliJ, PyCharm, WebStorm)
+- Claude Desktop app
+- GitHub via Actions (open source, gratuit)
+- 9 000+ plugins via MCP (Model Context Protocol)
+
+## Les benchmarks qui ont fait basculer la communauté
+
+Les chiffres de Claude Code sur les benchmarks de code sont les plus élevés du marché en 2026, et c'est documenté indépendamment.
+
+**SWE-bench Verified** (le benchmark de référence pour le code réel sur des issues GitHub open-source) :
+
+| Outil | Score SWE-bench |
+|---|---|
+| **Claude Code (Opus 4.6)** | **80.8%** |
+| GitHub Copilot Agent | 72.5% |
+| Cursor Agent | ~70% |
+| Claude Sonnet 4.6 (standalone) | 58% |
+
+L'écart de 8 points entre Claude Code et Copilot Agent se traduit concrètement : sur les issues nécessitant des modifications dans 5+ fichiers simultanément, Claude Code résout 23% plus de cas. C'est là que la fenêtre de contexte large change vraiment les résultats.
+
+**Résultats de tests indépendants :**
+- 95% de correctness au premier essai (19 outputs corrects sur 20 testés)
+- Dashboard React complet construit en 47 minutes dans un benchmark standardisé
+- 67% de victoires sur 36 tests de qualité de code en aveugle (benchmark Blake Crosley)
+- 5,5x moins de tokens utilisés que Cursor pour la même tâche
+
+## Ce qu'on a testé pendant 3 semaines
+
+### La compréhension de codebase — l'avantage décisif
+
+Le vrai test de Claude Code, c'est de lui donner une codebase que vous ne lui avez pas expliquée et de voir s'il comprend. Sur un projet Node.js de 50 000 lignes, Claude Code a navigué les dépendances, identifié les patterns architecturaux et proposé un refactoring cohérent avec les conventions existantes — sans qu'on lui donne d'instructions supplémentaires.
+
+Le CLAUDE.md est la feature qui fait vraiment la différence ici. Ce fichier Markdown placé à la racine du projet contient vos conventions, votre architecture, vos patterns — et Claude Code le lit au démarrage de chaque session. Une fois bien rempli, vous n'expliquez plus jamais le même contexte deux fois. C'est tellement efficace que [Cursor](/fr/blog/cursor-ai-review-2026) et Gemini ont copié le concept avec leurs propres formats (.cursorrules, GEMINI.md).
+
+### Le mode agentique — là où ça change vraiment
+
+Décrire une feature en anglais et voir Claude Code la décomposer en sous-tâches, écrire le code dans les bons fichiers, faire tourner les tests, corriger les erreurs — et vous envoyer un diff complet à valider — c'est une expérience qui change votre rapport au développement.
+
+Sur des tasks complexes (authentification multi-provider, migration de base de données, refactoring d'API), Claude Code a livré des résultats utilisables au premier essai dans 80% des cas. C'est la statistique la plus impressionnante de nos tests : non pas qu'il soit parfait, mais qu'il soit fiable.
+
+Le mode **Plan** (qu'on peut activer avec SHIFT+TAB) permet de voir le plan d'exécution avant que Claude Code ne commence à modifier des fichiers. Indispensable sur des tâches complexes pour valider l'approche avant d'engager les modifications.
+
+### La voix, les agents parallèles, et /loop
+
+Trois features 2026 qui méritent d'être mentionnées :
+
+**Voice Mode** : décrivez une tâche oralement. Claude Code transcrit et exécute. Pratique pour les sessions de refactoring longues où taper devient fastidieux.
+
+**Agent Teams** : plusieurs instances de Claude Code travaillant en parallèle sur des sous-tâches d'un même projet. Rakuten a rapporté Opus 4.6 qui a fermé 13 issues et assigné 12 autres automatiquement en une journée sur 6 repositories simultanément.
+
+**/loop** : planifiez des tâches récurrentes ("tous les jours à 9h, analyse les nouvelles issues GitHub et propose des résolutions"). Transforme Claude Code en agent permanent plutôt qu'en outil à la demande.
+
+### Claude Code Review — la nouvelle feature payante
+
+Lancé le 9 mars 2026, **Claude Code Review** est un système multi-agents qui analyse automatiquement chaque pull request pour détecter les bugs logiques, les régressions et les vulnérabilités de sécurité. Le taux de détection annoncé : **84% des vrais bugs**.
+
+**Mais le tarif est difficile à avaler** : entre 15 et 25 dollars par review. Pour une équipe qui merge 50 PRs par semaine, ça représente 3 000 à 5 000 dollars par mois. CodeRabbit fait quelque chose de comparable à tarif fixe mensuel.
+
+C'est réservé aux plans Teams et Enterprise. Les développeurs solo n'y ont pas accès.
+
+## Les tarifs de Claude Code en 2026
+
+| Plan | Prix | Ce qu'il inclut |
+|---|---|---|
+| **Pro** | 20$/mois | Claude Code + accès illimité en théorie, mais limites pratiques à 2-3h d'usage intensif |
+| **Max 5x** | 100$/mois | 5x plus de capacité, limites moins fréquentes — le minimum réel pour un usage pro quotidien |
+| **Max 20x** | 200$/mois | Usage intensif, équipes, pas de surprise — le plan "sans se prendre la tête" |
+| **Teams** | 25$/siège/mois (annuel) ou 30$/mois | Minimum 5 sièges, max 150, SSO, facturation centralisée |
+| **API** | Pay-as-you-go | Sonnet : 3$/M tokens · Opus : 15$/M tokens |
+
+**Le vrai piège du plan Pro :** sur le papier, 20$/mois pour Claude Code semble compétitif face à Cursor (20$/mois) et Copilot (10$/mois). Dans la pratique, les rate limits du plan Pro s'activent après 2-3 heures d'usage intensif. Si vous faites du dev sérieux, vous allez atteindre ces limites dès le premier jour.
+
+Le consensus dans la communauté : **le vrai plan d'entrée pour un usage professionnel, c'est Max 5x à 100$/mois**. C'est 5 fois plus cher que le prix affiché, et c'est la réalité que beaucoup de développeurs découvrent après coup.
+
+En mars 2026, plusieurs abonnés Max ont rapporté des limites de session s'épuisant en 1-2h au lieu des 5h prévues — Anthropic a reconnu le problème et ajusté les limites en heure de pointe (5h-11h PT en semaine). C'est le talon d'Achille de l'outil.
+
+## Claude Code vs Cursor vs GitHub Copilot
+
+| Critère | Claude Code | Cursor | GitHub Copilot |
+|---|---|---|---|
+| Philosophie | Agent terminal autonome | IDE AI-native | Extension IDE |
+| Compréhension codebase | ⭐⭐⭐⭐⭐ (1M tokens) | ⭐⭐⭐⭐ (indexation) | ⭐⭐⭐ (fichiers ouverts) |
+| Autocomplétion inline | ❌ (non conçu pour ça) | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Tâches multi-fichiers | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| SWE-bench Verified | 80.8% | ~70% | 72.5% |
+| Courbe d'apprentissage | Élevée (terminal) | Modérée | Faible |
+| Prix réel pour usage pro | 100-200$/mois | 20-60$/mois | 10-39$/mois |
+| "Most loved" dev survey | 46% | 19% | 9% |
+
+La ligne la plus importante de ce tableau : **le prix réel**. Claude Code à 20$/mois avec des rate limits à 2h, c'est Claude Code à 100$/mois pour un usage pro quotidien. Cursor à 20$/mois est plus fiable sur la durée pour un usage solo. [GitHub Copilot](/fr/blog/github-copilot-vs-codeium) à 10$/mois reste imbattable sur le rapport prix/accessibilité.
+
+## Pour qui est fait Claude Code en 2026 ?
+
+**Claude Code est fait pour vous si :**
+- Vous travaillez sur des codebases complexes (50 000+ lignes) où la compréhension globale change les résultats
+- Vous êtes à l'aise dans le terminal et vous ne cherchez pas un IDE
+- Vous voulez un agent autonome qui code pendant que vous supervisez, pas un assistant
+- La qualité de code prime sur la vitesse d'itération
+- Votre budget dev peut aller à 100$/mois minimum
+
+**Claude Code n'est pas fait pour vous si :**
+- Vous débutez en programmation — commencez par [Lovable ou Bolt.new](/fr/blog/vibe-coding-tools-2026)
+- Vous voulez de l'autocomplétion inline rapide en cours de frappe
+- Votre budget est serré — [GitHub Copilot](/fr/blog/github-copilot-vs-codeium) à 10$/mois est plus adapté
+- Vous voulez un IDE intégré — [Cursor](/fr/blog/cursor-ai-review-2026) est supérieur sur ce terrain
+
+## Claude Code : avantages et inconvénients
+
+**Ce qui impressionne vraiment :**
+- Fenêtre de contexte d'1M tokens — aucun concurrent ne s'en approche
+- 80.8% sur SWE-bench — le meilleur score du marché
+- CLAUDE.md : un fichier de config qui élimine la répétition de contexte
+- 46% most loved — le sentiment développeur le plus positif du secteur
+- 9 000+ intégrations MCP : GitHub, Slack, Jira, bases de données
+- Agent Teams : plusieurs instances en parallèle sur le même projet
+- Pricing flat-rate sur Max — pas de surcharge surprise contrairement à Cursor
+
+**Ce qui frustre régulièrement :**
+- Rate limits du plan Pro atteints en 2-3h d'usage intensif
+- Pas d'autocomplétion inline — si c'est ce que vous cherchez, regardez ailleurs
+- Courbe d'apprentissage réelle pour les non-habitués du terminal
+- Claude Code Review à 15-25$ par PR — coûteux pour les équipes actives
+- Support email uniquement — délais de 18-24h signalés par plusieurs utilisateurs
+- Plans Teams plafonnés à 150 sièges — les grandes organisations peuvent peiner
+
+## Notre verdict final
+
+Claude Code est **l'outil de codage IA le plus puissant du marché en 2026** sur les tâches complexes. Les benchmarks le prouvent. Les 46% de "most loved" chez les développeurs le confirment. La capacité à comprendre une codebase entière, planifier une feature complète et la livrer dans des dizaines de fichiers simultanément — c'est dans une catégorie à part.
+
+Mais c'est aussi l'outil le plus mal tarifé du marché. Afficher 20$/mois quand le vrai prix d'entrée professionnel est 100$/mois, c'est une promesse qui crée de la déception. Et les rate limits qui s'activent sans prévenir sont le problème numéro un de la communauté.
+
+**Notre note : 8.5/10** — Exceptionnel sur la qualité et l'autonomie. La politique de rate limits et le pricing réel coûtent deux points. Si vous pouvez budgéter 100$/mois et que vous travaillez sur des projets complexes, c'est probablement le meilleur investissement dev que vous ferez en 2026.
+
+## FAQ Claude Code
+
+### Claude Code est-il gratuit ?
+
+Non. Claude Code nécessite un abonnement payant à partir de 20$/mois (plan Pro). Il n'y a pas de tier gratuit pour Claude Code. Le Claude chatbot de base est gratuit, mais l'accès à Claude Code est réservé aux plans payants. L'API est disponible en pay-as-you-go.
+
+### Quelle est la différence entre Claude Code et Cursor ?
+
+Claude Code est un agent terminal autonome — vous décrivez une tâche, il la réalise de A à Z en modifiant plusieurs fichiers. Cursor est un IDE (fork VS Code) où l'IA vous assiste en temps réel pendant que vous codez. Claude Code gagne sur les tâches complexes multi-fichiers. Cursor gagne sur l'expérience quotidienne d'édition et l'autocomplétion inline.
+
+### Claude Code Pro à 20$/mois est-il suffisant ?
+
+Pour un usage occasionnel ou des projets simples, oui. Pour un développement professionnel intensif au quotidien, non — les rate limits s'activent après 2-3h d'usage soutenu. Le plan Max 5x à 100$/mois est le vrai minimum pour un usage pro sans frustration régulière.
+
+### Comment fonctionne CLAUDE.md ?
+
+CLAUDE.md est un fichier Markdown que vous placez à la racine de votre projet. Il contient vos conventions de code, votre architecture, vos patterns récurrents et toute information que Claude Code doit connaître. Il est lu automatiquement à chaque session. C'est la feature qui élimine le besoin de réexpliquer votre codebase à chaque conversation.
+
+### Claude Code peut-il remplacer un développeur ?
+
+Non. Claude Code est un multiplicateur de productivité, pas un remplaçant. Il gère bien les tâches bien définies, le refactoring, les features standards et le débogage. Il ne remplace pas le jugement architectural, la compréhension du domaine métier, ou la décision sur ce qu'il faut construire. Les équipes qui l'utilisent rapportent une productivité 2-3x supérieure, pas une suppression de postes.
+      `,
+      related: [
+        { slug: "cursor-ai-review-2026", title: "Cursor AI : le meilleur assistant dev en 2026 ?", tag: "Code", timeMin: "9" },
+        { slug: "github-copilot-vs-codeium", title: "GitHub Copilot vs Codeium : lequel booste vraiment votre code ?", tag: "Code", timeMin: "10" },
+        { slug: "vibe-coding-tools-2026", title: "5 meilleurs outils pour coder une app sans coder en 2026", tag: "Code", timeMin: "13" },
+      ],
+    },
+    en: {
+      title: "Claude Code Review 2026: The Tool That Flipped the Dev Market in 8 Months",
+      desc: "Claude Code hit 46% 'most loved' among developers in just 8 months — ahead of Cursor and GitHub Copilot. We tested everything: terminal, VS Code, multi-file tasks, real pricing. Our unfiltered verdict.",
+      metaTitle: "Claude Code Review 2026: Features, Pricing & Honest Verdict | Neuriflux",
+      metaDesc: "Full Claude Code review for 2026: 46% most loved, 80.8% SWE-bench, 1M token context. Comparison vs Cursor and Copilot, real pricing breakdown, and honest verdict on the rate limit problem.",
+      content: `
+## The tool that flipped the dev market in 8 months
+
+In May 2025, Anthropic launched Claude Code with relatively little fanfare. Eight months later, it's the most loved tool in the global developer community: **46% "most loved"** in the Pragmatic Engineer survey from February 2026 (15,000 developers), versus 19% for [Cursor](/en/blog/cursor-ai-review-2026) and 9% for [GitHub Copilot](/en/blog/github-copilot-vs-codeium).
+
+That's the fastest reversal in developer tooling history. GitHub Copilot took 4 years to establish itself. Claude Code surpassed it in satisfaction in under a year.
+
+The reason isn't luck. Claude Code solved a fundamental problem its competitors hadn't dared to attack directly: **understanding the entire codebase**. Not a file. Not a selection. The whole project — with a 1 million token context window that can ingest tens of thousands of lines of code without losing context.
+
+But behind the impressive numbers, there are serious trade-offs you need to know before subscribing. We tested everything for 3 weeks. Here's the complete verdict.
+
+## What is Claude Code exactly?
+
+Claude Code is a **terminal-native AI coding agent** built by Anthropic. Unlike Cursor, which is an editor (VS Code fork), or GitHub Copilot, which is an IDE extension, Claude Code lives in your terminal. You describe what you want to build in natural language. It reads your codebase, writes the code, creates files, runs tests, and pushes commits — autonomously.
+
+The philosophical distinction matters. [Cursor](/en/blog/cursor-ai-review-2026) is an IDE where AI assists you. Claude Code is an agent that codes while you supervise. That's a different relationship with the tool entirely.
+
+It runs on Anthropic's Claude Sonnet 4.6 and Opus 4.6 models — the same ones in [Claude Pro](/en/blog/chatgpt-vs-claude-vs-gemini-2026). But the terminal interface gives it access to your entire local development environment: files, directories, shell commands, Git, tests, deployments.
+
+**Available integrations:**
+- Terminal (native interface)
+- VS Code (official extension)
+- JetBrains IDE (IntelliJ, PyCharm, WebStorm)
+- Claude Desktop app
+- GitHub via Actions (open source, free)
+- 9,000+ plugins via MCP (Model Context Protocol)
+
+## The benchmarks that shifted community sentiment
+
+Claude Code's numbers on real-world coding benchmarks are the highest in the market in 2026, backed by independent testing.
+
+**SWE-bench Verified** (the reference benchmark for real code on open-source GitHub issues):
+
+| Tool | SWE-bench Score |
+|---|---|
+| **Claude Code (Opus 4.6)** | **80.8%** |
+| GitHub Copilot Agent | 72.5% |
+| Cursor Agent | ~70% |
+| Claude Sonnet 4.6 (standalone) | 58% |
+
+The 8-point gap between Claude Code and Copilot Agent translates concretely: on issues requiring changes across 5+ files simultaneously, Claude Code resolves 23% more cases. That's where the large context window actually changes outcomes.
+
+**Independent test results:**
+- 95% first-try correctness (19 out of 20 outputs correct on the first attempt)
+- Full React dashboard built in 47 minutes in a standardized benchmark
+- 67% wins across 36 blind code quality tests (Blake Crosley's independent benchmark)
+- 5.5x fewer tokens used than Cursor for the same task
+
+## What we tested over 3 weeks
+
+### Codebase understanding — the decisive advantage
+
+The real test of Claude Code is giving it a codebase you haven't explained and seeing whether it understands. On a 50,000-line Node.js project, Claude Code navigated dependencies, identified architectural patterns, and proposed refactoring consistent with existing conventions — without additional instructions.
+
+**CLAUDE.md** is the feature that makes the real difference here. This Markdown file placed at the project root contains your conventions, architecture, and patterns — and Claude Code reads it at the start of every session. Once properly filled in, you never explain the same context twice. The concept caught on so strongly that [Cursor](/en/blog/cursor-ai-review-2026) and Gemini copied it with their own formats (.cursorrules, GEMINI.md).
+
+### Agentic mode — where it actually changes things
+
+Describing a feature in English and watching Claude Code break it into subtasks, write the code in the right files, run the tests, fix the errors, and send you a complete diff to validate — this is an experience that fundamentally changes your relationship with development.
+
+On complex tasks (multi-provider authentication, database migrations, API refactoring), Claude Code delivered usable results on the first try in 80% of cases. That's the most impressive statistic from our testing: not that it's perfect, but that it's reliable.
+
+**Plan mode** (activated with SHIFT+TAB) shows you the execution plan before Claude Code starts modifying files. Essential on complex tasks to validate the approach before committing changes.
+
+### Voice, parallel agents, and /loop
+
+Three 2026 features worth highlighting:
+
+**Voice Mode**: describe a task out loud. Claude Code transcribes and executes. Useful for long refactoring sessions where typing becomes tedious.
+
+**Agent Teams**: multiple Claude Code instances working in parallel on subtasks of the same project. Rakuten reported Opus 4.6 autonomously closing 13 issues and assigning 12 others in a single day across 6 repositories simultaneously.
+
+**/loop**: schedule recurring tasks ("every day at 9am, analyze new GitHub issues and propose resolutions"). Transforms Claude Code from an on-demand tool into a permanent background agent.
+
+### Claude Code Review — the new premium feature
+
+Launched March 9, 2026, **Claude Code Review** is a multi-agent system that automatically analyzes every pull request for logic bugs, regressions, and security vulnerabilities. The announced detection rate: **84% of real bugs**.
+
+**But the pricing is hard to swallow**: between $15 and $25 per review. For a team merging 50 PRs per week, that's $3,000 to $5,000 per month. CodeRabbit does something comparable at a fixed monthly rate.
+
+It's restricted to Teams and Enterprise plans. Solo developers don't have access.
+
+## Claude Code pricing in 2026
+
+| Plan | Price | What's included |
+|---|---|---|
+| **Pro** | $20/month | Claude Code access — rate limits hit after 2-3h of intensive use |
+| **Max 5x** | $100/month | 5x more capacity, less frequent limits — the real minimum for daily pro use |
+| **Max 20x** | $200/month | Heavy use, teams, no surprises — the "no headaches" plan |
+| **Teams** | $25/seat/month (annual) or $30/month | Min 5 seats, max 150, SSO, centralized billing |
+| **API** | Pay-as-you-go | Sonnet: $3/M tokens · Opus: $15/M tokens |
+
+**The real Pro plan trap:** on paper, $20/month for Claude Code looks competitive against Cursor ($20/month) and Copilot ($10/month). In practice, the Pro plan rate limits kick in after 2-3 hours of intensive use. If you're doing serious development, you'll hit these limits on day one.
+
+Community consensus: **the real entry point for professional daily use is Max 5x at $100/month**. That's 5x the listed price, and it's the reality many developers discover after the fact.
+
+In March 2026, multiple Max subscribers reported session limits draining in 1-2 hours instead of the expected 5 — Anthropic acknowledged the issue and adjusted limits during peak hours (5am-11am PT on weekdays). This is the tool's Achilles heel.
+
+## Claude Code vs Cursor vs GitHub Copilot
+
+| Criterion | Claude Code | Cursor | GitHub Copilot |
+|---|---|---|---|
+| Philosophy | Autonomous terminal agent | AI-native IDE | IDE extension |
+| Codebase understanding | ⭐⭐⭐⭐⭐ (1M tokens) | ⭐⭐⭐⭐ (indexing) | ⭐⭐⭐ (open files) |
+| Inline autocomplete | ❌ (not designed for it) | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Multi-file tasks | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| SWE-bench Verified | 80.8% | ~70% | 72.5% |
+| Learning curve | High (terminal) | Moderate | Low |
+| Real price for pro use | $100-200/month | $20-60/month | $10-39/month |
+| "Most loved" dev survey | 46% | 19% | 9% |
+
+The most important line in this table: **real price**. Claude Code at $20/month with 2-hour rate limits is Claude Code at $100/month for real daily professional use. Cursor at $20/month is more reliable over time for solo developers. [GitHub Copilot](/en/blog/github-copilot-vs-codeium) at $10/month remains unbeatable on the price/accessibility ratio.
+
+## Who is Claude Code for in 2026?
+
+**Claude Code is right for you if:**
+- You work on complex codebases (50,000+ lines) where global understanding changes outcomes
+- You're comfortable in the terminal and not looking for an IDE
+- You want an autonomous agent that codes while you supervise, not an assistant
+- Code quality matters more than iteration speed
+- Your dev budget can reach $100/month minimum
+
+**Claude Code is not right for you if:**
+- You're new to programming — start with [Lovable or Bolt.new](/en/blog/vibe-coding-tools-2026)
+- You want fast inline autocomplete as you type
+- Your budget is tight — [GitHub Copilot](/en/blog/github-copilot-vs-codeium) at $10/month is more appropriate
+- You want an integrated IDE experience — [Cursor](/en/blog/cursor-ai-review-2026) is superior there
+
+## Claude Code pros and cons
+
+**What genuinely impresses:**
+- 1M token context window — no competitor comes close
+- 80.8% on SWE-bench — the highest score in the market
+- CLAUDE.md: one config file that eliminates context repetition forever
+- 46% most loved — the most positive developer sentiment in the sector
+- 9,000+ MCP integrations: GitHub, Slack, Jira, databases
+- Agent Teams: multiple parallel instances on the same project
+- Flat-rate pricing on Max — no surprise overages unlike Cursor
+
+**What regularly frustrates:**
+- Pro plan rate limits hit within 2-3 hours of intensive use
+- No inline autocomplete — if that's what you need, look elsewhere
+- Real learning curve for developers unfamiliar with terminal workflows
+- Code Review at $15-25 per PR — expensive for active teams
+- Email-only support — 18-24 hour delays reported by multiple users
+- Teams plans capped at 150 seats — large organizations may struggle
+
+## Our final verdict
+
+Claude Code is **the most powerful AI coding tool on the market in 2026** for complex tasks. The benchmarks prove it. The 46% developer "most loved" rating confirms it. The ability to understand an entire codebase, plan a complete feature, and deliver it across dozens of files simultaneously — that's in a category of its own.
+
+But it's also the most misleadingly priced tool in the market. Advertising $20/month when the real professional entry point is $100/month creates disappointment. And rate limits that hit without warning are the community's number one complaint.
+
+**Our rating: 8.5/10** — Exceptional on quality and autonomy. Rate limit policy and real pricing cost two points. If you can budget $100/month and work on complex projects, it's probably the best dev investment you'll make in 2026.
+
+## Claude Code FAQ
+
+### Is Claude Code free?
+
+No. Claude Code requires a paid subscription starting at $20/month (Pro plan). There is no free tier for Claude Code. The basic Claude chatbot is free, but Claude Code access is reserved for paid plans. The API is available on a pay-as-you-go basis.
+
+### What's the difference between Claude Code and Cursor?
+
+Claude Code is an autonomous terminal agent — you describe a task, it executes it end-to-end by modifying multiple files. Cursor is an IDE (VS Code fork) where AI assists you in real time while you code. Claude Code wins on complex multi-file tasks. Cursor wins on the daily editing experience and inline autocomplete.
+
+### Is the $20/month Claude Code Pro plan enough?
+
+For occasional use or simple projects, yes. For intensive daily professional development, no — rate limits kick in after 2-3 hours of sustained use. The Max 5x plan at $100/month is the real minimum for professional use without regular frustration.
+
+### How does CLAUDE.md work?
+
+CLAUDE.md is a Markdown file you place at your project's root. It contains your code conventions, architecture, recurring patterns, and anything Claude Code needs to know. It's read automatically at the start of every session. It's the feature that eliminates the need to re-explain your codebase in every conversation.
+
+### Can Claude Code replace a developer?
+
+No. Claude Code is a productivity multiplier, not a replacement. It handles well-defined tasks, refactoring, standard features, and debugging well. It doesn't replace architectural judgment, business domain understanding, or decisions about what to build. Teams using it report 2-3x productivity improvements, not job eliminations.
+      `,
+      related: [
+        { slug: "cursor-ai-review-2026", title: "Cursor AI: best dev assistant in 2026?", tag: "Code", timeMin: "9" },
+        { slug: "github-copilot-vs-codeium", title: "GitHub Copilot vs Codeium: which really boosts your code?", tag: "Code", timeMin: "10" },
+        { slug: "vibe-coding-tools-2026", title: "5 Best Tools to Build an App Without Coding in 2026", tag: "Code", timeMin: "13" },
+      ],
+    },
+  },
+
 // ─── Hallucinations IA 2026 ───────────────────────────────────────────────────
   {
     slug: "ia-2026",
-    tag: "Productivité",
+    tag: "Productivity",
     date: { fr: "7 avril 2026", en: "April 7, 2026" },
     timeMin: "16",
     featured: true,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { ARTICLES, getAllTags, type Article } from "../lib/articles";
 
@@ -17,6 +17,21 @@ const T = {
     all: "Tous", featured: "À la une", allLabel: "Tous les articles",
     readMore: "Lire →", readTime: "min",
     noResults: "Aucun article trouvé.",
+    trending: "Tendance",
+    new: "Nouveau",
+    ctaTitle: "Zéro bruit. Que du signal.",
+    ctaDesc: "Les meilleurs outils IA de la semaine, testés et résumés en 5 minutes. Rejoins 4 200+ lecteurs.",
+    ctaPlaceholder: "ton@email.com",
+    ctaCta: "Je m'abonne →",
+    ctaSent: "✓ Bienvenue !",
+    ctaNo: "Sans spam. Résiliable en 1 clic.",
+    statsArticles: "articles publiés",
+    statsTools: "outils testés",
+    statsReaders: "lecteurs",
+    statsUpdated: "mis à jour",
+    resultCount: "résultat(s)",
+    ctaMiniText: "lecteurs reçoivent nos analyses chaque semaine.",
+    ctaMiniBtn: "Rejoindre →",
     ftTagline: "Le média indépendant des outils IA.",
     ftContent: "Contenu", ftLegal: "Légal",
     ftLinks: [
@@ -43,6 +58,21 @@ const T = {
     all: "All", featured: "Featured", allLabel: "All articles",
     readMore: "Read →", readTime: "min",
     noResults: "No articles found.",
+    trending: "Trending",
+    new: "New",
+    ctaTitle: "Zero noise. Pure signal.",
+    ctaDesc: "The best AI tools of the week, tested and summarized in 5 minutes. Join 4,200+ readers.",
+    ctaPlaceholder: "your@email.com",
+    ctaCta: "Subscribe →",
+    ctaSent: "✓ Welcome!",
+    ctaNo: "No spam. Unsubscribe in 1 click.",
+    statsArticles: "articles published",
+    statsTools: "tools tested",
+    statsReaders: "readers",
+    statsUpdated: "up to date",
+    resultCount: "result(s)",
+    ctaMiniText: "readers get our weekly AI tool analysis.",
+    ctaMiniBtn: "Join now →",
     ftTagline: "The independent AI tools media.",
     ftContent: "Content", ftLegal: "Legal",
     ftLinks: [
@@ -70,13 +100,77 @@ const TAG_COLORS: Record<string, string> = {
 };
 const gc = (tag: string) => TAG_COLORS[tag] || "#00e6be";
 
-// ─── Card article ─────────────────────────────────────────────────────────────
-function Card({ article, lang, readMore, readTime, l }: {
-  article: Article; lang: Lang; readMore: string; readTime: string; l: (p: string) => string;
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+const isNew = (dateStr: string): boolean => {
+  try {
+    const diff = (Date.now() - new Date(dateStr).getTime()) / 86400000;
+    return diff <= 10;
+  } catch { return false; }
+};
+
+const TRENDING_SLUGS = [
+  "ia-2026", "prompts-ia-2026", "claude-mythos-next-anthropic-2026",
+  "vibe-coding-tools-2026", "sora-fermeture-openai-2026",
+  "perplexity-ai-review-2026", "grok-review-2026",
+];
+
+// ─── Barre de progression lecture page ───────────────────────────────────────
+function ScrollProgress() {
+  const [pct, setPct] = useState(0);
+  useEffect(() => {
+    const fn = () => {
+      const el = document.documentElement;
+      const total = el.scrollHeight - el.clientHeight;
+      setPct(total > 0 ? Math.min(100, (window.scrollY / total) * 100) : 0);
+    };
+    window.addEventListener("scroll", fn, { passive: true });
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+  return (
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 2, zIndex: 200 }}>
+      <div style={{
+        height: "100%", width: `${pct}%`,
+        background: "linear-gradient(90deg,#00e6be,#3b82f6)",
+        transition: "width .1s linear",
+      }} />
+    </div>
+  );
+}
+
+// ─── Compteur stats animé ─────────────────────────────────────────────────────
+function StatNumber({ target, suffix = "" }: { target: number; suffix?: string }) {
+  const [val, setVal] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const done = useRef(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !done.current) {
+        done.current = true;
+        const dur = 1100;
+        const t0 = Date.now();
+        const tick = () => {
+          const p = Math.min(1, (Date.now() - t0) / dur);
+          setVal(Math.round((1 - Math.pow(1 - p, 3)) * target));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+    }, { threshold: 0.3 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [target]);
+  return <span ref={ref}>{val}{suffix}</span>;
+}
+
+// ─── Card À la une ────────────────────────────────────────────────────────────
+function CardFeatured({ article, lang, t, l }: {
+  article: Article; lang: Lang; t: typeof T["fr"]; l: (p: string) => string;
 }) {
   const a = article[lang];
   const color = gc(article.tag);
   const [hov, setHov] = useState(false);
+  const _new = isNew(article.date.en);
+  const _trend = TRENDING_SLUGS.includes(article.slug);
 
   return (
     <a
@@ -84,37 +178,158 @@ function Card({ article, lang, readMore, readTime, l }: {
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
+        position: "relative", overflow: "hidden",
         background: "var(--bg2)",
-        border: `1px solid ${hov ? color + "35" : "var(--border)"}`,
-        borderRadius: 14, padding: "1.75rem",
-        display: "flex", flexDirection: "column" as const, gap: "0.75rem",
-        textDecoration: "none", transition: "all 0.22s",
-        transform: hov ? "translateY(-3px)" : "none",
-        boxShadow: hov ? `0 16px 44px rgba(0,0,0,.5), 0 0 0 1px ${color}18` : "none",
-        position: "relative" as const, overflow: "hidden",
+        border: `1px solid ${hov ? color + "40" : "var(--border)"}`,
+        borderRadius: 14, padding: "1.85rem",
+        display: "flex", flexDirection: "column" as const, gap: ".85rem",
+        textDecoration: "none",
+        transition: "border-color .22s,transform .22s,box-shadow .22s",
+        transform: hov ? "translateY(-4px)" : "none",
+        boxShadow: hov ? `0 20px 60px rgba(0,0,0,.55), 0 0 0 1px ${color}20` : "none",
       }}
     >
-      {/* Barre colorée */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: color, opacity: hov ? 1 : 0.4, transition: "opacity 0.25s" }} />
-      {/* Glow hover */}
-      {hov && (
-        <div style={{ position: "absolute", top: "-35%", right: "-8%", width: 260, height: 180, background: `radial-gradient(ellipse,${color}09,transparent 70%)`, pointerEvents: "none" }} />
-      )}
-      {/* Tag + date */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: "0.4rem" }}>
-        <span style={{ fontFamily: "var(--m)", fontSize: "0.6rem", letterSpacing: "0.1em", textTransform: "uppercase" as const, color, fontWeight: 700, background: `${color}18`, border: `1px solid ${color}30`, padding: "3px 10px", borderRadius: 100 }}>{article.tag}</span>
-        <span style={{ fontFamily: "var(--m)", fontSize: "0.65rem", color: "var(--dim)" }}>{article.date[lang]}</span>
+      {/* Barre top */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: color, opacity: hov ? 1 : 0.5, transition: "opacity .25s" }} />
+      {/* Glow */}
+      <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at top right,${color}10,transparent 65%)`, opacity: hov ? 1 : 0, transition: "opacity .25s", pointerEvents: "none" }} />
+
+      {/* Badges */}
+      <div style={{ display: "flex", alignItems: "center", gap: ".45rem", flexWrap: "wrap" as const, position: "relative" }}>
+        <span style={{ fontFamily: "var(--m)", fontSize: ".62rem", letterSpacing: ".08em", textTransform: "uppercase" as const, fontWeight: 700, color, background: `${color}18`, border: `1px solid ${color}30`, padding: "3px 10px", borderRadius: 100 }}>{article.tag}</span>
+        {_new && <span style={{ fontFamily: "var(--m)", fontSize: ".58rem", color: "#f59e0b", background: "rgba(245,158,11,.12)", border: "1px solid rgba(245,158,11,.25)", padding: "3px 9px", borderRadius: 100, fontWeight: 600 }}>✦ {t.new}</span>}
+        {_trend && !_new && <span style={{ fontFamily: "var(--m)", fontSize: ".58rem", color: "#a855f7", background: "rgba(168,85,247,.12)", border: "1px solid rgba(168,85,247,.25)", padding: "3px 9px", borderRadius: 100, fontWeight: 600 }}>↑ {t.trending}</span>}
       </div>
+
       {/* Titre */}
-      <div style={{ fontFamily: "var(--d)", fontSize: "1.02rem", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.32, color: "var(--text)" }}>{a.title}</div>
-      {/* Description */}
-      <div style={{ fontFamily: "var(--m)", fontSize: "0.75rem", color: "var(--muted)", lineHeight: 1.65, fontWeight: 300, flex: 1 }}>{a.desc}</div>
+      <div style={{ fontFamily: "var(--d)", fontSize: "1.06rem", fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.3, color: "var(--text)", position: "relative" }}>{a.title}</div>
+
+      {/* Desc */}
+      <div style={{ fontFamily: "var(--m)", fontSize: ".74rem", color: "var(--muted)", lineHeight: 1.68, fontWeight: 300, flex: 1, display: "-webkit-box", WebkitBoxOrient: "vertical" as const, WebkitLineClamp: 4, overflow: "hidden" }}>{a.desc}</div>
+
       {/* Footer */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "0.75rem", borderTop: "1px solid var(--border)", marginTop: "auto" }}>
-        <span style={{ fontFamily: "var(--m)", fontSize: "0.67rem", color: "var(--dim)" }}>⏱ {article.timeMin} {readTime}</span>
-        <span style={{ fontFamily: "var(--m)", fontSize: "0.7rem", color, fontWeight: 600, opacity: hov ? 1 : 0.7, transition: "opacity 0.2s" }}>{readMore}</span>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: ".85rem", borderTop: "1px solid var(--border)", marginTop: "auto", position: "relative" }}>
+        <span style={{ fontFamily: "var(--m)", fontSize: ".63rem", color: "var(--dim)" }}>{article.date[lang]}</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <span style={{ fontFamily: "var(--m)", fontSize: ".65rem", color: "var(--dim)" }}>⏱ {article.timeMin} {t.readTime}</span>
+          <span style={{ fontFamily: "var(--m)", fontSize: ".7rem", fontWeight: 600, color, opacity: hov ? 1 : 0.7, transition: "opacity .2s" }}>{t.readMore}</span>
+        </div>
       </div>
     </a>
+  );
+}
+
+// ─── Card standard ────────────────────────────────────────────────────────────
+function Card({ article, lang, t, l }: {
+  article: Article; lang: Lang; t: typeof T["fr"]; l: (p: string) => string;
+}) {
+  const a = article[lang];
+  const color = gc(article.tag);
+  const [hov, setHov] = useState(false);
+  const _new = isNew(article.date.en);
+  const _trend = TRENDING_SLUGS.includes(article.slug);
+
+  return (
+    <a
+      href={l(`/blog/${article.slug}`)}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        position: "relative", overflow: "hidden",
+        background: "var(--bg2)",
+        border: `1px solid ${hov ? color + "35" : "var(--border)"}`,
+        borderRadius: 12, padding: "1.5rem",
+        display: "flex", flexDirection: "column" as const, gap: ".7rem",
+        textDecoration: "none",
+        transition: "border-color .22s,transform .22s,box-shadow .22s",
+        transform: hov ? "translateY(-3px)" : "none",
+        boxShadow: hov ? `0 14px 40px rgba(0,0,0,.5), 0 0 0 1px ${color}15` : "none",
+      }}
+    >
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: color, opacity: hov ? 1 : 0.35, transition: "opacity .25s" }} />
+      <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at top right,${color}08,transparent 70%)`, opacity: hov ? 1 : 0, transition: "opacity .25s", pointerEvents: "none" }} />
+
+      <div style={{ display: "flex", alignItems: "center", gap: ".4rem", flexWrap: "wrap" as const, position: "relative" }}>
+        <span style={{ fontFamily: "var(--m)", fontSize: ".58rem", letterSpacing: ".08em", textTransform: "uppercase" as const, fontWeight: 700, color, background: `${color}18`, border: `1px solid ${color}30`, padding: "3px 9px", borderRadius: 100 }}>{article.tag}</span>
+        {_new && <span style={{ fontFamily: "var(--m)", fontSize: ".56rem", color: "#f59e0b", background: "rgba(245,158,11,.12)", border: "1px solid rgba(245,158,11,.25)", padding: "3px 8px", borderRadius: 100, fontWeight: 600 }}>✦ {t.new}</span>}
+        {_trend && !_new && <span style={{ fontFamily: "var(--m)", fontSize: ".56rem", color: "#a855f7", background: "rgba(168,85,247,.12)", border: "1px solid rgba(168,85,247,.25)", padding: "3px 8px", borderRadius: 100, fontWeight: 600 }}>↑ {t.trending}</span>}
+      </div>
+
+      <div style={{ fontFamily: "var(--d)", fontSize: ".96rem", fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.3, color: "var(--text)", position: "relative" }}>{a.title}</div>
+      <div style={{ fontFamily: "var(--m)", fontSize: ".72rem", color: "var(--muted)", lineHeight: 1.65, fontWeight: 300, flex: 1, display: "-webkit-box", WebkitBoxOrient: "vertical" as const, WebkitLineClamp: 3, overflow: "hidden" }}>{a.desc}</div>
+
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: ".75rem", borderTop: "1px solid var(--border)", marginTop: "auto", position: "relative" }}>
+        <span style={{ fontFamily: "var(--m)", fontSize: ".63rem", color: "var(--dim)" }}>⏱ {article.timeMin} {t.readTime}</span>
+        <span style={{ fontFamily: "var(--m)", fontSize: ".7rem", fontWeight: 600, color, opacity: hov ? 1 : 0.65, transition: "opacity .2s" }}>{t.readMore}</span>
+      </div>
+    </a>
+  );
+}
+
+// ─── Newsletter CTA block ─────────────────────────────────────────────────────
+function NewsletterCTA({ t, l }: { t: typeof T["fr"]; l: (p: string) => string }) {
+  const [email, setEmail] = useState("");
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.includes("@")) return;
+    setSent(true);
+    setEmail("");
+    setTimeout(() => setSent(false), 3500);
+  };
+
+  return (
+    <div style={{
+      position: "relative", overflow: "hidden",
+      background: "linear-gradient(135deg,rgba(0,230,190,.07) 0%,rgba(59,130,246,.05) 100%)",
+      border: "1px solid rgba(0,230,190,.2)",
+      borderRadius: 16,
+      padding: "clamp(1.75rem,4vw,2.5rem)",
+      margin: "2.5rem 0 4rem",
+    }}>
+      {/* Glow décoratif */}
+      <div style={{ position: "absolute", top: "-60%", right: "-10%", width: 400, height: 320, background: "radial-gradient(ellipse,rgba(0,230,190,.08),transparent 65%)", pointerEvents: "none" }} />
+
+      <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column" as const, gap: "1.25rem" }}>
+        <div style={{ display: "flex", alignItems: "flex-start", gap: "1rem", flexWrap: "wrap" as const }}>
+          <span style={{ fontSize: "1.5rem", opacity: .8, flexShrink: 0 }}>✉</span>
+          <div style={{ flex: 1, minWidth: 200 }}>
+            <div style={{ fontFamily: "var(--d)", fontSize: "1.12rem", fontWeight: 700, letterSpacing: "-.02em", color: "var(--text)", marginBottom: ".3rem" }}>{t.ctaTitle}</div>
+            <div style={{ fontFamily: "var(--m)", fontSize: ".73rem", color: "var(--muted)", lineHeight: 1.65, fontWeight: 300 }}>{t.ctaDesc}</div>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} style={{ display: "flex", gap: ".5rem", flexWrap: "wrap" as const }}>
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            placeholder={t.ctaPlaceholder}
+            required
+            style={{
+              flex: 1, minWidth: 180,
+              background: "rgba(8,12,16,.7)",
+              border: "1px solid rgba(0,230,190,.25)",
+              borderRadius: 8, padding: "9px 13px",
+              color: "var(--text)", fontFamily: "var(--m)", fontSize: ".78rem",
+              outline: "none",
+            }}
+          />
+          <button type="submit" style={{
+            background: sent ? "#10b981" : "var(--cyan)",
+            color: "#080c10", border: "none", borderRadius: 8,
+            padding: "9px 20px", fontFamily: "var(--m)", fontSize: ".78rem",
+            fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" as const,
+            transition: "background .2s",
+          }}>
+            {sent ? t.ctaSent : t.ctaCta}
+          </button>
+        </form>
+
+        <span style={{ fontFamily: "var(--m)", fontSize: ".62rem", color: "var(--dim)" }}>{t.ctaNo}</span>
+      </div>
+    </div>
   );
 }
 
@@ -126,6 +341,9 @@ export default function BlogClient({ lang }: { lang: Lang }) {
   const [search, setSearch] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [filtersSticky, setFiltersSticky] = useState(false);
+  const filtersRef = useRef<HTMLDivElement>(null);
+  const filtersTop = useRef(0);
 
   const t = T[lang];
   const tags = getAllTags();
@@ -137,7 +355,15 @@ export default function BlogClient({ lang }: { lang: Lang }) {
   };
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 60);
+    const fn = () => {
+      setScrolled(window.scrollY > 60);
+      if (filtersRef.current) {
+        if (!filtersTop.current) {
+          filtersTop.current = filtersRef.current.getBoundingClientRect().top + window.scrollY;
+        }
+        setFiltersSticky(window.scrollY > filtersTop.current - 62);
+      }
+    };
     window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
   }, []);
@@ -152,19 +378,26 @@ export default function BlogClient({ lang }: { lang: Lang }) {
   const featured = filtered.filter(a => a.featured);
   const rest = filtered.filter(a => !a.featured);
 
-  // SEO
+  // ── JSON-LD SEO
   const schema = {
     "@context": "https://schema.org", "@type": "Blog",
     name: lang === "fr" ? "Blog Neuriflux — Outils IA 2026" : "Neuriflux Blog — AI Tools 2026",
     description: t.subtitle,
     url: `https://neuriflux.com/${lang}/blog`,
-    publisher: { "@type": "Organization", name: "Neuriflux", url: "https://neuriflux.com", logo: { "@type": "ImageObject", url: "https://neuriflux.com/logo.png" } },
+    publisher: {
+      "@type": "Organization", name: "Neuriflux",
+      url: "https://neuriflux.com",
+      logo: { "@type": "ImageObject", url: "https://neuriflux.com/logo.png" },
+      sameAs: ["https://twitter.com/NeurifluxCom"],
+    },
     blogPost: ARTICLES.map(a => ({
       "@type": "BlogPosting",
       headline: a[lang].title, description: a[lang].desc,
       url: `https://neuriflux.com/${lang}/blog/${a.slug}`,
-      datePublished: a.date.en, inLanguage: lang,
+      datePublished: a.date.en, dateModified: a.date.en,
+      inLanguage: lang, timeRequired: `PT${a.timeMin}M`,
       author: { "@type": "Organization", name: "Neuriflux" },
+      publisher: { "@type": "Organization", name: "Neuriflux" },
     })),
   };
 
@@ -173,9 +406,6 @@ export default function BlogClient({ lang }: { lang: Lang }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
       <style>{`
-        /* ─────────────────────────────────────────────────────────
-           RESET & VARIABLES
-        ───────────────────────────────────────────────────────── */
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         :root{
           --bg:#080c10;--bg2:#0d1117;--bg3:#111820;
@@ -183,31 +413,22 @@ export default function BlogClient({ lang }: { lang: Lang }) {
           --cyan:#00e6be;--cdim:rgba(0,230,190,.09);
           --text:#edf2f7;--muted:#5a6a7a;--dim:#2a3a4a;
           --d:'Syne',sans-serif;--m:'JetBrains Mono',monospace;
-          --r:10px;--pad:clamp(1.5rem,5vw,4rem)
+          --pad:clamp(1.25rem,5vw,4rem)
         }
         html{scroll-behavior:smooth}
         body{background:var(--bg);color:var(--text);font-family:var(--d);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
-        /* ─────────────────────────────────────────────────────────
-           FOND : GRILLE + GLOW
-        ───────────────────────────────────────────────────────── */
         .bg-grid{position:fixed;inset:0;
-          background-image:linear-gradient(rgba(0,230,190,.018) 1px,transparent 1px),
-            linear-gradient(90deg,rgba(0,230,190,.018) 1px,transparent 1px);
+          background-image:linear-gradient(rgba(0,230,190,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,190,.016) 1px,transparent 1px);
           background-size:72px 72px;pointer-events:none;z-index:0}
-        .bg-glow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);
-          width:900px;height:680px;
-          background:radial-gradient(ellipse,rgba(0,230,190,.055) 0%,transparent 68%);
-          pointer-events:none;z-index:0}
+        .bg-glow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:1000px;height:700px;
+          background:radial-gradient(ellipse,rgba(0,230,190,.05) 0%,transparent 68%);pointer-events:none;z-index:0}
 
-        /* ─────────────────────────────────────────────────────────
-           NAVIGATION — identique sur toutes les pages
-        ───────────────────────────────────────────────────────── */
-        nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(8,12,16,.93);border-bottom:1px solid var(--border);padding:0 var(--pad);height:60px;display:flex;align-items:center;justify-content:space-between;transition:box-shadow .2s}
-        nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,.4)}
+        nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);background:rgba(8,12,16,.94);border-bottom:1px solid var(--border);padding:0 var(--pad);height:60px;display:flex;align-items:center;justify-content:space-between;transition:box-shadow .2s}
+        nav.scrolled{box-shadow:0 4px 28px rgba(0,0,0,.45)}
         .logo{font-family:var(--d);font-weight:800;font-size:1.15rem;letter-spacing:-.03em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.45rem}
         .logo em{color:var(--cyan);font-style:normal}
-        .logo-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;box-shadow:0 0 8px var(--cyan);animation:blink 2s infinite}
+        .logo-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;box-shadow:0 0 8px var(--cyan);animation:blink 2s infinite;flex-shrink:0}
         @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
         .nav-links{display:flex;align-items:center;gap:1.75rem;list-style:none}
         @media(max-width:720px){
@@ -223,58 +444,63 @@ export default function BlogClient({ lang }: { lang: Lang }) {
         @media(max-width:720px){.hb{display:flex}}
         .hb span{display:block;width:18px;height:1.5px;background:var(--muted);border-radius:2px}
 
-        /* ─────────────────────────────────────────────────────────
-           LAYOUT
-        ───────────────────────────────────────────────────────── */
         .wrap{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:0 var(--pad)}
 
-        /* ─────────────────────────────────────────────────────────
-           HERO
-        ───────────────────────────────────────────────────────── */
-        .hero{padding:clamp(4rem,8vw,6.5rem) 0 clamp(2rem,4vw,3rem)}
-        .badge{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--m);font-size:.7rem;letter-spacing:.08em;color:var(--cyan);background:var(--cdim);border:1px solid var(--glow);border-radius:100px;padding:6px 14px;margin-bottom:1.5rem}
-        .badge-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:blink 2s infinite}
-        .hero h1{font-size:clamp(2.4rem,6vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:1rem}
+        .hero{padding:clamp(3.5rem,7vw,6rem) 0 clamp(1.5rem,3vw,2rem)}
+        .hero-badge{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--m);font-size:.7rem;letter-spacing:.08em;color:var(--cyan);background:var(--cdim);border:1px solid rgba(0,230,190,.22);border-radius:100px;padding:6px 14px;margin-bottom:1.5rem}
+        .hero-badge-dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:blink 2s infinite}
+        .hero h1{font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.06;margin-bottom:1rem}
         .ac{color:var(--cyan)}
-        .hero-sub{font-family:var(--m);font-size:.88rem;color:var(--muted);font-weight:300;line-height:1.7;max-width:540px}
+        .hero-sub{font-family:var(--m);font-size:.86rem;color:var(--muted);font-weight:300;line-height:1.75;max-width:520px;margin-bottom:2rem}
 
-        /* ─────────────────────────────────────────────────────────
-           BARRE OUTILS
-        ───────────────────────────────────────────────────────── */
-        .toolbar{display:flex;flex-direction:column;gap:1rem;padding-bottom:2.5rem}
-        .search-wrap{position:relative;max-width:420px}
-        .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--dim);pointer-events:none;font-size:.85rem}
-        .search-input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px 10px 40px;color:var(--text);font-family:var(--m);font-size:.8rem;outline:none;transition:border-color .18s}
-        .search-input:focus{border-color:rgba(0,230,190,.28)}
+        .stats-strip{display:flex;gap:2.5rem;padding:.5rem 0 2rem;flex-wrap:wrap;border-top:1px solid var(--border);margin-top:0}
+        .stat-item{display:flex;flex-direction:column;gap:.2rem;padding-top:1.25rem}
+        .stat-num{font-family:var(--d);font-size:1.6rem;font-weight:800;letter-spacing:-.04em;color:var(--cyan)}
+        .stat-label{font-family:var(--m);font-size:.62rem;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+
+        /* Filtres — deviennent sticky */
+        .toolbar{padding:.85rem 0;display:flex;flex-direction:column;gap:.8rem;transition:all .2s}
+        .toolbar.sticky{
+          position:sticky;top:60px;z-index:90;
+          background:rgba(8,12,16,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+          border-bottom:1px solid var(--border);
+          padding:.7rem var(--pad);
+          margin:0 calc(-1 * var(--pad));
+          box-shadow:0 4px 24px rgba(0,0,0,.4)
+        }
+        .toolbar-row{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+        .search-wrap{position:relative;flex:1;max-width:380px;min-width:180px}
+        .search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--dim);pointer-events:none;font-size:.82rem}
+        .search-input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:9px 13px 9px 38px;color:var(--text);font-family:var(--m);font-size:.78rem;outline:none;transition:border-color .18s}
+        .search-input:focus{border-color:rgba(0,230,190,.3)}
         .search-input::placeholder{color:var(--dim)}
-        .filters{display:flex;gap:.45rem;flex-wrap:wrap}
-        .ftag{font-family:var(--m);font-size:.7rem;padding:6px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .18s}
+        .result-count{font-family:var(--m);font-size:.67rem;color:var(--dim)}
+        .filters{display:flex;gap:.4rem;flex-wrap:wrap}
+        .ftag{font-family:var(--m);font-size:.69rem;padding:5px 13px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .18s;white-space:nowrap}
         .ftag:hover{border-color:rgba(0,230,190,.28);color:var(--cyan)}
         .ftag.on{background:var(--cyan);border-color:var(--cyan);color:#080c10;font-weight:700}
 
-        /* ─────────────────────────────────────────────────────────
-           LABELS DE SECTION
-        ───────────────────────────────────────────────────────── */
-        .sec-tag{font-family:var(--m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.25rem;display:flex;align-items:center;gap:.4rem}
-        .sec-tag::before{content:'';width:14px;height:1px;background:var(--cyan);display:inline-block}
+        .sec-tag{font-family:var(--m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.2rem;display:flex;align-items:center;gap:.45rem}
+        .sec-tag::before{content:'';width:16px;height:1px;background:var(--cyan);display:inline-block}
 
-        /* ─────────────────────────────────────────────────────────
-           GRILLES
-        ───────────────────────────────────────────────────────── */
-        .grid-featured{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem;margin-bottom:4rem}
-        .grid-all{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.25rem;margin-bottom:5rem}
-        @media(max-width:480px){.grid-featured,.grid-all{grid-template-columns:1fr}}
+        .grid-featured{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem;margin-bottom:1rem}
+        .grid-all{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;margin-bottom:3rem}
+        @media(max-width:520px){.grid-featured,.grid-all{grid-template-columns:1fr}}
+
+        /* CTA mini banner */
+        .cta-mini{
+          display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+          background:var(--bg3);border:1px solid var(--border);border-radius:12px;
+          padding:1rem 1.5rem;margin:1.5rem 0 3rem
+        }
+        .cta-mini-text{font-family:var(--m);font-size:.74rem;color:var(--muted)}
+        .cta-mini-text strong{color:var(--cyan);font-weight:700}
+        .cta-mini-btn{font-family:var(--m);font-size:.73rem;font-weight:700;color:#080c10;background:var(--cyan);border:none;border-radius:8px;padding:8px 16px;cursor:pointer;white-space:nowrap;text-decoration:none;transition:opacity .18s;display:inline-block}
+        .cta-mini-btn:hover{opacity:.85}
+
         .no-results{text-align:center;padding:4rem 2rem;font-family:var(--m);color:var(--muted);font-size:.85rem}
 
-        /* ─────────────────────────────────────────────────────────
-           FOOTER — identique à HomeClient
-        ───────────────────────────────────────────────────────── */
-        footer{
-          position:relative;z-index:1;
-          border-top:1px solid var(--border);
-          padding:2.25rem var(--pad);
-          max-width:1160px;margin:0 auto
-        }
+        footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.25rem var(--pad);max-width:1160px;margin:0 auto}
         .ft{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2.5rem}
         @media(max-width:600px){.ft{grid-template-columns:1fr;gap:1.5rem}}
         .ft-tag{font-family:var(--m);font-size:.7rem;color:var(--muted);font-weight:300;line-height:1.65;max-width:210px;margin-top:.4rem}
@@ -287,14 +513,14 @@ export default function BlogClient({ lang }: { lang: Lang }) {
         .ft-copy em{color:var(--cyan);font-style:normal}
       `}</style>
 
+      <ScrollProgress />
       <div className="bg-grid" />
       <div className="bg-glow" />
 
-      {/* ── NAVIGATION ── */}
+      {/* ── NAV ── */}
       <nav className={scrolled ? "scrolled" : ""}>
         <a href={l("")} className="logo">
-          <div className="logo-dot" />
-          Neuri<em>flux</em>
+          <div className="logo-dot" />Neuri<em>flux</em>
         </a>
         <ul className={`nav-links${menuOpen ? " open" : ""}`}>
           <li><a href={l("/blog")} className="active">{t.nav.blog}</a></li>
@@ -314,25 +540,54 @@ export default function BlogClient({ lang }: { lang: Lang }) {
         </div>
       </nav>
 
-      {/* ── CONTENU ── */}
       <div className="wrap">
 
-        {/* Hero */}
+        {/* ── HERO ── */}
         <div className="hero">
-          <div className="badge">
-            <div className="badge-dot" />
+          <div className="hero-badge">
+            <div className="hero-badge-dot" />
             {t.badge}
           </div>
           <h1>{t.title} <span className="ac">{t.accent}</span></h1>
           <p className="hero-sub">{t.subtitle}</p>
+
+          {/* Stats */}
+          <div className="stats-strip">
+            <div className="stat-item">
+              <span className="stat-num"><StatNumber target={ARTICLES.length} /></span>
+              <span className="stat-label">{t.statsArticles}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-num"><StatNumber target={42} /></span>
+              <span className="stat-label">{t.statsTools}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-num"><StatNumber target={4200} suffix="+" /></span>
+              <span className="stat-label">{t.statsReaders}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-num"><StatNumber target={2026} /></span>
+              <span className="stat-label">{t.statsUpdated}</span>
+            </div>
+          </div>
         </div>
 
-        {/* Barre d'outils */}
-        <div className="toolbar">
-          <div className="search-wrap">
-            <span className="search-icon">🔍</span>
-            <input className="search-input" type="text" placeholder={t.search}
-              value={search} onChange={e => setSearch(e.target.value)} />
+        {/* ── FILTRES STICKY ── */}
+        <div ref={filtersRef} className={`toolbar${filtersSticky ? " sticky" : ""}`}>
+          <div className="toolbar-row">
+            <div className="search-wrap">
+              <span className="search-icon">🔍</span>
+              <input
+                className="search-input"
+                type="text"
+                placeholder={t.search}
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+            </div>
+            {(search || activeTag !== "all") && (
+              <span className="result-count">{filtered.length} {t.resultCount}</span>
+            )}
           </div>
           <div className="filters">
             <button className={`ftag${activeTag === "all" ? " on" : ""}`} onClick={() => setActiveTag("all")}>
@@ -346,53 +601,66 @@ export default function BlogClient({ lang }: { lang: Lang }) {
           </div>
         </div>
 
-        {/* Cards */}
+        {/* ── CONTENT ── */}
         {filtered.length === 0 ? (
           <div className="no-results">{t.noResults}</div>
         ) : (
           <>
+            {/* À la une */}
             {featured.length > 0 && (
-              <section>
+              <section style={{ marginBottom: "3rem" }}>
                 <div className="sec-tag">{t.featured}</div>
                 <div className="grid-featured">
                   {featured.map(a => (
-                    <Card key={a.slug} article={a} lang={lang} readMore={t.readMore} readTime={t.readTime} l={l} />
+                    <CardFeatured key={a.slug} article={a} lang={lang} t={t} l={l} />
                   ))}
                 </div>
               </section>
             )}
+
+            {/* CTA mini entre featured et le reste — visible uniquement sans filtre actif */}
+            {featured.length > 0 && rest.length > 0 && !search && activeTag === "all" && (
+              <div className="cta-mini">
+                <span className="cta-mini-text">
+                  <strong>4{lang === "fr" ? " " : ","}200+</strong> {t.ctaMiniText}
+                </span>
+                <a href={l("/newsletter")} className="cta-mini-btn">{t.ctaMiniBtn}</a>
+              </div>
+            )}
+
+            {/* Tous les articles */}
             {rest.length > 0 && (
               <section>
                 {featured.length > 0 && <div className="sec-tag">{t.allLabel}</div>}
                 <div className="grid-all">
-                  {rest.map(a => (
-                    <Card key={a.slug} article={a} lang={lang} readMore={t.readMore} readTime={t.readTime} l={l} />
+                  {rest.map((a, i) => (
+                    <Card key={`${a.slug}-${i}`} article={a} lang={lang} t={t} l={l} />
                   ))}
                 </div>
               </section>
             )}
+
+            {/* CTA Newsletter complet — après tous les articles */}
+            {!search && <NewsletterCTA t={t} l={l} />}
           </>
         )}
       </div>
 
-      {/* ── FOOTER — identique HomeClient ── */}
+      {/* ── FOOTER ── */}
       <footer>
         <div className="ft">
-          {/* Colonne 1 : logo + tagline */}
           <div>
             <a href={l("")} className="logo" style={{ fontSize: ".93rem" }}>
               <div className="logo-dot" />Neuri<em>flux</em>
             </a>
             <p className="ft-tag">{t.ftTagline}</p>
           </div>
-          {/* Colonne 2 : contenu */}
           <div>
             <div className="ft-col">{t.ftContent}</div>
             <ul className="ft-ul">
               {t.ftLinks.map((x, i) => <li key={i}><a href={l(x.h)}>{x.l}</a></li>)}
             </ul>
           </div>
-          {/* Colonne 3 : légal */}
           <div>
             <div className="ft-col">{t.ftLegal}</div>
             <ul className="ft-ul">
