@@ -1,10 +1,28 @@
-// ─── NEURIFLUX ARTICLES DATABASE ─────────────────────────────────────────────
+// ─── NEURIFLUX ARTICLES DATABASE — SENIOR SEO EDITION ────────────────────────
+
+export type Lang = "fr" | "en";
+export type CanonicalTag = "Code" | "Chatbots" | "Productivity" | "Writing" | "Image" | "Audio";
+export type Difficulty = "débutant" | "intermédiaire" | "avancé";
+export type ReadingLevel = "quick" | "deep";
+export type ArticleKind = "review" | "comparison" | "guide" | "tutorial" | "news" | "analysis";
 
 export interface RelatedArticle {
+  slug: string;
+}
+
+export interface ResolvedRelatedArticle {
   slug: string;
   title: string;
   tag: string;
   timeMin: string;
+  heroImage: ArticleImage;
+}
+
+export interface ArticleImage {
+  src: string;
+  alt: { fr: string; en: string };
+  width: number;
+  height: number;
 }
 
 export interface ArticleLang {
@@ -16,22 +34,74 @@ export interface ArticleLang {
   related: RelatedArticle[];
 }
 
+export interface ArticleAffiliate {
+  url: string;
+  label: { fr: string; en: string };
+  toolName: string;
+}
+
 export interface Article {
+  id: string;
   slug: string;
-  tag: string;
+  legacySlug?: string;
+  legacySlugs: string[];
+  canonicalSlug: string;
+  tag: CanonicalTag;
+  kind: ArticleKind;
+  publishedAt: string;
+  updatedAtIso: string;
   date: { fr: string; en: string };
+  updatedAt: { fr: string; en: string };
   timeMin: string;
   featured?: boolean;
-  affiliate?: {        
-    url: string;
-    label: { fr: string; en: string };
-    toolName: string;
-  };
+  affiliate?: ArticleAffiliate;
+  keywords: string[];
+  rating?: number;
+  difficulty: Difficulty;
+  readingLevel: ReadingLevel;
+  heroImage: ArticleImage;
+  contentImages: ArticleImage[];
+  primaryComparisonSlugs: string[];
+  recommendedToolSlugs: string[];
+  sameTopicSlugs: string[];
+  nextReadingSlugs: string[];
   fr: ArticleLang;
   en: ArticleLang;
 }
 
-export const ARTICLES: Article[] = [
+interface RawRelatedArticle {
+  slug: string;
+  title?: string;
+  tag?: string;
+  timeMin?: string;
+}
+
+interface RawArticleLang {
+  title: string;
+  desc: string;
+  metaTitle?: string;
+  metaDesc?: string;
+  content: string;
+  related?: RawRelatedArticle[];
+}
+
+interface RawArticle {
+  slug: string;
+  tag: string;
+  date: { fr: string; en: string };
+  timeMin?: string;
+  featured?: boolean;
+  affiliate?: ArticleAffiliate;
+  keywords?: string[];
+  updatedAt?: { fr: string; en: string };
+  rating?: number;
+  difficulty?: Difficulty;
+  readingLevel?: ReadingLevel;
+  fr: RawArticleLang;
+  en: RawArticleLang;
+}
+
+const RAW_ARTICLES: RawArticle[] = [
 // ─── Claude Code Review 2026 ──────────────────────────────────────────────────
   {
     slug: "claude-code-review-2026",
@@ -7025,25 +7095,783 @@ Stable Diffusion has a steeper learning curve than Midjourney, but the freedom a
   },
 ];
 
-// ─── Helper functions ─────────────────────────────────────────────────────────
 
-// Récupérer un article par slug
+const SITE_URL = "https://neuriflux.com";
+const BLOG_BASE: Record<Lang, string> = { fr: "/fr/blog", en: "/en/blog" };
+
+const TAG_LABELS: Record<CanonicalTag, { fr: string; en: string }> = {
+  Code: { fr: "Code", en: "Code" },
+  Chatbots: { fr: "Chatbots", en: "Chatbots" },
+  Productivity: { fr: "Productivité", en: "Productivity" },
+  Writing: { fr: "Rédaction", en: "Writing" },
+  Image: { fr: "Image", en: "Image" },
+  Audio: { fr: "Audio", en: "Audio" },
+};
+
+const TAG_ALIASES: Record<string, CanonicalTag> = {
+  code: "Code",
+  chatbots: "Chatbots",
+  productivity: "Productivity",
+  "productivité": "Productivity",
+  writing: "Writing",
+  "rédaction": "Writing",
+  image: "Image",
+  audio: "Audio",
+};
+
+const FR_MONTHS: Record<string, string> = {
+  janvier: "01",
+  février: "02",
+  fevrier: "02",
+  mars: "03",
+  avril: "04",
+  mai: "05",
+  juin: "06",
+  juillet: "07",
+  août: "08",
+  aout: "08",
+  septembre: "09",
+  octobre: "10",
+  novembre: "11",
+  décembre: "12",
+  decembre: "12",
+};
+
+const EN_MONTHS: Record<string, string> = {
+  january: "01",
+  february: "02",
+  march: "03",
+  april: "04",
+  may: "05",
+  june: "06",
+  july: "07",
+  august: "08",
+  september: "09",
+  october: "10",
+  november: "11",
+  december: "12",
+};
+
+const NEUTRAL_SLUGS: Record<string, string> = {
+  "claude-code-review-2026": "claude-code-2026",
+  "ia-2026": "llm-hallucinations-2026",
+  "prompts-ia-2026": "prompt-engineering-2026",
+  "openai-fonds-852-milliards-2026": "openai-852b-2026",
+  "claude-mythos-next-anthropic-2026": "claude-mythos-2026",
+  "money-ia-2026": "ai-income-2026",
+  "vibe-coding-tools-2026": "vibe-coding-2026",
+  "chatgpt-claude-gemini-2026": "llm-selection-2026",
+  "sora-fermeture-openai-2026": "sora-end-2026",
+  "grok-review-2026": "grok-2026",
+  "deepseek-review-2026": "deepseek-2026",
+  "perplexity-ai-review-2026": "perplexity-2026",
+  "jasper-ai-review-2026": "jasper-2026",
+  "chatgpt-vs-claude-vs-gemini-2026": "llm-benchmark-2026",
+  "cursor-ai-review-2026": "cursor-2026",
+  "alternatives-gratuites-chatgpt": "chatgpt-alternatives-2026",
+  "midjourney-vs-dalle-2026": "midjourney-dalle-2026",
+  "github-copilot-vs-codeium": "copilot-codeium-2026",
+  "notion-ai-review": "notion-ai-2026",
+  "elevenlabs-review-2026": "elevenlabs-2026",
+  "jasper-vs-copyai": "jasper-copyai-2026",
+  "stable-diffusion-guide": "stable-diffusion-2026",
+};
+
+const AFFILIATE_FALLBACKS: Partial<Record<string, ArticleAffiliate>> = {
+  "chatgpt-alternatives-2026": {
+    url: "https://chatgpt.com",
+    toolName: "ChatGPT",
+    label: {
+      fr: "Point de départ solide pour comparer les meilleures alternatives",
+      en: "A solid baseline before testing the best alternatives",
+    },
+  },
+  "midjourney-dalle-2026": {
+    url: "https://openai.com",
+    toolName: "DALL·E",
+    label: {
+      fr: "Génération d’images intégrée à l’écosystème OpenAI",
+      en: "Image generation inside the OpenAI ecosystem",
+    },
+  },
+  "copilot-codeium-2026": {
+    url: "https://github.com/features/copilot",
+    toolName: "GitHub Copilot",
+    label: {
+      fr: "Le standard enterprise pour tester l’assistance au code",
+      en: "The enterprise baseline for AI coding assistance",
+    },
+  },
+  "notion-ai-2026": {
+    url: "https://www.notion.so/product/ai",
+    toolName: "Notion AI",
+    label: {
+      fr: "Résumé, rédaction et organisation dans Notion",
+      en: "Summaries, drafting and knowledge workflows in Notion",
+    },
+  },
+  "jasper-copyai-2026": {
+    url: "https://www.jasper.ai",
+    toolName: "Jasper",
+    label: {
+      fr: "Workflow marketing IA orienté contenu et brand voice",
+      en: "AI marketing workflow focused on content and brand voice",
+    },
+  },
+  "stable-diffusion-2026": {
+    url: "https://stability.ai",
+    toolName: "Stable Diffusion",
+    label: {
+      fr: "Le choix flexible pour générer des images avec plus de contrôle",
+      en: "The flexible choice for image generation with more control",
+    },
+  },
+};
+
+function normalizeWhitespace(value: string): string {
+  return value.replace(/\s+/g, " ").trim();
+}
+
+function stripMarkdown(value: string): string {
+  return normalizeWhitespace(
+    value
+      .replace(/```[\s\S]*?```/g, " ")
+      .replace(/`([^`]+)`/g, "$1")
+      .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+      .replace(/^#{1,6}\s+/gm, "")
+      .replace(/[>*_~|-]/g, " ")
+  );
+}
+
+function toSlugId(value: string): string {
+  return normalizeWhitespace(value)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function parseLocalizedDate(value: string, lang: Lang): Date {
+  const cleaned = normalizeWhitespace(value).replace(/,/g, "");
+  if (lang === "fr") {
+    const match = cleaned.match(/^(\d{1,2})\s+([A-Za-zéûôîàèùç]+)\s+(\d{4})$/i);
+    if (!match) return new Date("2026-01-01T00:00:00Z");
+    const [, day, monthName, year] = match;
+    const month = FR_MONTHS[monthName.toLowerCase()] ?? "01";
+    return new Date(`${year}-${month}-${String(day).padStart(2, "0")}T00:00:00Z`);
+  }
+
+  const match = cleaned.match(/^([A-Za-z]+)\s+(\d{1,2})\s+(\d{4})$/i);
+  if (!match) return new Date("2026-01-01T00:00:00Z");
+  const [, monthName, day, year] = match;
+  const month = EN_MONTHS[monthName.toLowerCase()] ?? "01";
+  return new Date(`${year}-${month}-${String(day).padStart(2, "0")}T00:00:00Z`);
+}
+
+function formatDisplayDate(date: Date, lang: Lang): string {
+  return date.toLocaleDateString(lang === "fr" ? "fr-FR" : "en-US", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+function formatISO(date: Date): string {
+  return date.toISOString().slice(0, 10);
+}
+
+function truncate(value: string, max: number): string {
+  const clean = normalizeWhitespace(value);
+  if (clean.length <= max) return clean;
+  return clean.slice(0, max - 1).replace(/[\s,;:.!?-]+$/g, "") + "…";
+}
+
+function buildMetaTitle(title: string, kind: ArticleKind, lang: Lang): string {
+  const suffix = " | Neuriflux";
+  const budget = 60 - suffix.length;
+  let base = normalizeWhitespace(title)
+    .replace(/[?!.]+$/g, "")
+    .replace(/\s+[—–-]\s+.*/g, "")
+    .replace(/\s{2,}/g, " ");
+
+  const has2026 = /2026/.test(base);
+  if (!has2026) {
+    const marker = lang === "fr" ? " 2026" : " 2026";
+    if (base.length + marker.length <= budget) base += marker;
+  }
+
+  const patterns: Record<ArticleKind, { fr: string; en: string }> = {
+    review: { fr: " : avis", en: ": review" },
+    comparison: { fr: " : comparatif", en: ": comparison" },
+    guide: { fr: " : guide", en: ": guide" },
+    tutorial: { fr: " : tuto", en: ": tutorial" },
+    news: { fr: " : analyse", en: ": analysis" },
+    analysis: { fr: " : analyse", en: ": analysis" },
+  };
+
+  const addon = patterns[kind][lang];
+  const escapedAddon = addon.replace(/[-/\^$*+?.()|[\]{}]/g, "\$&");
+  if (!new RegExp(escapedAddon, "i").test(base) && base.length + addon.length <= budget) {
+    base += addon;
+  }
+
+  return truncate(base, budget) + suffix;
+}
+
+function buildMetaDesc(desc: string): string {
+  return truncate(desc.replace(/\s+—\s+/g, ", "), 155);
+}
+
+function inferKind(raw: RawArticle): ArticleKind {
+  const probe = `${raw.slug} ${raw.fr.title} ${raw.en.title}`.toLowerCase();
+  if (/(vs|comparison|comparatif)/.test(probe)) return "comparison";
+  if (/(guide|prompt|how to|comment|tutorial|tuto)/.test(probe)) return probe.includes("guide") ? "guide" : "tutorial";
+  if (/(review|avis)/.test(probe)) return "review";
+  if (/(openai|fonds|fermeture|mythos|news|actualit|annonce)/.test(probe)) return "news";
+  return "analysis";
+}
+
+function inferDifficulty(raw: RawArticle): Difficulty {
+  if (raw.difficulty) return raw.difficulty;
+  const probe = `${raw.slug} ${raw.fr.title} ${raw.fr.desc}`.toLowerCase();
+  if (/(code|benchmark|architecture|stable diffusion|deepseek|claude code|cursor|copilot)/.test(probe)) return "avancé";
+  if (/(guide|prompts|alternatives|notion|jasper|midjourney|elevenlabs)/.test(probe)) return "intermédiaire";
+  return "débutant";
+}
+
+function inferReadingLevel(raw: RawArticle): ReadingLevel {
+  if (raw.readingLevel) return raw.readingLevel;
+  const words = stripMarkdown(`${raw.fr.content} ${raw.en.content}`).split(/\s+/).filter(Boolean).length;
+  return words > 2600 ? "deep" : "quick";
+}
+
+function inferKeywords(raw: RawArticle, slug: string): string[] {
+  if (raw.keywords?.length) {
+    return Array.from(new Set(raw.keywords.map((item) => normalizeWhitespace(item)).filter(Boolean))).slice(0, 10);
+  }
+
+  const seeds = [
+    raw.fr.title,
+    raw.en.title,
+    raw.fr.desc,
+    raw.en.desc,
+    slug.replace(/-/g, " "),
+    raw.tag,
+  ].join(" ");
+
+  const stop = new Set(["the","and","for","with","that","this","from","dans","avec","pour","plus","tout","2026","which","your","vous","leur","leurs","des","les","une","sur","est","are","how","quoi","comment"]);
+  const words = seeds
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9\s-]/g, " ")
+    .split(/\s+/)
+    .filter((word) => word.length > 2 && !stop.has(word));
+
+  return Array.from(new Set(words)).slice(0, 8);
+}
+
+function canonicalizeSlug(input: string): string {
+  const normalized = normalizeWhitespace(input).replace(/^\/+/, "").replace(/^fr\/blog\//, "").replace(/^en\/blog\//, "");
+  const bare = normalized.replace(/^fr\/|^en\//, "").replace(/^blog\//, "");
+  const fromOld = NEUTRAL_SLUGS[bare];
+  if (fromOld) return fromOld;
+  const old = Object.entries(NEUTRAL_SLUGS).find(([, value]) => value === bare);
+  return old?.[1] ?? bare;
+}
+
+function getTagLabel(tag: CanonicalTag, lang: Lang): string {
+  return TAG_LABELS[tag][lang];
+}
+
+function normalizeTag(value: string): CanonicalTag {
+  const alias = TAG_ALIASES[normalizeWhitespace(value).toLowerCase()];
+  return alias ?? "Chatbots";
+}
+
+function buildHeroImage(slug: string, raw: RawArticle): ArticleImage {
+  const titleFr = raw.fr.title.replace(/[?!.]+$/g, "");
+  const titleEn = raw.en.title.replace(/[?!.]+$/g, "");
+  return {
+    src: `/images/blog/${slug}.webp`,
+    alt: {
+      fr: `Illustration de l'article : ${titleFr}`,
+      en: `Article illustration: ${titleEn}`,
+    },
+    width: 1200,
+    height: 675,
+  };
+}
+
+function buildContentImage(slug: string, raw: RawArticle, index: number): ArticleImage {
+  return {
+    src: `/images/blog/${slug}-${index}.webp`,
+    alt: {
+      fr: `Visuel complémentaire pour ${raw.fr.title.replace(/[?!.]+$/g, "")}`,
+      en: `Supporting visual for ${raw.en.title.replace(/[?!.]+$/g, "")}`,
+    },
+    width: 1200,
+    height: 675,
+  };
+}
+
+function ensureIntro(content: string, desc: string, image: ArticleImage, lang: Lang): string {
+  const trimmed = content.trimStart().replace(/^\{\s*/, "");
+  const intro = `${desc}
+
+![${image.alt[lang]}](${image.src})
+`;
+  if (trimmed.slice(0, 400).includes(desc.slice(0, 20))) return trimmed;
+  return `${intro}
+${trimmed}`;
+}
+
+function ensureInlineImage(content: string, image: ArticleImage, lang: Lang): string {
+  if (content.includes(`![${image.alt[lang]}](${image.src})`) || content.includes('![')) return content;
+  return `![${image.alt[lang]}](${image.src})
+
+${content.trimStart()}`;
+}
+
+function replaceContentSlugs(content: string): string {
+  let output = content;
+  for (const [legacy, neutral] of Object.entries(NEUTRAL_SLUGS)) {
+    output = output.replaceAll(`/fr/blog/${legacy}`, `/fr/blog/${neutral}`);
+    output = output.replaceAll(`/en/blog/${legacy}`, `/en/blog/${neutral}`);
+  }
+  return output;
+}
+
+function contentWordCount(content: string): number {
+  return stripMarkdown(content).split(/\s+/).filter(Boolean).length;
+}
+
+function computeTimeMin(content: string): string {
+  return String(Math.max(3, Math.ceil(contentWordCount(content) / 200)));
+}
+
+function scoreSimilarity(source: NormalizedSeed, candidate: NormalizedSeed): number {
+  if (source.slug === candidate.slug) return -9999;
+  let score = 0;
+  if (source.tag === candidate.tag) score += 12;
+  if (source.kind === candidate.kind) score += 4;
+  if (candidate.featured) score += 2;
+  if (source.primaryComparisonSlugs.includes(candidate.slug)) score += 8;
+  if (candidate.primaryComparisonSlugs.includes(source.slug)) score += 5;
+  const overlap = source.keywords.filter((keyword) => candidate.keywords.includes(keyword)).length;
+  score += overlap * 3;
+  const delta = Math.abs(new Date(source.updatedAtIso).getTime() - new Date(candidate.updatedAtIso).getTime());
+  score += Math.max(0, 3 - Math.floor(delta / (1000 * 60 * 60 * 24 * 30)));
+  return score;
+}
+
+interface NormalizedSeed {
+  id: string;
+  slug: string;
+  legacySlug?: string;
+  legacySlugs: string[];
+  canonicalSlug: string;
+  tag: CanonicalTag;
+  timeMin: number;
+  kind: ArticleKind;
+  publishedAt: string;
+  updatedAtIso: string;
+  date: { fr: string; en: string };
+  updatedAt: { fr: string; en: string };
+  featured?: boolean;
+  affiliate?: ArticleAffiliate;
+  keywords: string[];
+  rating: number;
+  difficulty: Difficulty;
+  readingLevel: ReadingLevel;
+  heroImage: ArticleImage;
+  contentImages: ArticleImage[];
+  primaryComparisonSlugs: string[];
+  recommendedToolSlugs: string[];
+  sameTopicSlugs: string[];
+  nextReadingSlugs: string[];
+  fr: ArticleLang;
+  en: ArticleLang;
+}
+
+function pickComparisonSlugs(source: NormalizedSeed, pool: NormalizedSeed[]): string[] {
+  const candidates = pool
+    .filter((item) => item.slug !== source.slug && item.kind === "comparison")
+    .sort((a, b) => scoreSimilarity(source, b) - scoreSimilarity(source, a));
+  return candidates.slice(0, 2).map((item) => item.slug);
+}
+
+function pickToolSlugs(source: NormalizedSeed, pool: NormalizedSeed[]): string[] {
+  const candidates = pool
+    .filter((item) => item.slug !== source.slug && item.affiliate)
+    .sort((a, b) => scoreSimilarity(source, b) - scoreSimilarity(source, a));
+  return candidates.slice(0, 3).map((item) => item.slug);
+}
+
+function pickSameTopicSlugs(source: NormalizedSeed, pool: NormalizedSeed[]): string[] {
+  return pool
+    .filter((item) => item.slug !== source.slug && item.tag === source.tag)
+    .sort((a, b) => scoreSimilarity(source, b) - scoreSimilarity(source, a))
+    .slice(0, 4)
+    .map((item) => item.slug);
+}
+
+function pickRelatedSlugs(source: NormalizedSeed, pool: NormalizedSeed[]): string[] {
+  const sorted = pool
+    .filter((item) => item.slug !== source.slug)
+    .sort((a, b) => scoreSimilarity(source, b) - scoreSimilarity(source, a));
+  const picked: string[] = [];
+  for (const candidate of sorted) {
+    if (!picked.includes(candidate.slug)) picked.push(candidate.slug);
+    if (picked.length === 6) break;
+  }
+  return picked;
+}
+
+function buildRecommendationSection(source: NormalizedSeed, pool: NormalizedSeed[], lang: Lang): string {
+  const six = pickRelatedSlugs(source, pool).map((slug) => pool.find((item) => item.slug === slug)!).filter(Boolean);
+  const comparisons = pickComparisonSlugs(source, pool).map((slug) => pool.find((item) => item.slug === slug)!).filter(Boolean);
+
+  const heading = lang === "fr" ? "## 6 articles à lire ensuite" : "## 6 articles to read next";
+  const comparisonHeading = lang === "fr" ? "## Comparatifs utiles" : "## Useful comparisons";
+  const bullets = six.map((item) => {
+    const label = getTagLabel(item.tag, lang);
+    return `- [${item[lang].title}](${BLOG_BASE[lang]}/${item.slug}) — ${label}, ${item.timeMin}`;
+  }).join("\n");
+
+  const comparisonBullets = comparisons.length
+    ? comparisons.map((item) => `- [${item[lang].title}](${BLOG_BASE[lang]}/${item.slug})`).join("\n")
+    : lang === "fr"
+      ? "- [Comparer les meilleurs outils IA](/fr/comparatifs)"
+      : "- [Compare the best AI tools](/en/comparisons)";
+
+  return `\n\n${heading}\n\n${bullets}\n\n${comparisonHeading}\n\n${comparisonBullets}`;
+}
+
+function makeSeed(raw: RawArticle): NormalizedSeed {
+  const slug = NEUTRAL_SLUGS[raw.slug] ?? raw.slug;
+  const publishedDate = parseLocalizedDate(raw.date.en, "en");
+  const updatedDate = raw.updatedAt ? parseLocalizedDate(raw.updatedAt.en, "en") : publishedDate;
+  const kind = inferKind(raw);
+  const heroImage = buildHeroImage(slug, raw);
+  const contentImages = [buildContentImage(slug, raw, 1)];
+  const tag = normalizeTag(raw.tag);
+  const affiliate = raw.affiliate ?? AFFILIATE_FALLBACKS[slug];
+  const baseFr = replaceContentSlugs(ensureInlineImage(ensureIntro(raw.fr.content, raw.fr.desc, heroImage, "fr"), heroImage, "fr"));
+  const baseEn = replaceContentSlugs(ensureInlineImage(ensureIntro(raw.en.content, raw.en.desc, heroImage, "en"), heroImage, "en"));
+  const rating = raw.rating ?? (raw.featured ? 8.8 : kind === "comparison" ? 8.6 : 8.2);
+
+  function computeReadingTime(content: string): number {
+  const words = content.split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
+
+  return {
+    id: toSlugId(slug.replace(/-2026$/, "")),
+    slug,
+    legacySlug: raw.slug,
+    legacySlugs: raw.slug === slug ? [raw.slug] : [raw.slug, slug].filter((value, index, array) => array.indexOf(value) === index),
+    canonicalSlug: slug,
+    tag,
+    kind,
+    publishedAt: formatISO(publishedDate),
+    updatedAtIso: formatISO(updatedDate),
+    date: { fr: raw.date.fr, en: raw.date.en },
+    updatedAt: {
+      fr: raw.updatedAt?.fr ?? formatDisplayDate(updatedDate, "fr"),
+      en: raw.updatedAt?.en ?? formatDisplayDate(updatedDate, "en"),
+    },
+    timeMin: Number(computeReadingTime(raw.fr.content)), 
+    featured: raw.featured,
+    affiliate,
+    keywords: inferKeywords(raw, slug),
+    rating,
+    difficulty: inferDifficulty(raw),
+    readingLevel: inferReadingLevel(raw),
+    heroImage,
+    contentImages,
+    primaryComparisonSlugs: [],
+    recommendedToolSlugs: [],
+    sameTopicSlugs: [],
+    nextReadingSlugs: [],
+    fr: {
+      title: raw.fr.title,
+      desc: raw.fr.desc,
+      metaTitle: buildMetaTitle(raw.fr.title, kind, "fr"),
+      metaDesc: buildMetaDesc(raw.fr.desc),
+      content: baseFr,
+      related: [],
+    },
+    en: {
+      title: raw.en.title,
+      desc: raw.en.desc,
+      metaTitle: buildMetaTitle(raw.en.title, kind, "en"),
+      metaDesc: buildMetaDesc(raw.en.desc),
+      content: baseEn,
+      related: [],
+    },
+  };
+}
+
+const SEEDS: NormalizedSeed[] = RAW_ARTICLES.map(makeSeed);
+
+for (const seed of SEEDS) {
+  seed.primaryComparisonSlugs = pickComparisonSlugs(seed, SEEDS);
+  seed.recommendedToolSlugs = pickToolSlugs(seed, SEEDS);
+  seed.sameTopicSlugs = pickSameTopicSlugs(seed, SEEDS);
+  seed.nextReadingSlugs = pickRelatedSlugs(seed, SEEDS);
+}
+
+for (const seed of SEEDS) {
+  const relatedSlugs = pickRelatedSlugs(seed, SEEDS);
+  seed.fr.related = relatedSlugs.map((slug) => ({ slug }));
+  seed.en.related = relatedSlugs.map((slug) => ({ slug }));
+  seed.fr.content = `${seed.fr.content.trim()}${buildRecommendationSection(seed, SEEDS, "fr")}`;
+  seed.en.content = `${seed.en.content.trim()}${buildRecommendationSection(seed, SEEDS, "en")}`;
+  const refreshedTime = computeTimeMin(`${seed.fr.content}
+${seed.en.content}`);
+  seed.timeMin = refreshedTime as never;
+}
+
+// Re-assign timeMin strongly typed after computation.
+export const ARTICLES: Article[] = SEEDS.map((seed) => ({
+  ...seed,
+  timeMin: computeTimeMin(`${seed.fr.content}
+${seed.en.content}`),
+  legacySlug: seed.legacySlug,
+  legacySlugs: Array.from(new Set(seed.legacySlugs)),
+  fr: {
+    ...seed.fr,
+    metaTitle: buildMetaTitle(seed.fr.title, seed.kind, "fr"),
+    metaDesc: buildMetaDesc(seed.fr.desc),
+  },
+  en: {
+    ...seed.en,
+    metaTitle: buildMetaTitle(seed.en.title, seed.kind, "en"),
+    metaDesc: buildMetaDesc(seed.en.desc),
+  },
+}));
+
+const ARTICLE_BY_SLUG = new Map<string, Article>();
+for (const article of ARTICLES) {
+  ARTICLE_BY_SLUG.set(article.slug, article);
+  for (const legacy of article.legacySlugs) ARTICLE_BY_SLUG.set(legacy, article);
+}
+
 export function getArticleBySlug(slug: string): Article | undefined {
-  return ARTICLES.find(a => a.slug === slug);
+  return ARTICLE_BY_SLUG.get(canonicalizeSlug(slug)) ?? ARTICLE_BY_SLUG.get(normalizeWhitespace(slug));
 }
 
-// Récupérer tous les articles (optionnellement filtrés par tag)
-export function getAllArticles(tag?: string): Article[] {
-  if (!tag || tag === "all") return ARTICLES;
-  return ARTICLES.filter(a => a.tag === tag);
+export function resolveRelated(related: RelatedArticle[], lang: Lang): ResolvedRelatedArticle[] {
+  return related
+    .map((item) => getArticleBySlug(item.slug))
+    .filter((article): article is Article => Boolean(article))
+    .map((article) => ({
+      slug: article.slug,
+      title: article[lang].title,
+      tag: getTagLabel(article.tag, lang),
+      timeMin: article.timeMin,
+      heroImage: article.heroImage,
+    }));
 }
 
-// Récupérer les articles featured
+export function getAllArticles(tag?: string, lang: Lang = "fr"): Article[] {
+  if (!tag) return ARTICLES;
+  const canonical = TAG_ALIASES[normalizeWhitespace(tag).toLowerCase()];
+  if (!canonical) return [];
+  return ARTICLES.filter((article) => article.tag === canonical).sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+}
+
 export function getFeaturedArticles(): Article[] {
-  return ARTICLES.filter(a => a.featured);
+  return ARTICLES.filter((article) => article.featured);
 }
 
-// Récupérer tous les tags uniques
-export function getAllTags(): string[] {
-  return [...new Set(ARTICLES.map(a => a.tag))];
+export function getAllTags(lang: Lang = "fr"): string[] {
+  return Array.from(new Set(ARTICLES.map((article) => getTagLabel(article.tag, lang))));
 }
+
+export function searchArticles(query: string, lang: Lang): Article[] {
+  const needle = normalizeWhitespace(query).toLowerCase();
+  if (!needle) return ARTICLES;
+
+  return ARTICLES
+    .map((article) => {
+      const haystack = [
+        article[lang].title,
+        article[lang].desc,
+        article[lang].content.slice(0, 7000),
+        article.keywords.join(" "),
+        getTagLabel(article.tag, lang),
+        article.kind,
+      ].join(" ").toLowerCase();
+
+      const score =
+        (haystack.includes(needle) ? 10 : 0) +
+        (article[lang].title.toLowerCase().includes(needle) ? 8 : 0) +
+        (article[lang].desc.toLowerCase().includes(needle) ? 5 : 0) +
+        article.keywords.filter((keyword) => needle.includes(keyword) || keyword.includes(needle)).length * 2;
+
+      return { article, score };
+    })
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map((entry) => entry.article);
+}
+
+export function getRelatedByTag(slug: string, tag: string, limit = 6): Article[] {
+  const article = getArticleBySlug(slug);
+  const canonical = TAG_ALIASES[normalizeWhitespace(tag).toLowerCase()] ?? article?.tag;
+  if (!canonical) return [];
+
+  return ARTICLES
+    .filter((candidate) => candidate.slug !== canonicalizeSlug(slug) && candidate.tag === canonical)
+    .sort((a, b) => {
+      const source = article ?? a;
+      const scoreA = source.keywords.filter((keyword) => a.keywords.includes(keyword)).length;
+      const scoreB = source.keywords.filter((keyword) => b.keywords.includes(keyword)).length;
+      return scoreB - scoreA;
+    })
+    .slice(0, limit);
+}
+
+export function getRecentArticles(days = 30): Article[] {
+  const now = new Date("2026-04-11T00:00:00Z").getTime();
+  const windowMs = days * 24 * 60 * 60 * 1000;
+
+  return ARTICLES
+    .filter((article) => now - new Date(`${article.updatedAtIso}T00:00:00Z`).getTime() <= windowMs)
+    .sort((a, b) => b.updatedAtIso.localeCompare(a.updatedAtIso));
+}
+
+export function getTrendingArticles(): Article[] {
+  return [...ARTICLES]
+    .sort((a, b) => {
+const scoreA =
+  (a.featured ? 10 : 0) +
+  (a.rating ?? 0) +
+  (a.readingLevel === "deep" ? 1.5 : 0) +
+  (a.kind === "comparison" ? 1 : 0);
+
+const scoreB =
+  (b.featured ? 10 : 0) +
+  (b.rating ?? 0) +
+  (b.readingLevel === "deep" ? 1.5 : 0) +
+  (b.kind === "comparison" ? 1 : 0);
+
+return scoreB - scoreA;
+    })
+    .slice(0, 6);
+}
+
+export function getArticlesPaginated(page: number, perPage = 9): { articles: Article[]; total: number; pages: number } {
+  const safePage = Math.max(1, page);
+  const total = ARTICLES.length;
+  const pages = Math.max(1, Math.ceil(total / perPage));
+  const start = (safePage - 1) * perPage;
+
+  return {
+    articles: ARTICLES.slice(start, start + perPage),
+    total,
+    pages,
+  };
+}
+
+export function getSitemapData(lang: Lang): { url: string; lastmod: string; priority: number }[] {
+  return ARTICLES.map((article) => ({
+    url: `${SITE_URL}${BLOG_BASE[lang]}/${article.slug}`,
+    lastmod: article.updatedAtIso,
+    priority:
+      article.featured
+        ? 0.9
+        : article.kind === "comparison"
+          ? 0.85
+          : article.kind === "review"
+            ? 0.8
+            : 0.7,
+  }));
+}
+
+export function getRedirectMap(): Record<string, string> {
+  const redirects: Record<string, string> = {};
+  for (const article of ARTICLES) {
+    for (const legacy of article.legacySlugs) {
+      if (legacy !== article.slug) {
+        redirects[`/fr/blog/${legacy}`] = `/fr/blog/${article.slug}`;
+        redirects[`/en/blog/${legacy}`] = `/en/blog/${article.slug}`;
+      }
+    }
+  }
+  return redirects;
+}
+
+export const ARTICLE_REDIRECTS = getRedirectMap();
+
+export const ARTICLE_SUMMARIES = ARTICLES.map((article) => ({
+  id: article.id,
+  slug: article.slug,
+  legacySlug: article.legacySlug,
+  legacySlugs: article.legacySlugs,
+  tag: article.tag,
+  kind: article.kind,
+  featured: article.featured,
+  timeMin: article.timeMin,
+  publishedAt: article.publishedAt,
+  updatedAtIso: article.updatedAtIso,
+  updatedAt: article.updatedAt,
+  rating: article.rating,
+  difficulty: article.difficulty,
+  readingLevel: article.readingLevel,
+  heroImage: article.heroImage,
+  fr: {
+    title: article.fr.title,
+    desc: article.fr.desc,
+    metaTitle: article.fr.metaTitle,
+    metaDesc: article.fr.metaDesc,
+  },
+  en: {
+    title: article.en.title,
+    desc: article.en.desc,
+    metaTitle: article.en.metaTitle,
+    metaDesc: article.en.metaDesc,
+  },
+}));
+
+export function assertArticleDataIntegrity(): { ok: true } {
+  const slugs = new Set<string>();
+  const inbound = new Map<string, number>();
+
+  for (const article of ARTICLES) {
+    if (slugs.has(article.slug)) throw new Error(`Duplicate article slug detected: ${article.slug}`);
+    slugs.add(article.slug);
+    if (!article.id) throw new Error(`Missing immutable id on ${article.slug}`);
+    if (!article.heroImage?.src) throw new Error(`Missing hero image on ${article.slug}`);
+    if (!article.contentImages.length) throw new Error(`Missing content image on ${article.slug}`);
+    if (!article.fr.title || !article.en.title) throw new Error(`Missing bilingual title on ${article.slug}`);
+    if (article.fr.metaTitle.length > 60 || article.en.metaTitle.length > 60) throw new Error(`Meta title too long on ${article.slug}`);
+    if (article.fr.metaDesc.length > 160 || article.en.metaDesc.length > 160) throw new Error(`Meta description too long on ${article.slug}`);
+    if (article.fr.related.length < 6 || article.en.related.length < 6) throw new Error(`Not enough related articles on ${article.slug}`);
+
+    for (const lang of ["fr", "en"] as const) {
+      const relatedSlugs = article[lang].related.map((related) => related.slug);
+      if (new Set(relatedSlugs).size !== relatedSlugs.length) throw new Error(`Duplicate related slug detected on ${article.slug} (${lang})`);
+      for (const related of article[lang].related) {
+        if (related.slug === article.slug) throw new Error(`Self-referencing related article on ${article.slug} (${lang})`);
+        const target = getArticleBySlug(related.slug);
+        if (!target) throw new Error(`Missing related target "${related.slug}" on ${article.slug} (${lang})`);
+        inbound.set(target.slug, (inbound.get(target.slug) ?? 0) + 1);
+      }
+    }
+  }
+
+  for (const article of ARTICLES) {
+    if ((inbound.get(article.slug) ?? 0) === 0) {
+      throw new Error(`Orphan article detected: ${article.slug}`);
+    }
+  }
+
+  return { ok: true };
+}
+

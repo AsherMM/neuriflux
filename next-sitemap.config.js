@@ -1,28 +1,28 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
-  "laude-code-review-2026",
-  "ia-2026",
-  "prompts-ia-2026",
-  "openai-fonds-852-milliards-2026",
-  "claude-mythos-next-anthropic-2026",
-  "money-ia-2026",
-  "vibe-coding-tools-2026",
+  "claude-code-2026",
+  "ai-hallucinations-2026",
+  "ai-prompts-2026",
+  "openai-852b-2026",
+  "claude-mythos-2026",
+  "ai-income-2026",
+  "vibe-coding-2026",
+  "chatgpt-claude-gemini-market-2026",
+  "sora-openai-2026",
+  "grok-2026",
+  "deepseek-2026",
+  "perplexity-ai-2026",
+  "jasper-ai-2026",
   "chatgpt-claude-gemini-2026",
-  "sora-fermeture-openai-2026",
-  "grok-review-2026",
-  "deepseek-review-2026",
-  "perplexity-ai-review-2026",
-  "jasper-ai-review-2026",
-  "chatgpt-vs-claude-vs-gemini-2026",
-  "cursor-ai-review-2026",
-  "alternatives-gratuites-chatgpt",
-  "midjourney-vs-dalle-2026",
-  "github-copilot-vs-codeium",
-  "notion-ai-review",
-  "elevenlabs-review-2026",
-  "jasper-vs-copyai",
-  "stable-diffusion-guide",
+  "cursor-ai-2026",
+  "chatgpt-alternatives-2026",
+  "midjourney-dalle-2026",
+  "github-copilot-codeium-2026",
+  "notion-ai-2026",
+  "elevenlabs-2026",
+  "jasper-copyai-2026",
+  "stable-diffusion-2026",
 ];
 
 const COMPARATIF_SLUGS = [
@@ -43,33 +43,28 @@ const NOW = new Date().toISOString();
 const additionalPaths = async () => {
   const urls = [];
 
-  // Homepages
-  LANGS.forEach(lang => {
+  LANGS.forEach((lang) => {
     urls.push({ loc: `${BASE}/${lang}`, priority: 1.0, changefreq: "daily", lastmod: NOW });
   });
 
-  // Listes blog et comparatifs
-  LANGS.forEach(lang => {
+  LANGS.forEach((lang) => {
     urls.push({ loc: `${BASE}/${lang}/blog`, priority: 0.9, changefreq: "daily", lastmod: NOW });
     urls.push({ loc: `${BASE}/${lang}/comparatifs`, priority: 0.9, changefreq: "daily", lastmod: NOW });
   });
 
-  // Articles de blog
-  LANGS.forEach(lang => {
-    ARTICLE_SLUGS.forEach(slug => {
+  LANGS.forEach((lang) => {
+    ARTICLE_SLUGS.forEach((slug) => {
       urls.push({ loc: `${BASE}/${lang}/blog/${slug}`, priority: 0.8, changefreq: "weekly", lastmod: NOW });
     });
   });
 
-  // Comparatifs individuels
-  LANGS.forEach(lang => {
-    COMPARATIF_SLUGS.forEach(slug => {
+  LANGS.forEach((lang) => {
+    COMPARATIF_SLUGS.forEach((slug) => {
       urls.push({ loc: `${BASE}/${lang}/comparatifs/${slug}`, priority: 0.85, changefreq: "monthly", lastmod: NOW });
     });
   });
 
-  // Newsletter, About et Contact
-  LANGS.forEach(lang => {
+  LANGS.forEach((lang) => {
     urls.push({ loc: `${BASE}/${lang}/newsletter`, priority: 0.7, changefreq: "monthly", lastmod: NOW });
     urls.push({ loc: `${BASE}/${lang}/about`, priority: 0.5, changefreq: "monthly", lastmod: NOW });
     urls.push({ loc: `${BASE}/${lang}/contact`, priority: 0.5, changefreq: "yearly", lastmod: NOW });

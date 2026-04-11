@@ -15,8 +15,8 @@ const T = {
     subtitle: "Neuriflux est un média indépendant dédié aux outils IA. Pas de bullshit, pas de liens sponsorisés cachés — juste des tests honnêtes et des comparatifs clairs.",
     stats: [
       { value: "120+", label: "Outils testés" },
-      { value: "22+", label: "Articles publiés" },
-      { value: "3200+", label: "Lecteurs newsletter" },
+      { value: "22", label: "Articles publiés" },
+      { value: "559", label: "Lecteurs newsletter" },
       { value: "2026", label: "Lancé en" },
     ],
     origin: {
@@ -115,8 +115,8 @@ const T = {
     subtitle: "Neuriflux is an independent media dedicated to AI tools. No bullshit, no hidden sponsored links — just honest tests and clear comparisons.",
     stats: [
       { value: "120+", label: "Tools tested" },
-      { value: "13", label: "Articles published" },
-      { value: "3,200+", label: "Newsletter readers" },
+      { value: "22", label: "Articles published" },
+      { value: "559", label: "Newsletter readers" },
       { value: "2026", label: "Launched in" },
     ],
     origin: {
