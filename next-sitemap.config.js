@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "best-free-ai-tools-2026",
   "claude-code-2026",
   "ai-hallucinations-2026",
   "prompt-engineering-2026",
