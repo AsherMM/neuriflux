@@ -3,7 +3,7 @@
 const ARTICLE_SLUGS = [
   "claude-code-2026",
   "ai-hallucinations-2026",
-  "ai-prompts-2026",
+  "prompt-engineering-2026",
   "openai-852b-2026",
   "claude-mythos-2026",
   "ai-income-2026",
