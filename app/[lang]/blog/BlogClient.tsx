@@ -18,8 +18,8 @@ const TAG_MAP: Record<string, { fr: string; en: string; color: string }> = {
   Productivité: { fr: "Productivité", en: "Productivity",  color: "#10b981" },
   Productivity: { fr: "Productivité", en: "Productivity",  color: "#10b981" },
   Audio:        { fr: "Audio",        en: "Audio",         color: "#ef4444" },
-  Video:        { fr: "Vidéo",        en: "Video",         color: "#a855f7" },
-  Vidéo:        { fr: "Vidéo",        en: "Video",         color: "#a855f7" },
+  Video:        { fr: "Vidéo",        en: "Video",         color: "#e11d48" },
+  Vidéo:        { fr: "Vidéo",        en: "Video",         color: "#e11d48" },
 };
 
 // Forme canonique d'un tag (toujours FR comme clé interne)

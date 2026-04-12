@@ -68,8 +68,8 @@ const TAG_COLORS: Record<string, string> = {
   Productivité: "#10b981",
   Productivity: "#10b981",
   Audio: "#ef4444",
-  Video: "#a855f7",
-  Vidéo: "#a855f7",
+  Video: "#e11d48",
+  Vidéo: "#e11d48",
 };
 
 const REVIEW_TAGS = [
@@ -81,6 +81,8 @@ const REVIEW_TAGS = [
   "Rédaction",
   "Productivity",
   "Productivité",
+  "Video",
+  "Vidéo",
 ];
 
 const COPY: Record<Lang, LocaleCopy> = {

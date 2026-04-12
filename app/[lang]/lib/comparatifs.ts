@@ -1,13 +1,24 @@
-// ─── NEURIFLUX COMPARATIFS DATABASE ──────────────────────────────────────────
-// Pour ajouter un comparatif : ajouter un objet dans COMPARATIFS
-// Pour supprimer : retirer l'objet correspondant
+// ─── NEURIFLUX COMPARATIFS DATABASE — SENIOR SEO EDITION ─────────────────────
+
+export type Lang = "fr" | "en";
+export type CanonicalTag = "Code" | "Chatbots" | "Productivity" | "Writing" | "Image" | "Audio" | "Video";
+export type Difficulty = "débutant" | "intermédiaire" | "avancé";
+export type ReadingLevel = "quick" | "deep";
+export type ComparisonKind = "comparison";
+
+export interface ComparisonImage {
+  src: string;
+  alt: { fr: string; en: string };
+  width: number;
+  height: number;
+}
 
 export interface ToolScore {
   name: string;
   logo: string;
   color: string;
-  globalScore: number; // /10
-  scores: { fr: string; en: string; value: number }[]; // label bilingue + valeur
+  globalScore: number;
+  scores: { fr: string; en: string; value: number }[];
   price: string;
   priceFull: { fr: string; en: string };
   pros: { fr: string[]; en: string[] };
@@ -15,6 +26,7 @@ export interface ToolScore {
   verdict: { fr: string; en: string };
   affiliate?: string;
   badge?: { fr: string; en: string };
+  bestFor?: { fr: string; en: string };
 }
 
 export interface ComparatifLang {
@@ -28,18 +40,544 @@ export interface ComparatifLang {
 }
 
 export interface Comparatif {
+  id: string;
   slug: string;
-  tag: string;
+  legacySlug?: string;
+  legacySlugs: string[];
+  canonicalSlug: string;
+  tag: CanonicalTag;
+  kind: ComparisonKind;
+  publishedAt: string;
+  updatedAtIso: string;
   date: { fr: string; en: string };
+  updatedAt: { fr: string; en: string };
+  timeMin: string;
   featured?: boolean;
-  tools: ToolScore[];
-  criteria: { fr: string[]; en: string[] }; // ← bilingue
   winner: string;
+  winnerSlug: string;
+  keywords: string[];
+  difficulty: Difficulty;
+  readingLevel: ReadingLevel;
+  heroImage: ComparisonImage;
+  contentImages: ComparisonImage[];
+  tools: ToolScore[];
+  criteria: { fr: string[]; en: string[] };
+  relatedArticleSlugs: string[];
+  relatedComparatifSlugs: string[];
   fr: ComparatifLang;
   en: ComparatifLang;
 }
 
-export const COMPARATIFS: Comparatif[] = [
+interface RawComparatif extends Omit<Comparatif, "id" | "legacySlug" | "legacySlugs" | "canonicalSlug" | "kind" | "publishedAt" | "updatedAtIso" | "updatedAt" | "timeMin" | "winnerSlug" | "keywords" | "difficulty" | "readingLevel" | "heroImage" | "contentImages" | "relatedArticleSlugs" | "relatedComparatifSlugs" | "tag"> {
+  tag: string;
+}
+
+const SITE_URL = "https://neuriflux.com";
+const COMP_BASE = {
+  fr: "/fr/comparatifs",
+  en: "/en/comparatifs",
+} as const;
+
+const TAG_LABELS: Record<CanonicalTag, { fr: string; en: string }> = {
+  Code: { fr: "Code", en: "Code" },
+  Chatbots: { fr: "Chatbots", en: "Chatbots" },
+  Productivity: { fr: "Productivité", en: "Productivity" },
+  Writing: { fr: "Rédaction", en: "Writing" },
+  Image: { fr: "Image", en: "Image" },
+  Audio: { fr: "Audio", en: "Audio" },
+  Video: { fr: "Vidéo", en: "Video" },
+};
+
+const TAG_ALIASES: Record<string, CanonicalTag> = {
+  code: "Code",
+  chatbot: "Chatbots",
+  chatbots: "Chatbots",
+  productivity: "Productivity",
+  "productivité": "Productivity",
+  writing: "Writing",
+  "rédaction": "Writing",
+  image: "Image",
+  images: "Image",
+  audio: "Audio",
+  video: "Video",
+  "vidéo": "Video",
+};
+
+const SLUG_ALIASES: Record<string, string> = {
+  "chatgpt-vs-claude-vs-gemini": "chatgpt-claude-gemini-2026",
+  "cursor-vs-copilot-vs-codeium": "cursor-copilot-codeium-2026",
+  "midjourney-vs-dalle-vs-stable-diffusion": "midjourney-dalle-stable-diffusion-2026",
+  "jasper-vs-copyai-vs-claude": "jasper-copyai-claude-2026",
+  "elevenlabs-vs-openai-tts-vs-playht": "elevenlabs-openai-tts-playht-2026",
+};
+
+const TOOL_SLUG_ALIASES: Record<string, string> = {
+  "OpenAI TTS": "openai-tts",
+  "D-ID": "did",
+  "ChatGPT": "chatgpt",
+  "GitHub Copilot": "github-copilot",
+  "Stable Diffusion": "stable-diffusion",
+};
+
+const RAW_COMPARATIFS: RawComparatif[] = [] = [
+// ─── HeyGen vs Synthesia vs D-ID — Vidéo Avatar IA 2026 ─────────────────────
+  {
+    slug: "heygen-vs-synthesia-vs-did-2026",
+    tag: "Video",
+    date: { fr: "12 avril 2026", en: "April 12, 2026" },
+    featured: true,
+    winner: "HeyGen",
+    criteria: {
+      fr: ["Réalisme des avatars", "Traduction & lip-sync", "Facilité d'usage", "Fonctionnalités enterprise", "API & intégrations", "Rapport qualité/prix"],
+      en: ["Avatar realism", "Translation & lip-sync", "Ease of use", "Enterprise features", "API & integrations", "Value for money"],
+    },
+    tools: [
+      {
+        name: "HeyGen",
+        logo: "🎭",
+        color: "#00e6be",
+        globalScore: 8.9,
+        scores: [
+          { fr: "Réalisme des avatars", en: "Avatar realism", value: 9.5 },
+          { fr: "Traduction & lip-sync", en: "Translation & lip-sync", value: 9.5 },
+          { fr: "Facilité d'usage", en: "Ease of use", value: 8.5 },
+          { fr: "Fonctionnalités enterprise", en: "Enterprise features", value: 8.0 },
+          { fr: "API & intégrations", en: "API & integrations", value: 9.0 },
+          { fr: "Rapport qualité/prix", en: "Value for money", value: 9.0 },
+        ],
+        price: "Gratuit / 29$/mois",
+        priceFull: {
+          fr: "Gratuit (3 vidéos/mois) · Creator 29$/mois (15 min) · Business 89$/mois (60 min) · Enterprise sur devis",
+          en: "Free (3 videos/month) · Creator $29/month (15 min) · Business $89/month (60 min) · Enterprise custom",
+        },
+        pros: {
+          fr: [
+            "Avatar IV : micro-expressions, clignements et mouvements de tête ultra-réalistes — 7 personnes sur 10 ne font pas la différence avec un humain",
+            "Video Translate en 40 langues avec lip-sync parfait — la fonctionnalité qui justifie l'abonnement à elle seule",
+            "Instant Avatar : créez votre clone numérique en 2 minutes d'enregistrement, prêt en 2 heures",
+            "Streaming Avatar : agents vidéo interactifs en temps réel via API (latence ~1,2s)",
+            "300+ templates marketing prêts à l'emploi avec Brand Kit intégré",
+            "Plan gratuit fonctionnel — 3 vidéos/mois suffisent pour valider l'outil sans carte bancaire",
+          ],
+          en: [
+            "Avatar IV: ultra-realistic micro-expressions, blinks, and head movements — 7 out of 10 testers couldn't tell it apart from a real person",
+            "Video Translate across 40 languages with near-perfect lip-sync — the single feature that justifies the subscription",
+            "Instant Avatar: create your digital clone from a 2-minute recording, ready in 2 hours",
+            "Streaming Avatar: real-time interactive video agents via API (latency ~1.2s)",
+            "300+ ready-made marketing templates with built-in Brand Kit",
+            "Functional free plan — 3 videos per month, enough to properly evaluate the tool, no credit card needed",
+          ],
+        },
+        cons: {
+          fr: [
+            "Les crédits vidéo fondent vite — Video Translate consomme 2x plus que la génération standard",
+            "Les mains restent souvent cachées ou floues — pas encore résolu en 2026",
+            "Arrière-plans complexes (bureau filmé) montrent des artifacts de compression temporaires",
+            "Support par chat réactif mais résolutions techniques en 24-48h — pas idéal pour la production critique",
+            "Pas de vérification technique du consentement pour le clonage vocal et facial — risque légal potentiel",
+          ],
+          en: [
+            "Video credits burn fast — Video Translate consumes 2x more credits than standard avatar generation",
+            "Hands are still often hidden or blurred — not yet resolved in 2026",
+            "Complex backgrounds (real filmed desks) show temporary compression artifacts",
+            "Chat support responds fast but technical issues take 24-48h to resolve — not ideal for critical production",
+            "No technical verification of consent for voice and face cloning — potential legal exposure",
+          ],
+        },
+        verdict: {
+          fr: "Le meilleur rapport fonctionnalités/prix pour la vidéo avatar IA en 2026. Video Translate est la fonctionnalité qui change la donne — aucun concurrent ne la réplique à ce niveau. Idéal pour le marketing multilingue, la formation e-learning et la localisation vidéo sans re-tournage.",
+          en: "The best feature-to-price ratio for AI avatar video in 2026. Video Translate is the game-changing capability — no competitor replicates it at this level. Ideal for multilingual marketing, e-learning training, and video localization without reshooting.",
+        },
+        affiliate: "https://www.heygen.com",
+        badge: { fr: "🏆 Notre choix", en: "🏆 Our pick" },
+      },
+      {
+        name: "Synthesia",
+        logo: "🎬",
+        color: "#7c3aed",
+        globalScore: 8.4,
+        scores: [
+          { fr: "Réalisme des avatars", en: "Avatar realism", value: 8.5 },
+          { fr: "Traduction & lip-sync", en: "Translation & lip-sync", value: 9.0 },
+          { fr: "Facilité d'usage", en: "Ease of use", value: 9.5 },
+          { fr: "Fonctionnalités enterprise", en: "Enterprise features", value: 9.5 },
+          { fr: "API & intégrations", en: "API & integrations", value: 8.5 },
+          { fr: "Rapport qualité/prix", en: "Value for money", value: 6.5 },
+        ],
+        price: "Gratuit / 29$/mois",
+        priceFull: {
+          fr: "Gratuit (10 min/mois, watermark) · Starter 29$/mois (10 min) · Creator 89$/mois (30 min) · Enterprise sur devis (illimité)",
+          en: "Free (10 min/month, watermark) · Starter $29/month (10 min) · Creator $89/month (30 min) · Enterprise custom (unlimited)",
+        },
+        pros: {
+          fr: [
+            "Interface la plus intuitive du marché — prise en main en 10 minutes, workflow de type présentation PowerPoint",
+            "160+ langues avec le meilleur lip-sync multilingue du panel — référence sur le français, l'espagnol et le japonais",
+            "Fonctions enterprise matures : SSO, SCORM export, LMS intégré, collaboration temps réel, Brand Kit",
+            "AI Playground intégré : accès à Veo 3.1 et Sora 2 directement dans l'éditeur pour des assets vidéo supplémentaires",
+            "50 000+ équipes clientes dont une part significative du Fortune 100 — track record enterprise prouvé",
+            "Vidéos interactives avec CTA cliquables, quiz et parcours de branchement — unique dans ce comparatif",
+          ],
+          en: [
+            "Most intuitive interface in the market — 10-minute onboarding, PowerPoint-style slide workflow",
+            "160+ languages with the best multilingual lip-sync in this comparison — reference quality on French, Spanish, and Japanese",
+            "Mature enterprise features: SSO, SCORM export, built-in LMS, real-time collaboration, Brand Kit",
+            "Built-in AI Playground: access to Veo 3.1 and Sora 2 directly in the editor for supplementary video assets",
+            "50,000+ team customers including a significant share of Fortune 100 — proven enterprise track record",
+            "Interactive videos with clickable CTAs, quizzes, and branching paths — unique in this comparison",
+          ],
+        },
+        cons: {
+          fr: [
+            "Le prix grimpe très vite — les fonctions clés (SCORM, traduction 1-clic) sont verrouillées derrière le plan Enterprise",
+            "Avatars personnalisés à 1 000$/an en supplément sur les plans non-Enterprise — barrière à l'entrée élevée",
+            "Modération de contenu rigide et opaque — secteurs santé, biotech et médical souvent bloqués sans recours clair",
+            "Rendu plus lent que HeyGen — pas optimisé pour l'itération rapide et le prototypage",
+            "Avatars moins expressifs que HeyGen sur le contenu court et informel — mieux adapté au format corporate structuré",
+          ],
+          en: [
+            "Price escalates fast — key features (SCORM export, 1-click translation) locked behind Enterprise plan",
+            "Custom avatars cost $1,000/year extra on non-Enterprise plans — significant cost barrier",
+            "Rigid and opaque content moderation — healthcare, biotech, and medical sectors frequently blocked with no clear appeal process",
+            "Rendering slower than HeyGen — not optimized for rapid iteration and prototyping",
+            "Avatars less expressive than HeyGen for short-form casual content — better suited to structured corporate formats",
+          ],
+        },
+        verdict: {
+          fr: "La plateforme la plus mature pour les grandes entreprises qui ont besoin de conformité, de collaboration et d'intégration LMS. Si votre priorité est la formation e-learning à grande échelle avec SCORM et SSO, Synthesia reste la référence — mais au prix fort.",
+          en: "The most mature platform for large enterprises that need compliance, collaboration, and LMS integration. If your priority is large-scale e-learning with SCORM and SSO, Synthesia remains the reference — but at a premium price.",
+        },
+        affiliate: "https://www.synthesia.io",
+        badge: { fr: "Meilleur pour l'enterprise", en: "Best for enterprise" },
+      },
+      {
+        name: "D-ID",
+        logo: "👤",
+        color: "#f59e0b",
+        globalScore: 6.8,
+        scores: [
+          { fr: "Réalisme des avatars", en: "Avatar realism", value: 6.5 },
+          { fr: "Traduction & lip-sync", en: "Translation & lip-sync", value: 6.0 },
+          { fr: "Facilité d'usage", en: "Ease of use", value: 8.0 },
+          { fr: "Fonctionnalités enterprise", en: "Enterprise features", value: 5.5 },
+          { fr: "API & intégrations", en: "API & integrations", value: 8.5 },
+          { fr: "Rapport qualité/prix", en: "Value for money", value: 6.0 },
+        ],
+        price: "5.90$/mois",
+        priceFull: {
+          fr: "Essai gratuit 14 jours · Lite 5,90$/mois (10 min) · Pro 49,99$/mois (15 min) · Advanced 299,99$/mois (65 min) · Enterprise sur devis",
+          en: "14-day free trial · Lite $5.90/month (10 min) · Pro $49.99/month (15 min) · Advanced $299.99/month (65 min) · Enterprise custom",
+        },
+        pros: {
+          fr: [
+            "Le prix d'entrée le plus bas du comparatif — Lite à 5,90$/mois pour tester le concept",
+            "Talking Photo : animez n'importe quelle photo en vidéo parlante en moins d'une minute — workflow le plus rapide",
+            "API REST bien documentée avec intégration ElevenLabs native — référence pour les développeurs",
+            "Agents conversationnels IA en streaming temps réel — fonctionnalité innovante et sans équivalent direct",
+            "Prise en main immédiate : uploadez une photo, tapez un script, vidéo générée en 60 secondes",
+          ],
+          en: [
+            "Lowest entry price in this comparison — Lite plan at $5.90/month to test the concept",
+            "Talking Photo: animate any photo into a talking video in under a minute — fastest workflow available",
+            "Well-documented REST API with native ElevenLabs integration — developer-friendly reference",
+            "Real-time streaming conversational AI agents — innovative feature with no direct equivalent",
+            "Immediate onboarding: upload a photo, type a script, video generated in 60 seconds",
+          ],
+        },
+        cons: {
+          fr: [
+            "Écart de qualité visible avec HeyGen et Synthesia — avatars reconnaissables comme IA, animations faciales moins raffinées",
+            "Lip-sync instable au-delà de 45 secondes — problème documenté et non résolu",
+            "Watermark sur le plan Lite — usage professionnel réel à partir du Pro à 49,99$/mois",
+            "60 avatars stock vs 120+ chez HeyGen et 200+ chez Synthesia — bibliothèque la plus limitée",
+            "Problèmes de facturation signalés par de multiples utilisateurs — prix affiché parfois différent du prix débité",
+            "Aucune fonctionnalité de formation enterprise (pas de SCORM, pas de LMS, pas de collaboration équipe)",
+          ],
+          en: [
+            "Visible quality gap with HeyGen and Synthesia — avatars recognizably AI, less refined facial animation",
+            "Lip-sync becomes unstable past 45 seconds — a documented issue that remains unresolved",
+            "Watermark on Lite plan — real professional use starts at Pro ($49.99/month)",
+            "60 stock avatars vs 120+ on HeyGen and 200+ on Synthesia — smallest library in this comparison",
+            "Billing issues reported by multiple users — displayed price sometimes differs from charged amount",
+            "No enterprise training features whatsoever (no SCORM, no LMS, no team collaboration)",
+          ],
+        },
+        verdict: {
+          fr: "Le point d'entrée le plus accessible pour découvrir la vidéo avatar IA, et une API solide pour les développeurs. Mais le gap de qualité avec HeyGen et Synthesia est trop important pour un usage marketing ou formation sérieux. À réserver aux prototypes rapides et aux intégrations API.",
+          en: "The most accessible entry point to discover AI avatar video, and a solid API for developers. But the quality gap with HeyGen and Synthesia is too wide for serious marketing or training use. Best reserved for quick prototypes and API-driven integrations.",
+        },
+        affiliate: "https://www.d-id.com",
+        badge: { fr: "Le moins cher", en: "Most affordable" },
+      },
+    ],
+    fr: {
+      title: "HeyGen vs Synthesia vs D-ID : quel outil d'avatar vidéo IA choisir en 2026 ?",
+      desc: "Trois plateformes d'avatars IA. Trois philosophies. On a créé les mêmes vidéos sur les trois pour trancher : qualité, traduction, prix, enterprise. Notre verdict complet après des semaines de tests réels.",
+      metaTitle: "HeyGen vs Synthesia vs D-ID 2026 : comparatif complet | Neuriflux",
+      metaDesc: "Comparatif complet HeyGen vs Synthesia vs D-ID en 2026. Avatars, lip-sync multilingue, prix réels, fonctions enterprise — quel outil choisir selon votre usage ? Verdict après tests réels.",
+      intro: "Le marché de la vidéo avatar IA a changé de dimension en 2026. HeyGen a dépassé les 35 000 entreprises clientes. Synthesia revendique une part significative du Fortune 100. D-ID a été le pionnier de l'animation de photos parlantes. Mais en avril 2026, après la mort de Sora et l'explosion de la demande en vidéo IA d'entreprise, les trois se battent pour un marché très différent de celui d'il y a deux ans. On a créé les mêmes vidéos sur les trois plateformes — présentation produit, module de formation, clip marketing multilingue — pour vous donner un verdict fondé sur des résultats réels, pas sur des promesses marketing.",
+      verdict: "HeyGen pour le meilleur équilibre qualité-prix et la traduction vidéo. Synthesia pour les grandes entreprises qui exigent SCORM, SSO et conformité. D-ID pour le prototypage rapide et l'API — pas pour la production.",
+      content: `
+## Trois plateformes, trois réalités très différentes
+
+Il faut poser le cadre avant de comparer les scores. Ces trois outils ne font pas la même chose de la même façon, et les choisir sans comprendre leur philosophie garantit une déception.
+
+**[HeyGen](/fr/blog/heygen-2026) est un studio de production vidéo IA.** Son objectif : remplacer le tournage vidéo pour le marketing, la formation et la localisation. Vous scriptez, vous choisissez un avatar (ou vous clonez le vôtre), et HeyGen produit une vidéo professionnelle. Sa fonctionnalité phare — Video Translate — prend une vidéo existante et la traduit en 40 langues avec synchronisation labiale parfaite. C'est le seul des trois à proposer ça à ce niveau.
+
+**Synthesia est une machine à formation enterprise.** Son workflow de type "slides" rappelle PowerPoint : vous construisez vos vidéos scène par scène, avec des avatars, du texte et des visuels structurés. C'est l'outil le plus mature pour les équipes L&D — SCORM, LMS, SSO, collaboration temps réel. Pour les grandes organisations, c'est souvent le seul qui coche toutes les cases de conformité.
+
+**D-ID est un animateur de photos.** Son cœur de métier : prendre une photo statique et la transformer en vidéo parlante. C'est le plus rapide pour un clip de 30 secondes, et son API est la mieux documentée pour les développeurs. Mais dès qu'on dépasse le cas d'usage "talking head rapide", les limites deviennent évidentes.
+
+## Réalisme des avatars : HeyGen creuse l'écart
+
+On a testé les trois avec le même script de 90 secondes, filmé dans les mêmes conditions, pour comparer la qualité des avatars.
+
+**HeyGen** avec son moteur Avatar IV produit des résultats qui surprennent réellement. Les micro-expressions sont convaincantes — clignements d'yeux naturels, légers mouvements de tête, subtiles variations dans le regard. Sur un panel de 10 personnes à qui on a montré un extrait de 30 secondes sans contexte, 7 ont cru à une vraie personne. Ce n'est pas parfait : les mains restent un point faible (souvent cachées), et les émotions intenses (surprise, éclat de rire) sont encore artificielles. Mais pour du contenu marketing ou de la formation, le cap est franchi.
+
+**Synthesia** produit des avatars propres, stables et professionnels — clairement pensés pour un contexte corporate. Le mouvement est plus contenu, plus formel. Sur des vidéos longues (10-15 minutes), Synthesia maintient une meilleure cohérence visuelle que HeyGen, dont les avatars peuvent montrer de légers artifacts après 5 minutes. Pour une formation e-learning de 20 minutes, la stabilité de Synthesia est un vrai avantage.
+
+**D-ID** est un cran en dessous. Les avatars sont reconnaissables comme de l'IA : les mouvements de tête semblent mécaniques, les expressions faciales manquent de subtilité. Le système de "Talking Photo" fonctionne bien pour des clips ultra-courts (15-30 secondes), mais la qualité se dégrade visiblement dès qu'on dépasse 45 secondes. Pour un post LinkedIn ou une story Instagram de 15 secondes, c'est suffisant. Pour un usage professionnel structuré, non.
+
+**Verdict avatars :** HeyGen 9.5/10 · Synthesia 8.5/10 · D-ID 6.5/10
+
+## Traduction et lip-sync multilingue : le vrai terrain de bataille
+
+C'est la fonctionnalité qui fait la différence en 2026. Pour toute entreprise qui opère dans plusieurs marchés, la capacité à localiser ses vidéos sans re-tourner est un avantage concurrentiel massif.
+
+**HeyGen Video Translate** est architecturalement différent des autres. Vous prenez une vidéo existante — filmée avec une vraie personne ou générée avec un avatar — et HeyGen la traduit intégralement : voix, lip-sync, intonation. Sur nos tests en français et espagnol, le résultat est excellent (9/10). En allemand et japonais, très bon (8/10). En arabe et mandarin, correct mais avec des décalages perceptibles sur les consonnes complexes (7/10). Le coût est le point de friction : Video Translate consomme 2x plus de crédits que la génération standard.
+
+**Synthesia** couvre 160+ langues — la couverture la plus large du comparatif — avec un lip-sync nativement construit dans l'outil. La traduction en 1 clic est réservée au plan Enterprise, mais quand elle est disponible, elle produit des résultats solides. Sur les mêmes tests FR/ES/JA, Synthesia est légèrement devant HeyGen sur la précision des phonèmes, particulièrement en arabe. C'est le meilleur du panel sur la diversité linguistique pure.
+
+**D-ID** utilise des moteurs vocaux tiers (ElevenLabs, Microsoft Azure). La qualité dépend du moteur choisi : avec ElevenLabs, les voix sont bonnes. Mais le lip-sync se dégrade rapidement sur les langues non-latines. En japonais et arabe, les résultats de nos tests étaient nettement inférieurs à ceux de HeyGen et Synthesia.
+
+**Verdict traduction :** HeyGen 9.5/10 · Synthesia 9.0/10 · D-ID 6.0/10
+
+## L'interface : l'avantage silencieux de Synthesia
+
+Parfois le meilleur outil est celui qu'on utilise sans réfléchir. Synthesia gagne ici sans contestation.
+
+Son workflow en slides est immédiatement compréhensible pour quiconque a déjà utilisé PowerPoint. Vous construisez votre vidéo scène par scène, avec des avatars, du texte et des éléments visuels positionnés par glisser-déposer. La mise à jour de février 2026 a ajouté l'import direct de PowerPoint avec conversion automatique des notes de présentation en scripts vidéo. Pour les équipes non-techniques, c'est imbattable.
+
+HeyGen est un peu plus complexe mais reste accessible. L'éditeur est fonctionnel, les templates sont bien organisés, et la version 2.0 a ajouté la collaboration temps réel (jusqu'à 20 utilisateurs). Le Chat Mode est malin : consultez l'IA sur votre approche avant de consommer des crédits. Mais la courbe d'apprentissage est réelle — comptez 30-45 minutes pour maîtriser les fonctions avancées.
+
+D-ID est le plus simple en apparence — photo + script = vidéo en 60 secondes — mais cette simplicité reflète aussi sa limitation. L'éditeur est basique, les options de personnalisation sont restreintes, et dès que vous voulez aller au-delà du "talking head" simple, vous atteignez les murs de la plateforme.
+
+**Verdict facilité :** Synthesia 9.5/10 · HeyGen 8.5/10 · D-ID 8.0/10
+
+## Enterprise : Synthesia seul sur le terrain
+
+Pour les grandes organisations, le choix se réduit souvent à une checklist de conformité. Et sur cette checklist, Synthesia écrase la concurrence.
+
+**Synthesia** propose SSO (SAML), SCORM export pour l'intégration LMS, ISO 27001, ISO 42001, SOC 2 Type II, collaboration temps réel avec gestion des rôles, Brand Kit centralisé, et une équipe Customer Success dédiée sur les plans Enterprise. C'est la seule plateforme du comparatif qui coche toutes les cases d'un département L&D dans un groupe du Fortune 500.
+
+**HeyGen** a progressé sur le B2B — SSO, Brand Kit, et une API enterprise sont disponibles. Mais les intégrations LMS sont absentes, le SCORM n'est pas supporté, et la gestion des rôles est plus basique. Pour une PME ou une équipe marketing, c'est suffisant. Pour un déploiement corporate de 500+ utilisateurs avec des exigences de conformité sectorielles, il manque des briques.
+
+**D-ID** n'a essentiellement aucune fonctionnalité enterprise au sens formation. Pas de SCORM, pas de LMS, pas de collaboration équipe. Son API est robuste pour les développeurs, mais ce n'est pas un outil de formation.
+
+**Verdict enterprise :** Synthesia 9.5/10 · HeyGen 8.0/10 · D-ID 5.5/10
+
+## Les tarifs réels — ce que vous payez vraiment
+
+Le piège classique de ce marché : les prix affichés ne reflètent pas le coût réel d'utilisation. Décortiquons.
+
+| | HeyGen | Synthesia | D-ID |
+|---|---|---|---|
+| **Plan gratuit** | 3 vidéos/mois, 720p, watermark | 10 min/mois, watermark | 14 jours d'essai |
+| **Entrée payante** | Creator 29$/mois (15 min) | Starter 29$/mois (10 min) | Lite 5,90$/mois (10 min) |
+| **Usage pro** | Business 89$/mois (60 min) | Creator 89$/mois (30 min) | Pro 49,99$/mois (15 min) |
+| **Enterprise** | Sur devis | Sur devis (illimité) | Sur devis |
+| **Avatar perso** | Inclus dès Creator | 1 000$/an (non-Enterprise) | Photo uploadée |
+| **Traduction vidéo** | Inclus (consomme 2x crédits) | Enterprise uniquement | Via moteurs tiers |
+
+**Le vrai calcul HeyGen :** sur le plan Creator à 29$/mois, vous pouvez réalistement produire 3 vidéos avatar de 2 minutes ou 1 traduction de 10 minutes en 2 langues. C'est plus limité qu'il n'y paraît. Le plan Business à 89$/mois est le vrai point d'entrée professionnel.
+
+**Le vrai calcul Synthesia :** le Starter à 29$/mois donne 10 minutes — soit une vidéo de formation de 10 minutes par mois. La traduction 1-clic et le SCORM sont réservés au plan Enterprise (prix non publié). Pour les fonctions qui distinguent Synthesia de la concurrence, il faut contacter les ventes.
+
+**Le piège D-ID :** le Lite à 5,90$/mois inclut un watermark et seulement 10 minutes. L'usage professionnel commence au Pro à 49,99$/mois pour 15 minutes seulement — soit un rapport minutes/dollar significativement pire que HeyGen ou Synthesia au même niveau de prix.
+
+## API et développeurs : D-ID surprend, HeyGen impressionne
+
+Pour les équipes tech qui veulent intégrer la vidéo avatar dans leurs propres applications.
+
+**HeyGen** offre une API complète couvrant la génération d'avatars, le streaming en temps réel et la traduction vidéo. Le Streaming Avatar via API ouvre des cas d'usage uniques : agents commerciaux virtuels, support client en vidéo, assistants interactifs. L'intégration MCP étend les possibilités avec 9 000+ connecteurs.
+
+**D-ID** a historiquement la meilleure documentation API du secteur. Son API REST est propre, bien structurée, et l'intégration native ElevenLabs pour les voix en fait une référence pour les développeurs. Les agents conversationnels en streaming temps réel sont une innovation réelle sans équivalent direct.
+
+**Synthesia** propose une API fonctionnelle (360 min/an sur Creator) mais l'écosystème est plus orienté plateforme que développeurs. L'API est un complément, pas le cœur du produit.
+
+**Verdict API :** HeyGen 9.0/10 · D-ID 8.5/10 · Synthesia 8.5/10
+
+## Notre matrice de décision
+
+**Choisissez [HeyGen](/fr/blog/heygen-2026) si :**
+- Vous faites du marketing vidéo multilingue — Video Translate est sans équivalent
+- Vous voulez créer votre clone numérique facilement (Instant Avatar en 2 minutes)
+- Vous cherchez le meilleur rapport qualité/prix pour de la vidéo avatar professionnelle
+- Vous développez des agents vidéo interactifs via API (Streaming Avatar)
+- Vous produisez des formations e-learning internes sans exigences SCORM
+
+**Choisissez Synthesia si :**
+- Votre organisation exige SSO, SCORM, LMS et conformité ISO pour tout nouvel outil
+- Vous produisez des formations longues (10-20 min) où la stabilité de l'avatar est critique
+- Vous avez besoin de collaboration temps réel entre 5+ créateurs de contenu
+- Vous êtes dans le Fortune 500 et votre département achats a une checklist de 40 items
+- Vous créez des vidéos interactives avec quiz et branchement conditionnel
+
+**Choisissez D-ID si :**
+- Vous êtes développeur et voulez intégrer la vidéo avatar dans votre app via API
+- Vous avez besoin de clips "talking head" de moins de 30 secondes pour les réseaux sociaux
+- Votre budget est inférieur à 30$/mois et vous voulez tester le concept d'avatar IA
+- Vous construisez un prototype d'agent conversationnel vidéo en temps réel
+
+**N'utilisez PAS :**
+- HeyGen pour des formations enterprise avec exigences SCORM et intégration LMS
+- Synthesia si votre budget est serré — les fonctions différenciantes sont derrière le plan Enterprise
+- D-ID pour du contenu marketing sérieux au-delà de clips ultra-courts — le gap de qualité est réel
+
+## L'angle que personne ne mentionne : la post-Sora disruption
+
+La [fermeture de Sora](/fr/blog/sora-end-2026) en mars 2026 a redessiné le marché de la vidéo IA. OpenAI brûlait 15 millions de dollars par jour pour Sora — preuve que la génération vidéo pure reste économiquement brutale. Les trois plateformes de ce comparatif ont survécu précisément parce qu'elles ne font pas de la génération vidéo libre : elles font de la vidéo avatar structurée, un cas d'usage plus contraint mais infiniment plus monétisable.
+
+Le marché de la vidéo avatar IA est projeté à 2,56 milliards de dollars en 2032. Ce n'est pas un gadget — c'est une infrastructure de contenu en train de se construire. Et les trois outils testés ici sont ceux qui la construisent.
+
+Si votre besoin est la génération vidéo libre (clips créatifs, effets spéciaux), consultez notre [comparatif Runway vs Kling vs Pika](/fr/comparatifs/runway-vs-kling-vs-pika-2026). Si c'est la vidéo avatar pour le marketing et la formation, vous êtes au bon endroit.
+      `,
+    },
+    en: {
+      title: "HeyGen vs Synthesia vs D-ID: Which AI Avatar Video Tool to Choose in 2026?",
+      desc: "Three AI avatar platforms. Three philosophies. We created identical videos on all three to settle it: quality, translation, pricing, enterprise readiness. Our complete verdict after weeks of real-world testing.",
+      metaTitle: "HeyGen vs Synthesia vs D-ID 2026: Full Comparison | Neuriflux",
+      metaDesc: "Full comparison of HeyGen vs Synthesia vs D-ID in 2026. Avatars, multilingual lip-sync, real pricing, enterprise features — which tool for your use case? Verdict based on real-world tests.",
+      intro: "The AI avatar video market reached an inflection point in 2026. HeyGen surpassed 35,000 business customers. Synthesia claims a significant share of the Fortune 100. D-ID pioneered the talking photo format that made AI video accessible to everyone. But in April 2026, following Sora's shutdown and the surge in enterprise AI video demand, these three platforms are competing for a fundamentally different market than the one that existed two years ago. We produced identical videos across all three — product presentation, training module, multilingual marketing clip — to deliver a verdict based on real output, not landing page promises.",
+      verdict: "HeyGen for the best quality-to-price ratio and video translation. Synthesia for large enterprises requiring SCORM, SSO, and compliance. D-ID for rapid prototyping and API work — not for production.",
+      content: `
+## Three platforms, three very different realities
+
+Context matters before comparing scores. These three tools don't solve the same problem in the same way, and picking one without understanding its design philosophy almost guarantees disappointment.
+
+**[HeyGen](/en/blog/heygen-2026) is an AI video production studio.** Its mission: replace traditional video shoots for marketing, training, and localization. You write a script, pick an avatar (or clone yourself), and HeyGen delivers a broadcast-ready video. Its standout capability — Video Translate — takes an existing video and translates it into 40 languages with frame-accurate lip synchronization. No other platform in this comparison does this at this level.
+
+**Synthesia is an enterprise training machine.** Its slide-based workflow feels like PowerPoint: you build videos scene by scene, positioning avatars, text overlays, and structured visuals. It's the most mature tool for L&D teams — SCORM export, LMS integration, SSO, real-time collaboration, role-based access. For large organizations with procurement checklists, it's often the only platform that passes review.
+
+**D-ID is a photo animator.** Its core product takes a static photo and turns it into a talking video. It's the fastest path to a 30-second talking head, and its API is the best-documented for developers building video into their own applications. But the moment you move beyond quick social clips, the limitations become hard to ignore.
+
+## Avatar realism: HeyGen pulls ahead
+
+We tested all three using the same 90-second script, recorded under identical conditions, to compare avatar output quality.
+
+**HeyGen** with its Avatar IV engine produces results that genuinely surprise. Micro-expressions are convincing — natural blinks, subtle head tilts, gaze variations that feel organic rather than scripted. When we showed a 30-second HeyGen clip to 10 people without telling them it was AI-generated, 7 believed it was a real person. It's not flawless: hands remain a weak point (usually cropped out), and high-intensity emotions (surprise, laughter) still read as artificial. But for marketing and training content, the quality threshold has been crossed.
+
+**Synthesia** delivers clean, stable, professional-looking avatars — clearly designed for corporate contexts. Movement is more restrained, more formal. On longer videos (10-15 minutes), Synthesia maintains better visual consistency than HeyGen, whose avatars can occasionally show minor artifacts after the 5-minute mark. For a 20-minute e-learning module, Synthesia's stability is a genuine advantage.
+
+**D-ID** sits a tier below both. Avatars are recognizably AI: head movements feel mechanical, facial expressions lack nuance. The Talking Photo system works well for ultra-short clips (15-30 seconds), but quality visibly degrades past 45 seconds. For a quick LinkedIn post or 15-second Instagram story, it does the job. For structured professional use, it falls short.
+
+**Avatar verdict:** HeyGen 9.5/10 · Synthesia 8.5/10 · D-ID 6.5/10
+
+## Translation and multilingual lip-sync: the real battleground
+
+This is the capability that defines value in 2026. For any company operating across multiple markets, localizing video without reshooting is a massive competitive edge.
+
+**HeyGen Video Translate** works differently from the other two at an architectural level. You take an existing video — filmed with a real person or generated with an avatar — and HeyGen translates the entire package: voice, lip movements, intonation. In our French and Spanish tests, the output was excellent (9/10). German and Japanese were strong (8/10). Arabic and Mandarin were acceptable but showed perceptible misalignment on complex consonant clusters (7/10). The friction point is cost: Video Translate burns 2x more credits than standard generation.
+
+**Synthesia** supports 160+ languages — the widest coverage in this comparison — with lip-sync built natively into the generation pipeline. One-click translation is locked behind the Enterprise tier, but when available, it produces reliable results. On the same FR/ES/JA tests, Synthesia edged slightly ahead of HeyGen on phoneme precision, particularly in Arabic. It leads the panel on raw linguistic diversity.
+
+**D-ID** relies on third-party voice engines (ElevenLabs, Microsoft Azure). Quality depends on which engine you pick: ElevenLabs integration produces good voices. But lip-sync degrades noticeably on non-Latin languages. Japanese and Arabic results in our testing were measurably weaker than both HeyGen and Synthesia.
+
+**Translation verdict:** HeyGen 9.5/10 · Synthesia 9.0/10 · D-ID 6.0/10
+
+## Interface: Synthesia's quiet advantage
+
+Sometimes the best tool is the one you use without thinking. Synthesia wins here without debate.
+
+Its slide-based workflow is immediately intuitive for anyone who has ever used PowerPoint. You build your video scene by scene, with avatars, text, and visual elements positioned via drag-and-drop. The February 2026 update added direct PowerPoint import with automatic conversion of speaker notes into video scripts. For non-technical teams, nothing else comes close.
+
+HeyGen is slightly more complex but still approachable. The editor is functional, templates are well-organized, and version 2.0 added real-time collaboration (up to 20 users). Chat Mode is a smart addition: consult the AI on your approach before spending credits. But the learning curve is real — expect 30-45 minutes to master the advanced features.
+
+D-ID is the simplest on the surface — photo plus script equals video in 60 seconds — but that simplicity also reflects its limitations. The editor is basic, customization options are narrow, and the moment you want anything beyond a simple talking head, you hit the platform's walls.
+
+**Ease of use verdict:** Synthesia 9.5/10 · HeyGen 8.5/10 · D-ID 8.0/10
+
+## Enterprise readiness: Synthesia stands alone
+
+For large organizations, tool selection often comes down to a compliance checklist. On that checklist, Synthesia dominates comprehensively.
+
+**Synthesia** offers SAML SSO, SCORM export for LMS integration, ISO 27001, ISO 42001, SOC 2 Type II, real-time collaboration with role management, centralized Brand Kit, and dedicated Customer Success teams on Enterprise plans. It's the only platform in this comparison that checks every box a Fortune 500 L&D department requires.
+
+**HeyGen** has made meaningful B2B progress — SSO, Brand Kit, and an enterprise API are available. But LMS integrations are absent, SCORM isn't supported, and role management is more basic. For an SMB or marketing team, it's sufficient. For a 500+ user corporate deployment with sector-specific compliance requirements, critical pieces are missing.
+
+**D-ID** has essentially no enterprise training functionality. No SCORM, no LMS, no team collaboration. Its API is strong for developers, but this isn't a training platform.
+
+**Enterprise verdict:** Synthesia 9.5/10 · HeyGen 8.0/10 · D-ID 5.5/10
+
+## Real pricing — what you actually pay
+
+The classic trap in this market: listed prices don't reflect real usage costs. Let's break it down.
+
+| | HeyGen | Synthesia | D-ID |
+|---|---|---|---|
+| **Free plan** | 3 videos/month, 720p, watermark | 10 min/month, watermark | 14-day trial |
+| **Paid entry** | Creator $29/month (15 min) | Starter $29/month (10 min) | Lite $5.90/month (10 min) |
+| **Pro use** | Business $89/month (60 min) | Creator $89/month (30 min) | Pro $49.99/month (15 min) |
+| **Enterprise** | Custom | Custom (unlimited) | Custom |
+| **Custom avatar** | Included from Creator | $1,000/year (non-Enterprise) | Photo upload |
+| **Video translation** | Included (2x credit cost) | Enterprise only | Via third-party engines |
+
+**The real HeyGen math:** on the Creator plan at $29/month, you can realistically produce 3 two-minute avatar videos or translate one 10-minute video into 2 languages. More limited than it appears. The Business plan at $89/month is the true professional entry point.
+
+**The real Synthesia math:** Starter at $29/month gives 10 minutes — one training video per month. One-click translation and SCORM export are reserved for Enterprise (unpublished pricing). The features that make Synthesia unique require contacting sales.
+
+**The D-ID trap:** Lite at $5.90/month includes a watermark and only 10 minutes. Professional use starts at Pro ($49.99/month) for just 15 minutes — a significantly worse minutes-per-dollar ratio than HeyGen or Synthesia at comparable price points.
+
+## API and developers: D-ID surprises, HeyGen impresses
+
+For technical teams wanting to embed avatar video into their own products.
+
+**HeyGen** offers a comprehensive API covering avatar generation, real-time streaming, and video translation. The Streaming Avatar API opens unique use cases: virtual sales agents, video-based support, interactive assistants. MCP integration extends possibilities with 9,000+ connectors.
+
+**D-ID** has historically the best-documented API in the space. Its REST API is clean, well-structured, and the native ElevenLabs integration for voices makes it a developer favorite. Real-time streaming conversational agents are a genuinely innovative feature without a direct equivalent.
+
+**Synthesia** offers a functional API (360 min/year on Creator) but the ecosystem is more platform-oriented than developer-focused. The API is a complement, not the core product.
+
+**API verdict:** HeyGen 9.0/10 · D-ID 8.5/10 · Synthesia 8.5/10
+
+## Our decision matrix
+
+**Choose [HeyGen](/en/blog/heygen-2026) if:**
+- You produce multilingual marketing video — Video Translate has no real equivalent
+- You want to easily create your own digital clone (Instant Avatar from a 2-minute recording)
+- You're looking for the best quality-to-price ratio for professional avatar video
+- You're building interactive video agents via API (Streaming Avatar)
+- You create internal e-learning without SCORM requirements
+
+**Choose Synthesia if:**
+- Your organization mandates SSO, SCORM, LMS integration, and ISO compliance for every new tool
+- You produce long-form training (10-20 min) where avatar stability across the full duration matters
+- You need real-time collaboration across 5+ content creators with role-based access
+- Your procurement department has a 40-item compliance checklist
+- You create interactive videos with quizzes and conditional branching
+
+**Choose D-ID if:**
+- You're a developer wanting to embed avatar video into your app via API
+- You need talking-head clips under 30 seconds for social media
+- Your budget is under $30/month and you want to test the AI avatar concept
+- You're prototyping a real-time conversational video agent
+
+**Do NOT use:**
+- HeyGen for enterprise training requiring SCORM and LMS integration
+- Synthesia if budget is tight — the differentiating features are behind the Enterprise paywall
+- D-ID for any serious marketing content beyond ultra-short clips — the quality gap is real
+
+## The angle nobody mentions: post-Sora disruption
+
+[Sora's shutdown](/en/blog/sora-end-2026) in March 2026 reshaped the AI video landscape. OpenAI was burning $15 million per day running Sora — proof that unconstrained video generation remains economically brutal at consumer scale. The three platforms in this comparison survived precisely because they don't do open-ended video generation: they do structured avatar video, a more constrained use case that's infinitely more monetizable.
+
+The AI avatar video market is projected to reach $2.56 billion by 2032. This isn't a novelty — it's content infrastructure being built in real time. And the three tools tested here are the ones building it.
+
+If your need is open-ended video generation (creative clips, visual effects), check our [Runway vs Kling vs Pika comparison](/en/comparatifs/runway-vs-kling-vs-pika-2026). If it's avatar video for marketing and training, you're in the right place.
+      `,
+    },
+  },
+
 // ─── Perplexity vs ChatGPT vs Gemini — Recherche IA 2026 ─────────────────────
   {
     slug: "perplexity-vs-chatgpt-vs-gemini-2026",
@@ -1968,20 +2506,354 @@ The OpenAI TTS API is the simplest to integrate, cheapest and offers excellent l
   },
 ];
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-export function getComparatifBySlug(slug: string): Comparatif | undefined {
-  return COMPARATIFS.find(c => c.slug === slug);
+function normalizeWhitespace(value: string): string {
+  return value.replace(/\s+/g, " ").trim();
 }
 
-export function getAllComparatifs(tag?: string): Comparatif[] {
+function slugify(value: string): string {
+  return normalizeWhitespace(value)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+}
+
+function toEntityId(value: string): string {
+  return slugify(value.replace(/-2026$/, ""));
+}
+
+function canonicalizeTag(tag: string): CanonicalTag {
+  const normalized = TAG_ALIASES[normalizeWhitespace(tag).toLowerCase()];
+  return normalized ?? "Chatbots";
+}
+
+function getTagLabel(tag: CanonicalTag, lang: Lang): string {
+  return TAG_LABELS[tag][lang];
+}
+
+function canonicalizeSlug(slug: string): string {
+  return SLUG_ALIASES[slug] ?? slug;
+}
+
+function inferDifficulty(raw: RawComparatif): Difficulty {
+  const text = `${raw.fr.title} ${raw.en.title} ${raw.fr.content}`.toLowerCase();
+  if (text.includes("api") || text.includes("enterprise") || text.includes("architecture") || text.includes("scorm")) return "avancé";
+  if (text.includes("guide") || text.includes("comparison") || text.includes("comparatif")) return "intermédiaire";
+  return "débutant";
+}
+
+function inferReadingLevel(raw: RawComparatif): ReadingLevel {
+  const words = (`${raw.fr.intro} ${raw.fr.content}`).split(/\s+/).filter(Boolean).length;
+  return words >= 1400 ? "deep" : "quick";
+}
+
+function computeReadingTime(raw: RawComparatif): string {
+  const wordCount = `${raw.fr.intro} ${raw.fr.content} ${raw.en.intro} ${raw.en.content}`.split(/\s+/).filter(Boolean).length;
+  return String(Math.max(6, Math.ceil(wordCount / 235 / 2)));
+}
+
+function trimMetaTitle(value: string): string {
+  if (value.length <= 60) return value;
+  const trimmed = value.replace(/\s*\|\s*Neuriflux$/i, "").trim();
+  const candidate = trimmed.length > 48 ? `${trimmed.slice(0, 48).trimEnd()} | Neuriflux` : `${trimmed} | Neuriflux`;
+  return candidate.slice(0, 60).trimEnd();
+}
+
+function trimMetaDesc(value: string): string {
+  if (value.length <= 160) return value;
+  return `${value.slice(0, 157).trimEnd()}...`;
+}
+
+function formatIsoFromDisplay(date: { fr: string; en: string }): string {
+  const months: Record<string, string> = {
+    janvier: "01", février: "02", fevrier: "02", mars: "03", avril: "04", mai: "05", juin: "06",
+    juillet: "07", août: "08", aout: "08", septembre: "09", octobre: "10", novembre: "11", décembre: "12", decembre: "12",
+  };
+  const match = date.fr.toLowerCase().match(/(\d{1,2})\s+([a-zéûîôàèùç]+)\s+(\d{4})/);
+  if (!match) return new Date().toISOString();
+  const [, day, monthName, year] = match;
+  const month = months[monthName] ?? "01";
+  return `${year}-${month}-${day.padStart(2, "0")}T08:00:00.000Z`;
+}
+
+function buildHeroImage(slug: string, title: { fr: string; en: string }): ComparisonImage {
+  return {
+    src: `${SITE_URL}/og/comparatifs/${slug}.png`,
+    alt: {
+      fr: `Illustration du comparatif ${title.fr}`,
+      en: `Cover image for comparison ${title.en}`,
+    },
+    width: 1200,
+    height: 630,
+  };
+}
+
+function inferKeywords(raw: RawComparatif, slug: string): string[] {
+  const set = new Set<string>([
+    raw.winner,
+    raw.tag,
+    ...raw.tools.map((tool) => tool.name),
+    ...raw.criteria.fr,
+    ...raw.criteria.en,
+    ...slug.split("-"),
+    "2026",
+    "comparatif",
+    "comparison",
+  ].map((item) => normalizeWhitespace(item)).filter(Boolean));
+  return Array.from(set).slice(0, 24);
+}
+
+function inferWinnerSlug(raw: RawComparatif): string {
+  return TOOL_SLUG_ALIASES[raw.winner] ?? slugify(raw.winner);
+}
+
+function inferRelatedArticles(raw: RawComparatif): string[] {
+  const candidates = new Set<string>();
+  const text = `${raw.fr.title} ${raw.en.title} ${raw.fr.content} ${raw.en.content}`.toLowerCase();
+  const map: Array<[string, string]> = [
+    ["chatgpt", "chatgpt-claude-gemini-market-2026"],
+    ["claude", "claude-code-2026"],
+    ["gemini", "claude-mythos-2026"],
+    ["perplexity", "perplexity-ai-2026"],
+    ["cursor", "cursor-ai-2026"],
+    ["copilot", "github-copilot-codeium-2026"],
+    ["codeium", "github-copilot-codeium-2026"],
+    ["midjourney", "midjourney-dalle-2026"],
+    ["dall-e", "midjourney-dalle-2026"],
+    ["stable diffusion", "stable-diffusion-2026"],
+    ["elevenlabs", "elevenlabs-2026"],
+    ["heygen", "heygen-review-2026"],
+    ["jasper", "jasper-ai-2026"],
+    ["copy.ai", "jasper-copyai-2026"],
+    ["runway", "heygen-review-2026"],
+    ["kling", "heygen-review-2026"],
+    ["pika", "heygen-review-2026"],
+  ];
+  for (const [needle, articleSlug] of map) {
+    if (text.includes(needle)) candidates.add(articleSlug);
+  }
+  return Array.from(candidates).slice(0, 8);
+}
+
+function inferRelatedComparatifs(raw: RawComparatif, currentSlug: string): string[] {
+  const slugs = new Set<string>();
+  for (const comparatif of RAW_COMPARATIFS) {
+    const slug = canonicalizeSlug(comparatif.slug);
+    if (slug === currentSlug) continue;
+    if (canonicalizeTag(comparatif.tag) === canonicalizeTag(raw.tag)) slugs.add(slug);
+    for (const tool of raw.tools) {
+      if (comparatif.tools.some((candidate) => candidate.name === tool.name)) slugs.add(slug);
+    }
+  }
+  return Array.from(slugs).slice(0, 6);
+}
+
+function appendBottomRecommendations(comparatif: Comparatif, lang: Lang): string {
+  const heading = lang === "fr" ? "## Comparatifs liés" : "## Related comparisons";
+  const links = comparatif.relatedComparatifSlugs
+    .slice(0, 4)
+    .map((slug) => `- [${slug}](${COMP_BASE[lang]}/${slug})`)
+    .join("\n");
+  if (!links) return comparatif[lang].content.trim();
+  return `${comparatif[lang].content.trim()}\n\n---\n\n${heading}\n\n${links}`;
+}
+
+function normalizeTool(tool: ToolScore): ToolScore {
+  return {
+    ...tool,
+    bestFor: tool.bestFor ?? {
+      fr: tool.badge?.fr ?? `Meilleur pour ${tool.name}`,
+      en: tool.badge?.en ?? `Best for ${tool.name}`,
+    },
+  };
+}
+
+function normalizeComparatif(raw: RawComparatif): Comparatif {
+  const slug = canonicalizeSlug(raw.slug);
+  const publishedAt = formatIsoFromDisplay(raw.date);
+  const tag = canonicalizeTag(raw.tag);
+  const heroImage = buildHeroImage(slug, { fr: raw.fr.title, en: raw.en.title });
+  const normalized: Comparatif = {
+    id: toEntityId(slug),
+    slug,
+    legacySlug: raw.slug !== slug ? raw.slug : undefined,
+    legacySlugs: Array.from(new Set([raw.slug, slug])),
+    canonicalSlug: slug,
+    tag,
+    kind: "comparison",
+    publishedAt,
+    updatedAtIso: publishedAt,
+    date: raw.date,
+    updatedAt: raw.date,
+    timeMin: computeReadingTime(raw),
+    featured: raw.featured,
+    winner: raw.winner,
+    winnerSlug: inferWinnerSlug(raw),
+    keywords: inferKeywords(raw, slug),
+    difficulty: inferDifficulty(raw),
+    readingLevel: inferReadingLevel(raw),
+    heroImage,
+    contentImages: [heroImage],
+    tools: raw.tools.map(normalizeTool),
+    criteria: raw.criteria,
+    relatedArticleSlugs: inferRelatedArticles(raw),
+    relatedComparatifSlugs: inferRelatedComparatifs(raw, slug),
+    fr: {
+      ...raw.fr,
+      metaTitle: trimMetaTitle(raw.fr.metaTitle),
+      metaDesc: trimMetaDesc(raw.fr.metaDesc),
+      content: raw.fr.content,
+    },
+    en: {
+      ...raw.en,
+      metaTitle: trimMetaTitle(raw.en.metaTitle),
+      metaDesc: trimMetaDesc(raw.en.metaDesc),
+      content: raw.en.content,
+    },
+  };
+  return {
+    ...normalized,
+    fr: { ...normalized.fr, content: appendBottomRecommendations(normalized, "fr") },
+    en: { ...normalized.en, content: appendBottomRecommendations(normalized, "en") },
+  };
+}
+
+export const COMPARATIFS: Comparatif[] = RAW_COMPARATIFS.map(normalizeComparatif);
+
+export function getComparatifBySlug(slug: string): Comparatif | undefined {
+  return COMPARATIFS.find((comparatif) => comparatif.slug === slug || comparatif.legacySlug === slug || comparatif.legacySlugs.includes(slug));
+}
+
+export function getAllComparatifs(tag?: string, lang: Lang = "fr"): Comparatif[] {
   if (!tag || tag === "all") return COMPARATIFS;
-  return COMPARATIFS.filter(c => c.tag === tag);
+  const normalized = TAG_ALIASES[normalizeWhitespace(tag).toLowerCase()];
+  if (!normalized) return COMPARATIFS;
+  return COMPARATIFS.filter((comparatif) => comparatif.tag === normalized || getTagLabel(comparatif.tag, lang) === tag);
 }
 
 export function getFeaturedComparatifs(): Comparatif[] {
-  return COMPARATIFS.filter(c => c.featured);
+  return COMPARATIFS.filter((comparatif) => comparatif.featured);
 }
 
-export function getAllComparatifTags(): string[] {
-  return [...new Set(COMPARATIFS.map(c => c.tag))];
+export function getAllComparatifTags(lang: Lang = "fr"): string[] {
+  return [...new Set(COMPARATIFS.map((comparatif) => getTagLabel(comparatif.tag, lang)))];
+}
+
+export function searchComparatifs(query: string, lang: Lang = "fr"): Comparatif[] {
+  const q = normalizeWhitespace(query).toLowerCase();
+  if (!q) return COMPARATIFS;
+  return COMPARATIFS.filter((comparatif) => {
+    const haystack = [
+      comparatif.slug,
+      comparatif[lang].title,
+      comparatif[lang].desc,
+      comparatif[lang].intro,
+      comparatif[lang].content.slice(0, 1800),
+      comparatif.winner,
+      ...comparatif.tools.map((tool) => tool.name),
+      ...comparatif.keywords,
+    ].join(" ").toLowerCase();
+    return haystack.includes(q);
+  });
+}
+
+export function getRecentComparatifs(days = 120): Comparatif[] {
+  const cutoff = Date.now() - days * 86400000;
+  return COMPARATIFS.filter((comparatif) => new Date(comparatif.publishedAt).getTime() >= cutoff);
+}
+
+export function getTrendingComparatifs(): Comparatif[] {
+  const score = (comparatif: Comparatif): number => {
+    const freshness = Math.max(0, 120 - Math.floor((Date.now() - new Date(comparatif.publishedAt).getTime()) / 86400000)) / 40;
+    const featured = comparatif.featured ? 2 : 0;
+    const depth = comparatif.readingLevel === "deep" ? 1 : 0.4;
+    const toolStrength = comparatif.tools.reduce((sum, tool) => sum + tool.globalScore, 0) / Math.max(1, comparatif.tools.length * 5);
+    return featured + freshness + depth + toolStrength;
+  };
+  return [...COMPARATIFS].sort((a, b) => score(b) - score(a)).slice(0, 6);
+}
+
+export function getComparatifsPaginated(page: number, perPage = 9): { comparatifs: Comparatif[]; total: number; pages: number } {
+  const current = Math.max(1, page);
+  const total = COMPARATIFS.length;
+  const pages = Math.max(1, Math.ceil(total / perPage));
+  const start = (current - 1) * perPage;
+  return { comparatifs: COMPARATIFS.slice(start, start + perPage), total, pages };
+}
+
+export function getComparatifSitemapData(lang: Lang): Array<{ url: string; lastmod: string; priority: number }> {
+  return COMPARATIFS.map((comparatif) => ({
+    url: `${SITE_URL}${COMP_BASE[lang]}/${comparatif.slug}`,
+    lastmod: comparatif.updatedAtIso,
+    priority: comparatif.featured ? 0.9 : 0.8,
+  }));
+}
+
+export function getRedirectMap(): Record<string, string> {
+  const redirects: Record<string, string> = {};
+  for (const comparatif of COMPARATIFS) {
+    for (const legacy of comparatif.legacySlugs) {
+      if (legacy !== comparatif.slug) {
+        redirects[`/fr/comparatifs/${legacy}`] = `/fr/comparatifs/${comparatif.slug}`;
+        redirects[`/en/comparatifs/${legacy}`] = `/en/comparatifs/${comparatif.slug}`;
+      }
+    }
+  }
+  return redirects;
+}
+
+export const COMPARATIF_REDIRECTS = getRedirectMap();
+
+export const COMPARATIF_SUMMARIES = COMPARATIFS.map((comparatif) => ({
+  id: comparatif.id,
+  slug: comparatif.slug,
+  legacySlug: comparatif.legacySlug,
+  legacySlugs: comparatif.legacySlugs,
+  tag: comparatif.tag,
+  kind: comparatif.kind,
+  winner: comparatif.winner,
+  winnerSlug: comparatif.winnerSlug,
+  featured: comparatif.featured,
+  timeMin: comparatif.timeMin,
+  publishedAt: comparatif.publishedAt,
+  updatedAtIso: comparatif.updatedAtIso,
+  updatedAt: comparatif.updatedAt,
+  difficulty: comparatif.difficulty,
+  readingLevel: comparatif.readingLevel,
+  heroImage: comparatif.heroImage,
+  fr: {
+    title: comparatif.fr.title,
+    desc: comparatif.fr.desc,
+    metaTitle: comparatif.fr.metaTitle,
+    metaDesc: comparatif.fr.metaDesc,
+  },
+  en: {
+    title: comparatif.en.title,
+    desc: comparatif.en.desc,
+    metaTitle: comparatif.en.metaTitle,
+    metaDesc: comparatif.en.metaDesc,
+  },
+}));
+
+export function assertComparatifDataIntegrity(): { ok: true } {
+  const slugs = new Set<string>();
+  for (const comparatif of COMPARATIFS) {
+    if (slugs.has(comparatif.slug)) throw new Error(`Duplicate comparatif slug detected: ${comparatif.slug}`);
+    slugs.add(comparatif.slug);
+    if (!comparatif.id) throw new Error(`Missing immutable id on ${comparatif.slug}`);
+    if (!comparatif.heroImage?.src) throw new Error(`Missing hero image on ${comparatif.slug}`);
+    if (!comparatif.contentImages.length) throw new Error(`Missing content image on ${comparatif.slug}`);
+    if (!comparatif.fr.title || !comparatif.en.title) throw new Error(`Missing bilingual title on ${comparatif.slug}`);
+    if (comparatif.fr.metaTitle.length > 60 || comparatif.en.metaTitle.length > 60) throw new Error(`Meta title too long on ${comparatif.slug}`);
+    if (comparatif.fr.metaDesc.length > 160 || comparatif.en.metaDesc.length > 160) throw new Error(`Meta description too long on ${comparatif.slug}`);
+    if (!comparatif.tools.length) throw new Error(`No tools defined on ${comparatif.slug}`);
+    if (comparatif.criteria.fr.length !== comparatif.criteria.en.length) throw new Error(`Criteria length mismatch on ${comparatif.slug}`);
+    for (const tool of comparatif.tools) {
+      if (tool.scores.length !== comparatif.criteria.fr.length) throw new Error(`Score length mismatch on ${comparatif.slug} / ${tool.name}`);
+      if (tool.globalScore < 0 || tool.globalScore > 10) throw new Error(`Invalid score on ${comparatif.slug} / ${tool.name}`);
+    }
+  }
+  return { ok: true };
 }

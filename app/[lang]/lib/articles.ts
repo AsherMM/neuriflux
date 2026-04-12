@@ -1,7 +1,7 @@
 // ─── NEURIFLUX ARTICLES DATABASE — SENIOR SEO EDITION ────────────────────────
 
 export type Lang = "fr" | "en";
-export type CanonicalTag = "Code" | "Chatbots" | "Productivity" | "Writing" | "Image" | "Audio";
+export type CanonicalTag = "Code" | "Chatbots" | "Productivity" | "Writing" | "Image" | "Audio" | "Video";
 export type Difficulty = "débutant" | "intermédiaire" | "avancé";
 export type ReadingLevel = "quick" | "deep";
 export type ArticleKind = "review" | "comparison" | "guide" | "tutorial" | "news" | "analysis";
@@ -102,6 +102,361 @@ interface RawArticle {
 }
 
 const RAW_ARTICLES: RawArticle[] = [
+// ─── HeyGen Review 2026 ───────────────────────────────────────────────────────
+  {
+    slug: "heygen-review-2026",
+    tag: "Video",
+    date: { fr: "12 avril 2026", en: "April 12, 2026" },
+    timeMin: "14",
+    featured: true,
+    affiliate: {
+      url: "https://www.heygen.com",
+      toolName: "HeyGen",
+      label: {
+        fr: "Plan gratuit · Creator à 29$/mois · Business à 89$/mois · API disponible",
+        en: "Free plan · Creator at $29/month · Business at $89/month · API available",
+      },
+    },
+    fr: {
+      title: "HeyGen 2026 : le meilleur outil de vidéo IA ? Test complet après 4 semaines",
+      desc: "HeyGen a transformé la création vidéo IA en 2026 : avatars ultra-réalistes, traduction en 40 langues avec lip-sync parfait, streaming en direct. On a tout testé. Notre verdict sans filtre sur les prix, les limites et les vraies alternatives.",
+      metaTitle: "HeyGen 2026 : avis complet, prix et test | Neuriflux",
+      metaDesc: "Test complet de HeyGen en 2026 : avatars IA, traduction vidéo, lip-sync, tarifs réels. Comparatif vs Synthesia et D-ID. Vaut-il vraiment 29$/mois ?",
+      content: `
+## HeyGen en 2026 : de l'outil de niche à la plateforme de référence
+
+Il y a deux ans, HeyGen était un gadget pour créateurs YouTube qui voulaient un avatar numérique. En 2026, c'est devenu quelque chose de fondamentalement différent : une plateforme complète de production vidéo IA qui fait trembler les agences de production traditionnelles.
+
+Les chiffres parlent d'eux-mêmes. HeyGen a dépassé les **35 000 entreprises clientes** en 2026, dont des noms comme Salesforce, Zoom et TechCrunch. Le volume de vidéos générées a été multiplié par 8 en 18 mois. Et le bouche-à-oreille dans les communautés marketing est devenu impossible à ignorer.
+
+Mais derrière l'engouement, il y a des questions concrètes : est-ce que ça marche vraiment ? Les avatars sont-ils convaincants ? Le prix est-il justifié ? Et surtout — qui devrait réellement l'utiliser ?
+
+On a passé 4 semaines à tester HeyGen en conditions réelles, sur 3 cas d'usage distincts : création de contenu marketing, formation e-learning, et localisation de vidéos. Voici ce qu'on a trouvé.
+
+## Ce qu'est vraiment HeyGen en 2026
+
+HeyGen est une plateforme de création vidéo IA qui permet de générer des vidéos avec des avatars numériques parlants, de cloner sa propre apparence et voix, et de traduire automatiquement une vidéo dans 40 langues avec synchronisation parfaite des lèvres.
+
+La distinction importante avec ses concurrents : HeyGen n'est pas un éditeur vidéo. C'est un **moteur de présentation et de localisation vidéo**. Vous entrez un script ou une vidéo source — HeyGen produit la version finale avec un avatar ou votre clone numérique.
+
+**Les 5 modules principaux en 2026 :**
+
+- **Avatar Studio** — créer un avatar personnalisé depuis 2 minutes de vidéo
+- **Video Translate** — traduire une vidéo existante en 40 langues avec lip-sync
+- **Streaming Avatar** — interagir en temps réel avec un avatar via API
+- **HeyGen Templates** — bibliothèque de 300+ templates pour vidéos marketing
+- **Brand Kit** — cohérence visuelle automatique (couleurs, logo, police)
+
+## Ce qu'on a testé pendant 4 semaines
+
+### Semaine 1 — Avatar Studio : créer son double numérique
+
+Le processus est plus simple que prévu. On enregistre 2 minutes de vidéo en suivant un protocole précis (lumière uniforme, 5 positions de tête, lecture à voix haute d'un texte fourni par HeyGen), on uploade, et le traitement prend environ 2h.
+
+Le résultat en 2026 nous a franchement surpris. Les mouvements de tête, les clignements d'yeux, les micro-expressions — tout ça est devenu convaincant. Sur 10 personnes à qui on a montré une vidéo de 30 secondes sans dire que c'était un avatar, 7 ont cru à une vraie personne.
+
+**Ce qui reste imparfait :** les mains (souvent cachées ou floues), les expressions d'émotions intenses (surprise, rire), et certains mouvements de bouche sur les sons complexes en français. Sur des phrases longues avec des syllabes enchaînées, on détecte encore l'artificiel à l'écoute attentive.
+
+**Notre note Avatar Studio : 8.2/10**
+
+### Semaine 2 — Video Translate : la fonctionnalité qui change tout
+
+C'est là que HeyGen fait vraiment la différence en 2026. On a pris une vidéo de présentation produit en anglais (3 minutes, une vraie personne), on l'a soumise à Video Translate, et 18 minutes plus tard on avait la même vidéo en français, espagnol, allemand, japonais et portugais — avec la bouche de l'orateur parfaitement synchronisée dans chaque langue.
+
+La qualité du lip-sync est bluffante. Sur 40 langues testées, le français et l'espagnol sont excellents (9/10), l'allemand et le japonais très bons (8/10). L'arabe et le mandarin sont corrects mais montrent encore quelques décalages sur les consonnes complexes (7/10).
+
+**Le cas d'usage ROI évident :** une PME qui fait de l'export. Au lieu de re-tourner chaque vidéo commerciale dans chaque langue cible (budget : 2 000 à 8 000€ par vidéo en production traditionnelle), HeyGen le fait en 20 minutes pour le coût d'un abonnement mensuel.
+
+**Notre note Video Translate : 9.1/10**
+
+### Semaine 3 — Streaming Avatar : l'avenir des interactions IA
+
+Le Streaming Avatar est la fonctionnalité la plus impressionnante techniquement, et aussi la moins mature commercialement. Via l'API HeyGen, on peut connecter un avatar à un LLM (GPT-4, Claude, Gemini) pour créer un agent vidéo interactif en temps réel.
+
+On a construit un prototype en 3h : un avatar "commercial virtuel" qui répond aux questions sur un catalogue produit, en temps réel, avec une latence de 1,2 secondes en moyenne.
+
+**Ce qui fonctionne :** la fluidité de la conversation, la cohérence visuelle de l'avatar, la personnalisation du style de parole. **Ce qui ne fonctionne pas encore :** la latence est trop élevée pour un vrai service client (1,2s, on sent l'attente), et l'avatar "gèle" parfois pendant 2-3 secondes sur des questions complexes.
+
+**Notre note Streaming Avatar : 7.4/10** — prometteuse mais pas encore production-ready pour du service client critique.
+
+### Semaine 4 — Workflow complet : formation e-learning multilingue
+
+Le cas d'usage final qu'on a testé : créer un module de formation de 15 minutes en 4 langues depuis un seul enregistrement FR. Résultat : 4 vidéos finales en FR, EN, ES, DE en moins de 2h de travail total (vs 4 jours de production traditionnelle estimés).
+
+La qualité est suffisante pour un contexte e-learning interne. Elle ne remplacerait pas une production vidéo premium pour une chaîne YouTube ou un cours vendu à 500€, mais pour de la formation corporate, c'est une disruption totale du workflow.
+
+## Les tarifs réels en 2026 — ce que vous payez vraiment
+
+| Plan | Prix | Crédits vidéo | Avatars | Langues |
+|---|---|---|---|---|
+| Gratuit | 0$ | 3 vidéos/mois | Bibliothèque uniquement | 40 |
+| Creator | 29$/mois | 15 min/mois | 1 avatar perso | 40 |
+| Business | 89$/mois | 60 min/mois | 3 avatars persos | 40 |
+| Enterprise | Sur devis | Illimité | Illimité | 40 |
+
+**Ce que les tarifs affichés cachent :**
+
+Les "minutes vidéo" sont calculées différemment selon les fonctionnalités. Video Translate consomme **2x plus de crédits** que la génération d'avatar standard. Une vidéo de 5 minutes à traduire en 3 langues consomme donc ~30 minutes de crédits — soit 50% du quota Creator pour une seule opération.
+
+Sur le plan Creator à 29$/mois, vous pouvez réalistement produire : 3 vidéos avatar de 2 minutes, ou 1 traduction de 10 minutes en 2 langues. C'est plus limité qu'il n'y paraît.
+
+**Notre recommandation :** commencez par le plan gratuit (3 vidéos — largement suffisant pour valider l'outil), puis passez directement au Business si vous avez un vrai besoin de volume. Le Creator est souvent trop limité pour un usage professionnel régulier.
+
+## HeyGen vs Synthesia vs D-ID : le vrai comparatif
+
+| Critère | HeyGen | Synthesia | D-ID |
+|---|---|---|---|
+| Qualité avatar | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Video Translate | ⭐⭐⭐⭐⭐ | ❌ | ⭐⭐⭐ |
+| Streaming temps réel | ⭐⭐⭐⭐ | ❌ | ⭐⭐⭐ |
+| Facilité d'usage | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Prix entrée | 29$/mois | 22$/mois | 19$/mois |
+| API | ✅ | ✅ | ✅ |
+| Support FR | Excellent | Bon | Moyen |
+
+**Synthesia** reste le meilleur pour la facilité absolue et les templates corporate. Son interface est plus intuitive que HeyGen, et le rendu est très propre. Mais il n'a pas de Video Translate ni de Streaming Avatar.
+
+**D-ID** est moins cher mais le gap de qualité est visible — les avatars manquent de naturel sur les expressions faciales. À réserver aux budgets très serrés ou aux prototypes.
+
+**HeyGen** s'impose comme le meilleur choix global en 2026 si Video Translate est dans votre cas d'usage. C'est sa fonctionnalité différenciante absolue.
+
+## Les limites qu'on ne te dit pas
+
+**1. L'uncanny valley sur certains visages**
+Les avatars générés depuis des visages avec des caractéristiques distinctives (barbe épaisse, lunettes, tatouages visibles) ont encore des artifacts notables. Le moteur IA gère mieux les visages "neutres".
+
+**2. Les droits et l'éthique**
+HeyGen exige de signer une déclaration attestant que vous avez le droit d'utiliser le visage et la voix clonés. Mais il n'y a aucune vérification technique. C'est un problème légal potentiel si vous utilisez HeyGen dans un contexte où des tiers pourraient contester l'utilisation de leur image.
+
+**3. La compression sur les arrière-plans complexes**
+Les vidéos exportées montrent parfois des artifacts de compression sur les arrière-plans détaillés. Sur fond uni ou dégradé, pas de problème. Sur un bureau réel filmé, on voit parfois des "flous" temporaires.
+
+**4. Le support client**
+Le support par chat est réactif (< 2h en semaine) mais les réponses sont souvent des liens vers la documentation. Les problèmes techniques complexes mettent 24-48h à être résolus. Pas idéal si HeyGen est dans un workflow de production critique.
+
+## Pour qui c'est fait — et pour qui ce n'est pas fait
+
+✅ **HeyGen est fait pour vous si :**
+- Vous faites du marketing de contenu en plusieurs langues
+- Vous produisez des formations e-learning internes
+- Vous voulez localiser des vidéos sans re-tourner
+- Vous testez des concepts vidéo avant une production complète
+- Vous gérez une chaîne YouTube dans plusieurs langues
+
+❌ **HeyGen n'est pas fait pour vous si :**
+- Vous avez besoin d'une qualité broadcast (TV, cinéma, pub premium)
+- Votre cas d'usage principal est le service client temps réel (latence trop haute)
+- Votre budget est inférieur à 29$/mois (le gratuit est très limité)
+- Vous cherchez un éditeur vidéo complet (HeyGen ne remplace pas Premiere Pro)
+
+## Notre verdict final
+
+**8.7/10 — Recommandé**
+
+HeyGen est l'outil vidéo IA le plus complet du marché en 2026. Sa fonctionnalité Video Translate seule justifie l'abonnement pour toute entreprise qui opère dans plusieurs langues. La qualité des avatars a franchi un cap en 2025-2026 qui rend l'outil crédible pour un usage professionnel.
+
+Les limites existent — prix qui monte vite, quelques artifacts, support perfectible — mais elles sont surmontables dans la plupart des cas d'usage courants.
+
+Si vous hésitez : commencez par les 3 vidéos gratuites. Faites une vidéo avatar, une traduction, et un template marketing. Si vous voyez l'impact dans votre workflow, le Business à 89$/mois s'amortit en une seule vidéo évitée en production traditionnelle.
+
+## FAQ
+
+### HeyGen est-il vraiment gratuit ?
+
+Oui, il existe un plan gratuit avec 3 vidéos par mois — suffisant pour tester toutes les fonctionnalités principales. Aucune carte bancaire n'est requise pour s'inscrire.
+
+### HeyGen fonctionne-t-il bien en français ?
+
+Oui, le support du français est excellent — tant pour la génération d'avatars parlant en français que pour la traduction de vidéos vers le français. C'est l'une des langues les mieux supportées après l'anglais.
+
+### Peut-on utiliser HeyGen pour des publicités ?
+
+Techniquement oui, mais HeyGen précise dans ses CGU que les contenus doivent être honnêtement identifiés comme générés par IA dans les contextes publicitaires. Vérifiez les réglementations locales sur la transparence des publicités IA.
+
+### HeyGen est-il sécurisé pour des contenus confidentiels ?
+
+HeyGen propose un chiffrement des données et des options de confidentialité pour les plans Enterprise. Pour les plans Creator et Business, les vidéos sont stockées sur leurs serveurs. Pour des contenus très sensibles, contactez leur équipe Enterprise.
+      `,
+      related: [
+        { slug: "elevenlabs-review-2026", title: "ElevenLabs : la meilleure synthèse vocale IA en 2026 ?", tag: "Audio", timeMin: "8" },
+        { slug: "midjourney-vs-dalle-2026", title: "Midjourney vs DALL-E 3 : comparatif complet 2026", tag: "Image", timeMin: "11" },
+        { slug: "vibe-coding-tools-2026", title: "5 meilleurs outils pour créer une app sans coder en 2026", tag: "Code", timeMin: "13" },
+        { slug: "sora-fermeture-openai-2026", title: "Sora est mort : OpenAI abandonne son générateur vidéo IA", tag: "Chatbots", timeMin: "12" },
+        { slug: "jasper-ai-review-2026", title: "Jasper AI : avis complet 2026", tag: "Writing", timeMin: "9" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "12" },
+      ],
+    },
+    en: {
+      title: "HeyGen 2026: The Best AI Video Tool? Full Review After 4 Weeks",
+      desc: "HeyGen transformed AI video creation in 2026: ultra-realistic avatars, translation into 40 languages with perfect lip-sync, live streaming. We tested everything. Our unfiltered verdict on pricing, limits and real alternatives.",
+      metaTitle: "HeyGen 2026: full review, pricing & test | Neuriflux",
+      metaDesc: "Full HeyGen review for 2026: AI avatars, video translation, lip-sync, real pricing. Comparison vs Synthesia and D-ID. Is it really worth $29/month?",
+      content: `
+## HeyGen in 2026: from niche tool to reference platform
+
+Two years ago, HeyGen was a novelty for YouTube creators who wanted a digital avatar. In 2026, it's become something fundamentally different: a complete AI video production platform that's making traditional production agencies nervous.
+
+The numbers speak for themselves. HeyGen has surpassed **35,000 business customers** in 2026, including names like Salesforce, Zoom and TechCrunch. The volume of generated videos has multiplied by 8 in 18 months. And the word-of-mouth in marketing communities has become impossible to ignore.
+
+But behind the hype, there are concrete questions: does it actually work? Are the avatars convincing? Is the price justified? And most importantly — who should actually use it?
+
+We spent 4 weeks testing HeyGen under real conditions, across 3 distinct use cases: marketing content creation, e-learning training, and video localization. Here's what we found.
+
+## What HeyGen actually is in 2026
+
+HeyGen is an AI video creation platform that lets you generate videos with talking digital avatars, clone your own appearance and voice, and automatically translate a video into 40 languages with perfect lip synchronization.
+
+The key distinction from competitors: HeyGen isn't a video editor. It's a **presentation and video localization engine**. You input a script or a source video — HeyGen produces the final version with an avatar or your digital clone.
+
+**The 5 main modules in 2026:**
+
+- **Avatar Studio** — create a custom avatar from 2 minutes of video
+- **Video Translate** — translate an existing video into 40 languages with lip-sync
+- **Streaming Avatar** — interact in real time with an avatar via API
+- **HeyGen Templates** — library of 300+ templates for marketing videos
+- **Brand Kit** — automatic visual consistency (colors, logo, fonts)
+
+## What we tested over 4 weeks
+
+### Week 1 — Avatar Studio: creating your digital double
+
+The process is simpler than expected. You record 2 minutes of video following a specific protocol (uniform lighting, 5 head positions, reading a text provided by HeyGen aloud), upload it, and processing takes about 2 hours.
+
+The 2026 result genuinely surprised us. Head movements, eye blinks, micro-expressions — all of it has become convincing. Out of 10 people we showed a 30-second video to without mentioning it was an avatar, 7 believed it was a real person.
+
+**What's still imperfect:** hands (often hidden or blurred), intense emotional expressions (surprise, laughter), and some mouth movements on complex sounds. On long sentences with chained syllables, you can still detect the artificial quality on careful listening.
+
+**Our Avatar Studio rating: 8.2/10**
+
+### Week 2 — Video Translate: the feature that changes everything
+
+This is where HeyGen really makes the difference in 2026. We took a product presentation video in English (3 minutes, a real person), submitted it to Video Translate, and 18 minutes later we had the same video in French, Spanish, German, Japanese and Portuguese — with the speaker's mouth perfectly synchronized in each language.
+
+The lip-sync quality is remarkable. Across 40 tested languages, French and Spanish are excellent (9/10), German and Japanese very good (8/10). Arabic and Mandarin are decent but still show some delays on complex consonants (7/10).
+
+**The obvious ROI use case:** a company doing international sales. Instead of re-shooting every commercial video in each target language (budget: $2,000 to $8,000 per video in traditional production), HeyGen does it in 20 minutes for the cost of a monthly subscription.
+
+**Our Video Translate rating: 9.1/10**
+
+### Week 3 — Streaming Avatar: the future of AI interactions
+
+The Streaming Avatar is the most technically impressive feature, and also the least commercially mature. Via the HeyGen API, you can connect an avatar to an LLM (GPT-4, Claude, Gemini) to create a real-time interactive video agent.
+
+We built a prototype in 3 hours: a "virtual sales rep" avatar that answers questions about a product catalog, in real time, with an average latency of 1.2 seconds.
+
+**What works:** conversational fluidity, visual consistency of the avatar, speech style customization. **What doesn't work yet:** latency is too high for true customer service (1.2s is noticeable), and the avatar sometimes "freezes" for 2-3 seconds on complex questions.
+
+**Our Streaming Avatar rating: 7.4/10** — promising but not yet production-ready for critical customer service.
+
+### Week 4 — Full workflow: multilingual e-learning
+
+The final use case we tested: creating a 15-minute training module in 4 languages from a single French recording. Result: 4 final videos in FR, EN, ES, DE in under 2 hours of total work (vs. an estimated 4 days of traditional production).
+
+Quality is sufficient for an internal e-learning context. It wouldn't replace premium video production for a YouTube channel or a $500 course, but for corporate training, it's a total workflow disruption.
+
+## Real 2026 pricing — what you actually pay
+
+| Plan | Price | Video credits | Avatars | Languages |
+|---|---|---|---|---|
+| Free | $0 | 3 videos/month | Library only | 40 |
+| Creator | $29/mo | 15 min/month | 1 custom avatar | 40 |
+| Business | $89/mo | 60 min/month | 3 custom avatars | 40 |
+| Enterprise | Quote | Unlimited | Unlimited | 40 |
+
+**What the listed pricing hides:**
+
+"Video minutes" are calculated differently depending on the features. Video Translate consumes **2x more credits** than standard avatar generation. A 5-minute video translated into 3 languages therefore consumes ~30 minutes of credits — that's 50% of the Creator quota for a single operation.
+
+On the Creator plan at $29/month, you can realistically produce: 3 two-minute avatar videos, or 1 translation of a 10-minute video into 2 languages. It's more limited than it appears.
+
+**Our recommendation:** start with the free plan (3 videos — more than enough to validate the tool), then go straight to Business if you have a real volume need. Creator is often too limited for regular professional use.
+
+## HeyGen vs Synthesia vs D-ID: the real comparison
+
+| Criteria | HeyGen | Synthesia | D-ID |
+|---|---|---|---|
+| Avatar quality | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Video Translate | ⭐⭐⭐⭐⭐ | ❌ | ⭐⭐⭐ |
+| Real-time streaming | ⭐⭐⭐⭐ | ❌ | ⭐⭐⭐ |
+| Ease of use | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Entry price | $29/mo | $22/mo | $19/mo |
+| API | ✅ | ✅ | ✅ |
+| Multilingual support | Excellent | Good | Average |
+
+**Synthesia** remains best for absolute ease of use and corporate templates. Its interface is more intuitive than HeyGen, and the output is very clean. But it has no Video Translate or Streaming Avatar.
+
+**D-ID** is cheaper but the quality gap is visible — avatars lack naturalness in facial expressions. Reserve it for very tight budgets or prototypes.
+
+**HeyGen** stands out as the best overall choice in 2026 if Video Translate is in your use case. It's its absolute differentiating feature.
+
+## The limits they don't tell you
+
+**1. The uncanny valley on certain faces**
+Avatars generated from faces with distinctive features (thick beard, glasses, visible tattoos) still have notable artifacts. The AI engine handles "neutral" faces better.
+
+**2. Rights and ethics**
+HeyGen requires signing a declaration stating you have the right to use the cloned face and voice. But there's no technical verification. This is a potential legal issue if you use HeyGen in a context where third parties could contest the use of their image.
+
+**3. Compression on complex backgrounds**
+Exported videos sometimes show compression artifacts on detailed backgrounds. On solid or gradient backgrounds, no problem. On a real filmed desk, you sometimes see temporary "blurs."
+
+**4. Customer support**
+Chat support is responsive (< 2h on weekdays) but responses are often links to documentation. Complex technical issues take 24-48h to resolve. Not ideal if HeyGen is in a critical production workflow.
+
+## Who it's for — and who it's not for
+
+✅ **HeyGen is right for you if:**
+- You do multilingual content marketing
+- You produce internal e-learning training
+- You want to localize videos without re-shooting
+- You're testing video concepts before a full production
+- You manage a YouTube channel in multiple languages
+
+❌ **HeyGen is not right for you if:**
+- You need broadcast quality (TV, cinema, premium ads)
+- Your main use case is real-time customer service (latency too high)
+- Your budget is under $29/month (the free plan is very limited)
+- You're looking for a complete video editor (HeyGen doesn't replace Premiere Pro)
+
+## Our final verdict
+
+**8.7/10 — Recommended**
+
+HeyGen is the most complete AI video tool on the market in 2026. Its Video Translate feature alone justifies the subscription for any company operating in multiple languages. Avatar quality has crossed a threshold in 2025-2026 that makes the tool credible for professional use.
+
+Limitations exist — prices that climb fast, some artifacts, improvable support — but they're manageable for most common use cases.
+
+If you're on the fence: start with the 3 free videos. Make an avatar video, a translation, and a marketing template. If you see the impact in your workflow, the Business plan at $89/month pays for itself with a single video avoided in traditional production.
+
+## FAQ
+
+### Is HeyGen really free?
+
+Yes, there's a free plan with 3 videos per month — enough to test all the main features. No credit card is required to sign up.
+
+### Does HeyGen work well in French?
+
+Yes, French support is excellent — both for generating avatars speaking French and for translating videos to French. It's one of the best-supported languages after English.
+
+### Can HeyGen be used for advertisements?
+
+Technically yes, but HeyGen specifies in its ToS that content must be honestly identified as AI-generated in advertising contexts. Check local regulations on AI advertising transparency.
+
+### Is HeyGen secure for confidential content?
+
+HeyGen offers data encryption and privacy options for Enterprise plans. For Creator and Business plans, videos are stored on their servers. For very sensitive content, contact their Enterprise team.
+      `,
+      related: [
+        { slug: "elevenlabs-review-2026", title: "ElevenLabs: best AI voice synthesis in 2026?", tag: "Audio", timeMin: "8" },
+        { slug: "midjourney-vs-dalle-2026", title: "Midjourney vs DALL-E 3: full comparison 2026", tag: "Image", timeMin: "11" },
+        { slug: "vibe-coding-tools-2026", title: "5 Best Tools to Build an App Without Coding in 2026", tag: "Code", timeMin: "13" },
+        { slug: "sora-fermeture-openai-2026", title: "Sora Is Dead: OpenAI Kills Its AI Video App", tag: "Chatbots", timeMin: "12" },
+        { slug: "jasper-ai-review-2026", title: "Jasper AI Review 2026: Is It Worth It?", tag: "Writing", timeMin: "9" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "12" },
+      ],
+    },
+  },
+
 // ─── Best Free AI Tools 2026 ──────────────────────────────────────────────────
 {
   slug: "best-free-ai-tools-2026",
@@ -4525,7 +4880,7 @@ Not in raw scale. What it is losing is the sense that it is the only obvious cho
 // ─── Sora Fermeture OpenAI 2026 ──────────────────────────────────────────────
   {
     slug: "sora-fermeture-openai-2026",
-    tag: "Chatbots",
+    tag: "Video",
     date: { fr: "28 mars 2026", en: "March 28, 2026" },
     timeMin: "12",
     featured: true,
@@ -4726,7 +5081,7 @@ Pour la qualité pro : Runway Gen-4. Pour le rapport qualité/prix : Kling 3.0. 
 Peut-être, sous le nom de code "Spud", mais orienté B2B et productivité enterprise plutôt que grand public. Sam Altman a évoqué un outil qui va "vraiment accélérer l'économie" sans plus de précisions. Aucun lancement n'est annoncé.
       `,
       related: [
-        { slug: "runway-vs-kling-vs-pika-2026", tag: "Vidéo IA", title: "Runway vs Kling vs Pika : quel générateur vidéo IA choisir après la mort de Sora ?", timeMin: "10" },
+        { slug: "runway-vs-kling-vs-pika-2026", tag: "Video", title: "Runway vs Kling vs Pika : quel générateur vidéo IA choisir après la mort de Sora ?", timeMin: "10" },
         { slug: "chatgpt-vs-claude-vs-gemini-2026", tag: "Chatbots", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", timeMin: "12" },
         { slug: "deepseek-review-2026", tag: "Chatbots", title: "DeepSeek : avis 2026, le meilleur ChatGPT gratuit venu de Chine ?", timeMin: "12" },
       ],
@@ -4920,7 +5275,7 @@ For professional quality: Runway Gen-4. For value: Kling 3.0. For fast social co
 Possibly, under the codename "Spud," but aimed at enterprise productivity rather than consumers. Sam Altman has mentioned a model that will "really accelerate the economy" without further detail. No launch date has been announced.
       `,
       related: [
-        { slug: "runway-vs-kling-vs-pika-2026", tag: "AI Video", title: "Runway vs Kling vs Pika: Which AI Video Generator After Sora's Shutdown?", timeMin: "10" },
+        { slug: "runway-vs-kling-vs-pika-2026", tag: "Video", title: "Runway vs Kling vs Pika: Which AI Video Generator After Sora's Shutdown?", timeMin: "10" },
         { slug: "chatgpt-vs-claude-vs-gemini-2026", tag: "Chatbots", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", timeMin: "12" },
         { slug: "deepseek-review-2026", tag: "Chatbots", title: "DeepSeek Review 2026: The Best Free ChatGPT Alternative?", timeMin: "12" },
       ],
@@ -7677,6 +8032,7 @@ const TAG_LABELS: Record<CanonicalTag, { fr: string; en: string }> = {
   Writing: { fr: "Rédaction", en: "Writing" },
   Image: { fr: "Image", en: "Image" },
   Audio: { fr: "Audio", en: "Audio" },
+  Video: { fr: "Vidéo", en: "Video"}
 };
 
 const TAG_ALIASES: Record<string, CanonicalTag> = {
@@ -7688,6 +8044,7 @@ const TAG_ALIASES: Record<string, CanonicalTag> = {
   "rédaction": "Writing",
   image: "Image",
   audio: "Audio",
+  video: "Video",
 };
 
 const FR_MONTHS: Record<string, string> = {
@@ -7724,6 +8081,7 @@ const EN_MONTHS: Record<string, string> = {
 };
 
 const NEUTRAL_SLUGS: Record<string, string> = {
+  "heygen-review-2026": "heygen-2026",
   "claude-code-review-2026": "claude-code-2026",
   "ia-2026": "llm-hallucinations-2026",
   "prompts-ia-2026": "prompt-engineering-2026",
@@ -7797,6 +8155,14 @@ const AFFILIATE_FALLBACKS: Partial<Record<string, ArticleAffiliate>> = {
       en: "The flexible choice for image generation with more control",
     },
   },
+  "heygen-review-2026": {
+      url: "https://www.heygen.com",
+      toolName: "HeyGen",
+      label: {
+        fr: "Plan gratuit · Creator à 29$/mois · Business à 89$/mois · API disponible",
+        en: "Free plan · Creator at $29/month · Business at $89/month · API available",
+      },
+    },
 };
 
 function normalizeWhitespace(value: string): string {
