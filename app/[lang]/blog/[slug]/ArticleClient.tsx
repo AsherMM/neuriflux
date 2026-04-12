@@ -678,12 +678,12 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
     review: {
       "@type": "Review",
       author: { "@type": "Organization", name: "Neuriflux" },
-      reviewRating: { "@type": "Rating", ratingValue: String(articleData?.rating ?? 4.5), bestRating: "5" },
+      reviewRating: { "@type": "Rating", ratingValue: String(articleData?.rating ?? 4.5), bestRating: "10" },
     },
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: String(articleData?.rating ?? 4.5),
-      bestRating: "5",
+      bestRating: "10",
       worstRating: "1",
       ratingCount: "1",
     },
