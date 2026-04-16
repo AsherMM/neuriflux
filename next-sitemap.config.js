@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "ia-seo-2026",
   "heygen-2026",
   "best-free-ai-tools-2026",
   "claude-code-2026",
@@ -28,6 +29,8 @@ const ARTICLE_SLUGS = [
 ];
 
 const COMPARATIF_SLUGS = [
+  "semrush-vs-ahrefs-vs-surfer-seo-2026",
+  "heygen-vs-synthesia-vs-did-2026",
   "perplexity-vs-chatgpt-vs-gemini-2026",
   "n8n-vs-make-vs-zapier-2026",
   "runway-vs-kling-vs-pika-2026",
