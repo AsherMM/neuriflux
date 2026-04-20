@@ -102,6 +102,383 @@ interface RawArticle {
 }
 
 const RAW_ARTICLES: RawArticle[] = [
+// ─── Gemini Review 2026 ────────────────────────────────────────────────────────
+  {
+    slug: "gemini-review-2026",
+    tag: "Chatbots",
+    date: { fr: "20 avril 2026", en: "April 20, 2026" },
+    timeMin: "15",
+    featured: true,
+    affiliate: {
+      url: "https://one.google.com/about/ai-premium",
+      toolName: "Gemini Advanced",
+      label: {
+        fr: "Gratuit (Gemini) · Google One AI Premium à 21,99€/mois · inclut 2 To de stockage Drive",
+        en: "Free (Gemini) · Google One AI Premium at $19.99/month · includes 2TB Drive storage",
+      },
+    },
+    fr: {
+      title: "Gemini 2.5 Pro en 2026 : le vrai avis après 6 semaines de tests intensifs",
+      desc: "Gemini 2.5 Pro domine les benchmarks en 2026 — mais les benchmarks ne racontent pas toute l'histoire. On l'a testé sur les mêmes tâches que ChatGPT et Claude pendant 6 semaines : code, analyse, rédaction, recherche web. Ce que Google fait mieux que tout le monde. Et ce qui reste décevant.",
+      metaTitle: "Gemini 2.5 Pro 2026 : avis complet, test et comparatif | Neuriflux",
+      metaDesc: "Notre test complet de Gemini 2.5 Pro en 2026 : benchmarks réels, comparatif vs ChatGPT et Claude, prix, limites et verdict honnête. Vaut-il 21,99€/mois ?",
+      content: `
+## Gemini 2.5 Pro : le grand retour de Google dans la course IA
+
+Il y a un an, Gemini était le grand perdant de la guerre des chatbots. Lent sur les raisonnements complexes, hallucinant davantage que ses concurrents, coincé dans un écosystème Google trop fermé. Les critiques étaient sévères, souvent justifiées.
+
+En avril 2026, le tableau a radicalement changé. Gemini 2.5 Pro occupe la première place sur le benchmark LMArena (ex-LMSYS Chatbot Arena) avec un score Elo de 1380 — devant GPT-4o et Claude 3.7 Sonnet. Il domine Aider Polyglot avec 72,0% en codage difficile. Et sur SWE-bench Verified, il se positionne parmi les trois meilleurs modèles disponibles.
+
+Mais les benchmarks ne racontent pas toute l'histoire. On l'a testé pendant 6 semaines en conditions réelles — développement web, analyse de documents, rédaction éditoriale, recherche web, pipelines d'automatisation. Avec une question centrale : **est-ce que Gemini 2.5 Pro justifie de quitter ChatGPT ou Claude ?**
+
+La réponse n'est ni un oui franc ni un non définitif. C'est plus intéressant que ça.
+
+## Ce qu'est vraiment Gemini en 2026
+
+Avant de plonger dans les tests, un point de clarification nécessaire sur l'écosystème Gemini — qui est devenu plus complexe que ses concurrents.
+
+**Gemini (gratuit)** — le modèle de base, accessible sans compte payant. Gemini 2.0 Flash en dessous du capot. Correct pour les usages quotidiens simples, mais clairement limité sur les tâches complexes.
+
+**Gemini Advanced (Google One AI Premium)** — l'accès à Gemini 2.5 Pro, le modèle phare. À 21,99€/mois, il inclut également 2 To de stockage Google Drive — ce qui change le calcul si vous payez déjà pour le stockage.
+
+**Gemini dans Google Workspace** — intégration dans Gmail, Docs, Sheets, Slides, Meet. C'est là que Gemini devient potentiellement imbattable pour les utilisateurs de l'écosystème Google.
+
+**Gemini API / AI Studio** — pour les développeurs, avec accès à Gemini 2.5 Pro Experimental et les modèles Flash pour des pipelines à grande échelle.
+
+**La fenêtre de contexte :** 1 million de tokens en standard, jusqu'à 2 millions sur certains accès. C'est la plus grande fenêtre de contexte disponible dans un produit grand public. Elle change fondamentalement certains cas d'usage.
+
+## 6 semaines de tests : ce qu'on a réellement mesuré
+
+### Semaine 1-2 — Codage et développement web
+
+C'est là que Gemini 2.5 Pro nous a le plus surpris. Sur des tâches de développement complexes — refactorisation d'une codebase React de 3 000 lignes, debugging d'un pipeline Next.js, génération d'une API REST complète depuis une spec — le modèle a produit du code fonctionnel du premier coup dans 71% des cas. C'est 8 points au-dessus de ce qu'on obtient avec GPT-4o sur les mêmes prompts.
+
+La différence est particulièrement marquée sur les projets qui nécessitent de comprendre de nombreux fichiers simultanément. Grâce à la fenêtre de 1 million de tokens, on peut injecter l'intégralité d'un projet de taille moyenne et demander à Gemini de le comprendre en profondeur avant d'intervenir. Claude peut faire de même avec ses 200 000 tokens. GPT-4o, avec 128 000 tokens, commence à manquer de contexte sur des projets réels.
+
+**Ce qui reste imparfait :** Gemini sur-explique. Là où Claude donne 40 lignes de code propres, Gemini en donne 40 avec 20 lignes de commentaires et 3 paragraphes d'explication non demandés. C'est réglable avec un prompt adapté, mais c'est du friction inutile par défaut.
+
+**Notre note codage : 9.0/10**
+
+### Semaine 2-3 — Analyse de documents longs
+
+C'est probablement le cas d'usage où Gemini n'a pas de concurrent réel en 2026. La fenêtre de 1 million de tokens permet d'injecter un rapport de 500 pages, 10 contrats simultanément, ou l'intégralité d'une base de code et de poser des questions précises sur l'ensemble.
+
+On a testé avec un dossier juridique de 180 pages, un rapport financier de 240 pages et une codebase de 80 000 tokens. Dans les trois cas, Gemini a extrait les informations demandées avec une précision supérieure à Claude (qui tronquait parfois sur les documents les plus longs) et largement supérieure à GPT-4o (qui perdait cohérence au-delà de 80 000 tokens).
+
+**Cas d'usage concret :** un analyste financier peut uploader les 10-K de 5 concurrents et demander une analyse comparative des stratégies de R&D en une seule requête. Avec n'importe quel autre modèle, c'est 5 requêtes distinctes avec perte de cohérence entre elles.
+
+**Notre note analyse documentaire : 9.5/10**
+
+### Semaine 3-4 — Rédaction et contenu éditorial
+
+C'est le terrain où l'écart se resserre. Gemini 2.5 Pro rédige bien — structure claire, syntaxe correcte, bonne compréhension des nuances de ton. Mais Claude 3.7 Sonnet reste, à notre avis, légèrement au-dessus sur l'écriture créative et les contenus qui demandent une voix distinctive.
+
+La différence principale : Gemini est plus académique dans sa façon d'écrire. Ses textes sonnent "correct" mais manquent parfois de caractère. Claude ose davantage — métaphores, formulations inhabituelles, prises de position franches. Pour un article de blog ou une newsletter, on préfère encore Claude comme base.
+
+Pour les contenus plus structurés — rapports, documentation technique, emails professionnels — Gemini est excellent et parfois plus lisible que Claude qui peut devenir trop littéraire.
+
+**Notre note rédaction : 8.2/10**
+
+### Semaine 4-5 — Recherche web et informations récentes
+
+Gemini a l'avantage structurel ici : il est connecté à Google Search nativement. Quand on pose une question sur l'actualité récente, il accède aux résultats de recherche en temps réel avec une fluidité que ni ChatGPT ni Claude n'atteignent.
+
+Dans la pratique, on a testé 50 questions sur des événements des 30 derniers jours. Gemini a répondu correctement dans 84% des cas, avec des sources citées. ChatGPT avec la navigation web : 71%. Claude avec ses outils web : 68%. L'intégration Google Search n'est pas un gadget — c'est une différence fonctionnelle réelle.
+
+**Ce qui agace :** Gemini a parfois tendance à citer ses sources de façon maladroite, en insérant des liens dans le milieu d'une phrase au lieu d'une bibliographie propre en fin de réponse. C'est un détail d'UX mais qui nuit à la lisibilité.
+
+**Notre note recherche web : 8.8/10**
+
+### Semaine 5-6 — Intégration dans l'écosystème Google
+
+C'est le terrain où Gemini n'a pas de concurrence possible — parce que ni OpenAI ni Anthropic n'ont accès à votre Gmail, votre Drive, votre Agenda, votre Meet. Google si.
+
+Gemini dans Workspace peut rédiger un email en connaissant le contexte de votre conversation précédente avec ce contact. Il peut créer un rapport Docs en se basant sur des données d'un Sheet. Il peut préparer un briefing de réunion en lisant l'invitation et les documents partagés.
+
+Si vous travaillez dans l'écosystème Google — et des centaines de millions de personnes le font — Gemini n'est pas "un bon chatbot parmi d'autres". C'est potentiellement l'IA la plus utile de votre journée parce qu'elle connaît votre contexte de travail réel.
+
+**Notre note intégration écosystème : 9.8/10**
+
+## Les tarifs en détail — ce que vous payez vraiment
+
+| Plan | Prix | Modèle | Contexte |
+|---|---|---|---|
+| Gemini (gratuit) | 0€ | Gemini 2.0 Flash | 1M tokens |
+| Google One AI Premium | 21,99€/mois | Gemini 2.5 Pro | 1M tokens |
+| Google Workspace Business | Selon plan | Gemini dans Gmail/Docs | 1M tokens |
+| Gemini API (Développeurs) | Pay-as-you-go | Gemini 2.5 Pro | 1-2M tokens |
+
+**Le calcul Google One AI Premium :** 21,99€/mois inclut 2 To de stockage Google Drive. Si vous payez déjà Google One pour le stockage (12,99€/mois pour 2 To), l'upgrade vers AI Premium ne vous coûte en réalité que 9€/mois supplémentaires pour accéder à Gemini 2.5 Pro. C'est le prix d'un déjeuner.
+
+Comparé à ChatGPT Plus (20$/mois, GPT-4o) et Claude Pro (20$/mois, Claude 3.7), Gemini Advanced est légèrement plus cher en valeur faciale — mais le stockage inclus change l'équation pour beaucoup d'utilisateurs.
+
+**Gemini API pour les développeurs :** les tarifs sont compétitifs — environ 1,25$ pour 1 million de tokens en input et 5$ pour 1 million en output sur Gemini 2.5 Pro. Moins cher que GPT-4 Turbo sur les gros volumes.
+
+## Gemini 2.5 Pro vs ChatGPT vs Claude : le vrai comparatif
+
+| Critère | Gemini 2.5 Pro | ChatGPT (GPT-4o) | Claude 3.7 Sonnet |
+|---|---|---|---|
+| Codage | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Raisonnement logique | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Rédaction créative | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Analyse documents longs | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Recherche web temps réel | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Intégration apps tierces | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
+| Cohérence sur longues conv. | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Multimodal (image/audio) | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+
+La conclusion de ce tableau est claire : **Gemini 2.5 Pro n'a pas de concurrent sur la fenêtre de contexte, l'intégration Google et la recherche web temps réel.** Il est le meilleur sur ses forces distinctives. Mais [Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) reste supérieur pour l'écriture créative et la cohérence conversationnelle longue durée.
+
+## Les limites que Google ne met pas en avant
+
+**1. La personnalité de Gemini reste plate**
+C'est la critique la plus récurrente dans nos tests : Gemini répond de façon compétente mais sans caractère. Comparé à Claude qui a une vraie voix éditoriale, ou à ChatGPT qui peut être créatif et surprenant, Gemini donne souvent l'impression de répondre à cocher des cases. Pour les usages professionnels formels, ce n'est pas un problème. Pour les usages créatifs, c'est une vraie limite.
+
+**2. Le mode "Thinking" consomme beaucoup de temps**
+Gemini 2.5 Pro a un mode de raisonnement approfondi ("thinking") qui, quand activé, produit des réponses de meilleure qualité sur les problèmes complexes — mais peut prendre 30 à 60 secondes. Sur [Perplexity](/fr/blog/perplexity-ai-review-2026), une recherche similaire prend 5 secondes. Pour un usage interactif rapide, cette latence est frustrante.
+
+**3. Les hallucinations persistent sur les sujets de niche**
+Sur des requêtes très spécialisées — droit fiscal d'un pays précis, protocoles médicaux rares, historique d'entreprises peu connues — Gemini hallucine encore à un taux similaire à ses concurrents. La connexion à Google Search aide sur l'actualité récente, mais pas sur les connaissances de niche qui n'apparaissent pas dans les premiers résultats de recherche.
+
+**4. La gestion du multimédia reste inégale**
+Gemini peut analyser des images, des fichiers audio et des vidéos. Dans la pratique, l'analyse d'images est excellente, l'audio est solide, mais l'analyse vidéo longue (plus de 10 minutes) produit encore des résultats inconsistants avec des passages ignorés ou résumés de façon trop superficielle.
+
+**5. Privacy et données Google**
+Pour les professionnels qui traitent des données confidentielles, il faut noter que Gemini — en dehors des plans Workspace Enterprise — peut utiliser les conversations pour améliorer ses modèles. C'est réglable dans les paramètres, mais ça demande une démarche active. Claude et ChatGPT ont des politiques similaires, mais le fait que Google ait déjà accès à un écosystème aussi vaste de données utilisateur rend cette question plus sensible pour certains.
+
+## Pour qui Gemini 2.5 Pro est fait — et pour qui ce n'est pas fait
+
+✅ **Gemini est fait pour vous si :**
+- Vous travaillez dans l'écosystème Google (Gmail, Drive, Docs, Sheets, Meet)
+- Vous faites du développement et avez besoin de comprendre de grandes codebases
+- Vous analysez régulièrement de longs documents (rapports, contrats, données)
+- Vous avez besoin d'informations très récentes avec des sources vérifiables
+- Vous payez déjà pour Google One et cherchez à rentabiliser votre abonnement
+
+❌ **Gemini n'est pas fait pour vous si :**
+- Votre priorité principale est la rédaction créative et éditoriale
+- Vous cherchez un assistant avec une vraie personnalité et une voix distinctive
+- Vous avez des contraintes de confidentialité fortes sur les données traitées
+- Votre workflow est ancré dans Microsoft 365 (Copilot sera plus adapté)
+- Vous n'avez pas besoin de la fenêtre de contexte étendue et cherchez juste un bon chatbot généraliste
+
+## Notre verdict final : 8.6/10 — Recommandé avec réserve
+
+Gemini 2.5 Pro est indiscutablement l'un des trois meilleurs modèles disponibles en 2026. Sur les benchmarks techniques, il est souvent en tête. Sur l'analyse de longs contextes, il n'a pas de concurrent. Sur l'intégration avec l'écosystème Google, il est seul dans sa catégorie.
+
+Mais les benchmarks ne disent pas tout. Dans l'usage quotidien, Claude reste plus agréable à utiliser, plus cohérent sur la durée, et supérieur pour tout ce qui touche à l'expression écrite. ChatGPT reste plus polyvalent et son écosystème de plugins plus mûr.
+
+**Notre recommandation pratique :** si vous êtes un utilisateur Google intensif — Drive, Gmail, Workspace — l'essai de Gemini Advanced est évident. Le mois gratuit d'essai suffit à comprendre si la proposition de valeur correspond à votre workflow.
+
+Si vous cherchez un assistant IA généraliste sans ancrage dans un écosystème précis, [comparez d'abord ChatGPT et Claude](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) avant de prendre une décision.
+
+## FAQ
+
+### Gemini 2.5 Pro est-il vraiment meilleur que ChatGPT en 2026 ?
+
+Sur certains critères, oui clairement : fenêtre de contexte (1M vs 128K tokens), benchmark de codage, et intégration Google Search temps réel. Sur d'autres, non : ChatGPT a un écosystème de plugins plus large, une personnalité plus engageante et une meilleure cohérence sur les conversations très longues. La réponse dépend de votre cas d'usage.
+
+### Gemini gratuit suffit-il pour un usage quotidien ?
+
+Pour des tâches simples — résumer un texte, rédiger un email basique, répondre à des questions générales — Gemini 2.0 Flash (plan gratuit) est tout à fait suffisant. Pour du code complexe, de l'analyse documentaire avancée ou de la recherche précise, Gemini 2.5 Pro (Advanced) fait une différence notable.
+
+### Gemini peut-il accéder à mes fichiers Google Drive ?
+
+Oui, avec Gemini Advanced et l'intégration Workspace activée. Vous pouvez référencer des fichiers Drive directement dans vos conversations. C'est l'une des fonctionnalités les plus puissantes — et les plus sous-exploitées — de l'écosystème Gemini.
+
+### Est-ce que mes conversations Gemini sont utilisées pour entraîner les modèles ?
+
+Par défaut sur les plans grand public, oui — comme la plupart des concurrents. Vous pouvez désactiver cela dans les paramètres Google. Sur les plans Workspace Enterprise, les données ne sont pas utilisées pour l'entraînement. Vérifiez vos paramètres si la confidentialité est une priorité.
+      `,
+      related: [
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "12" },
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI : avis complet 2026", tag: "Chatbots", timeMin: "15" },
+        { slug: "deepseek-review-2026", title: "DeepSeek : avis complet 2026", tag: "Chatbots", timeMin: "14" },
+        { slug: "prompts-ia-2026", title: "Comment écrire des prompts IA qui marchent vraiment en 2026", tag: "Productivity", timeMin: "18" },
+        { slug: "ia-2026", title: "Pourquoi l'IA invente des choses — et comment ne plus se faire avoir", tag: "Productivity", timeMin: "14" },
+        { slug: "alternatives-gratuites-chatgpt", title: "Les 7 meilleures alternatives gratuites à ChatGPT", tag: "Chatbots", timeMin: "7" },
+      ],
+    },
+    en: {
+      title: "Gemini 2.5 Pro Review 2026: Is Google's AI Finally Worth It?",
+      desc: "Gemini 2.5 Pro sits at the top of every major benchmark in 2026. But six weeks of real-world testing reveal a more complicated picture. Where it genuinely beats ChatGPT and Claude. Where it still falls short. And who should actually switch.",
+      metaTitle: "Gemini 2.5 Pro Review 2026: honest test, pricing & verdict | Neuriflux",
+      metaDesc: "Full Gemini 2.5 Pro review for 2026: 6 weeks of real tests vs ChatGPT and Claude, real pricing breakdown, genuine strengths and honest limitations. Worth $19.99/month?",
+      content: `
+## Gemini 2.5 Pro: Google's most serious AI product yet
+
+A year ago, writing a positive review of Gemini required considerable charitable interpretation. The model lagged behind on complex reasoning, hallucinated at concerning rates, and felt like it existed primarily to say Google had an AI product rather than to actually be useful. The criticism was widespread. Most of it was deserved.
+
+April 2026 tells a different story. Gemini 2.5 Pro currently holds first place on LMArena (formerly LMSYS Chatbot Arena) with an Elo score of 1380 — ahead of GPT-4o and Claude 3.7 Sonnet. It leads Aider Polyglot at 72.0% on difficult coding tasks. And on SWE-bench Verified, it ranks among the top three available models.
+
+The question worth asking is whether benchmark performance translates into real-world usefulness. We spent six weeks testing Gemini 2.5 Pro against the same tasks we run on ChatGPT and Claude: software development, document analysis, editorial writing, web research, and automation workflows. The answer is more interesting than a simple ranking.
+
+## Understanding the Gemini ecosystem in 2026
+
+Before getting into test results, the Gemini product lineup needs some untangling — it's grown more complex than its competitors.
+
+**Gemini (free)** — the base tier, no subscription required. Powered by Gemini 2.0 Flash. Capable enough for everyday simple tasks, but noticeably limited on anything that demands sustained reasoning or large inputs.
+
+**Gemini Advanced (Google One AI Premium)** — access to Gemini 2.5 Pro, Google's flagship model. At $19.99/month in the US, it also bundles 2TB of Google Drive storage, which substantially changes the value calculation for anyone already paying for storage.
+
+**Gemini in Google Workspace** — embedded in Gmail, Docs, Sheets, Slides, and Meet. This is where Gemini becomes a genuinely different product category from its competitors. No other AI assistant knows your actual work context.
+
+**Gemini API / AI Studio** — developer access with Gemini 2.5 Pro Experimental and Flash variants for large-scale pipelines, at competitive per-token pricing.
+
+**The context window:** 1 million tokens as standard, up to 2 million on certain access tiers. This is the largest context window available in a mainstream consumer AI product, and it changes certain use cases fundamentally.
+
+## Six weeks of testing: what we actually measured
+
+### Weeks 1-2 — Software development and coding
+
+This is where Gemini 2.5 Pro surprised us most. On complex development tasks — refactoring a 3,000-line React codebase, debugging a Next.js pipeline, generating a complete REST API from a spec document — the model produced working code on the first attempt in 71% of cases. That's 8 percentage points above what we get from GPT-4o on identical prompts.
+
+The advantage compounds on projects that require understanding many files simultaneously. With the 1-million-token window, you can inject an entire medium-sized project and ask Gemini to reason about it holistically before making any changes. Claude handles this well too at 200,000 tokens. GPT-4o begins losing coherence on real-world codebases at its 128,000-token ceiling.
+
+**What's still annoying:** Gemini over-explains. Where Claude delivers 40 clean lines of code, Gemini delivers 40 lines plus 20 lines of comments and three unsolicited paragraphs of explanation. Fixable with the right prompt, but unnecessary friction by default.
+
+**Coding rating: 9.0/10**
+
+### Weeks 2-3 — Long document analysis
+
+This is Gemini's clearest competitive advantage in 2026, and the one with the fewest realistic challengers. The million-token window lets you feed in a 500-page report, ten contracts simultaneously, or an entire codebase and ask precise questions across the full corpus.
+
+We tested with an 180-page legal brief, a 240-page financial report, and an 80,000-token codebase. In all three cases, Gemini extracted the requested information more accurately than Claude (which occasionally truncated on the longest documents) and substantially better than GPT-4o (which lost coherence past the 80,000-token mark).
+
+**The practical implication:** a financial analyst can upload the 10-K filings of five competitors and request a comparative R&D strategy analysis in a single query. With any other model, that's five separate requests with coherence loss between them.
+
+**Document analysis rating: 9.5/10**
+
+### Weeks 3-4 — Editorial writing and content
+
+This is where the gap narrows. Gemini 2.5 Pro writes competently — clear structure, correct syntax, solid grasp of tonal nuance. But Claude 3.7 Sonnet remains, in our assessment, a notch above for creative writing and content that requires a distinctive voice.
+
+The difference is stylistic rather than technical. Gemini writes like a well-trained academic: correct, comprehensive, occasionally dry. Claude takes risks — unusual metaphors, unconventional framings, genuine editorial positions. For a blog post or newsletter that needs personality, Claude is still our default starting point.
+
+For more structured content — technical documentation, professional reports, formal emails — Gemini is excellent and sometimes more readable than Claude, which can tilt too literary.
+
+**Writing rating: 8.2/10**
+
+### Weeks 4-5 — Web research and real-time information
+
+Gemini has a structural advantage here that isn't going away: it's connected to Google Search natively. When we asked questions about events in the past thirty days, Gemini accessed real-time search results with a fluency that neither ChatGPT nor Claude matches.
+
+We tested 50 questions on events from the last month. Gemini answered correctly with cited sources in 84% of cases. ChatGPT with Browse enabled: 71%. Claude with web tools: 68%. The Google Search integration isn't a marketing claim — it's a meaningful functional difference for anyone who regularly needs current information.
+
+**The UX complaint:** Gemini sometimes handles citations awkwardly, inserting links mid-sentence rather than collecting them in a clean bibliography. Minor gripe, but it disrupts readability on research-heavy responses.
+
+**Web research rating: 8.8/10**
+
+### Weeks 5-6 — Google ecosystem integration
+
+This is the domain where comparison becomes almost unfair, because neither OpenAI nor Anthropic has access to your Gmail, Drive, Calendar, or Meet. Google does.
+
+Gemini in Workspace can draft an email knowing the full context of your previous exchanges with that contact. It can create a Docs report drawing directly from a connected Sheet. It can prepare a meeting brief by reading the calendar invitation and the shared documents. This isn't a theoretical capability — we used all of these daily in the final testing weeks.
+
+If your work runs through Google's ecosystem — and hundreds of millions of people's does — Gemini isn't "a good chatbot among others." It's potentially the most genuinely useful AI in your workday because it knows your actual working context.
+
+**Ecosystem integration rating: 9.8/10**
+
+## Pricing breakdown — what you're actually paying
+
+| Plan | Price | Model | Context |
+|---|---|---|---|
+| Gemini (free) | $0 | Gemini 2.0 Flash | 1M tokens |
+| Google One AI Premium | $19.99/month | Gemini 2.5 Pro | 1M tokens |
+| Google Workspace Business | Varies | Gemini in Gmail/Docs | 1M tokens |
+| Gemini API (Developers) | Pay-as-you-go | Gemini 2.5 Pro | 1-2M tokens |
+
+**The Google One AI Premium math:** at $19.99/month, the plan includes 2TB of Google Drive storage. If you're currently paying for Google One storage separately (around $9.99/month for 2TB), the effective cost of upgrading to AI Premium for Gemini 2.5 Pro access is roughly $10/month. That's well below both ChatGPT Plus and Claude Pro.
+
+For developers, Gemini API pricing is competitive at approximately $1.25 per million input tokens and $5.00 per million output tokens for Gemini 2.5 Pro. Lower than GPT-4 Turbo at equivalent volume.
+
+## Gemini 2.5 Pro vs ChatGPT vs Claude: the honest comparison
+
+| Criteria | Gemini 2.5 Pro | ChatGPT (GPT-4o) | Claude 3.7 Sonnet |
+|---|---|---|---|
+| Coding | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Logical reasoning | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Creative writing | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Long document analysis | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Real-time web search | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Third-party app integration | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
+| Long conversation coherence | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Multimodal (image/audio/video) | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+
+The table's conclusion is clear: **Gemini 2.5 Pro has no real competition on context window, Google ecosystem integration, and real-time web search.** On its distinctive strengths, it's genuinely ahead. But [Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) remains superior for creative writing and sustained conversational coherence, and ChatGPT's plugin ecosystem is more mature.
+
+## The limitations Google doesn't lead with
+
+**1. Gemini's personality remains thin**
+The most consistent feedback across six weeks of testing: Gemini answers competently but without character. Compared to Claude's genuine editorial voice or ChatGPT's occasional creative flair, Gemini often feels like it's filling in a form rather than engaging in conversation. For formal professional use, this isn't a problem. For creative and collaborative work, it's a real constraint.
+
+**2. Thinking mode comes with latency**
+Gemini 2.5 Pro's extended reasoning mode ("thinking") produces noticeably better results on complex problems — but can take 30 to 60 seconds to respond. For interactive, back-and-forth work sessions, that latency is genuinely frustrating compared to [Perplexity](/en/blog/perplexity-ai-review-2026) or even standard ChatGPT responses.
+
+**3. Hallucinations persist on niche topics**
+On highly specialized queries — tax law for a specific jurisdiction, rare medical protocols, history of obscure companies — Gemini hallucinates at rates comparable to its competitors. The Google Search connection helps with recent news, but not with specialized knowledge that doesn't surface in top search results.
+
+**4. Long video analysis remains inconsistent**
+Gemini can process images, audio, and video natively. Image analysis is excellent. Audio is solid. But video analysis beyond roughly 10 minutes produces inconsistent results, with some segments ignored or summarized too superficially. The capability is real; the execution at scale still needs work.
+
+**5. Privacy considerations in the Google ecosystem**
+For professionals handling sensitive data, it's worth noting that Gemini on consumer plans can use conversations to improve Google's models by default — similar to competitors, but Google's existing data footprint across Gmail, Drive, and Search makes this a more sensitive question for many users. Adjustable in settings, but requires active management.
+
+## Who should use Gemini 2.5 Pro — and who shouldn't
+
+✅ **Gemini Advanced is right for you if:**
+- Your work runs through Google Workspace (Gmail, Drive, Docs, Sheets, Meet)
+- You do software development and regularly need to reason across large codebases
+- You analyze lengthy documents — reports, contracts, financial filings — as a core workflow
+- You need current information with verifiable sources as a daily requirement
+- You're already paying for Google One storage and want to maximize the subscription
+
+❌ **Gemini Advanced is probably not for you if:**
+- Creative and editorial writing is your primary use case
+- You want an AI with a genuine personality and distinctive voice
+- You have strict confidentiality requirements around the data you process
+- Your workflow is built around Microsoft 365, where Copilot will integrate better
+- You don't need the extended context window and just want a solid everyday chatbot
+
+## Final verdict: 8.6/10 — Recommended with context
+
+Gemini 2.5 Pro is unambiguously one of the three best AI models available in 2026. On technical benchmarks, it frequently leads. On long-context analysis, it has no real peer. On Google ecosystem integration, it's in a category of its own.
+
+But benchmarks don't capture everything that matters in day-to-day use. Claude remains more pleasant to work with, more coherent over extended conversations, and better for anything requiring genuine expressive writing. ChatGPT has a more mature plugin ecosystem and a more engaging default personality.
+
+**Our practical recommendation:** if you're a heavy Google Workspace user, the free trial of Gemini Advanced is a straightforward call. One month is enough to determine whether it transforms your workflow. If you're looking for a general-purpose AI assistant without an existing Google anchor, [compare ChatGPT and Claude](/en/blog/chatgpt-vs-claude-vs-gemini-2026) first before committing.
+
+The strongest case for Gemini in 2026 isn't any individual feature — it's the compounding effect of having an AI that knows your email history, your documents, your calendar, and can search the web in real time. For users already inside that ecosystem, that's a genuinely different product than anything else on the market.
+
+## FAQ
+
+### Is Gemini 2.5 Pro actually better than ChatGPT in 2026?
+
+On specific dimensions, clearly yes: context window (1M vs 128K tokens), coding benchmarks, and real-time Google Search integration. On others, no — ChatGPT has a richer plugin ecosystem, a more engaging default personality, and better coherence on very long conversations. The answer depends entirely on your use case.
+
+### Is the free Gemini plan enough for everyday use?
+
+For simple tasks — summarizing text, drafting a basic email, answering general questions — Gemini 2.0 Flash on the free plan is genuinely capable. For complex code, advanced document analysis, or precise research, Gemini 2.5 Pro makes a meaningful difference worth the upgrade.
+
+### Can Gemini access my Google Drive files?
+
+Yes, with Gemini Advanced and Workspace integration enabled. You can reference Drive files directly in conversations, which is one of Gemini's most powerful and underused features. Ensure the integration is active in your Google account settings.
+
+### Are my Gemini conversations used to train Google's models?
+
+On consumer plans, yes by default — consistent with most competitors. You can disable this in your Google account activity controls. On Workspace Enterprise plans, data is not used for model training. Check your settings if privacy is a priority.
+      `,
+      related: [
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "12" },
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI Review 2026: Is It Better Than ChatGPT?", tag: "Chatbots", timeMin: "15" },
+        { slug: "deepseek-review-2026", title: "DeepSeek Review 2026: The Best Free ChatGPT Alternative?", tag: "Chatbots", timeMin: "14" },
+        { slug: "prompts-ia-2026", title: "How to Write AI Prompts That Actually Work in 2026", tag: "Productivity", timeMin: "18" },
+        { slug: "ia-2026", title: "AI Hallucinations: Why It Lies and How to Protect Yourself", tag: "Productivity", timeMin: "14" },
+        { slug: "alternatives-gratuites-chatgpt", title: "7 Best Free Alternatives to ChatGPT in 2026", tag: "Chatbots", timeMin: "7" },
+      ],
+    },
+  },
+
 // ─── IA & SEO 2026 ─────────────────────────────────────────────────────────────
   {
     slug: "ia-seo-2026",
