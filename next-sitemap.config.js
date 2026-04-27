@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "microsoft-copilot-review-2026",
   "gemini-review-2026",
   "ia-seo-2026",
   "heygen-2026",
@@ -30,6 +31,7 @@ const ARTICLE_SLUGS = [
 ];
 
 const COMPARATIF_SLUGS = [
+  "gamma-vs-tome-vs-beautiful-ai-2026",
   "lovable-vs-bolt-vs-v0-2026",
   "semrush-vs-ahrefs-vs-surfer-seo-2026",
   "heygen-vs-synthesia-vs-did-2026",
