@@ -844,7 +844,7 @@ export default function BlogClient({ lang }: { lang: Lang }) {
         </a>
 
         <ul className={`nav-links${menuOpen ? " open" : ""}`} role="list">
-          <li><a href={l("/ai-finder")}>{t.nav.aifinder}</a></li>
+          <li><a href={l("/aifinder")}>{t.nav.aifinder}</a></li>
           <li><a href={l("/blog")} className="active">{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")}>{t.nav.comparatifs}</a></li>
           <li><a href={l("/newsletter")}>{t.nav.newsletter}</a></li>

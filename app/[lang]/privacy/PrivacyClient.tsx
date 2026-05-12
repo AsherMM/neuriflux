@@ -7,7 +7,7 @@ type Lang = "fr" | "en";
 
 const T = {
   fr: {
-    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
+    nav: { aifinder:"Ai-Finder", blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
     back: "← Accueil",
     badge: "Conforme RGPD",
     title: "Politique de confidentialité",
@@ -26,7 +26,7 @@ const T = {
     footer: { rights: "Tous droits réservés.", made: "Fait avec", france: "en France" },
   },
   en: {
-    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
+    nav: { aifinder:"Ai-Finder", blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
     back: "← Home",
     badge: "GDPR Compliant",
     title: "Privacy Policy",
@@ -133,6 +133,7 @@ export default function PrivacyClient({ lang }: { lang: Lang }) {
       <nav className={scrolled ? "scrolled" : ""}>
         <a href={l("")} className="logo"><div className="logo-dot" />Neuri<em>flux</em></a>
         <ul className={`nav-links${menuOpen ? " open" : ""}`}>
+          <li><a href={l("/aifinder")}>{t.nav.aifinder}</a></li>
           <li><a href={l("/blog")}>{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")}>{t.nav.comparatifs}</a></li>
           <li><a href={l("/newsletter")}>{t.nav.newsletter}</a></li>

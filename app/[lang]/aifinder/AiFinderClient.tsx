@@ -2360,7 +2360,7 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
             </Link>
 
             <ul id={menuId} className={`navlinks${menuOpen ? " open" : ""}`} role="list">
-              <li><Link href={l("/ai-finder")} className="active">{t.nav.aifinder}</Link></li>
+              <li><Link href={l("/aifinder")} className="active">{t.nav.aifinder}</Link></li>
               <li><Link href={l("/blog")}>{t.nav.blog}</Link></li>
               <li><Link href={l("/comparatifs")}>{t.nav.comparatifs}</Link></li>
               <li><Link href={l("/newsletter")}>{t.nav.newsletter}</Link></li>
