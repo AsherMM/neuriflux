@@ -102,6 +102,465 @@ interface RawArticle {
 }
 
 const RAW_ARTICLES: RawArticle[] = [
+// ─── Erreurs de prompts IA 2026 ───────────────────────────────────────────────
+  {
+    slug: "prompt-errors-2026",
+    tag: "Productivity",
+    date: { fr: "12 mai 2026", en: "May 12, 2026" },
+    timeMin: "16",
+    featured: true,
+    affiliate: {
+      url: "https://neuriflux.com",
+      toolName: "Neuriflux",
+      label: {
+        fr: "Neuriflux.com",
+        en: "Neuriflux.com",
+      },
+    },
+    fr: {
+      title: "12 erreurs de prompts IA que tout le monde fait — et comment les corriger",
+      desc: "Vos prompts IA donnent des résultats médiocres ? Ce n'est probablement pas l'IA le problème. On a analysé des centaines de requêtes : voici les 12 erreurs que 90% des utilisateurs font, avec les corrections exactes qui transforment chaque réponse.",
+      metaTitle: "12 erreurs de prompts IA à éviter en 2026 (avec corrections) | Neuriflux",
+      metaDesc: "Découvrez les 12 erreurs de prompts IA que tout le monde fait en 2026. Exemples avant/après concrets, corrections immédiates, guide actionnable pour ChatGPT, Claude et Gemini.",
+      content: `
+## Pourquoi vos prompts ne donnent pas ce que vous voulez
+
+Il y a une conviction répandue dans la communauté IA : si la réponse est mauvaise, c'est que le modèle est limité. C'est rarement vrai. Dans la grande majorité des cas, la réponse est médiocre parce que la question était floue, incomplète ou mal formulée.
+
+Après avoir analysé des centaines de prompts — les nôtres, ceux de lecteurs, et les plus fréquents que l'on voit circuler sur les forums — un constat s'impose : les mêmes erreurs reviennent sans cesse. Pas des erreurs techniques. Des erreurs de communication. L'IA ne lit pas dans vos pensées, elle répond exactement à ce que vous lui demandez. Ni plus, ni moins.
+
+Cet article liste les 12 erreurs les plus courantes, avec pour chacune un exemple **avant** (le prompt qui déçoit) et un exemple **après** (celui qui produit un résultat exploitable). Aucune théorie, que du pratique.
+
+## Erreur #1 — Demander sans donner de contexte
+
+C'est l'erreur numéro un, de loin la plus répandue. On demande une réponse comme si l'IA connaissait déjà notre situation, notre projet, nos contraintes.
+
+**❌ Avant :** "Écris-moi un email de relance."
+
+**✅ Après :** "Écris un email de relance professionnel pour un prospect B2B dans le secteur immobilier commercial. Je lui ai envoyé une proposition il y a 10 jours, pas de réponse. Ton : chaleureux mais direct. Longueur : moins de 150 mots. Objectif : obtenir un retour, pas forcer un rendez-vous."
+
+**Ce qui change :** le contexte transforme une demande générique en demande spécifique. L'IA n'invente plus — elle exécute. La deuxième version produit un email utilisable immédiatement. La première produit un template corporate sans saveur.
+
+**La règle :** avant d'envoyer un prompt, demandez-vous "est-ce qu'un rédacteur humain aurait assez d'informations pour répondre correctement ?" Si la réponse est non, le prompt est incomplet.
+
+## Erreur #2 — Ne pas donner de rôle à l'IA
+
+L'IA sans rôle défini répond comme un généraliste prudent. L'IA avec un rôle précis répond comme un expert engagé. La différence de qualité est frappante.
+
+**❌ Avant :** "Donne-moi des conseils pour améliorer mon site web."
+
+**✅ Après :** "Tu es un consultant UX senior spécialisé dans les SaaS B2B avec 15 ans d'expérience. Analyse ces 3 problèmes sur mon site et donne-moi les 5 changements à prioriser pour augmenter les conversions : [description du site]."
+
+**Ce qui change :** le rôle oriente le registre, la profondeur et la posture. "Consultant UX senior" produit une réponse structurée, professionnelle, avec des priorités. Sans rôle, l'IA donne des conseils généraux qu'on trouve dans n'importe quel article de blog.
+
+**La règle :** commencez vos prompts par "Tu es [rôle précis avec spécialisation]". Le niveau de précision du rôle est directement proportionnel à la qualité de la réponse.
+
+## Erreur #3 — Oublier le format de sortie
+
+Vous demandez une analyse. L'IA vous répond en 8 paragraphes de prose dense. Vous vouliez un tableau. Résultat : vous passez 10 minutes à reformater ce que l'IA aurait pu produire directement en 10 secondes.
+
+**❌ Avant :** "Compare ChatGPT, Claude et Gemini."
+
+**✅ Après :** "Compare ChatGPT, Claude et Gemini en 2026 selon ces 5 critères : rédaction, codage, recherche web, prix, contexte. Présente le résultat sous forme de tableau Markdown avec une colonne 'Verdict rapide' pour chaque outil. Conclure par une recommandation en 3 lignes maximum."
+
+**Ce qui change :** la spécification du format élimine l'interprétation. L'IA sait exactement ce qu'elle doit produire. Vous obtenez quelque chose d'exploitable sans post-traitement.
+
+**La règle :** précisez toujours le format de sortie : tableau, liste numérotée, bullet points, JSON, email, article, code, prose. Si la longueur compte, précisez-la aussi.
+
+## Erreur #4 — Poser plusieurs questions en une
+
+Un prompt = une tâche. Quand vous posez trois questions dans un seul message, l'IA traite les trois de façon superficielle. Elle ne peut pas aller en profondeur sur tout simultanément.
+
+**❌ Avant :** "Peux-tu m'expliquer comment fonctionne le machine learning, me donner des exemples concrets dans le marketing et me dire quels outils utiliser pour commencer ?"
+
+**✅ Après (3 prompts séparés) :**
+- "Explique le machine learning comme si j'étais un marketeur sans background technique. Maximum 200 mots."
+- "Donne-moi 5 applications concrètes du machine learning en marketing B2B, avec pour chacune un exemple réel d'entreprise qui l'utilise."
+- "Quels sont les 3 outils no-code les plus accessibles pour un marketeur qui veut intégrer du ML dans son travail en 2026 ?"
+
+**Ce qui change :** chaque prompt reçoit une attention complète. Les réponses sont plus riches, plus précises, directement utilisables. La conversation devient un vrai dialogue.
+
+**La règle :** une idée, un prompt. Si votre message contient plusieurs points d'interrogation ou plusieurs "et", découpez-le.
+
+## Erreur #5 — Accepter la première réponse sans itérer
+
+La première réponse est rarement la meilleure. L'IA vous donne une interprétation de votre demande — pas nécessairement la bonne. L'itération est la compétence de prompting la plus sous-utilisée.
+
+**❌ Comportement courant :** lire la première réponse, trouver qu'elle est "pas terrible", et soit l'utiliser quand même soit refaire le même prompt depuis le début.
+
+**✅ Comportement optimal :**
+- "C'est bien mais trop formel. Reprends la même structure en adoptant un ton plus direct et moins corporate."
+- "Le deuxième paragraphe est parfait. Réécris les deux autres dans le même registre."
+- "Trop long. Coupe de moitié sans perdre les 3 points clés."
+- "Donne-moi maintenant une version alternative qui argumente l'exact opposé."
+
+**Ce qui change :** l'itération transforme un brouillon correct en un résultat calibré. Les modèles récents comme Claude 3.7 ou GPT-4o retiennent le contexte de la conversation — chaque échange affine la compréhension mutuelle.
+
+**La règle :** traitez l'IA comme un collaborateur, pas un distributeur automatique. La première réponse est le point de départ, pas le point d'arrivée.
+
+## Erreur #6 — Être trop poli (ou trop agressif)
+
+Les "s'il vous plaît", "merci", "pourriez-vous" n'améliorent pas la qualité des réponses. Ils allongent le prompt sans valeur ajoutée. À l'inverse, l'agressivité ou les instructions conflictuelles produisent des réponses erratiques.
+
+**❌ Avant :** "Bonjour ! Je me demandais si tu pourrais peut-être m'aider à rédiger, si c'est possible, une description de produit pour mon e-commerce ? Merci beaucoup d'avance !"
+
+**✅ Après :** "Rédige une description produit pour une bougie naturelle à la lavande vendue 28€. Cible : femmes 30-50 ans, sensibles au bien-être et au fait-main français. Format : 80 mots max, accroche forte, 3 bénéfices, appel à l'action. Ton : chaleureux et premium, sans superlatifs creux."
+
+**Ce qui change :** le prompt direct dit exactement ce que vous voulez. L'IA n'a pas à interpréter vos hésitations ou vos formules de politesse — elle exécute.
+
+**La règle :** écrivez vos prompts comme des briefs professionnels, pas comme des messages à un inconnu. La politesse n'est pas nécessaire. La clarté, oui.
+
+## Erreur #7 — Ne pas donner d'exemples
+
+Les instructions abstraites produisent des résultats abstraits. Montrer un exemple de ce que vous voulez — ou de ce que vous ne voulez pas — est l'un des leviers les plus puissants du prompting.
+
+**❌ Avant :** "Écris des titres d'articles percutants sur l'IA."
+
+**✅ Après :** "Génère 10 titres d'articles sur l'IA pour un blog tech français. Le ton doit être direct et sans jargon, comme ces exemples que j'aime : 'L'IA qui lit dans vos mails — ce que Microsoft ne dit pas', 'ChatGPT ment. Voici quand et pourquoi'. Évite les titres avec des points d'interrogation et les formules du type 'Tout ce que vous devez savoir sur...'."
+
+**Ce qui change :** l'exemple concret calibre le registre, le niveau de langage et le style mieux que n'importe quelle description abstraite. L'IA comprend immédiatement ce que "percutant" signifie pour vous.
+
+**La règle :** une instruction + un exemple vaut dix fois une instruction seule. Donnez des exemples de ce que vous voulez ET de ce que vous ne voulez pas.
+
+## Erreur #8 — Ignorer le paramètre "audience"
+
+Une réponse sur la cybersécurité n'est pas la même selon qu'elle s'adresse à un RSSI, à un manager non-technique ou à un étudiant en BTS. Sans préciser l'audience, l'IA choisit un niveau de langage par défaut — qui est rarement le vôtre.
+
+**❌ Avant :** "Explique ce qu'est le phishing."
+
+**✅ Après :** "Explique ce qu'est le phishing à des employés non-techniques d'une PME de 50 personnes. Utilise des métaphores du quotidien, pas de jargon. Inclus 2 exemples réalistes d'attaques récentes. Conclure par 3 réflexes simples à adopter immédiatement. Format : article interne de 300 mots maximum."
+
+**Ce qui change :** l'audience définit le vocabulaire, les analogies, le niveau de détail et le ton. Préciser "employés non-techniques" produit quelque chose de lisible et actionnable. Sans cette précision, la réponse est souvent trop technique ou trop vague.
+
+**La règle :** définissez toujours à qui s'adresse le contenu que vous demandez. Niveau de connaissance, secteur, tranche d'âge, contexte — tout ce qui permet à l'IA de calibrer son niveau de langage.
+
+## Erreur #9 — Demander une opinion sans encadrement
+
+"Qu'est-ce que tu penses de [X] ?" est la question qui produit les réponses les plus molles de l'IA. Par défaut, les modèles sont entraînés à équilibrer les points de vue et à éviter les positions tranchées. Si vous voulez une vraie opinion, vous devez l'autoriser explicitement.
+
+**❌ Avant :** "Qu'est-ce que tu penses du remote work ?"
+
+**✅ Après :** "Donne-moi une prise de position tranchée sur le remote work pour un article d'opinion destiné à des managers en 2026. Tu peux choisir de défendre ou d'attaquer le remote — l'important est que l'argument soit fort et qu'il contre les clichés habituels. Pas de 'd'un côté / de l'autre', pas de nuances paresseuses. Un point de vue clair avec des arguments qui dérangent."
+
+**Ce qui change :** vous autorisez explicitement l'IA à prendre position. L'instruction "pas de nuances paresseuses" coupe court aux réponses équilibristes par défaut.
+
+**La règle :** si vous voulez une opinion forte, dites-le explicitement. Donnez une direction ou laissez l'IA choisir, mais précisez que vous voulez un vrai point de vue, pas une réponse de normand.
+
+## Erreur #10 — Ne pas préciser la langue et le registre
+
+L'IA par défaut produit un français (ou un anglais) standard, neutre, sans personnalité. Pour un contenu qui vous ressemble ou qui colle à votre marque, vous devez préciser le registre.
+
+**❌ Avant :** "Rédige une bio LinkedIn pour un entrepreneur dans la tech."
+
+**✅ Après :** "Rédige une bio LinkedIn pour un entrepreneur qui a cofondé 2 SaaS B2B et qui cible des investisseurs seed. Registre : direct et confiant, sans arrogance. Pas de 'passionné par' ni de 'j'ai eu la chance de'. Pas de liste de bullet points. Un texte fluide à la première personne, 120 mots max, qui se termine par une accroche qui donne envie de contacter. Inspiré du style de Paul Graham ou Naval Ravikant."
+
+**Ce qui change :** les interdits ("passionné par", bullet points, arrogance) sont aussi importants que les consignes positives. La référence à un style connu (Paul Graham) calibre immédiatement le registre sans avoir à le décrire.
+
+**La règle :** précisez le registre avec des exemples positifs ET des exemples négatifs. Les interdits sont souvent plus efficaces que les prescriptions.
+
+## Erreur #11 — Utiliser l'IA comme moteur de recherche
+
+"Quelles sont les dernières nouvelles sur [X] ?" posé à un modèle sans accès web est voué à l'échec. L'IA va soit confabule, soit vous prévenir qu'elle n't as pas d'accès temps réel — ce qui ne vous avance pas.
+
+**❌ Avant :** "Quels sont les résultats financiers de Mistral AI en 2026 ?"
+
+**✅ Approche :** utiliser [Perplexity](/fr/blog/perplexity-ai-review-2026) pour les questions d'actualité et de données récentes, puis apporter ces données à ChatGPT ou Claude pour l'analyse et la synthèse.
+
+**Prompt adapté :** "[Colle ici les données Perplexity] — À partir de ces données, analyse la trajectoire financière de Mistral AI et compare avec les autres pure players IA européens. Donne-moi un verdict en 5 points sur leur viabilité à 3 ans."
+
+**Ce qui change :** vous utilisez chaque outil pour ce qu'il fait le mieux. Perplexity pour trouver, Claude ou ChatGPT pour analyser et synthétiser. La combinaison est imbattable.
+
+**La règle :** l'IA sans connexion web ne sait rien après sa date de coupure. Pour tout ce qui est récent (actualités, prix, données financières, événements), utilisez un outil de recherche en amont.
+
+## Erreur #12 — Ne pas sauvegarder ses meilleurs prompts
+
+C'est l'erreur la plus bête — et pourtant universelle. Vous trouvez enfin le prompt parfait pour un cas d'usage récurrent. Vous l'utilisez une fois, obtenez un résultat excellent. Et vous le perdez dans la conversation.
+
+**❌ Comportement courant :** reconstruire le prompt depuis zéro à chaque utilisation, en espérant retrouver la même formulation.
+
+**✅ Comportement optimal :**
+- Maintenir un document "bibliothèque de prompts" classé par cas d'usage (rédaction, analyse, code, emails...)
+- Versionner les prompts qui fonctionnent comme on versionne du code : v1, v2, v2.1
+- Créer des "prompt templates" avec des variables à remplir : [AUDIENCE], [SUJET], [FORMAT], [LONGUEUR]
+- Utiliser les "instructions personnalisées" de ChatGPT ou les "Projects" de Claude pour stocker le contexte récurrent
+
+**Ce qui change :** un bon prompt est un actif. Le traiter comme tel — le documenter, l'améliorer, le partager — démultiplie sa valeur dans le temps.
+
+**La règle :** dès qu'un prompt produit un résultat nettement au-dessus de la moyenne, sauvegardez-le immédiatement avec une note sur le contexte d'utilisation.
+
+## Les 3 principes qui résument tout
+
+Si vous ne deviez retenir que trois règles de cet article :
+
+**1. Contexte + Rôle + Format = 80% du chemin**
+Ces trois éléments à eux seuls améliorent radicalement la qualité de n'importe quelle réponse. Avant chaque prompt, vérifiez que les trois sont présents.
+
+**2. Itérez, ne recommencez pas**
+La première réponse est rarement la meilleure. Un ou deux tours d'affinement produisent presque toujours quelque chose de nettement supérieur. Utilisez le contexte de la conversation.
+
+**3. L'IA répond exactement à ce que vous demandez**
+Pas plus, pas moins. Si le résultat est décevant, la cause est dans le prompt dans 90% des cas. Lisez votre prompt comme si vous étiez l'IA — vous verrez immédiatement ce qui manque.
+
+## Aller plus loin : les ressources qui changent la donne
+
+Ces 12 erreurs corrigées sont un excellent point de départ. Pour aller plus loin dans la maîtrise des prompts, vous pouvez :
+
+- Consulter notre [guide complet des prompts IA 2026](/fr/blog/prompts-ia-2026) — techniques avancées, chain-of-thought, few-shot prompting
+- Tester [Perplexity AI](/fr/blog/perplexity-ai-review-2026) pour les prompts de recherche avec accès web en temps réel
+- Comparer [ChatGPT, Claude et Gemini](/fr/blog/chatgpt-vs-claude-vs-gemini-2026) pour choisir le modèle le plus adapté à votre cas d'usage principal
+
+La maîtrise des prompts n'est pas une compétence technique. C'est une compétence de communication. Et comme toute compétence de communication, elle s'apprend, se pratique et s'améliore. Les 12 corrections de cet article sont vos premiers kilomètres d'entraînement.
+
+## FAQ
+
+### Est-ce que la qualité du prompt change vraiment autant la réponse ?
+
+Oui, de façon spectaculaire. Sur les mêmes modèles (GPT-4o, Claude 3.7, Gemini 2.5), un prompt optimisé peut produire un résultat 3 à 5 fois plus utile qu'un prompt vague sur le même sujet. Ce n'est pas une question de magie : c'est une question d'information. L'IA produit de la valeur proportionnellement à la qualité des inputs.
+
+### Ces conseils s'appliquent à tous les modèles IA ?
+
+Oui, pour l'essentiel. Les principes de contexte, rôle, format et itération fonctionnent avec ChatGPT, Claude, Gemini, Mistral et tous les modèles de langage actuels. Les nuances existent — Claude réagit mieux aux instructions explicites sur le ton, GPT-4o est plus flexible sur les formats — mais la base est universelle.
+
+### Faut-il vraiment autant de détails dans chaque prompt ?
+
+Non, pas systématiquement. Pour une tâche simple et ponctuelle, un prompt court peut suffire. La règle des 12 erreurs s'applique surtout aux prompts pour des contenus importants, récurrents ou complexes. Calibrez le niveau de détail au niveau d'enjeu de la tâche.
+
+### Comment se souvenir de toutes ces règles ?
+
+Vous n'avez pas besoin de toutes les mémoriser. Gardez cet article en bookmark et consultez-le quand un prompt ne donne pas satisfaction. Avec la pratique, les réflexes s'installent naturellement — la plupart des utilisateurs avancés appliquent ces règles instinctivement après quelques semaines.
+      `,
+      related: [
+        { slug: "prompts-ia-2026", title: "Guide complet des prompts IA : techniques avancées 2026", tag: "Productivity", timeMin: "18" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", tag: "Chatbots", timeMin: "16" },
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI : vaut-il mieux que ChatGPT et Google ?", tag: "Chatbots", timeMin: "13" },
+        { slug: "ia-2026", title: "Pourquoi l'IA invente des choses — et comment ne plus se faire avoir", tag: "Productivity", timeMin: "14" },
+        { slug: "alternatives-gratuites-chatgpt", title: "Les 7 meilleures alternatives gratuites à ChatGPT", tag: "Chatbots", timeMin: "7" },
+        { slug: "cursor-ai-review-2026", title: "Cursor AI : avis complet 2026", tag: "Code", timeMin: "11" },
+      ],
+    },
+    en: {
+      title: "12 AI Prompt Mistakes Everyone Makes — and How to Fix Them",
+      desc: "Getting weak results from AI? The model probably isn't the problem. After analyzing hundreds of prompts, we identified 12 mistakes 90% of users make — with before/after examples that show exactly what changes when you get it right.",
+      metaTitle: "12 AI prompt mistakes to avoid in 2026 (with fixes) | Neuriflux",
+      metaDesc: "The 12 most common AI prompt mistakes in 2026, with concrete before/after examples and immediate fixes. Works with ChatGPT, Claude and Gemini.",
+      content: `
+## Why your prompts aren't delivering what you expect
+
+There's a widespread assumption in the AI community: if the output is bad, the model must be limited. This is almost never true. In the vast majority of cases, the response is poor because the question was vague, incomplete, or poorly framed.
+
+After analyzing hundreds of prompts — our own, readers', and the most common ones circulating in forums — a clear pattern emerges: the same mistakes come up again and again. Not technical mistakes. Communication mistakes. AI doesn't read your mind. It responds to exactly what you ask. Nothing more, nothing less.
+
+This article covers the 12 most common errors, with a **before** example (the prompt that disappoints) and an **after** example (the one that gets results) for each. No theory — just practical fixes you can apply immediately.
+
+## Mistake #1 — Asking without providing context
+
+This is the number one error, by far the most common. People ask for a response as if the AI already knows their situation, project, and constraints.
+
+**❌ Before:** "Write me a follow-up email."
+
+**✅ After:** "Write a professional follow-up email for a B2B prospect in commercial real estate. I sent them a proposal 10 days ago with no reply. Tone: warm but direct. Length: under 150 words. Goal: get a response — not force a meeting."
+
+**What changes:** context transforms a generic request into a specific one. The AI stops guessing and starts executing. The second version produces a usable email immediately. The first produces a lifeless corporate template.
+
+**The rule:** before sending a prompt, ask yourself — "would a human writer have enough information to respond correctly?" If the answer is no, the prompt is incomplete.
+
+## Mistake #2 — Not giving the AI a role
+
+An AI without a defined role responds as a cautious generalist. An AI with a precise role responds as an engaged expert. The quality difference is striking.
+
+**❌ Before:** "Give me some advice for improving my website."
+
+**✅ After:** "You are a senior UX consultant specializing in B2B SaaS with 15 years of experience. Analyze these 3 problems on my website and give me the 5 highest-priority changes to increase conversions: [description]."
+
+**What changes:** the role shapes the register, depth, and posture of the response. "Senior UX consultant" produces a structured, professional answer with clear priorities. Without a role, you get the kind of generic advice found in any blog post.
+
+**The rule:** start your prompts with "You are [precise role with specialization]." The more specific the role, the better the output.
+
+## Mistake #3 — Forgetting to specify the output format
+
+You ask for an analysis. The AI gives you eight paragraphs of dense prose. You wanted a table. Result: ten minutes reformatting what the AI could have produced directly in ten seconds.
+
+**❌ Before:** "Compare ChatGPT, Claude and Gemini."
+
+**✅ After:** "Compare ChatGPT, Claude and Gemini in 2026 on these 5 criteria: writing, coding, web search, pricing, context window. Present the result as a Markdown table with a 'Quick verdict' column for each tool. End with a 3-line recommendation."
+
+**What changes:** specifying the format eliminates interpretation. The AI knows exactly what to produce. You get something usable without any post-processing.
+
+**The rule:** always specify the output format — table, numbered list, bullet points, JSON, email, article, code, prose. If length matters, specify that too.
+
+## Mistake #4 — Asking multiple questions at once
+
+One prompt = one task. When you ask three questions in a single message, the AI handles all three superficially. It can't go deep on everything simultaneously.
+
+**❌ Before:** "Can you explain how machine learning works, give me real-world marketing examples, and tell me which tools to use to get started?"
+
+**✅ After (3 separate prompts):**
+- "Explain machine learning as if I'm a marketer with no technical background. Maximum 200 words."
+- "Give me 5 concrete applications of machine learning in B2B marketing, with a real company example for each."
+- "What are the 3 most accessible no-code tools for a marketer who wants to integrate ML into their workflow in 2026?"
+
+**What changes:** each prompt gets full attention. The responses are richer, more precise, and immediately usable. The conversation becomes a real dialogue.
+
+**The rule:** one idea, one prompt. If your message contains multiple question marks or multiple "ands," break it apart.
+
+## Mistake #5 — Accepting the first response without iterating
+
+The first response is rarely the best one. The AI gives you its interpretation of your request — not necessarily the right one. Iteration is the most underused prompting skill.
+
+**❌ Common behavior:** read the first response, decide it's "not great," and either use it anyway or start over with the same prompt.
+
+**✅ Better approach:**
+- "Good structure but too formal. Rewrite it with a more direct, less corporate tone."
+- "The second paragraph is perfect. Rewrite the other two in the same register."
+- "Too long. Cut it in half without losing the 3 key points."
+- "Now give me an alternative version that argues the exact opposite."
+
+**What changes:** iteration turns a decent draft into a calibrated result. Recent models like Claude 3.7 or GPT-4o maintain conversation context — each exchange refines mutual understanding.
+
+**The rule:** treat AI like a collaborator, not a vending machine. The first response is the starting point, not the destination.
+
+## Mistake #6 — Being too polite (or too aggressive)
+
+"Please," "thank you," "could you perhaps" don't improve output quality. They add length without value. Conversely, aggression or conflicting instructions produce erratic responses.
+
+**❌ Before:** "Hi! I was wondering if maybe you could help me write, if at all possible, a product description for my e-commerce store? Thanks so much in advance!"
+
+**✅ After:** "Write a product description for a natural lavender candle priced at $34. Target: women 30-50 interested in wellness and handcrafted goods. Format: 80 words max, strong hook, 3 benefits, call to action. Tone: warm and premium, no empty superlatives."
+
+**What changes:** the direct prompt says exactly what you want. The AI doesn't need to interpret hesitations or politeness formulas — it executes.
+
+**The rule:** write prompts like professional briefs, not messages to a stranger. Politeness is unnecessary. Clarity is everything.
+
+## Mistake #7 — Not providing examples
+
+Abstract instructions produce abstract results. Showing an example of what you want — or what you don't want — is one of the most powerful prompting levers available.
+
+**❌ Before:** "Write some punchy headlines about AI."
+
+**✅ After:** "Generate 10 article headlines about AI for a tech blog. The tone should be direct and jargon-free, like these examples I like: 'The AI Reading Your Emails — What Microsoft Isn't Saying', 'ChatGPT Lies. Here's When and Why.' Avoid headlines with question marks and phrases like 'Everything You Need to Know About...'"
+
+**What changes:** a concrete example calibrates register, language level, and style better than any abstract description. The AI immediately understands what "punchy" means to you.
+
+**The rule:** an instruction with an example is ten times more effective than an instruction alone. Provide examples of what you want AND what you don't.
+
+## Mistake #8 — Ignoring the audience parameter
+
+An explanation of cybersecurity looks completely different depending on whether it's addressed to a CISO, a non-technical manager, or a student. Without specifying the audience, the AI defaults to a neutral language level — which is rarely yours.
+
+**❌ Before:** "Explain what phishing is."
+
+**✅ After:** "Explain phishing to non-technical employees at a 50-person company. Use everyday metaphors, no jargon. Include 2 realistic recent attack examples. End with 3 simple habits to adopt immediately. Format: internal article of 300 words max."
+
+**What changes:** the audience defines vocabulary, analogies, depth, and tone. "Non-technical employees" produces something readable and actionable. Without this specification, the response is often either too technical or too vague.
+
+**The rule:** always define who the content is for. Knowledge level, industry, age group, context — anything that helps the AI calibrate its register.
+
+## Mistake #9 — Asking for an opinion without giving permission
+
+"What do you think about [X]?" is the question that produces the most evasive AI responses. By default, models are trained to balance perspectives and avoid strong positions. If you want a real opinion, you have to explicitly allow it.
+
+**❌ Before:** "What do you think about remote work?"
+
+**✅ After:** "Give me a sharp, opinionated take on remote work for an opinion piece aimed at managers in 2026. You can defend or attack it — what matters is that the argument is strong and cuts against the usual clichés. No 'on one hand / on the other hand,' no lazy nuance. One clear point of view with arguments that provoke."
+
+**What changes:** you explicitly authorize the AI to take a position. The instruction "no lazy nuance" cuts off the default fence-sitting response.
+
+**The rule:** if you want a strong opinion, say so explicitly. Give a direction or let the AI choose, but specify that you want a real point of view, not a diplomatic non-answer.
+
+## Mistake #10 — Not specifying tone and register
+
+By default, AI produces standard, neutral writing with no distinctive voice. For content that sounds like you or fits your brand, you need to specify the register — including what to avoid.
+
+**❌ Before:** "Write a LinkedIn bio for a tech entrepreneur."
+
+**✅ After:** "Write a LinkedIn bio for an entrepreneur who co-founded 2 B2B SaaS companies and is targeting seed investors. Register: direct and confident, not arrogant. No 'passionate about' or 'I had the privilege of.' No bullet points. A flowing first-person text, max 120 words, ending with a hook that makes someone want to reach out. Inspired by the style of Paul Graham or Naval Ravikant."
+
+**What changes:** the prohibitions ("passionate about," bullet points, arrogance) are as important as the positive instructions. A style reference (Paul Graham) instantly calibrates the register without requiring a detailed description.
+
+**The rule:** specify register with positive AND negative examples. Prohibitions are often more effective than prescriptions.
+
+## Mistake #11 — Using AI as a search engine
+
+"What's the latest news on [X]?" asked to a model without web access is a recipe for failure. The AI will either confabulate or warn you it has no real-time access — neither of which helps you.
+
+**❌ Before:** "What are Mistral AI's financial results in 2026?"
+
+**✅ Better approach:** use [Perplexity](/en/blog/perplexity-ai-review-2026) for current events and recent data, then bring that data to ChatGPT or Claude for analysis and synthesis.
+
+**Adapted prompt:** "[Paste Perplexity results here] — Based on this data, analyze Mistral AI's financial trajectory and compare with other European AI pure players. Give me a 5-point verdict on their 3-year viability."
+
+**What changes:** you use each tool for what it does best. Perplexity to find, Claude or ChatGPT to analyze and synthesize. The combination is unbeatable.
+
+**The rule:** AI without web access knows nothing after its training cutoff. For anything recent — news, prices, financial data, events — use a search tool first.
+
+## Mistake #12 — Not saving your best prompts
+
+This is the most avoidable mistake — and yet nearly universal. You finally find the perfect prompt for a recurring use case. You use it once, get an excellent result. Then you lose it in the conversation history.
+
+**❌ Common behavior:** rebuilding the prompt from scratch every time, hoping to reconstruct the same wording.
+
+**✅ Better approach:**
+- Keep a "prompt library" document organized by use case (writing, analysis, code, emails...)
+- Version prompts that work, like code: v1, v2, v2.1
+- Create "prompt templates" with fillable variables: [AUDIENCE], [TOPIC], [FORMAT], [LENGTH]
+- Use ChatGPT's custom instructions or Claude's Projects to store recurring context
+
+**What changes:** a good prompt is an asset. Treat it like one — document it, refine it, share it — and it multiplies in value over time.
+
+**The rule:** the moment a prompt produces a result that's clearly above average, save it immediately with a note on the use case.
+
+## The 3 principles that sum it all up
+
+If you only take three things from this article:
+
+**1. Context + Role + Format = 80% of the work**
+These three elements alone dramatically improve the quality of any response. Before every important prompt, check that all three are present.
+
+**2. Iterate, don't restart**
+The first response is rarely the best. One or two rounds of refinement almost always produce something noticeably better. Use the conversation context.
+
+**3. AI responds to exactly what you ask**
+Nothing more, nothing less. If the result is disappointing, the cause is in the prompt 90% of the time. Read your prompt as if you were the AI — you'll immediately see what's missing.
+
+## Go further: the resources that change the game
+
+These 12 fixes are a strong starting point. To go deeper into prompt mastery:
+
+- Our [complete AI prompts guide 2026](/en/blog/prompts-ia-2026) — advanced techniques, chain-of-thought, few-shot prompting
+- [Perplexity AI](/en/blog/perplexity-ai-review-2026) for research prompts with real-time web access
+- [ChatGPT vs Claude vs Gemini](/en/blog/chatgpt-vs-claude-vs-gemini-2026) to choose the right model for your main use case
+
+Prompt mastery isn't a technical skill. It's a communication skill. And like any communication skill, it improves with practice. The 12 fixes in this article are your first miles of training.
+
+## FAQ
+
+### Does prompt quality really change the output that much?
+
+Yes — dramatically. On the same models (GPT-4o, Claude 3.7, Gemini 2.5), an optimized prompt can produce a result 3 to 5 times more useful than a vague prompt on the same topic. It's not magic: it's information. AI produces value proportional to the quality of the inputs.
+
+### Do these tips apply to all AI models?
+
+Yes, for the most part. The principles of context, role, format, and iteration work with ChatGPT, Claude, Gemini, Mistral, and all current language models. Nuances exist — Claude responds better to explicit tone instructions, GPT-4o is more flexible with formats — but the foundation is universal.
+
+### Do I really need that much detail in every prompt?
+
+No, not always. For simple, one-off tasks, a short prompt can be enough. The 12-mistake framework applies most strongly to prompts for important, recurring, or complex content. Match the level of detail to the stakes of the task.
+
+### How do I remember all these rules?
+
+You don't need to memorize them. Bookmark this article and refer to it when a prompt underperforms. With practice, the habits install themselves naturally — most advanced users apply these rules instinctively after a few weeks.
+      `,
+      related: [
+        { slug: "prompts-ia-2026", title: "Complete AI Prompts Guide: Advanced Techniques 2026", tag: "Productivity", timeMin: "18" },
+        { slug: "chatgpt-vs-claude-vs-gemini-2026", title: "ChatGPT vs Claude vs Gemini: which to choose in 2026?", tag: "Chatbots", timeMin: "16" },
+        { slug: "perplexity-ai-review-2026", title: "Perplexity AI: Is It Better Than ChatGPT and Google?", tag: "Chatbots", timeMin: "13" },
+        { slug: "ia-2026", title: "Why AI Hallucinates — And How to Stop Getting Fooled", tag: "Productivity", timeMin: "14" },
+        { slug: "alternatives-gratuites-chatgpt", title: "7 Best Free Alternatives to ChatGPT in 2026", tag: "Chatbots", timeMin: "7" },
+        { slug: "cursor-ai-review-2026", title: "Cursor AI Review 2026: Is It the Best AI Code Editor?", tag: "Code", timeMin: "11" },
+      ],
+    },
+  },
+
 // ─── Microsoft Copilot Review 2026 ───────────────────────────────────────────
   {
     slug: "microsoft-copilot-review-2026",

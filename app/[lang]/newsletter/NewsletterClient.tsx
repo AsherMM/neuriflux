@@ -9,7 +9,7 @@ type Lang = "fr" | "en";
 // ─── Traductions ───────────────────────────────────────────────────────────────
 const T = {
   fr: {
-    nav: { blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
+    nav: { aifinder:"Ai-Finder", blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
     seo: {
       title: "Le Radar IA — Newsletter IA gratuite chaque lundi | Neuriflux",
       description: "Rejoignez 3 200+ professionnels qui reçoivent chaque lundi les meilleurs outils IA, comparatifs honnêtes et deals à ne pas rater. Gratuit, sans spam.",
@@ -90,7 +90,7 @@ const T = {
     ftRights: "Tous droits réservés.", ftMade: "Fait avec ♥ en France",
   },
   en: {
-    nav: { blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
+    nav: { aifinder:"Ai-Finder", blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
     seo: {
       title: "The AI Radar — Free weekly AI newsletter | Neuriflux",
       description: "Join 3,200+ professionals who receive the best AI tools, honest comparisons and deals every Monday. Free, no spam.",
@@ -483,6 +483,7 @@ export default function NewsletterClient({ lang }: { lang: Lang }) {
       <nav className={scrolled ? "scrolled" : ""}>
         <a href={l("")} className="logo"><div className="logo-dot" />Neuri<em>flux</em></a>
         <ul className={`nav-links${menuOpen ? " open" : ""}`}>
+          <li><a href={l("/aifinder")}>{t.nav.aifinder}</a></li>
           <li><a href={l("/blog")}>{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")}>{t.nav.comparatifs}</a></li>
           <li><a href={l("/newsletter")} className="active">{t.nav.newsletter}</a></li>

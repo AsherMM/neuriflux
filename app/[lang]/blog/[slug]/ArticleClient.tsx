@@ -51,6 +51,7 @@ type LocaleCopy = {
   exitCta: string;
   mobileShare: string;
   nav: {
+    aifinder: string;
     blog: string;
     comparatifs: string;
     newsletter: string;
@@ -114,6 +115,7 @@ const COPY: Record<Lang, LocaleCopy> = {
     exitCta: "Continuer la lecture →",
     mobileShare: "WhatsApp",
     nav: {
+      aifinder: "Ai-Finder",
       blog: "Blog",
       comparatifs: "Comparatifs",
       newsletter: "Newsletter",
@@ -149,6 +151,7 @@ const COPY: Record<Lang, LocaleCopy> = {
     exitCta: "Keep reading →",
     mobileShare: "WhatsApp",
     nav: {
+      aifinder: "Ai-Finder",
       blog: "Blog",
       comparatifs: "Comparisons",
       newsletter: "Newsletter",
@@ -301,7 +304,7 @@ function ProgressBar({ color }: { color: string }) {
     const onScroll = () => {
       const el = document.documentElement;
       const total = el.scrollHeight - el.clientHeight;
-      setProgress(total > 0 ? (el.scrollTop / total) * 100 : 0);
+      setProgress(total > 0 ? (window.scrollY / total) * 100 : 0);
     };
 
     onScroll();
@@ -714,9 +717,7 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
       {productSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />}
       {affiliate && <link rel="preconnect" href={(() => { try { return new URL(affiliate.url).origin; } catch { return ""; } })()} />}
       <link rel="canonical" href={articleUrl} />
-      <link rel="alternate" hrefLang={lang} href={articleUrl} />
-      <link rel="alternate" hrefLang={altLang} href={altUrl} />
-
+      
       <style>{`
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         :root{--bg:#080c10;--bg2:#0d1117;--bg3:#111820;--border:rgba(255,255,255,.065);--cyan:#00e6be;--cdim:rgba(0,230,190,.09);--text:#edf2f7;--muted:#5a6a7a;--dim:#2a3a4a;--d:'Syne',sans-serif;--m:'JetBrains Mono',monospace;--body:Georgia,'Times New Roman',serif;--pad:clamp(1.25rem,5vw,4rem)}
@@ -775,6 +776,7 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
       <nav className={scrolled ? "scrolled" : ""}>
         <Link href={l("")} className="logo"><div className="logo-dot" />Neuri<em>flux</em></Link>
         <ul className={`nav-links${menuOpen ? " open" : ""}`}>
+          <li><Link href={l("/aifinder")}>{locale.nav.aifinder}</Link></li>
           <li><Link href={l("/blog")} className="active">{locale.nav.blog}</Link></li>
           <li><Link href={l("/comparatifs")}>{locale.nav.comparatifs}</Link></li>
           <li><Link href={l("/newsletter")}>{locale.nav.newsletter}</Link></li>
@@ -857,7 +859,7 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
                 {resolvedRelated.map((relatedArticle, index) => {
                   const relatedColor = getColor(relatedArticle.tag);
                   return (
-                    <Link key={`${relatedArticle.slug}-${index}`} href={l(`/blog/${relatedArticle.slug}`)} className="rcard">
+                    <Link key={relatedArticle.slug} href={l(`/blog/${relatedArticle.slug}`)} className="rcard">
                       <div className="rcard-stripe" style={{ background: relatedColor }} />
                       <div className="rcard-body">
                         <div className="rcard-tag" style={{ color: relatedColor }}>{relatedArticle.tag}</div>

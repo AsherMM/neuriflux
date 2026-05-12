@@ -1,6 +1,11 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "chatgpt-alternatives-2026",
+  "cursor-2026",
+  "midjourney-dalle-2026",
+  "llm-benchmark-2026",
+  "grok-2026",
   "microsoft-copilot-review-2026",
   "gemini-review-2026",
   "ia-seo-2026",
@@ -59,6 +64,7 @@ const additionalPaths = async () => {
   LANGS.forEach((lang) => {
     urls.push({ loc: `${BASE}/${lang}/blog`, priority: 0.9, changefreq: "daily", lastmod: NOW });
     urls.push({ loc: `${BASE}/${lang}/comparatifs`, priority: 0.9, changefreq: "daily", lastmod: NOW });
+    urls.push({ loc: `${BASE}/${lang}/aifinder`, priority: 0.9, changefreq: "daily", lastmod: NOW });
   });
 
   LANGS.forEach((lang) => {
