@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "prompt-errors-2026",
   "chatgpt-alternatives-2026",
   "cursor-2026",
   "midjourney-dalle-2026",
@@ -36,6 +37,7 @@ const ARTICLE_SLUGS = [
 ];
 
 const COMPARATIF_SLUGS = [
+  "cursor-vs-windsurf-vs-zed-2026",
   "gamma-vs-tome-vs-beautiful-ai-2026",
   "lovable-vs-bolt-vs-v0-2026",
   "semrush-vs-ahrefs-vs-surfer-seo-2026",
