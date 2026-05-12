@@ -9,17 +9,31 @@ import { useNewsletter } from "../../lib/useNewsletter";
 type Lang = "fr" | "en";
 
 type HomeComparatif = {
-  slug: string; tag: string; color: string; winner: string; winnerScore: number;
-  title: string; subtitle: string; tools: { name: string; score: number }[];
-  isNew: boolean; isFeat: boolean; updated?: { fr: string; en: string };
+  slug: string;
+  tag: string;
+  color: string;
+  winner: string;
+  winnerScore: number;
+  title: string;
+  subtitle: string;
+  tools: { name: string; score: number }[];
+  isNew: boolean;
+  isFeat: boolean;
+  updated?: { fr: string; en: string };
 };
 
 type HomeArticle = {
-  slug: string; tag: string; color: string; t: string; d: string;
-  time: string; star: boolean; isNew?: boolean; updated?: { fr: string; en: string };
+  slug: string;
+  tag: string;
+  color: string;
+  t: string;
+  d: string;
+  time: string;
+  star: boolean;
+  isNew?: boolean;
+  updated?: { fr: string; en: string };
 };
 
-// ─── Données stables hors composant ──────────────────────────────────────────
 const COMPARATIFS_FR: HomeComparatif[] = [
   { slug: "n8n-vs-make-vs-zapier-2026", tag: "Productivité", color: "#ff4a00", winner: "Make", winnerScore: 8.9, title: "n8n vs Make vs Zapier 2026 : comparatif complet", subtitle: "On a testé les 3 leaders de l'automatisation sur des projets réels. Tarifs, IA native, facilité d'usage : notre verdict honnête.", tools: [{ name: "Zapier", score: 7.8 }, { name: "Make", score: 8.9 }, { name: "n8n", score: 8.4 }], isNew: true, isFeat: true, updated: { fr: "avril 2026", en: "April 2026" } },
   { slug: "runway-vs-kling-vs-pika-2026", tag: "Vidéo IA", color: "#a855f7", winner: "Runway", winnerScore: 9.0, title: "Runway vs Kling vs Pika 2026 : lequel choisir ?", subtitle: "Quel générateur vidéo IA choisir après la fermeture de Sora ? Qualité, cohérence, vitesse, workflow et rapport qualité/prix.", tools: [{ name: "Runway Gen-4", score: 9.0 }, { name: "Kling 2.6", score: 8.7 }, { name: "Pika 2.5", score: 7.8 }], isNew: true, isFeat: true, updated: { fr: "avril 2026", en: "April 2026" } },
@@ -56,13 +70,12 @@ const ARTICLES_EN: HomeArticle[] = [
   { slug: "vibe-coding-tools-2026", tag: "Code", color: "#3b82f6", t: "5 best tools to build an app without coding in 2026", d: "Lovable, Bolt.new, v0, Base44, Replit: we tested the leading vibe coding tools on real projects.", time: "16", star: false, updated: { fr: "mars 2026", en: "March 2026" } },
 ];
 
-// ─── Spotlight : dernière publication (1er article isNew ou 1er de la liste)
-const SPOTLIGHT_FR = ARTICLES_FR.find(a => a.isNew) ?? ARTICLES_FR[0];
-const SPOTLIGHT_EN = ARTICLES_EN.find(a => a.isNew) ?? ARTICLES_EN[0];
+const SPOTLIGHT_FR = ARTICLES_FR.find((a) => a.isNew) ?? ARTICLES_FR[0];
+const SPOTLIGHT_EN = ARTICLES_EN.find((a) => a.isNew) ?? ARTICLES_EN[0];
 
 const T = {
   fr: {
-    nav: { aifinder:"AI-Finder", blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
+    nav: { aifinder: "AI-Finder", blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
     hero: {
       badge: "Indépendant · Tests réels · Sans bullshit",
       h1a: "Les meilleurs outils IA,",
@@ -70,15 +83,28 @@ const T = {
       sub: "Neuriflux teste, compare et décortique les outils IA pour vous faire gagner du temps, éviter les mauvais choix et trouver les vraies solutions qui valent le coup.",
       extraSeo: "Comparez ChatGPT, Claude, Gemini, Midjourney, Runway, n8n, Make et les meilleurs outils IA 2026 avec des tests réels, des scores détaillés et des verdicts honnêtes.",
       freshLabel: "✦ Dernière mise à jour : avril 2026",
-      cta1: "Voir les comparatifs →",
-      cta2: "Lire le blog",
+      cta1: "Trouver mon outil IA →",
+      cta2: "Voir les comparatifs",
       socialProof: "Déjà lu par 3 200+ passionnés, freelances, marketeurs et créateurs.",
       tickerLabel: "Actus",
       tickerItems: [
+        { label: "AI Finder gratuit", href: "/aifinder" },
         { label: "Grok review 2026", href: "/blog/grok-review-2026" },
         { label: "Runway vs Kling vs Pika", href: "/comparatifs/runway-vs-kling-vs-pika-2026" },
         { label: "DeepSeek V4 analysé", href: "/blog/deepseek-review-2026" },
-        { label: "Sora fermé par OpenAI", href: "/blog/sora-fermeture-openai-2026" },
+      ],
+    },
+    finder: {
+      tag: "AI Finder",
+      title: "Trouvez l’outil IA qui correspond vraiment à votre besoin.",
+      sub: "Répondez à 4 questions. Neuriflux analyse votre usage, votre budget, votre niveau et votre priorité pour proposer les meilleurs outils IA.",
+      cta: "Lancer l’AI Finder gratuit →",
+      secondary: "Voir la méthode",
+      pills: ["Sans compte", "Résultat instantané", "Classement transparent", "Pensé pour 2026"],
+      cards: [
+        { k: "Usage", v: "SEO, vidéo, code, image, recherche..." },
+        { k: "Budget", v: "Gratuit, petit budget, pro ou équipe" },
+        { k: "Priorité", v: "Qualité, rapidité, prix, API, confidentialité" },
       ],
     },
     stats: [
@@ -93,11 +119,21 @@ const T = {
     ],
     spotlightLabel: "✦ Nouveau",
     spotlightCta: "Lire l'article →",
-    compTag: "Comparatifs", compTitle: "Nos comparatifs phares",
+    compTag: "Comparatifs",
+    compTitle: "Nos comparatifs phares",
     compSub: "Scores objectifs · Tests en conditions réelles · Zéro bullshit",
-    compVoir: "Voir →", compFeat: "À la une", compAll: "Tous les comparatifs →", compFresh: "Mis à jour",
-    artTag: "Populaire", artTitle: "Articles les plus lus", artSub: "Cette semaine sur Neuriflux",
-    read: "min", readMore: "Lire →", featured: "À la une", artAll: "Tous les articles →", artFresh: "Mis à jour",
+    compVoir: "Voir →",
+    compFeat: "À la une",
+    compAll: "Tous les comparatifs →",
+    compFresh: "Mis à jour",
+    artTag: "Populaire",
+    artTitle: "Articles les plus lus",
+    artSub: "Cette semaine sur Neuriflux",
+    read: "min",
+    readMore: "Lire →",
+    featured: "À la une",
+    artAll: "Tous les articles →",
+    artFresh: "Mis à jour",
     badgeNew: "Nouveau",
     clustersTitle: "Explorer par thème",
     clustersSub: "Des portes d'entrée rapides vers les sujets qui comptent vraiment.",
@@ -110,26 +146,36 @@ const T = {
     faqTitle: "Questions fréquentes",
     faqSub: "Les réponses courtes aux grandes questions IA de 2026.",
     faqs: [
-      { q: "ChatGPT ou Claude en 2026 — lequel choisir ?", a: "Claude 3.7 Sonnet domine sur la rédaction et la cohérence longue durée. ChatGPT reste le plus polyvalent avec son écosystème de plugins. Pour le code, les deux sont excellents. Notre verdict complet dans le comparatif ChatGPT vs Claude vs Gemini.", href: "/comparatifs/chatgpt-vs-claude-vs-gemini" },
-      { q: "Quel outil IA gratuit vaut vraiment le coup en 2026 ?", a: "Perplexity (recherche), Claude.ai (rédaction), Gamma (présentations) et Bolt.new (prototypage) offrent des plans gratuits réellement utiles. DeepSeek reste la meilleure alternative gratuite à ChatGPT pour la plupart des usages.", href: "/blog/alternatives-gratuites-chatgpt" },
-      { q: "L'IA va-t-elle remplacer les rédacteurs en 2026 ?", a: "Non — elle transforme leur travail. Les rédacteurs qui utilisent l'IA comme assistant produisent 4 à 8 fois plus avec une qualité maintenue. Ceux qui l'ignorent perdent en compétitivité. La valeur se déplace vers le jugement éditorial et l'expertise métier.", href: "/blog/ia-2026" },
-      { q: "Midjourney ou DALL·E 3 pour créer des images IA ?", a: "Midjourney pour la qualité artistique et les visuels complexes (9.1/10). DALL·E 3 pour la précision des instructions textuelles et l'intégration ChatGPT (8.0/10). Stable Diffusion si vous voulez contrôle total et usage local sans abonnement.", href: "/comparatifs/midjourney-vs-dalle-vs-stable-diffusion" },
+      { q: "Comment choisir le bon outil IA ?", a: "Le plus simple est de partir du cas d’usage : rédaction, SEO, code, image, vidéo, recherche ou automatisation. L’AI Finder de Neuriflux recommande ensuite les meilleurs outils selon votre budget, votre niveau et votre priorité.", href: "/aifinder" },
+      { q: "ChatGPT ou Claude en 2026 — lequel choisir ?", a: "Claude est très fort sur la rédaction longue et la cohérence. ChatGPT reste le plus polyvalent. Le meilleur choix dépend surtout de votre usage réel.", href: "/comparatifs/chatgpt-vs-claude-vs-gemini" },
+      { q: "Quel outil IA gratuit vaut vraiment le coup en 2026 ?", a: "Perplexity, Claude, Gamma, Bolt.new et DeepSeek font partie des options gratuites les plus utiles selon le besoin.", href: "/aifinder" },
+      { q: "Midjourney ou DALL·E 3 pour créer des images IA ?", a: "Midjourney reste excellent pour la direction artistique. DALL·E est pratique pour les instructions précises. Stable Diffusion garde l’avantage pour le contrôle local.", href: "/comparatifs/midjourney-vs-dalle-vs-stable-diffusion" },
     ],
     nlTitle: "Le radar IA · chaque lundi",
     nlSub: "1 email utile par semaine pour éviter 3 heures de veille : outils qui valent le coup, comparatifs qui comptent, nouveautés à ne pas rater.",
     nlBullets: ["Comparatifs honnêtes", "Nouveautés IA utiles", "Aucun spam"],
-    nlCta: "Je m'abonne gratuitement", nlLoading: "...", nlPrivacy: "Gratuit · Sans spam · Désabonnement en 1 clic",
-    nlSuccess: "✓ Bienvenue ! À lundi prochain.", nlError: "Une erreur s'est produite. Réessayez.", nlPh: "votre@email.com",
-    hiddenSeo: "Comparatifs IA, avis IA 2026, ChatGPT vs Claude, meilleurs outils IA, tests réels, Midjourney, Runway, Gemini, Perplexity, DeepSeek.",
-    srSkip: "Aller au contenu principal", menu: "Menu principal", closeMenu: "Fermer le menu", langSwitch: "Changer de langue",
-    ftTagline: "Le média indépendant des outils IA.", ftContent: "Contenu", ftLegal: "Légal",
-    ftLinks: [{ l: "Blog", h: "/blog" }, { l: "Comparatifs", h: "/comparatifs" }, { l: "Newsletter", h: "/newsletter" }, { l: "Contact", h: "/contact" }, { l: "À propos", h: "/about" }],
+    nlCta: "Je m'abonne gratuitement",
+    nlLoading: "...",
+    nlPrivacy: "Gratuit · Sans spam · Désabonnement en 1 clic",
+    nlSuccess: "✓ Bienvenue ! À lundi prochain.",
+    nlError: "Une erreur s'est produite. Réessayez.",
+    nlPh: "votre@email.com",
+    hiddenSeo: "AI Finder, comparatifs IA, avis IA 2026, ChatGPT vs Claude, meilleurs outils IA, tests réels, Midjourney, Runway, Gemini, Perplexity, DeepSeek.",
+    srSkip: "Aller au contenu principal",
+    menu: "Menu principal",
+    closeMenu: "Fermer le menu",
+    langSwitch: "Changer de langue",
+    ftTagline: "Le média indépendant des outils IA.",
+    ftContent: "Contenu",
+    ftLegal: "Légal",
+    ftLinks: [{ l: "Blog", h: "/blog" }, { l: "Comparatifs", h: "/comparatifs" }, { l: "AI-Finder", h: "/aifinder" }, { l: "Newsletter", h: "/newsletter" }, { l: "Contact", h: "/contact" }, { l: "À propos", h: "/about" }],
     ftLegal2: [{ l: "Mentions légales", h: "/legal" }, { l: "Confidentialité", h: "/privacy" }, { l: "Cookies", h: "/cookies" }],
-    ftRights: "Tous droits réservés.", ftMade: "Fait avec ♥ en France",
+    ftRights: "Tous droits réservés.",
+    ftMade: "Fait avec ♥ en France",
     twitterHandle: "@NeurifluxCom",
   },
   en: {
-    nav: { aifinder:"AI-Finder", blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
+    nav: { aifinder: "AI-Finder", blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
     hero: {
       badge: "Independent · Real tests · No bullshit",
       h1a: "The best AI tools,",
@@ -137,15 +183,28 @@ const T = {
       sub: "Neuriflux tests, compares and breaks down AI tools to help you save time, avoid bad picks, and find what is actually worth using.",
       extraSeo: "Compare ChatGPT, Claude, Gemini, Midjourney, Runway, n8n, Make and the best AI tools of 2026 with real tests, detailed scores and honest verdicts.",
       freshLabel: "✦ Last updated: April 2026",
-      cta1: "Browse comparisons →",
-      cta2: "Read the blog",
+      cta1: "Find my AI tool →",
+      cta2: "Browse comparisons",
       socialProof: "Already read by 3,200+ makers, freelancers, marketers and creators.",
       tickerLabel: "Latest",
       tickerItems: [
+        { label: "Free AI Finder", href: "/aifinder" },
         { label: "Grok review 2026", href: "/blog/grok-review-2026" },
         { label: "Runway vs Kling vs Pika", href: "/comparatifs/runway-vs-kling-vs-pika-2026" },
         { label: "DeepSeek V4 analyzed", href: "/blog/deepseek-review-2026" },
-        { label: "Sora shut down by OpenAI", href: "/blog/sora-fermeture-openai-2026" },
+      ],
+    },
+    finder: {
+      tag: "AI Finder",
+      title: "Find the AI tool that actually fits your workflow.",
+      sub: "Answer 4 questions. Neuriflux analyzes your use case, budget, skill level and priority to recommend the most relevant AI tools.",
+      cta: "Start the free AI Finder →",
+      secondary: "See method",
+      pills: ["No account", "Instant result", "Transparent ranking", "Built for 2026"],
+      cards: [
+        { k: "Use case", v: "SEO, video, coding, image, research..." },
+        { k: "Budget", v: "Free, low budget, pro or team" },
+        { k: "Priority", v: "Quality, speed, price, API, privacy" },
       ],
     },
     stats: [
@@ -160,11 +219,21 @@ const T = {
     ],
     spotlightLabel: "✦ New",
     spotlightCta: "Read article →",
-    compTag: "Comparisons", compTitle: "Featured comparisons",
+    compTag: "Comparisons",
+    compTitle: "Featured comparisons",
     compSub: "Objective scores · Real-world tests · Zero fluff",
-    compVoir: "View →", compFeat: "Featured", compAll: "All comparisons →", compFresh: "Updated",
-    artTag: "Popular", artTitle: "Most read articles", artSub: "This week on Neuriflux",
-    read: "min", readMore: "Read →", featured: "Featured", artAll: "All articles →", artFresh: "Updated",
+    compVoir: "View →",
+    compFeat: "Featured",
+    compAll: "All comparisons →",
+    compFresh: "Updated",
+    artTag: "Popular",
+    artTitle: "Most read articles",
+    artSub: "This week on Neuriflux",
+    read: "min",
+    readMore: "Read →",
+    featured: "Featured",
+    artAll: "All articles →",
+    artFresh: "Updated",
     badgeNew: "New",
     clustersTitle: "Explore by topic",
     clustersSub: "Fast entry points into the topics that actually matter.",
@@ -177,27 +246,42 @@ const T = {
     faqTitle: "Frequently asked questions",
     faqSub: "Short answers to the big AI questions of 2026.",
     faqs: [
-      { q: "ChatGPT or Claude in 2026 — which should you choose?", a: "Claude 3.7 Sonnet leads on writing quality and long-form coherence. ChatGPT remains the most versatile with its plugin ecosystem. For code, both are excellent. Our full breakdown is in the ChatGPT vs Claude vs Gemini comparison.", href: "/comparatifs/chatgpt-vs-claude-vs-gemini" },
-      { q: "Which free AI tool is actually worth using in 2026?", a: "Perplexity (research), Claude.ai (writing), Gamma (presentations) and Bolt.new (prototyping) have genuinely useful free plans. DeepSeek remains the best free ChatGPT alternative for most everyday tasks.", href: "/blog/alternatives-gratuites-chatgpt" },
-      { q: "Will AI replace writers in 2026?", a: "No — it's transforming their work. Writers who use AI as an assistant produce 4 to 8x more content at maintained quality. Those who ignore it lose competitiveness. Value is shifting toward editorial judgment and domain expertise.", href: "/blog/ia-2026" },
-      { q: "Midjourney or DALL·E 3 for AI image creation?", a: "Midjourney for artistic quality and complex visuals (9.1/10). DALL·E 3 for text instruction precision and ChatGPT integration (8.0/10). Stable Diffusion if you want full control and local usage without a subscription.", href: "/comparatifs/midjourney-vs-dalle-vs-stable-diffusion" },
+      { q: "How do I choose the right AI tool?", a: "Start from your actual use case: writing, SEO, coding, image, video, research or automation. The Neuriflux AI Finder then recommends tools based on your budget, skill level and priority.", href: "/aifinder" },
+      { q: "ChatGPT or Claude in 2026 — which should you choose?", a: "Claude is excellent for long-form writing and coherence. ChatGPT remains the most versatile. The best choice depends on your real workflow.", href: "/comparatifs/chatgpt-vs-claude-vs-gemini" },
+      { q: "Which free AI tool is actually worth using in 2026?", a: "Perplexity, Claude, Gamma, Bolt.new and DeepSeek are among the strongest free options depending on the use case.", href: "/aifinder" },
+      { q: "Midjourney or DALL·E 3 for AI image creation?", a: "Midjourney is stronger for art direction. DALL·E is practical for precise instructions. Stable Diffusion remains best for local control.", href: "/comparatifs/midjourney-vs-dalle-vs-stable-diffusion" },
     ],
     nlTitle: "The AI Radar · every Monday",
     nlSub: "One useful email each week to save yourself three hours of scrolling: tools worth using, comparisons that matter, and launches worth noticing.",
     nlBullets: ["Honest comparisons", "Useful AI updates", "No spam"],
-    nlCta: "Subscribe for free", nlLoading: "...", nlPrivacy: "Free · No spam · Unsubscribe in 1 click",
-    nlSuccess: "✓ Welcome! See you next Monday.", nlError: "Something went wrong. Please try again.", nlPh: "your@email.com",
-    hiddenSeo: "AI tools comparison, AI reviews 2026, ChatGPT vs Claude, best AI tools, real tests, Midjourney, Runway, Gemini, Perplexity, DeepSeek.",
-    srSkip: "Skip to main content", menu: "Main navigation", closeMenu: "Close menu", langSwitch: "Change language",
-    ftTagline: "The independent AI tools media.", ftContent: "Content", ftLegal: "Legal",
-    ftLinks: [{ l: "Blog", h: "/blog" }, { l: "Comparisons", h: "/comparatifs" }, { l: "Newsletter", h: "/newsletter" }, { l: "Contact", h: "/contact" }, { l: "About", h: "/about" }],
+    nlCta: "Subscribe for free",
+    nlLoading: "...",
+    nlPrivacy: "Free · No spam · Unsubscribe in 1 click",
+    nlSuccess: "✓ Welcome! See you next Monday.",
+    nlError: "Something went wrong. Please try again.",
+    nlPh: "your@email.com",
+    hiddenSeo: "AI Finder, AI tools comparison, AI reviews 2026, ChatGPT vs Claude, best AI tools, real tests, Midjourney, Runway, Gemini, Perplexity, DeepSeek.",
+    srSkip: "Skip to main content",
+    menu: "Main navigation",
+    closeMenu: "Close menu",
+    langSwitch: "Change language",
+    ftTagline: "The independent AI tools media.",
+    ftContent: "Content",
+    ftLegal: "Legal",
+    ftLinks: [{ l: "Blog", h: "/blog" }, { l: "Comparisons", h: "/comparatifs" }, { l: "AI-Finder", h: "/aifinder" }, { l: "Newsletter", h: "/newsletter" }, { l: "Contact", h: "/contact" }, { l: "About", h: "/about" }],
     ftLegal2: [{ l: "Legal notice", h: "/legal" }, { l: "Privacy", h: "/privacy" }, { l: "Cookies", h: "/cookies" }],
-    ftRights: "All rights reserved.", ftMade: "Made with ♥ in France",
+    ftRights: "All rights reserved.",
+    ftMade: "Made with ♥ in France",
     twitterHandle: "@NeurifluxCom",
   },
 } as const;
 
 const AVATARS = ["👨‍💻", "👩‍💼", "🧑‍🎨", "👩‍💻", "🧑‍🚀"];
+
+function raf(fn: () => void) {
+  if (typeof window === "undefined") return;
+  window.requestAnimationFrame(fn);
+}
 
 function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
   if (typeof window === "undefined") return;
@@ -208,26 +292,43 @@ function trackEvent(eventName: string, payload: Record<string, unknown> = {}) {
 
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
+
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(media.matches);
-    const onChange = () => setReduced(media.matches);
-    media.addEventListener?.("change", onChange);
-    return () => media.removeEventListener?.("change", onChange);
+    const sync = () => raf(() => setReduced(media.matches));
+
+    sync();
+    media.addEventListener?.("change", sync);
+    return () => media.removeEventListener?.("change", sync);
   }, []);
+
   return reduced;
 }
 
 function ScrollProgress() {
   const [pct, setPct] = useState(0);
+
   useEffect(() => {
-    const fn = () => {
+    let ticking = false;
+
+    const update = () => {
       const el = document.documentElement;
-      setPct(el.scrollHeight - el.clientHeight > 0 ? Math.min(100, (window.scrollY / (el.scrollHeight - el.clientHeight)) * 100) : 0);
+      const max = el.scrollHeight - el.clientHeight;
+      setPct(max > 0 ? Math.min(100, (window.scrollY / max) * 100) : 0);
+      ticking = false;
     };
-    window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 3, zIndex: 300, background: "rgba(0,0,0,.4)" }}>
       <div style={{ height: "100%", width: `${pct}%`, background: "linear-gradient(90deg,#00e6be,#3b82f6,#a855f7)", transition: "width .08s linear", boxShadow: "0 0 10px rgba(0,230,190,.5)" }} />
@@ -240,39 +341,64 @@ function Counter({ value }: { value: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const done = useRef(false);
   const reducedMotion = usePrefersReducedMotion();
+
   useEffect(() => {
     const num = parseInt(value.replace(/\D/g, ""), 10);
     const suffix = value.replace(/[0-9]/g, "");
-    if (Number.isNaN(num)) { setDisplay(value); return; }
-    if (reducedMotion) { setDisplay(`${num}${suffix}`); return; }
+
+    if (Number.isNaN(num)) {
+      raf(() => setDisplay(value));
+      return;
+    }
+
+    if (reducedMotion) {
+      raf(() => setDisplay(`${num}${suffix}`));
+      return;
+    }
+
     const run = () => {
       if (done.current) return;
       done.current = true;
+
       const start = performance.now();
       const tick = (time: number) => {
         const p = Math.min((time - start) / 1100, 1);
         setDisplay(`${Math.floor((1 - Math.pow(1 - p, 3)) * num)}${suffix}`);
         if (p < 1) requestAnimationFrame(tick);
       };
+
       requestAnimationFrame(tick);
     };
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) run(); }, { threshold: 0.2 });
+
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        run();
+        obs.disconnect();
+      }
+    }, { threshold: 0.2 });
+
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, [reducedMotion, value]);
+
   return <span ref={ref}>{display}</span>;
 }
 
 function ScoreBar({ score, color, delay = 0 }: { score: number; color: string; delay?: number }) {
   const [w, setW] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const ob = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { setTimeout(() => setW(score * 10), delay); ob.disconnect(); }
+    const ob = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      window.setTimeout(() => setW(score * 10), delay);
+      ob.disconnect();
     }, { threshold: 0.2 });
+
     if (ref.current) ob.observe(ref.current);
     return () => ob.disconnect();
   }, [score, delay]);
+
   return (
     <div ref={ref} style={{ height: 3, background: "rgba(255,255,255,.07)", borderRadius: 2, overflow: "hidden", flex: 1 }}>
       <div style={{ height: "100%", width: `${w}%`, background: color, borderRadius: 2, transition: "width .9s cubic-bezier(.4,0,.2,1)", boxShadow: `0 0 6px ${color}50` }} />
@@ -283,11 +409,18 @@ function ScoreBar({ score, color, delay = 0 }: { score: number; color: string; d
 function FadeSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const ob = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); ob.disconnect(); } }, { threshold: 0.06 });
+    const ob = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setVisible(true);
+      ob.disconnect();
+    }, { threshold: 0.06 });
+
     if (ref.current) ob.observe(ref.current);
     return () => ob.disconnect();
   }, []);
+
   return (
     <div ref={ref} style={{ opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(22px)", transition: `opacity .6s ${delay}ms ease, transform .6s ${delay}ms ease` }}>
       {children}
@@ -295,12 +428,12 @@ function FadeSection({ children, delay = 0 }: { children: React.ReactNode; delay
   );
 }
 
-// ─── FAQ accordéon ─────────────────────────────────────────────────────────────
 function FaqItem({ q, a, href, lang }: { q: string; a: string; href: string; lang: Lang }) {
   const [open, setOpen] = useState(false);
+
   return (
     <div className={`faq-item${open ? " open" : ""}`}>
-      <button className="faq-q" onClick={() => setOpen(o => !o)} aria-expanded={open}>
+      <button className="faq-q" onClick={() => setOpen((current) => !current)} aria-expanded={open}>
         <span>{q}</span>
         <span className="faq-icon" aria-hidden="true">{open ? "−" : "+"}</span>
       </button>
@@ -323,6 +456,7 @@ export default function HomeClient({ lang }: { lang: Lang }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showNavCta, setShowNavCta] = useState(false);
+
   const t = T[lang];
   const rawMenuId = useId();
   const menuId = `menu-${rawMenuId.replace(/:/g, "")}`;
@@ -335,36 +469,60 @@ export default function HomeClient({ lang }: { lang: Lang }) {
   const { status, subscribe } = useNewsletter("homepage");
 
   const itemListSchema = useMemo(() => ({
-    "@context": "https://schema.org", "@type": "CollectionPage",
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
     name: lang === "fr" ? "Neuriflux — meilleurs outils IA comparés" : "Neuriflux — best AI tools compared",
     url: `https://neuriflux.com/${lang}`,
     mainEntity: [
-      { "@type": "ItemList", name: lang === "fr" ? "Comparatifs IA à la une" : "Featured AI comparisons",
-        itemListElement: comparatifs.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.title, url: `https://neuriflux.com/${lang}/comparatifs/${c.slug}` })) },
-      { "@type": "ItemList", name: lang === "fr" ? "Articles IA populaires" : "Popular AI articles",
-        itemListElement: articles.map((a, i) => ({ "@type": "ListItem", position: i + 1, name: a.t, url: `https://neuriflux.com/${lang}/blog/${a.slug}` })) },
+      {
+        "@type": "WebApplication",
+        name: "Neuriflux AI Finder",
+        url: `https://neuriflux.com/${lang}/aifinder`,
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Web",
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      },
+      {
+        "@type": "ItemList",
+        name: lang === "fr" ? "Comparatifs IA à la une" : "Featured AI comparisons",
+        itemListElement: comparatifs.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.title, url: `https://neuriflux.com/${lang}/comparatifs/${c.slug}` })),
+      },
+      {
+        "@type": "ItemList",
+        name: lang === "fr" ? "Articles IA populaires" : "Popular AI articles",
+        itemListElement: articles.map((a, i) => ({ "@type": "ListItem", position: i + 1, name: a.t, url: `https://neuriflux.com/${lang}/blog/${a.slug}` })),
+      },
     ],
   }), [lang, comparatifs, articles]);
 
   const organizationSchema = useMemo(() => ({
-    "@context": "https://schema.org", "@type": "Organization",
-    name: "Neuriflux", url: "https://neuriflux.com",
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Neuriflux",
+    url: "https://neuriflux.com",
     logo: "https://neuriflux.com/logo.png",
     sameAs: ["https://twitter.com/NeurifluxCom"],
     description: lang === "fr" ? "Média indépendant de comparatifs et avis sur les outils IA." : "Independent media for AI tools comparisons and reviews.",
   }), [lang]);
 
   const websiteSchema = useMemo(() => ({
-    "@context": "https://schema.org", "@type": "WebSite",
-    name: "Neuriflux", url: "https://neuriflux.com",
-    potentialAction: { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `https://neuriflux.com/${lang}/blog?q={search_term_string}` }, "query-input": "required name=search_term_string" },
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Neuriflux",
+    url: "https://neuriflux.com",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: { "@type": "EntryPoint", urlTemplate: `https://neuriflux.com/${lang}/blog?q={search_term_string}` },
+      "query-input": "required name=search_term_string",
+    },
   }), [lang]);
 
-  // ─── FAQ schema ──────────────────────────────────────────────────────────────
   const faqSchema = useMemo(() => ({
-    "@context": "https://schema.org", "@type": "FAQPage",
-    mainEntity: t.faqs.map(f => ({
-      "@type": "Question", name: f.q,
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: t.faqs.map((f) => ({
+      "@type": "Question",
+      name: f.q,
       acceptedAnswer: { "@type": "Answer", text: f.a },
     })),
   }), [t.faqs]);
@@ -376,25 +534,55 @@ export default function HomeClient({ lang }: { lang: Lang }) {
   }, [lang, router, pathname]);
 
   useEffect(() => {
-    const fn = () => { setScrolled(window.scrollY > 60); setShowNavCta(window.scrollY > 350); };
-    window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
+    let ticking = false;
+
+    const update = () => {
+      setScrolled(window.scrollY > 60);
+      setShowNavCta(window.scrollY > 350);
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => { setMenuOpen(false); }, [pathname]);
+  useEffect(() => {
+    raf(() => setMenuOpen(false));
+  }, [pathname]);
 
   useEffect(() => {
     if (!menuOpen) return;
-    const onEscape = (e: KeyboardEvent) => { if (e.key === "Escape") setMenuOpen(false); };
+
+    const onEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+
     document.addEventListener("keydown", onEscape);
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    return () => { document.removeEventListener("keydown", onEscape); document.body.style.overflow = prev; };
+
+    return () => {
+      document.removeEventListener("keydown", onEscape);
+      document.body.style.overflow = prev;
+    };
   }, [menuOpen]);
 
   useEffect(() => {
-    if (status === "success") { setEmail(""); trackEvent("homepage_newsletter_success", { lang }); }
-    else if (status === "error") trackEvent("homepage_newsletter_error", { lang });
+    if (status === "success") {
+      raf(() => {
+        setEmail("");
+        trackEvent("homepage_newsletter_success", { lang });
+      });
+    } else if (status === "error") {
+      raf(() => trackEvent("homepage_newsletter_error", { lang }));
+    }
   }, [status, lang]);
 
   const submit = async (e: React.FormEvent) => {
@@ -412,14 +600,7 @@ export default function HomeClient({ lang }: { lang: Lang }) {
 
       <style>{`
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#080c10;--bg2:#0d1117;--bg3:#111820;--bg4:#151e29;
-  --border:rgba(255,255,255,.065);--glow:rgba(0,230,190,.2);
-  --cyan:#00e6be;--cdim:rgba(0,230,190,.09);
-  --text:#edf2f7;--muted:#7a8a9a;--dim:#405164;
-  --d:'Syne',sans-serif;--m:'JetBrains Mono',monospace;
-  --r:14px;--pad:clamp(1.25rem,5vw,4rem)
-}
+:root{--bg:#080c10;--bg2:#0d1117;--bg3:#111820;--bg4:#151e29;--border:rgba(255,255,255,.065);--glow:rgba(0,230,190,.2);--cyan:#00e6be;--cdim:rgba(0,230,190,.09);--text:#edf2f7;--muted:#7a8a9a;--dim:#405164;--d:'Syne',sans-serif;--m:'JetBrains Mono',monospace;--r:14px;--pad:clamp(1.25rem,5vw,4rem)}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--d);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
@@ -427,7 +608,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--d);-webkit-font-sm
 .skip-link:focus{top:12px}
 .bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(0,230,190,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,190,.018) 1px,transparent 1px);background-size:72px 72px;pointer-events:none;z-index:0}
 .bg-glow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:min(900px,92vw);height:560px;background:radial-gradient(ellipse,rgba(0,230,190,.06) 0%,transparent 68%);pointer-events:none;z-index:0}
-/* ── NAV ── */
 nav{position:sticky;top:0;z-index:200;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);background:rgba(8,12,16,.9);border-bottom:1px solid var(--border);padding:0 var(--pad);height:64px;display:flex;align-items:center;justify-content:space-between;transition:box-shadow .25s,background .25s}
 nav.scrolled{box-shadow:0 8px 32px rgba(0,0,0,.42);background:rgba(8,12,16,.97)}
 .logo{font-family:var(--d);font-weight:800;font-size:1.15rem;letter-spacing:-.03em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.45rem}
@@ -438,6 +618,7 @@ nav.scrolled{box-shadow:0 8px 32px rgba(0,0,0,.42);background:rgba(8,12,16,.97)}
 @media(max-width:720px){.nav-links{display:none}.nav-links.open{display:flex;flex-direction:column;align-items:flex-start;position:fixed;top:64px;left:0;right:0;background:rgba(13,17,23,.98);border-bottom:1px solid var(--border);padding:1.2rem var(--pad) 1.4rem;gap:1rem;z-index:99}}
 .nav-links a{font-family:var(--m);font-size:.74rem;color:var(--muted);text-decoration:none;letter-spacing:.03em;transition:color .15s}
 .nav-links a:hover,.nav-links a.active{color:var(--cyan)}
+.nav-links a.nav-ai{color:var(--cyan);font-weight:700}
 .lt{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:3px;display:flex;gap:2px}
 .lb{font-family:var(--m);font-size:.67rem;font-weight:600;padding:4px 9px;border-radius:6px;border:none;cursor:pointer;background:transparent;color:var(--muted);transition:all .15s}
 .lb.on{background:var(--cyan);color:#080c10}
@@ -448,9 +629,8 @@ nav.scrolled{box-shadow:0 8px 32px rgba(0,0,0,.42);background:rgba(8,12,16,.97)}
 .nav-cta:hover{transform:translateY(-1px);filter:brightness(1.1)}
 @keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 @media(max-width:560px){.nav-cta span{display:none}}
-/* ── HERO ── */
 .hero{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:clamp(4rem,9vw,7rem) var(--pad) clamp(2.5rem,4vw,3.2rem);display:flex;flex-direction:column;align-items:center;text-align:center}
-.hero-wrap{max-width:820px;width:100%;display:flex;flex-direction:column;align-items:center}
+.hero-wrap{max-width:840px;width:100%;display:flex;flex-direction:column;align-items:center}
 .badge{display:inline-flex;align-items:center;gap:.45rem;font-family:var(--m);font-size:.67rem;letter-spacing:.07em;color:var(--cyan);background:var(--cdim);border:1px solid var(--glow);border-radius:100px;padding:6px 14px;margin-bottom:1.35rem}
 .badge-dot{width:5px;height:5px;background:var(--cyan);border-radius:50%;animation:blink 2s infinite}
 h1{font-size:clamp(2.15rem,5.6vw,4.1rem);font-weight:800;line-height:1.04;letter-spacing:-.045em;margin-bottom:.75rem;color:var(--text)}
@@ -473,7 +653,21 @@ h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:2px;b
 .st-box{min-width:110px}
 .st-v{font-family:var(--d);font-size:clamp(1.45rem,3.4vw,2rem);font-weight:800;letter-spacing:-.04em;color:var(--text);text-align:center}
 .st-l{font-family:var(--m);font-size:.63rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:.18rem;text-align:center}
-/* ── TICKER ── */
+.finder-section{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:0 var(--pad) 2rem}
+.finder-box{border:1px solid rgba(0,230,190,.22);border-radius:22px;background:radial-gradient(circle at 15% 0%,rgba(0,230,190,.16),transparent 34%),linear-gradient(145deg,rgba(17,24,32,.96),rgba(8,12,16,.96));box-shadow:0 24px 80px rgba(0,0,0,.36);padding:clamp(1.35rem,4vw,2.2rem);display:grid;grid-template-columns:1.15fr .85fr;gap:1.2rem;align-items:center;overflow:hidden;position:relative}
+.finder-box::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(90deg,rgba(0,0,0,.75),transparent);pointer-events:none}
+.finder-content,.finder-panel{position:relative;z-index:1}
+.finder-tag{display:inline-flex;font-family:var(--m);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:#071018;background:var(--cyan);border-radius:999px;padding:5px 10px;font-weight:800;margin-bottom:.8rem}
+.finder-title{font-size:clamp(1.45rem,3.2vw,2.25rem);letter-spacing:-.045em;line-height:1.06;font-weight:850;margin-bottom:.65rem}
+.finder-sub{font-family:var(--m);font-size:.77rem;line-height:1.75;color:var(--muted);max-width:620px;margin-bottom:1rem}
+.finder-pills{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.1rem}
+.finder-pill{font-family:var(--m);font-size:.62rem;color:var(--cyan);border:1px solid rgba(0,230,190,.16);background:rgba(0,230,190,.055);border-radius:999px;padding:5px 8px}
+.finder-actions{display:flex;gap:.65rem;flex-wrap:wrap}
+.finder-panel{display:grid;gap:.7rem}
+.finder-mini{border:1px solid var(--border);background:rgba(255,255,255,.035);border-radius:14px;padding:.9rem}
+.finder-mini strong{display:block;font-size:.82rem;color:var(--text);margin-bottom:.25rem}
+.finder-mini span{display:block;font-family:var(--m);font-size:.68rem;color:var(--muted);line-height:1.55}
+@media(max-width:850px){.finder-box{grid-template-columns:1fr}}
 .ticker-wrap{position:relative;z-index:1;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg2);overflow:hidden;min-height:40px;display:flex;align-items:stretch;margin-top:1rem}
 .ticker-label{font-family:var(--m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--bg);background:var(--cyan);padding:0 14px;display:flex;align-items:center;flex-shrink:0;font-weight:700;white-space:nowrap}
 .ticker-inner{display:flex;align-items:center;overflow:hidden;flex:1;position:relative}
@@ -483,7 +677,6 @@ h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:2px;b
 .ticker-item::before{content:"•";color:var(--dim)}
 @keyframes scroll-ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .ticker-wrap:hover .ticker-track{animation-play-state:paused}
-/* ── SECTIONS ── */
 .section{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:clamp(2.4rem,5vw,3.5rem) var(--pad)}
 .sh{margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem}
 .sh-right{font-family:var(--m);font-size:.7rem;color:var(--cyan);text-decoration:none;opacity:.72;transition:opacity .2s;white-space:nowrap}
@@ -492,7 +685,6 @@ h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:2px;b
 .stag::before{content:'';width:14px;height:1px;background:var(--cyan);display:inline-block}
 .stitle{font-size:clamp(1.2rem,2.6vw,1.62rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--text)}
 .ssub{font-family:var(--m);font-size:.68rem;color:var(--muted);font-weight:300;margin-top:.3rem;letter-spacing:.02em}
-/* ── TRUST ── */
 .trust-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
 @media(max-width:600px){.trust-row{grid-template-columns:1fr}}
 .trust-cell{background:var(--bg2);padding:1rem 1.35rem;display:flex;gap:.7rem;align-items:flex-start;transition:background .18s}
@@ -500,9 +692,8 @@ h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:2px;b
 .ti{font-size:1.05rem;flex-shrink:0}
 .tt{font-family:var(--d);font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.12rem}
 .td{font-family:var(--m);font-size:.67rem;color:var(--muted);font-weight:300;line-height:1.6}
-/* ── SPOTLIGHT — dernière publication ── */
 .spotlight{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:0 var(--pad) 0}
-.spotlight-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;position:relative;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.spotlight-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;position:relative;overflow:hidden;transition:border-color .2s,box-shadow .2s;text-decoration:none}
 .spotlight-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),#3b82f6,transparent);opacity:.8}
 .spotlight-card:hover{border-color:rgba(0,230,190,.25);box-shadow:0 8px 32px rgba(0,0,0,.3)}
 .spotlight-left{display:flex;align-items:center;gap:1.2rem;flex:1;min-width:200px}
@@ -511,7 +702,6 @@ h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:2px;b
 .spotlight-meta{font-family:var(--m);font-size:.62rem;color:var(--muted);margin-top:.2rem}
 .spotlight-cta{font-family:var(--m);font-size:.72rem;font-weight:700;color:var(--cyan);text-decoration:none;white-space:nowrap;padding:8px 16px;border:1px solid rgba(0,230,190,.3);border-radius:8px;transition:all .18s;flex-shrink:0}
 .spotlight-cta:hover{background:var(--cdim);border-color:var(--cyan)}
-/* ── GRILLES ── */
 .comp-grid,.art-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
 @media(max-width:900px){.comp-grid,.art-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.comp-grid,.art-grid{grid-template-columns:1fr}}
@@ -525,7 +715,6 @@ h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:2px;b
 .cmp-badges,.art-badges{display:flex;align-items:center;gap:.3rem;flex-wrap:wrap}
 .cmp-badge,.feat-badge{font-family:var(--m);font-size:.54rem;letter-spacing:.06em;text-transform:uppercase;color:var(--bg);background:var(--cyan);padding:2px 7px;border-radius:100px;font-weight:700;white-space:nowrap}
 .badge-new{font-family:var(--m);font-size:.54rem;letter-spacing:.06em;text-transform:uppercase;color:#10b981;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);padding:2px 7px;border-radius:100px;font-weight:700;white-space:nowrap}
-/* Pill temps de lecture en haut des art cards */
 .art-time-pill{font-family:var(--m);font-size:.56rem;color:var(--dim);background:var(--bg3);border:1px solid var(--border);border-radius:100px;padding:2px 7px;white-space:nowrap}
 .cmp-title,.art-title{font-family:var(--d);font-size:.92rem;font-weight:700;letter-spacing:-.015em;line-height:1.34;color:var(--text)}
 .cmp-sub,.art-desc{font-family:var(--m);font-size:.68rem;color:var(--muted);line-height:1.7;font-weight:300;flex:1}
@@ -540,30 +729,24 @@ h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:2px;b
 .cmp-wscore{font-family:var(--m);font-size:.6rem;font-weight:700;padding:1px 7px;border-radius:100px;border:1px solid}
 .cmp-more,.art-more{font-family:var(--m);font-size:.65rem;font-weight:600;opacity:.7;transition:opacity .15s;white-space:nowrap}
 .cmp:hover .cmp-more,.art:hover .art-more{opacity:1}
-/* ── CLUSTERS avec couleur et icône ── */
 .cluster-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
 @media(max-width:900px){.cluster-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.cluster-grid{grid-template-columns:1fr}}
 .cluster-card{border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.1rem 1.2rem;text-decoration:none;transition:border-color .18s,transform .18s,background .18s;display:flex;flex-direction:column;gap:.45rem;position:relative;overflow:hidden}
-.cluster-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:.7;transition:opacity .2s}
-.cluster-card:hover::before{opacity:1}
 .cluster-card:hover{transform:translateY(-2px)}
 .cluster-icon{font-size:1.35rem;margin-bottom:.1rem;line-height:1}
 .cluster-title{font-family:var(--d);font-size:.88rem;font-weight:700;color:var(--text)}
 .cluster-sub{font-family:var(--m);font-size:.64rem;color:var(--muted);line-height:1.55}
 .cluster-count{font-family:var(--m);font-size:.58rem;margin-top:.1rem}
-/* ── FAQ accordéon ── */
 .faq-list{display:flex;flex-direction:column;gap:.6rem}
 .faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .18s}
 .faq-item.open{border-color:rgba(0,230,190,.2)}
 .faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.9rem 1.2rem;background:none;border:none;cursor:pointer;font-family:var(--d);font-size:.88rem;font-weight:700;color:var(--text);text-align:left;transition:color .15s;letter-spacing:-.01em}
 .faq-q:hover{color:var(--cyan)}
 .faq-icon{font-family:var(--m);font-size:1rem;color:var(--cyan);flex-shrink:0;font-weight:300;line-height:1;transition:transform .2s}
-.faq-item.open .faq-icon{transform:rotate(0deg)}
 .faq-a{padding:.1rem 1.2rem .9rem;font-family:var(--m);font-size:.73rem;color:var(--muted);line-height:1.75;font-weight:300}
 .faq-link{color:var(--cyan);text-decoration:none;font-weight:600;transition:opacity .15s}
 .faq-link:hover{opacity:.75}
-/* ── NEWSLETTER ── */
 .nl-wrap{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:0 var(--pad) clamp(4rem,7vw,5rem)}
 .nl-box{background:var(--bg2);border:1px solid var(--glow);border-radius:16px;padding:clamp(2rem,4vw,2.8rem);text-align:center;position:relative;overflow:hidden}
 .nl-box::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:45%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
@@ -585,7 +768,6 @@ h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:2px;b
 .nl-priv{font-family:var(--m);font-size:.6rem;color:var(--dim);position:relative;z-index:1}
 .nl-ok{font-family:var(--m);font-size:.78rem;color:var(--cyan);background:var(--cdim);border:1px solid var(--glow);border-radius:10px;padding:9px 16px;display:inline-block;position:relative;z-index:1}
 .nl-err{font-family:var(--m);font-size:.74rem;color:#ef4444;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.22);border-radius:10px;padding:9px 13px;margin-bottom:.7rem;position:relative;z-index:1}
-/* ── FOOTER ── */
 footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.25rem var(--pad);max-width:1160px;margin:0 auto}
 .ft{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2.5rem}
 @media(max-width:600px){.ft{grid-template-columns:1fr;gap:1.5rem}}
@@ -600,14 +782,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
 .ft-bot{margin-top:1.75rem;padding-top:1.1rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem}
 .ft-copy{font-family:var(--m);font-size:.62rem;color:var(--dim)}
 .ft-copy em{color:var(--cyan);font-style:normal}
-@media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  .logo-dot,.badge-dot{animation:none}
-  .ticker-track{animation:none;transform:none}
-  .cmp,.art,.cluster-card,.btn,.trust-cell,.spotlight-card{transition:none}
-  .nav-cta{animation:none}
-  *{transition-duration:.01ms!important}
-}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.logo-dot,.badge-dot{animation:none}.ticker-track{animation:none;transform:none}.cmp,.art,.cluster-card,.btn,.trust-cell,.spotlight-card{transition:none}.nav-cta{animation:none}*{transition-duration:.01ms!important}}
 `}</style>
 
       <ScrollProgress />
@@ -615,60 +790,72 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
       <div className="bg-grid" />
       <div className="bg-glow" />
 
-      {/* ── NAV ── */}
       <nav className={scrolled ? "scrolled" : ""} aria-label={t.menu}>
         <Link href={l("")} className="logo" onClick={() => trackEvent("homepage_nav_click", { location: "logo", lang })}>
           <div className="logo-dot" />Neuri<em>flux</em>
         </Link>
+
         <ul id={menuId} className={`nav-links${menuOpen ? " open" : ""}`} role="list">
-          <li><Link href={l("/aifinder")} onClick={() => trackEvent("homepage_nav_click", { location: "nav_aifinder", lang })}>{t.nav.aifinder}</Link></li>
+          <li><Link href={l("/aifinder")} className="nav-ai" onClick={() => trackEvent("homepage_nav_click", { location: "nav_aifinder", lang })}>{t.nav.aifinder}</Link></li>
           <li><Link href={l("/blog")} onClick={() => trackEvent("homepage_nav_click", { location: "nav_blog", lang })}>{t.nav.blog}</Link></li>
           <li><Link href={l("/comparatifs")} onClick={() => trackEvent("homepage_nav_click", { location: "nav_comparatifs", lang })}>{t.nav.comparatifs}</Link></li>
           <li><Link href={l("/newsletter")} onClick={() => trackEvent("homepage_nav_click", { location: "nav_newsletter", lang })}>{t.nav.newsletter}</Link></li>
           <li><Link href={l("/contact")} onClick={() => trackEvent("homepage_nav_click", { location: "nav_contact", lang })}>{t.nav.contact}</Link></li>
           <li><Link href={l("/about")} onClick={() => trackEvent("homepage_nav_click", { location: "nav_about", lang })}>{t.nav.about}</Link></li>
         </ul>
+
         <div style={{ display: "flex", gap: ".65rem", alignItems: "center" }}>
           {showNavCta && (
-            <Link href={l("/newsletter")} className="nav-cta" onClick={() => trackEvent("homepage_nav_cta_click", { lang })}>
-              <span>{lang === "fr" ? "Newsletter gratuite" : "Free newsletter"}</span> →
+            <Link href={l("/aifinder")} className="nav-cta" onClick={() => trackEvent("homepage_nav_cta_click", { lang, target: "aifinder" })}>
+              <span>{t.nav.aifinder}</span> →
             </Link>
           )}
+
           <div className="lt" aria-label={t.langSwitch}>
             <button className={`lb${lang === "fr" ? " on" : ""}`} aria-pressed={lang === "fr"} onClick={() => switchLang("fr")}>FR</button>
             <button className={`lb${lang === "en" ? " on" : ""}`} aria-pressed={lang === "en"} onClick={() => switchLang("en")}>EN</button>
           </div>
-          <button className="hb" onClick={() => { setMenuOpen(p => !p); trackEvent("homepage_menu_toggle", { lang, open: !menuOpen }); }} aria-label={menuOpen ? t.closeMenu : t.menu} aria-expanded={menuOpen} aria-controls={menuId}>
+
+          <button
+            className="hb"
+            onClick={() => {
+              const next = !menuOpen;
+              setMenuOpen(next);
+              trackEvent("homepage_menu_toggle", { lang, open: next });
+            }}
+            aria-label={menuOpen ? t.closeMenu : t.menu}
+            aria-expanded={menuOpen}
+            aria-controls={menuId}
+          >
             <span /><span /><span />
           </button>
         </div>
       </nav>
 
       <main id="main-content">
-
-        {/* ── HERO ── */}
         <div className="hero">
           <div className="hero-wrap">
             <FadeSection>
               <div className="badge"><div className="badge-dot" aria-hidden="true" />{t.hero.badge}</div>
               <h1>{t.hero.h1a}<br /><em>{t.hero.h1b}</em></h1>
-              {/* Indicateur de fraîcheur — signal SEO + confiance visiteur */}
-              <div className="hero-fresh" aria-label={lang === "fr" ? "Date de mise à jour" : "Last update date"}>{t.hero.freshLabel}</div>
+              <div className="hero-fresh">{t.hero.freshLabel}</div>
               <p className="hero-sub">{t.hero.sub}</p>
               <p className="sr-only">{t.hero.extraSeo}</p>
               <div className="hero-proof"><span aria-hidden="true">⭐</span> {t.hero.socialProof}</div>
-              {/* 2 CTAs seulement — règle de conversion */}
+
               <div className="ctas">
-                <Link href={l("/comparatifs")} className="btn btn-p" onClick={() => trackEvent("homepage_cta_click", { location: "hero_primary", lang })}>{t.hero.cta1}</Link>
-                <Link href={l("/blog")} className="btn btn-s" onClick={() => trackEvent("homepage_cta_click", { location: "hero_secondary", lang })}>{t.hero.cta2}</Link>
+                <Link href={l("/aifinder")} className="btn btn-p" onClick={() => trackEvent("homepage_cta_click", { location: "hero_aifinder", lang })}>{t.hero.cta1}</Link>
+                <Link href={l("/comparatifs")} className="btn btn-s" onClick={() => trackEvent("homepage_cta_click", { location: "hero_comparatifs", lang })}>{t.hero.cta2}</Link>
               </div>
+
               <div className="hero-links" aria-label="Top topics">
+                <Link href={l("/aifinder")} className="hero-link">AI Finder</Link>
                 <Link href={l("/comparatifs/chatgpt-vs-claude-vs-gemini")} className="hero-link">ChatGPT vs Claude</Link>
                 <Link href={l("/comparatifs/runway-vs-kling-vs-pika-2026")} className="hero-link">Runway vs Kling</Link>
                 <Link href={l("/blog/deepseek-review-2026")} className="hero-link">DeepSeek review</Link>
-                <Link href={l("/blog/grok-review-2026")} className="hero-link">Grok review</Link>
               </div>
             </FadeSection>
+
             <div className="stats">
               {t.stats.map((s) => (
                 <div key={s.l} className="st-box">
@@ -680,7 +867,36 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
           </div>
         </div>
 
-        {/* ── TICKER ── */}
+        <FadeSection delay={40}>
+          <section className="finder-section" aria-labelledby="finder-heading">
+            <div className="finder-box">
+              <div className="finder-content">
+                <span className="finder-tag">{t.finder.tag}</span>
+                <h2 id="finder-heading" className="finder-title">{t.finder.title}</h2>
+                <p className="finder-sub">{t.finder.sub}</p>
+
+                <div className="finder-pills">
+                  {t.finder.pills.map((pill) => <span key={pill} className="finder-pill">✓ {pill}</span>)}
+                </div>
+
+                <div className="finder-actions">
+                  <Link href={l("/aifinder")} className="btn btn-p" onClick={() => trackEvent("homepage_aifinder_block_click", { lang, type: "primary" })}>{t.finder.cta}</Link>
+                  <Link href={l("/blog")} className="btn btn-s" onClick={() => trackEvent("homepage_aifinder_block_click", { lang, type: "secondary" })}>{t.finder.secondary}</Link>
+                </div>
+              </div>
+
+              <div className="finder-panel" aria-hidden="true">
+                {t.finder.cards.map((card) => (
+                  <div key={card.k} className="finder-mini">
+                    <strong>{card.k}</strong>
+                    <span>{card.v}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </FadeSection>
+
         <div className="ticker-wrap" aria-label={t.hero.tickerLabel} role="marquee" aria-live="off">
           <div className="ticker-label" aria-hidden="true">{t.hero.tickerLabel}</div>
           <div className="ticker-inner">
@@ -695,7 +911,6 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
           </div>
         </div>
 
-        {/* ── TRUST ── */}
         <FadeSection delay={60}>
           <div className="section" style={{ paddingTop: "3.2rem", paddingBottom: "1.5rem" }}>
             <div className="trust-row" role="list">
@@ -709,14 +924,9 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
           </div>
         </FadeSection>
 
-        {/* ── SPOTLIGHT — Dernière publication ── */}
         <FadeSection delay={80}>
           <div className="spotlight" style={{ paddingBottom: "1rem" }}>
-            <Link
-              href={l(`/blog/${spotlight.slug}`)}
-              className="spotlight-card"
-              onClick={() => trackEvent("homepage_spotlight_click", { slug: spotlight.slug, lang })}
-            >
+            <Link href={l(`/blog/${spotlight.slug}`)} className="spotlight-card" onClick={() => trackEvent("homepage_spotlight_click", { slug: spotlight.slug, lang })}>
               <div className="spotlight-left">
                 <span className="spotlight-badge">{t.spotlightLabel}</span>
                 <div>
@@ -732,7 +942,6 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
           </div>
         </FadeSection>
 
-        {/* ── COMPARATIFS ── */}
         <FadeSection delay={100}>
           <section className="section" aria-labelledby="comparatifs-heading">
             <div className="sh">
@@ -743,6 +952,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
               </div>
               <Link href={l("/comparatifs")} className="sh-right" onClick={() => trackEvent("homepage_section_click", { section: "comparatifs_all", lang })}>{t.compAll}</Link>
             </div>
+
             <div className="comp-grid">
               {comparatifs.map((c) => (
                 <Link key={c.slug} href={l(`/comparatifs/${c.slug}`)} className={`cmp${c.isFeat ? " feat" : ""}`} aria-label={c.title} onClick={() => trackEvent("homepage_card_click", { type: "comparatif", slug: c.slug, lang })}>
@@ -778,7 +988,6 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
           </section>
         </FadeSection>
 
-        {/* ── ARTICLES ── */}
         <FadeSection delay={100}>
           <section className="section" aria-labelledby="articles-heading">
             <div className="sh">
@@ -789,14 +998,14 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
               </div>
               <Link href={l("/blog")} className="sh-right" onClick={() => trackEvent("homepage_section_click", { section: "articles_all", lang })}>{t.artAll}</Link>
             </div>
+
             <div className="art-grid">
               {articles.map((a) => (
                 <Link key={a.slug} href={l(`/blog/${a.slug}`)} className={`art${a.star ? " star" : ""}`} aria-label={a.t} onClick={() => trackEvent("homepage_card_click", { type: "article", slug: a.slug, lang })}>
                   <div className="art-bar" style={{ background: a.color }} aria-hidden="true" />
                   <div className="art-top">
                     <div className="art-tag" style={{ color: a.color }}>{a.tag}</div>
-                    <div className="art-badges" style={{ display: "flex", gap: ".3rem", alignItems: "center" }}>
-                      {/* Pill temps de lecture en haut — bien plus visible */}
+                    <div className="art-badges">
                       <span className="art-time-pill"><span aria-hidden="true">⏱</span> {a.time} {t.read}</span>
                       {a.star && <span className="feat-badge">{t.featured}</span>}
                       {a.isNew && <span className="badge-new">{t.badgeNew}</span>}
@@ -816,7 +1025,6 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
           </section>
         </FadeSection>
 
-        {/* ── CLUSTERS avec couleur et icône ── */}
         <FadeSection delay={80}>
           <section className="section" aria-labelledby="clusters-heading">
             <div className="sh">
@@ -826,14 +1034,10 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
                 <div className="ssub">{t.clustersSub}</div>
               </div>
             </div>
+
             <div className="cluster-grid">
               {t.clusters.map((c) => (
-                <Link
-                  key={c.href} href={l(c.href)} className="cluster-card"
-                  style={{ background: `linear-gradient(145deg,${c.color}08,var(--bg2) 70%)`, border: `1px solid ${c.color}18` }}
-                  onClick={() => trackEvent("homepage_cluster_click", { href: c.href, lang })}
-                >
-                  {/* Barre top colorée */}
+                <Link key={c.href} href={l(c.href)} className="cluster-card" style={{ background: `linear-gradient(145deg,${c.color}08,var(--bg2) 70%)`, border: `1px solid ${c.color}18` }} onClick={() => trackEvent("homepage_cluster_click", { href: c.href, lang })}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg,${c.color},${c.color}60,transparent)`, opacity: .7 }} />
                   <div className="cluster-icon" aria-hidden="true">{c.icon}</div>
                   <div className="cluster-title">{c.title}</div>
@@ -845,7 +1049,6 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
           </section>
         </FadeSection>
 
-        {/* ── FAQ avec schema FAQPage ── */}
         <FadeSection delay={60}>
           <section className="section" aria-labelledby="faq-heading" style={{ paddingTop: "1rem" }}>
             <div className="sh" style={{ marginBottom: "1.25rem" }}>
@@ -855,6 +1058,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
                 <div className="ssub">{t.faqSub}</div>
               </div>
             </div>
+
             <div className="faq-list" role="list">
               {t.faqs.map((f) => (
                 <FaqItem key={f.q} q={f.q} a={f.a} href={f.href} lang={lang} />
@@ -863,20 +1067,22 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
           </section>
         </FadeSection>
 
-        {/* ── NEWSLETTER ── */}
         <div className="nl-wrap">
           <FadeSection delay={60}>
             <section className="nl-box" aria-labelledby="newsletter-heading">
               <div className="nl-glow" aria-hidden="true" />
               <h2 id="newsletter-heading" className="nl-title">{t.nlTitle}</h2>
               <p className="nl-sub">{t.nlSub}</p>
+
               <div className="nl-sp">
                 <div className="avs" aria-hidden="true">{AVATARS.map((a, i) => <div key={`${a}-${i}`} className="av">{a}</div>)}</div>
                 <span className="sp-t"><strong>{lang === "fr" ? "3 200+" : "3,200+"}</strong> {lang === "fr" ? "lecteurs" : "readers"}</span>
               </div>
+
               <div className="nl-bullets" aria-label={lang === "fr" ? "Avantages" : "Benefits"}>
                 {t.nlBullets.map((b) => <span key={b} className="nl-bullet">✓ {b}</span>)}
               </div>
+
               <div aria-live="polite" aria-atomic="true">
                 {status === "success" ? (
                   <div className="nl-ok" role="status">{t.nlSuccess}</div>
@@ -897,7 +1103,6 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
           </FadeSection>
         </div>
 
-        {/* ── FOOTER ── */}
         <footer>
           <div className="ft">
             <div>
@@ -907,15 +1112,18 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
                 <a href="https://twitter.com/NeurifluxCom" className="ft-social-link" target="_blank" rel="noopener noreferrer" aria-label="Neuriflux sur Twitter/X">𝕏 {t.twitterHandle}</a>
               </div>
             </div>
+
             <div>
               <div className="ft-col">{t.ftContent}</div>
               <ul className="ft-ul">{t.ftLinks.map((x) => <li key={x.h}><Link href={l(x.h)}>{x.l}</Link></li>)}</ul>
             </div>
+
             <div>
               <div className="ft-col">{t.ftLegal}</div>
               <ul className="ft-ul">{t.ftLegal2.map((x) => <li key={x.h}><Link href={l(x.h)}>{x.l}</Link></li>)}</ul>
             </div>
           </div>
+
           <div className="ft-bot">
             <span className="ft-copy">© 2026 <em>Neuriflux</em>. {t.ftRights}</span>
             <span className="ft-copy">{t.ftMade}</span>
