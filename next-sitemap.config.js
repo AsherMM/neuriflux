@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "ai-memory-agents-2026",
   "prompt-errors-2026",
   "chatgpt-alternatives-2026",
   "cursor-2026",

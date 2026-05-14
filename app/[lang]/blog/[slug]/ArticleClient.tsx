@@ -9,6 +9,7 @@ import {
   type CSSProperties,
   type FormEvent,
 } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { getArticleBySlug, ARTICLES, resolveRelated } from "../../lib/articles";
@@ -179,6 +180,17 @@ const TOOL_TO_COMP: Record<string, string> = {
   pika: "runway-vs-kling-vs-pika-2026",
 };
 
+const DEFAULT_ARTICLE_IMAGE = "/images/articles/default-ai-cover.webp";
+
+const getArticleImageSrc = (articleData: unknown) =>
+  ((articleData as { image?: string } | null)?.image || DEFAULT_ARTICLE_IMAGE).trim();
+
+const toAbsoluteImageUrl = (src: string) => {
+  if (!src) return `https://neuriflux.com${DEFAULT_ARTICLE_IMAGE}`;
+  if (/^https?:\/\//i.test(src)) return src;
+  return `https://neuriflux.com${src.startsWith("/") ? src : `/${src}`}`;
+};
+
 const getColor = (tag: string) => TAG_COLORS[tag] || "#00e6be";
 
 const slugify = (value: string) =>
@@ -329,7 +341,6 @@ function useActiveHeading(ids: string[]) {
 
   useEffect(() => {
     if (!ids.length || typeof window === "undefined") {
-      setActive(0);
       return;
     }
 
@@ -343,7 +354,7 @@ function useActiveHeading(ids: string[]) {
     const updateActive = () => {
       const elements = getElements();
       if (!elements.length) {
-        setActive(0);
+        setActive((previous) => (previous === 0 ? previous : 0));
         return;
       }
 
@@ -353,12 +364,12 @@ function useActiveHeading(ids: string[]) {
       const docBottom = document.documentElement.scrollHeight;
 
       if (window.scrollY <= 40) {
-        setActive(0);
+        setActive((previous) => (previous === 0 ? previous : 0));
         return;
       }
 
       if (docBottom - pageBottom <= 24) {
-        setActive(elements.length - 1);
+        setActive((previous) => (previous === elements.length - 1 ? previous : elements.length - 1));
         return;
       }
 
@@ -373,7 +384,7 @@ function useActiveHeading(ids: string[]) {
         }
       }
 
-      setActive(current);
+      setActive((previous) => (previous === current ? previous : current));
     };
 
     const scheduleUpdate = () => {
@@ -505,8 +516,13 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    setShareUrl(window.location.href);
-    setIsMobile(/iPhone|iPad|Android/i.test(window.navigator.userAgent));
+
+    const frame = window.requestAnimationFrame(() => {
+      setShareUrl(window.location.href);
+      setIsMobile(/iPhone|iPad|Android/i.test(window.navigator.userAgent));
+    });
+
+    return () => window.cancelAnimationFrame(frame);
   }, [slug, lang]);
 
   useEffect(() => {
@@ -626,14 +642,20 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
   const isFresh = articleData ? isNew(articleData.updatedAt?.en ?? articleData.date?.en) : false;
   const publishedLabel = articleData?.date?.[lang] ?? "";
   const updatedLabel = articleData?.updatedAt?.[lang] ?? publishedLabel;
-  const heroImage = `https://neuriflux.com/og/${canonicalSlug}.png`;
+  const articleHeroImage = getArticleImageSrc(articleData);
+  const absoluteHeroImage = toAbsoluteImageUrl(articleHeroImage);
+  const articleHeroAlt =
+    articleData?.heroImage?.alt?.[lang] ??
+    `${article?.title ?? (lang === "fr" ? "Article Neuriflux" : "Neuriflux article")} — ${
+      lang === "fr" ? "illustration éditoriale Neuriflux" : "Neuriflux editorial illustration"
+    }`;
 
   const articleSchema = article && articleData ? {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: article.title,
     description: article.desc,
-    image: heroImage,
+    image: absoluteHeroImage,
     author: { "@type": "Organization", name: "Neuriflux", url: "https://neuriflux.com" },
     publisher: {
       "@type": "Organization",
@@ -741,6 +763,7 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         .art-date,.art-time,.art-views{font-family:var(--m);font-size:.68rem;color:var(--muted)}.meta-sep{color:var(--dim);font-size:.6rem}
         .art-title{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:800;letter-spacing:-.035em;line-height:1.1;margin-bottom:1.1rem;color:var(--text);position:relative;z-index:1}.art-desc{font-family:var(--m);font-size:.82rem;color:var(--muted);font-weight:300;line-height:1.8;padding:1rem 1.25rem;background:var(--bg3);border-left:2px solid var(--ac,var(--cyan));border-radius:0 7px 7px 0;margin-bottom:1.75rem;position:relative;z-index:1}
         .author{display:flex;align-items:center;gap:.75rem;position:relative;z-index:1}.avatar{width:34px;height:34px;background:var(--cdim);border:1px solid rgba(0,230,190,.22);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}.author-name{font-family:var(--m);font-size:.75rem;color:var(--text);font-weight:500}.author-sub{font-family:var(--m);font-size:.62rem;color:var(--dim);font-weight:300;margin-top:.08rem}
+        .hero-visual{position:relative;z-index:1;margin-top:1.75rem;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:linear-gradient(135deg,var(--bg3),rgba(255,255,255,.025));box-shadow:0 24px 70px rgba(0,0,0,.28)}.hero-visual::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,12,16,0) 48%,rgba(8,12,16,.78) 100%),radial-gradient(circle at 20% 0%,var(--ag,rgba(0,230,190,.12)),transparent 42%);z-index:2;pointer-events:none}.hero-image-wrap{position:relative;width:100%;aspect-ratio:1200/630;min-height:260px}.hero-image{object-fit:cover;object-position:center;transform:scale(1.01)}.hero-caption{position:absolute;left:1rem;right:1rem;bottom:1rem;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}.hero-caption span{font-family:var(--m);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(237,242,247,.72);background:rgba(8,12,16,.62);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px);border-radius:999px;padding:6px 10px}.hero-caption strong{font-family:var(--m);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ac,var(--cyan));font-weight:700}@media(max-width:720px){.hero-visual{margin-top:1.25rem;border-radius:12px}.hero-image-wrap{min-height:190px}.hero-caption{left:.75rem;right:.75rem;bottom:.75rem}.hero-caption span{font-size:.52rem;padding:5px 8px}}
         .prose{font-family:var(--body);font-size:1.03rem;line-height:1.9;color:#c8d5e0}.prose h2{font-family:var(--d);font-size:1.4rem;font-weight:800;letter-spacing:-.025em;color:var(--text);margin:3rem 0 0;padding:.65rem 0 .65rem 1rem;border-left:3px solid var(--ac,var(--cyan));border-bottom:1px solid var(--border);scroll-margin-top:80px}.prose h3{font-family:var(--d);font-size:1.05rem;font-weight:700;color:var(--text);margin:2rem 0 0;scroll-margin-top:80px}.prose p{margin-bottom:1.35rem}.prose strong{color:var(--text);font-weight:600;font-family:var(--d)}.prose em{color:var(--muted);font-style:italic}.prose ul,.prose ol{padding-left:1.4rem;margin:.75rem 0 1.3rem}.prose ul.emoji-list{list-style:none;padding-left:0}.prose ul.emoji-list li{display:flex;align-items:baseline;gap:.55rem;padding:.3rem 0;border-bottom:1px solid var(--border)}.eli{font-size:.95rem;flex-shrink:0}.li-yes .eli{color:#10b981}.li-no .eli{color:#ef4444}.prose p.bold-title{font-family:var(--d);font-size:1rem;font-weight:700;color:var(--text);letter-spacing:-.01em;margin-top:2rem;margin-bottom:.65rem;padding-left:.85rem;border-left:2px solid var(--ac,var(--cyan))}.prose code{font-family:var(--m);font-size:.79rem;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:2px 6px;color:var(--cyan)}.prose pre{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:1.25rem 1.5rem;margin:1.75rem 0;overflow-x:auto}.prose pre code{background:none;border:none;padding:0;color:#a8c0d6;font-size:.79rem;line-height:1.78}.prose a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(0,230,190,.28)}.prose table{width:100%;border-collapse:collapse;margin:1.75rem 0;font-family:var(--m);font-size:.75rem}.prose th,.prose td{padding:10px 14px;border:1px solid var(--border)}.prose th{color:var(--text);font-weight:600;background:var(--bg3);text-align:left}.prose td{color:var(--muted)}
         .share{display:flex;align-items:center;gap:.55rem;margin-top:3.5rem;padding:1.25rem 1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:12px;flex-wrap:wrap}.share-label,.share-count,.sbtn{font-family:var(--m)}.share-label{font-size:.62rem;color:var(--dim);letter-spacing:.09em;text-transform:uppercase;margin-right:.25rem}.share-count{font-size:.65rem;color:var(--dim);margin-left:auto;display:flex;align-items:center;gap:.3rem;white-space:nowrap}.sbtn{font-size:.7rem;padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem}.sbtn.done{background:var(--cdim);border-color:rgba(0,230,190,.28);color:var(--cyan)}
         .related{margin-top:4.5rem;padding-top:2.5rem;border-top:1px solid var(--border)}.sec-tag{font-family:var(--m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.25rem;display:flex;align-items:center;gap:.4rem}.sec-tag::before{content:'';width:14px;height:1px;background:var(--cyan);display:inline-block}.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}.rcard{background:var(--bg2);border:1px solid var(--border);border-radius:12px;text-decoration:none;overflow:hidden;display:flex;flex-direction:column}.rcard-stripe{height:2px;width:100%;flex-shrink:0}.rcard-body{padding:1.1rem}.rcard-tag{font-family:var(--m);font-size:.57rem;letter-spacing:.09em;text-transform:uppercase;font-weight:600;margin-bottom:.5rem}.rcard-title{font-size:.85rem;font-weight:700;letter-spacing:-.01em;line-height:1.32;color:var(--text);margin-bottom:.6rem}.rcard-time{font-family:var(--m);font-size:.62rem;color:var(--dim)}
@@ -831,6 +854,23 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
                 <div className="author-sub">{lang === "fr" ? "Rédaction indépendante · Tests réels" : "Independent editorial · Real tests"}</div>
               </div>
             </div>
+
+            <figure className="hero-visual" aria-label={articleHeroAlt}>
+              <div className="hero-image-wrap">
+                <Image
+                  src={articleHeroImage}
+                  alt={articleHeroAlt}
+                  fill
+                  priority
+                  sizes="(max-width: 960px) calc(100vw - 2.5rem), 780px"
+                  className="hero-image"
+                />
+                <figcaption className="hero-caption">
+                  <span>{String(articleData.tag)}</span>
+                  <strong>Neuriflux Editorial</strong>
+                </figcaption>
+              </div>
+            </figure>
           </div>
 
           {relatedCompSlug && <CompCrossLink compSlug={relatedCompSlug} lang={lang} l={l} color={color} />}

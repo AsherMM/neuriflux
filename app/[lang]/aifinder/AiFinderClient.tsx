@@ -3611,4 +3611,4 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
       </main>
     </>
   );
-}
+}   

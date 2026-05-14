@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
   useCallback,
   useEffect,
@@ -32,6 +33,16 @@ const TAG_MAP: Record<string, { fr: string; en: string; color: string }> = {
 const canonical = (tag: string): string => TAG_MAP[tag]?.fr ?? tag;
 const gc = (tag: string): string => TAG_MAP[tag]?.color ?? "#00e6be";
 const tagLabel = (tag: string, lang: Lang): string => TAG_MAP[tag]?.[lang] ?? tag;
+
+const ARTICLE_IMAGE_FALLBACK = "/articles/article00.png";
+
+function articleImageSrc(article: Article): string {
+  return article.heroImage?.src ?? ARTICLE_IMAGE_FALLBACK;
+}
+
+function articleImageAlt(article: Article, lang: Lang): string {
+  return article.heroImage?.alt?.[lang] ?? article[lang].title;
+}
 
 const getAllCanonicalTags = (): string[] => {
   const seen = new Set<string>();
@@ -109,6 +120,17 @@ const T = {
     comparatifsDesc: "Scores détaillés, verdicts clairs.",
     navCta: "Newsletter gratuite",
     views: "vues",
+    popularSearchesTitle: "Recherches populaires",
+    popularSearchesDesc: "Accédez rapidement aux sujets IA les plus demandés cette semaine.",
+    popularSearches: [
+      { label: "Meilleurs outils IA gratuits", href: "/blog/alternatives-gratuites-chatgpt" },
+      { label: "ChatGPT vs Claude vs Gemini", href: "/blog/chatgpt-vs-claude-vs-gemini-2026" },
+      { label: "Outils IA pour coder", href: "/blog/cursor-ai-review-2026" },
+      { label: "IA vidéo", href: "/blog/sora-fermeture-openai-2026" },
+      { label: "Prompts IA efficaces", href: "/blog/prompt-errors-2026" },
+    ],
+    editorialTitle: "Des articles conçus pour aider à choisir, pas juste informer",
+    editorialDesc: "Chaque contenu combine analyse, limites concrètes, alternatives et cas d’usage. L’objectif est de transformer la veille IA en décisions utiles.",
     ftTagline: "Le média indépendant des outils IA.",
     ftContent: "Contenu",
     ftLegal: "Légal",
@@ -168,6 +190,17 @@ const T = {
     comparatifsDesc: "Detailed scores, clear verdicts.",
     navCta: "Free newsletter",
     views: "views",
+    popularSearchesTitle: "Popular searches",
+    popularSearchesDesc: "Jump straight into the AI topics readers are searching for this week.",
+    popularSearches: [
+      { label: "Best free AI tools", href: "/blog/alternatives-gratuites-chatgpt" },
+      { label: "ChatGPT vs Claude vs Gemini", href: "/blog/chatgpt-vs-claude-vs-gemini-2026" },
+      { label: "AI tools for coding", href: "/blog/cursor-ai-review-2026" },
+      { label: "AI video tools", href: "/blog/sora-fermeture-openai-2026" },
+      { label: "Better AI prompts", href: "/blog/prompt-errors-2026" },
+    ],
+    editorialTitle: "Articles built to help you choose, not just read",
+    editorialDesc: "Each piece combines analysis, concrete limits, alternatives and real use cases. The goal is to turn AI research into useful decisions.",
     ftTagline: "The independent AI tools media.",
     ftContent: "Content",
     ftLegal: "Legal",
@@ -333,6 +366,18 @@ function CardFeatured({ article, lang, t, l }: {
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: color, opacity: hov ? 1 : 0.5, transition: "opacity .25s" }} />
       <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at top right,${color}10,transparent 65%)`, opacity: hov ? 1 : 0, transition: "opacity .3s", pointerEvents: "none" }} />
 
+      <div className="card-image featured-image">
+        <Image
+          src={articleImageSrc(article)}
+          alt={articleImageAlt(article, lang)}
+          fill
+          sizes="(max-width: 720px) 100vw, 520px"
+          className="card-image-img"
+          priority={article.featured}
+        />
+        <div className="card-image-shade" style={{ background: `linear-gradient(135deg,${color}25,transparent 58%)` }} />
+      </div>
+
       <div style={{ display: "flex", alignItems: "center", gap: ".4rem", flexWrap: "wrap", position: "relative" }}>
         <span style={{ fontFamily: "var(--m)", fontSize: ".62rem", letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 700, color, background: `${color}18`, border: `1px solid ${color}30`, padding: "3px 10px", borderRadius: 100 }}>
           {tagLabel(article.tag, lang)}
@@ -413,6 +458,17 @@ function Card({ article, lang, t, l, animDelay = 0 }: {
     >
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: color, opacity: hov ? 1 : 0.35, transition: "opacity .25s" }} />
       <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse at top right,${color}07,transparent 70%)`, opacity: hov ? 1 : 0, transition: "opacity .3s", pointerEvents: "none" }} />
+
+      <div className="card-image">
+        <Image
+          src={articleImageSrc(article)}
+          alt={articleImageAlt(article, lang)}
+          fill
+          sizes="(max-width: 520px) 100vw, (max-width: 980px) 50vw, 360px"
+          className="card-image-img"
+        />
+        <div className="card-image-shade" style={{ background: `linear-gradient(135deg,${color}22,transparent 62%)` }} />
+      </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: ".4rem", flexWrap: "wrap", position: "relative" }}>
         <span style={{ fontFamily: "var(--m)", fontSize: ".58rem", letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 700, color, background: `${color}18`, border: `1px solid ${color}30`, padding: "3px 9px", borderRadius: 100 }}>
@@ -718,6 +774,7 @@ export default function BlogClient({ lang }: { lang: Lang }) {
       dateModified: article.date.en,
       inLanguage: lang,
       timeRequired: `PT${article.timeMin}M`,
+      image: `https://neuriflux.com${articleImageSrc(article)}`,
       author: { "@type": "Organization", name: "Neuriflux" },
       publisher: { "@type": "Organization", name: "Neuriflux" },
     })),
@@ -796,6 +853,21 @@ export default function BlogClient({ lang }: { lang: Lang }) {
         .ftag.on{background:var(--cyan);border-color:var(--cyan);color:#080c10;font-weight:700}
         .ftag-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
 
+
+        .card-image{position:relative;aspect-ratio:1200/675;border-radius:11px;overflow:hidden;border:1px solid rgba(255,255,255,.075);background:linear-gradient(135deg,var(--bg3),var(--bg2));margin-bottom:.15rem}
+        .featured-image{aspect-ratio:1200/560;border-radius:13px}
+        .card-image-img{object-fit:cover;transition:transform .35s ease,filter .35s ease}
+        .card-image-shade{position:absolute;inset:0;pointer-events:none}
+        a:hover .card-image-img{transform:scale(1.035);filter:saturate(1.08)}
+        .blog-intent{display:grid;grid-template-columns:.9fr 1.1fr;gap:1rem;align-items:center;margin:0 0 1.5rem;padding:1.2rem;border:1px solid rgba(255,255,255,.075);border-radius:16px;background:radial-gradient(circle at 12% 0%,rgba(0,230,190,.12),transparent 36%),rgba(255,255,255,.024)}
+        .intent-kicker{font-family:var(--m);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:.45rem}
+        .blog-intent h2{font-family:var(--d);font-size:clamp(1.05rem,2.1vw,1.45rem);letter-spacing:-.035em;line-height:1.12;color:var(--text);margin-bottom:.45rem}
+        .blog-intent p{font-family:var(--m);font-size:.7rem;line-height:1.72;color:var(--muted);max-width:560px}
+        .intent-links{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:flex-end}
+        .intent-links a{font-family:var(--m);font-size:.66rem;color:var(--cyan);text-decoration:none;border:1px solid rgba(0,230,190,.16);background:rgba(0,230,190,.055);border-radius:999px;padding:7px 10px;display:inline-flex;align-items:center;gap:.4rem;transition:border-color .18s,background .18s,transform .18s}
+        .intent-links a:hover{border-color:rgba(0,230,190,.35);background:rgba(0,230,190,.09);transform:translateY(-1px)}
+        @media(max-width:780px){.blog-intent{grid-template-columns:1fr}.intent-links{justify-content:flex-start}}
+
         .sec-tag{font-family:var(--m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.2rem;display:flex;align-items:center;gap:.45rem}
         .sec-tag::before{content:'';width:16px;height:1px;background:var(--cyan);display:inline-block}
         .grid-featured{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem;margin-bottom:1rem}
@@ -830,6 +902,7 @@ export default function BlogClient({ lang }: { lang: Lang }) {
           html{scroll-behavior:auto}
           .logo-dot,.hero-badge-dot,.nav-cta{animation:none}
           *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+          a:hover .card-image-img{transform:none;filter:none}
         }
       `}</style>
 
@@ -905,6 +978,27 @@ export default function BlogClient({ lang }: { lang: Lang }) {
             </div>
           </div>
         </div>
+
+
+        {!search && activeTag === "all" && (
+          <FadeIn delay={40}>
+            <section className="blog-intent" aria-labelledby="popular-searches-heading">
+              <div>
+                <div className="intent-kicker">{t.popularSearchesTitle}</div>
+                <h2 id="popular-searches-heading">{t.editorialTitle}</h2>
+                <p>{t.editorialDesc}</p>
+              </div>
+              <div className="intent-links" role="list">
+                {t.popularSearches.map((item) => (
+                  <a key={item.href} href={l(item.href)} role="listitem">
+                    {item.label}
+                    <span aria-hidden="true">→</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+          </FadeIn>
+        )}
 
         <div ref={filtersRef} className={`toolbar${filtersSticky ? " sticky" : ""}`}>
           <div className="toolbar-row">

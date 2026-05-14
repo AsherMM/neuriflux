@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import Script from "next/script";
 import { useState, useRef, useEffect, useMemo, useId, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -24,6 +25,7 @@ type HomeComparatif = {
 
 type HomeArticle = {
   slug: string;
+  image?: string;
   tag: string;
   color: string;
   t: string;
@@ -33,6 +35,19 @@ type HomeArticle = {
   isNew?: boolean;
   updated?: { fr: string; en: string };
 };
+
+const ARTICLE_IMAGE_FALLBACK = "/articles/article00.png";
+
+function getArticleImage(article: HomeArticle): string {
+  return article.image ?? `/images/blog/${article.slug}.webp`;
+}
+
+function getArticleImageAlt(article: HomeArticle, lang: Lang): string {
+  return lang === "fr"
+    ? `Illustration de l'article Neuriflux : ${article.t}`
+    : `Neuriflux article illustration: ${article.t}`;
+}
+
 
 const COMPARATIFS_FR: HomeComparatif[] = [
   { slug: "n8n-vs-make-vs-zapier-2026", tag: "Productivité", color: "#ff4a00", winner: "Make", winnerScore: 8.9, title: "n8n vs Make vs Zapier 2026 : comparatif complet", subtitle: "On a testé les 3 leaders de l'automatisation sur des projets réels. Tarifs, IA native, facilité d'usage : notre verdict honnête.", tools: [{ name: "Zapier", score: 7.8 }, { name: "Make", score: 8.9 }, { name: "n8n", score: 8.4 }], isNew: true, isFeat: true, updated: { fr: "avril 2026", en: "April 2026" } },
@@ -53,21 +68,21 @@ const COMPARATIFS_EN: HomeComparatif[] = [
 ];
 
 const ARTICLES_FR: HomeArticle[] = [
-  { slug: "deepseek-review-2026", tag: "Chatbots", color: "#00e6be", t: "DeepSeek : avis 2026, le meilleur ChatGPT gratuit venu de Chine ?", d: "DeepSeek a bouleversé le marché IA. Performances, vie privée, vrais cas d'usage et limites : notre verdict complet.", time: "12", star: true, isNew: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "grok-review-2026", tag: "Chatbots", color: "#00e6be", t: "Grok : avis 2026, l'IA d'Elon Musk vaut-elle vraiment le coup ?", d: "Grok 3 et 4 promettent données temps réel, contexte géant et ton plus brut. On a tout testé pendant 3 semaines.", time: "13", star: true, isNew: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "perplexity-ai-review-2026", tag: "Chatbots", color: "#00e6be", t: "Perplexity AI : vaut-il mieux que ChatGPT et Google ?", d: "Recherche sourcée, Perplexity Pro, Perplexity Computer et limites réelles : notre verdict complet.", time: "13", star: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "chatgpt-vs-claude-vs-gemini-2026", tag: "Chatbots", color: "#00e6be", t: "ChatGPT perd-il du terrain face à Claude et Gemini en 2026 ?", d: "ChatGPT reste massif, Claude monte chez les profils exigeants, Gemini pousse via Google. L'analyse complète.", time: "16", star: false, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "sora-fermeture-openai-2026", tag: "Chatbots", color: "#00e6be", t: "Sora est mort : OpenAI abandonne son générateur vidéo IA", d: "La fermeture de Sora racontée sans filtre : coûts, revenus, stratégie et pourquoi l'échec compte pour tout le marché.", time: "13", star: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "jasper-ai-review-2026", tag: "Rédaction", color: "#f59e0b", t: "Jasper AI : avis 2026, faut-il encore le payer ?", d: "3 semaines de tests sur des projets réels. Notre verdict honnête sur Jasper face à Claude et Copy.ai.", time: "10", star: false, updated: { fr: "mars 2026", en: "March 2026" } },
+  { slug: "deepseek-review-2026", image: "/articles/article18.png", tag: "Chatbots", color: "#00e6be", t: "DeepSeek : avis 2026, le meilleur ChatGPT gratuit venu de Chine ?", d: "DeepSeek a bouleversé le marché IA. Performances, vie privée, vrais cas d'usage et limites : notre verdict complet.", time: "12", star: true, isNew: true, updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "grok-review-2026", image: "/articles/article17.png", tag: "Chatbots", color: "#00e6be", t: "Grok : avis 2026, l'IA d'Elon Musk vaut-elle vraiment le coup ?", d: "Grok 3 et 4 promettent données temps réel, contexte géant et ton plus brut. On a tout testé pendant 3 semaines.", time: "13", star: true, isNew: true, updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "perplexity-ai-review-2026", image: "/articles/article19.png", tag: "Chatbots", color: "#00e6be", t: "Perplexity AI : vaut-il mieux que ChatGPT et Google ?", d: "Recherche sourcée, Perplexity Pro, Perplexity Computer et limites réelles : notre verdict complet.", time: "13", star: true, updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "chatgpt-vs-claude-vs-gemini-2026", image: "/articles/article21.png", tag: "Chatbots", color: "#00e6be", t: "ChatGPT perd-il du terrain face à Claude et Gemini en 2026 ?", d: "ChatGPT reste massif, Claude monte chez les profils exigeants, Gemini pousse via Google. L'analyse complète.", time: "16", star: false, updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "sora-fermeture-openai-2026", image: "/articles/article16.png", tag: "Chatbots", color: "#00e6be", t: "Sora est mort : OpenAI abandonne son générateur vidéo IA", d: "La fermeture de Sora racontée sans filtre : coûts, revenus, stratégie et pourquoi l'échec compte pour tout le marché.", time: "13", star: true, updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "jasper-ai-review-2026", image: "/articles/article20.png", tag: "Rédaction", color: "#f59e0b", t: "Jasper AI : avis 2026, faut-il encore le payer ?", d: "3 semaines de tests sur des projets réels. Notre verdict honnête sur Jasper face à Claude et Copy.ai.", time: "10", star: false, updated: { fr: "mars 2026", en: "March 2026" } },
 ];
 
 const ARTICLES_EN: HomeArticle[] = [
-  { slug: "deepseek-review-2026", tag: "Chatbots", color: "#00e6be", t: "DeepSeek Review 2026: the best free ChatGPT alternative?", d: "DeepSeek shook the AI industry. Performance, privacy, real use cases and limits: our complete verdict.", time: "12", star: true, isNew: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "grok-review-2026", tag: "Chatbots", color: "#00e6be", t: "Grok Review 2026: is Elon Musk's AI actually worth it?", d: "Grok 3 and 4 promise real-time data, giant context and a rougher tone. We tested everything for three weeks.", time: "13", star: true, isNew: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "perplexity-ai-review-2026", tag: "Chatbots", color: "#00e6be", t: "Perplexity AI: is it worth it vs ChatGPT and Google?", d: "Sourced search, Perplexity Pro, Perplexity Computer and the real limits: our complete verdict.", time: "13", star: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "chatgpt-vs-claude-vs-gemini-2026", tag: "Chatbots", color: "#00e6be", t: "ChatGPT vs Claude vs Gemini: which should you pick in 2026?", d: "50 real-world use cases. The results are more nuanced than most people think.", time: "12", star: false, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "sora-fermeture-openai-2026", tag: "Chatbots", color: "#00e6be", t: "Sora is dead: OpenAI kills its AI video app", d: "The shutdown of Sora explained without fluff: costs, revenue, strategy and why this failure matters across AI.", time: "12", star: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "vibe-coding-tools-2026", tag: "Code", color: "#3b82f6", t: "5 best tools to build an app without coding in 2026", d: "Lovable, Bolt.new, v0, Base44, Replit: we tested the leading vibe coding tools on real projects.", time: "16", star: false, updated: { fr: "mars 2026", en: "March 2026" } },
+  { slug: "deepseek-review-2026", image: "/articles/article18.png", tag: "Chatbots", color: "#00e6be", t: "DeepSeek Review 2026: the best free ChatGPT alternative?", d: "DeepSeek shook the AI industry. Performance, privacy, real use cases and limits: our complete verdict.", time: "12", star: true, isNew: true, updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "grok-review-2026", image: "/articles/article17.png", tag: "Chatbots", color: "#00e6be", t: "Grok Review 2026: is Elon Musk's AI actually worth it?", d: "Grok 3 and 4 promise real-time data, giant context and a rougher tone. We tested everything for three weeks.", time: "13", star: true, isNew: true, updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "perplexity-ai-review-2026", image: "/articles/article19.png", tag: "Chatbots", color: "#00e6be", t: "Perplexity AI: is it worth it vs ChatGPT and Google?", d: "Sourced search, Perplexity Pro, Perplexity Computer and the real limits: our complete verdict.", time: "13", star: true, updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "chatgpt-vs-claude-vs-gemini-2026", image: "/articles/article21.png", tag: "Chatbots", color: "#00e6be", t: "ChatGPT vs Claude vs Gemini: which should you pick in 2026?", d: "50 real-world use cases. The results are more nuanced than most people think.", time: "12", star: false, updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "sora-fermeture-openai-2026", image: "/articles/article16.png", tag: "Chatbots", color: "#00e6be", t: "Sora is dead: OpenAI kills its AI video app", d: "The shutdown of Sora explained without fluff: costs, revenue, strategy and why this failure matters across AI.", time: "12", star: true, updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "vibe-coding-tools-2026", image: "/articles/article20.png", tag: "Code", color: "#3b82f6", t: "5 best tools to build an app without coding in 2026", d: "Lovable, Bolt.new, v0, Base44, Replit: we tested the leading vibe coding tools on real projects.", time: "16", star: false, updated: { fr: "mars 2026", en: "March 2026" } },
 ];
 
 const SPOTLIGHT_FR = ARTICLES_FR.find((a) => a.isNew) ?? ARTICLES_FR[0];
@@ -161,6 +176,18 @@ const T = {
     nlError: "Une erreur s'est produite. Réessayez.",
     nlPh: "votre@email.com",
     hiddenSeo: "AI Finder, comparatifs IA, avis IA 2026, ChatGPT vs Claude, meilleurs outils IA, tests réels, Midjourney, Runway, Gemini, Perplexity, DeepSeek.",
+    methodKicker: "Méthodologie",
+    methodTitle: "Pourquoi nos recommandations semblent plus fiables",
+    methodText: "Chaque mise en avant part d’un usage concret : qualité du résultat, facilité de prise en main, rapport qualité/prix, limites réelles et pertinence selon le profil. L’objectif n’est pas de pousser l’outil le plus connu, mais celui qui répond le mieux au besoin.",
+    methodPills: ["Tests réels", "Pas de classement vendu", "Mises à jour régulières"],
+    startKicker: "Par où commencer",
+    startTitle: "Nouveau sur Neuriflux ? Lancez le bon parcours.",
+    startText: "Si vous hésitez entre plusieurs outils, commencez par l’AI Finder. Si vous comparez déjà des solutions précises, passez par les comparatifs. Si vous voulez comprendre le marché, lisez les analyses.",
+    startCards: [
+      { title: "Trouver un outil", text: "4 questions pour obtenir une recommandation adaptée.", href: "/aifinder", cta: "Lancer l’AI Finder →" },
+      { title: "Comparer avant d’acheter", text: "Scores, gagnants et limites claires par usage.", href: "/comparatifs", cta: "Voir les comparatifs →" },
+      { title: "Comprendre les tendances", text: "Articles longs, analyses et guides IA 2026.", href: "/blog", cta: "Lire le blog →" },
+    ],
     srSkip: "Aller au contenu principal",
     menu: "Menu principal",
     closeMenu: "Fermer le menu",
@@ -261,6 +288,18 @@ const T = {
     nlError: "Something went wrong. Please try again.",
     nlPh: "your@email.com",
     hiddenSeo: "AI Finder, AI tools comparison, AI reviews 2026, ChatGPT vs Claude, best AI tools, real tests, Midjourney, Runway, Gemini, Perplexity, DeepSeek.",
+    methodKicker: "Methodology",
+    methodTitle: "Why our recommendations feel more reliable",
+    methodText: "Every recommendation starts from a real use case: output quality, ease of use, value for money, actual limits and fit by user profile. The goal is not to push the most famous tool, but the one that best matches the need.",
+    methodPills: ["Real tests", "No sold rankings", "Regular updates"],
+    startKicker: "Start here",
+    startTitle: "New to Neuriflux? Pick the right path.",
+    startText: "If you are hesitating between tools, start with AI Finder. If you are comparing specific options, go to comparisons. If you want to understand the market, read the analysis.",
+    startCards: [
+      { title: "Find a tool", text: "4 questions to get a recommendation that fits.", href: "/aifinder", cta: "Start AI Finder →" },
+      { title: "Compare before paying", text: "Scores, winners and clear limits by use case.", href: "/comparatifs", cta: "Browse comparisons →" },
+      { title: "Understand trends", text: "Long-form articles, analysis and AI guides for 2026.", href: "/blog", cta: "Read the blog →" },
+    ],
     srSkip: "Skip to main content",
     menu: "Main navigation",
     closeMenu: "Close menu",
@@ -783,6 +822,30 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
 .ft-copy{font-family:var(--m);font-size:.62rem;color:var(--dim)}
 .ft-copy em{color:var(--cyan);font-style:normal}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.logo-dot,.badge-dot{animation:none}.ticker-track{animation:none;transform:none}.cmp,.art,.cluster-card,.btn,.trust-cell,.spotlight-card{transition:none}.nav-cta{animation:none}*{transition-duration:.01ms!important}}
+
+.art-cover{position:relative;aspect-ratio:1200/675;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.075);background:linear-gradient(135deg,var(--bg3),var(--bg2));margin-bottom:.15rem}
+.art-cover-img{object-fit:cover;transition:transform .35s ease,filter .35s ease}
+.art-cover-shade{position:absolute;inset:0;pointer-events:none}
+.art:hover .art-cover-img{transform:scale(1.035);filter:saturate(1.08)}
+.start-section{padding-top:1.4rem;padding-bottom:1.4rem}
+.start-card{display:grid;grid-template-columns:.85fr 1.15fr;gap:1rem;align-items:stretch;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:linear-gradient(145deg,rgba(0,230,190,.045),rgba(255,255,255,.018));padding:1.15rem;box-shadow:0 18px 58px rgba(0,0,0,.18)}
+.start-copy{padding:.85rem}
+.start-copy p{font-family:var(--m);font-size:.72rem;color:var(--muted);line-height:1.75;max-width:520px;margin-top:.55rem}
+.start-options{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+.start-option{border:1px solid var(--border);background:rgba(255,255,255,.028);border-radius:14px;padding:1rem;text-decoration:none;display:flex;flex-direction:column;gap:.35rem;transition:border-color .18s,transform .18s,background .18s}
+.start-option:hover{border-color:rgba(0,230,190,.22);background:rgba(0,230,190,.045);transform:translateY(-2px)}
+.start-option strong{font-family:var(--d);font-size:.84rem;color:var(--text)}
+.start-option span{font-family:var(--m);font-size:.64rem;color:var(--muted);line-height:1.55;flex:1}
+.start-option em{font-family:var(--m);font-size:.62rem;color:var(--cyan);font-style:normal;font-weight:700;margin-top:.35rem}
+.method-section{padding-top:1rem;padding-bottom:1rem}
+.method-card{display:grid;grid-template-columns:1.25fr .75fr;gap:1.4rem;align-items:center;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:radial-gradient(circle at 15% 0%,rgba(0,230,190,.12),transparent 34%),rgba(255,255,255,.026);padding:clamp(1.35rem,3vw,2rem);box-shadow:0 18px 64px rgba(0,0,0,.22)}
+.method-title{font-size:clamp(1.1rem,2.4vw,1.55rem);font-weight:800;letter-spacing:-.035em;line-height:1.12;color:var(--text);margin-bottom:.55rem}
+.method-text{font-family:var(--m);font-size:.72rem;color:var(--muted);line-height:1.8;max-width:760px}
+.method-pills{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:flex-end}
+.method-pills span{font-family:var(--m);font-size:.62rem;color:var(--cyan);border:1px solid rgba(0,230,190,.15);background:rgba(0,230,190,.055);border-radius:999px;padding:6px 10px}
+@media(max-width:900px){.start-card{grid-template-columns:1fr}.start-options{grid-template-columns:1fr}.method-card{grid-template-columns:1fr}.method-pills{justify-content:flex-start}}
+@media(prefers-reduced-motion:reduce){.art-cover-img,.start-option{transition:none}.art:hover .art-cover-img,.start-option:hover{transform:none;filter:none}}
+
 `}</style>
 
       <ScrollProgress />
@@ -924,6 +987,44 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
           </div>
         </FadeSection>
 
+        <FadeSection delay={60}>
+          <section className="section start-section" aria-labelledby="start-heading">
+            <div className="start-card">
+              <div className="start-copy">
+                <div className="stag">{t.startKicker}</div>
+                <h2 id="start-heading" className="stitle">{t.startTitle}</h2>
+                <p>{t.startText}</p>
+              </div>
+              <div className="start-options">
+                {t.startCards.map((card) => (
+                  <Link key={card.href} href={l(card.href)} className="start-option" onClick={() => trackEvent("homepage_start_path_click", { href: card.href, lang })}>
+                    <strong>{card.title}</strong>
+                    <span>{card.text}</span>
+                    <em>{card.cta}</em>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        </FadeSection>
+
+        <FadeSection delay={70}>
+          <section className="section method-section" aria-labelledby="method-heading">
+            <div className="method-card">
+              <div>
+                <div className="stag">{t.methodKicker}</div>
+                <h2 id="method-heading" className="method-title">{t.methodTitle}</h2>
+                <p className="method-text">{t.methodText}</p>
+              </div>
+              <div className="method-pills" role="list">
+                {t.methodPills.map((pill) => (
+                  <span key={pill} role="listitem">{pill}</span>
+                ))}
+              </div>
+            </div>
+          </section>
+        </FadeSection>
+
         <FadeSection delay={80}>
           <div className="spotlight" style={{ paddingBottom: "1rem" }}>
             <Link href={l(`/blog/${spotlight.slug}`)} className="spotlight-card" onClick={() => trackEvent("homepage_spotlight_click", { slug: spotlight.slug, lang })}>
@@ -1003,6 +1104,16 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
               {articles.map((a) => (
                 <Link key={a.slug} href={l(`/blog/${a.slug}`)} className={`art${a.star ? " star" : ""}`} aria-label={a.t} onClick={() => trackEvent("homepage_card_click", { type: "article", slug: a.slug, lang })}>
                   <div className="art-bar" style={{ background: a.color }} aria-hidden="true" />
+                  <div className="art-cover">
+                    <Image
+                      src={getArticleImage(a)}
+                      alt={getArticleImageAlt(a, lang)}
+                      fill
+                      sizes="(max-width: 560px) 100vw, (max-width: 900px) 50vw, 360px"
+                      className="art-cover-img"
+                    />
+                    <div className="art-cover-shade" style={{ background: `linear-gradient(135deg, ${a.color}26, transparent 62%)` }} aria-hidden="true" />
+                  </div>
                   <div className="art-top">
                     <div className="art-tag" style={{ color: a.color }}>{a.tag}</div>
                     <div className="art-badges">
