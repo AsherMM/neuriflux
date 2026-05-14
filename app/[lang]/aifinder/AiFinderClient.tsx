@@ -2,8 +2,20 @@
 
 import Link from "next/link";
 import Script from "next/script";
-import { useCallback, useEffect, useId, useMemo, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+/* ============================================================
+ * Types
+ * ============================================================ */
 
 type Lang = "fr" | "en";
 
@@ -25,12 +37,33 @@ type Goal =
 
 type Budget = "free" | "low" | "pro" | "team";
 type Level = "beginner" | "intermediate" | "advanced";
-type Priority = "quality" | "speed" | "price" | "creative" | "privacy" | "team" | "api";
-type StepId = "goal" | "budget" | "level" | "priority";
-type AnswerKey = Goal | Budget | Level | Priority;
-type ToolBadge = "New" | "Trending" | "Best Value" | "Pro Pick" | "Open Source" | "Enterprise" | "Free Pick";
+type Priority =
+  | "quality"
+  | "speed"
+  | "price"
+  | "creative"
+  | "privacy"
+  | "team"
+  | "api";
 
-type Answers = Partial<Record<StepId, AnswerKey>>;
+type StepId = "goal" | "budget" | "level" | "priority";
+
+type ToolBadge =
+  | "New"
+  | "Trending"
+  | "Best Value"
+  | "Pro Pick"
+  | "Open Source"
+  | "Enterprise"
+  | "Free Pick";
+
+/** Strictly-typed answers — one key per step, value typed exactly. */
+type Answers = {
+  goal?: Goal;
+  budget?: Budget;
+  level?: Level;
+  priority?: Priority;
+};
 
 type Tool = {
   id: string;
@@ -53,10 +86,18 @@ type Tool = {
   logos: string[];
   fallback: string;
   accent: string;
+  tags?: string[];
+  popularity?: number;
+  setupMinutes?: number;
+  alternatives?: string[];
+  freePlan?: boolean;
+  apiAvailable?: boolean;
 };
 
 type ScoredTool = Tool & {
   score: number;
+  confidence: number;
+  semanticTags: string[];
   reasons: string[];
   breakdown: {
     goal: number;
@@ -67,15 +108,121 @@ type ScoredTool = Tool & {
   };
 };
 
+type StepOption<K extends string> = readonly [K, string, string];
+
+type Step =
+  | { id: "goal"; title: string; subtitle: string; options: ReadonlyArray<StepOption<Goal>> }
+  | { id: "budget"; title: string; subtitle: string; options: ReadonlyArray<StepOption<Budget>> }
+  | { id: "level"; title: string; subtitle: string; options: ReadonlyArray<StepOption<Level>> }
+  | { id: "priority"; title: string; subtitle: string; options: ReadonlyArray<StepOption<Priority>> };
+
+/** Utility type for CSS custom properties (avoids `["--x" as string]` casts). */
+type CSSVars = CSSProperties & Record<`--${string}`, string | number>;
+
+/* ============================================================
+ * Constants
+ * ============================================================ */
+
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://neuriflux.com").replace(/\/$/, "");
+
+const STORAGE_KEY = "neuriflux_aifinder_answers_v1";
+const STORAGE_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
+
+/** All scoring weights in one place. Tweak here to retune the recommendation. */
+const SCORE = {
+  goalHit: 38,
+  goalMiss: -7,
+  budgetHit: 18,
+  budgetMiss: -10,
+  levelHit: 16,
+  levelMiss: -8,
+  priorityHit: 20,
+  priorityMiss: -4,
+  baseAnswered: 28,
+  baseUnanswered: 48,
+  ratingFactor: 6,
+  contextBoost: 14,
+  min: 34,
+  max: 100,
+} as const;
+
+const BADGE_BOOST: Record<ToolBadge, number> = {
+  "Pro Pick": 4,
+  "Best Value": 3,
+  "Free Pick": 3,
+  "Open Source": 2,
+  Trending: 2,
+  Enterprise: 1,
+  New: 1,
+};
+
+const CONTEXTUAL_GOAL_BOOST: Readonly<Record<Goal, ReadonlyArray<string>>> = {
+  writing: ["chatgpt", "claude", "jasper", "copyai", "writesonic", "grammarly", "notion"],
+  seo: ["semrush", "surferseo", "frase", "perplexity", "jasper", "copyai", "writesonic", "chatgpt", "claude"],
+  video: ["runway", "kling", "pika", "luma", "heygen", "synthesia", "elevenlabs", "descript"],
+  image: ["midjourney", "leonardo", "ideogram", "canva", "firefly", "gemini"],
+  coding: ["cursor", "github-copilot", "replit", "bolt", "v0", "lovable", "chatgpt", "claude", "deepseek", "mistral"],
+  research: ["perplexity", "gemini", "chatgpt", "claude", "deepseek", "grok", "mistral", "huggingface"],
+  automation: ["make", "zapier", "n8n", "chatgpt"],
+  business: ["chatgpt", "claude", "gemini", "copilot", "notion", "jasper", "make", "zapier", "canva"],
+  social: ["canva", "pika", "suno", "udio", "descript", "midjourney", "heygen", "copyai", "writesonic"],
+  audio: ["elevenlabs", "suno", "udio", "descript"],
+  presentation: ["gamma", "tome", "canva", "copilot", "v0", "lovable", "synthesia"],
+  avatar: ["heygen", "synthesia", "runway", "elevenlabs"],
+  local: ["ollama", "huggingface", "n8n", "mistral"],
+  agents: ["n8n", "replit", "bolt", "lovable", "chatgpt", "mistral", "huggingface"],
+};
+
+
+const GOAL_SEMANTIC_TAGS: Readonly<Record<Goal, readonly string[]>> = {
+  writing: ["writing", "copywriting", "blog", "emails", "content", "summaries"],
+  seo: ["seo", "keywords", "content marketing", "search intent", "serp", "affiliate"],
+  video: ["video", "shorts", "ads", "editing", "avatar", "b-roll"],
+  image: ["image", "design", "thumbnails", "branding", "illustration", "creative"],
+  coding: ["coding", "developer", "debug", "apps", "typescript", "api"],
+  research: ["research", "sources", "analysis", "monitoring", "fresh information"],
+  automation: ["automation", "workflows", "integrations", "no-code", "api"],
+  business: ["business", "productivity", "sales", "operations", "strategy"],
+  social: ["social media", "short form", "creator", "viral", "content"],
+  audio: ["voice", "audio", "music", "podcast", "dubbing"],
+  presentation: ["presentation", "slides", "pitch deck", "visual documents"],
+  avatar: ["avatar", "training", "sales video", "ai presenter"],
+  local: ["local ai", "privacy", "open source", "offline", "self-hosted"],
+  agents: ["agents", "automation", "apps", "orchestration", "tools"],
+};
+
+const PRIORITY_SEMANTIC_TAGS: Readonly<Record<Priority, readonly string[]>> = {
+  quality: ["quality", "accuracy", "best output"],
+  speed: ["speed", "fast", "productivity"],
+  price: ["value", "free", "affordable"],
+  creative: ["creative", "ideas", "visual"],
+  privacy: ["privacy", "local", "open source"],
+  team: ["team", "collaboration", "enterprise"],
+  api: ["api", "developer", "integration"],
+};
+
+const CATEGORY_TAGS: ReadonlyArray<[string, readonly string[]]> = [
+  ["video", ["video", "shorts", "avatar", "editing"]],
+  ["image", ["image", "design", "creative", "thumbnail"]],
+  ["code", ["coding", "developer", "apps", "api"]],
+  ["search", ["research", "sources", "seo"]],
+  ["automation", ["automation", "workflow", "integration"]],
+  ["voice", ["voice", "audio", "music"]],
+  ["presentation", ["presentation", "slides", "deck"]],
+  ["agent", ["agents", "automation", "orchestration"]],
+  ["all-in-one", ["assistant", "productivity", "writing", "research"]],
+];
+
+/* ============================================================
+ * Analytics
+ * ============================================================ */
+
 declare global {
   interface Window {
     dataLayer?: Record<string, unknown>[];
     gtag?: (...args: unknown[]) => void;
   }
 }
-
-const icon = (slug: string) => `https://cdn.simpleicons.org/${slug}/FFFFFF`;
-const fav = (domain: string) => `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
 
 function trackEvent(event: string, payload: Record<string, unknown> = {}) {
   if (typeof window === "undefined") return;
@@ -87,6 +234,21 @@ function trackEvent(event: string, payload: Record<string, unknown> = {}) {
     window.gtag("event", event, payload);
   }
 }
+
+/* ============================================================
+ * Logo helpers
+ * ============================================================ */
+
+const icon = (slug: string) => `https://cdn.simpleicons.org/${slug}/FFFFFF`;
+const fav = (domain: string) => `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+
+/* ============================================================
+ * Tools data
+ *
+ * NOTE: Bilingual content kept inline for simplicity. For further
+ * bundle-size optimization, this could be split into TOOLS_FR /
+ * TOOLS_EN and dynamically imported based on the active `lang`.
+ * ============================================================ */
 
 const TOOLS: Tool[] = [
   {
@@ -1719,6 +1881,22 @@ const TOOLS: Tool[] = [
   },
 ];
 
+/* ============================================================
+ * Pre-computed derived data (module-level, not re-created per render)
+ * ============================================================ */
+
+const NEW_TOOLS = TOOLS.filter((tool) =>
+  ["New", "Trending", "Open Source"].includes(tool.badge ?? ""),
+).slice(0, 9);
+
+const TOOL_COUNT = TOOLS.length;
+const AVG_RATING =
+  Math.round((TOOLS.reduce((sum, t) => sum + t.rating, 0) / TOOL_COUNT) * 10) / 10;
+
+/* ============================================================
+ * i18n copy
+ * ============================================================ */
+
 const COPY = {
   fr: {
     nav: {
@@ -1729,18 +1907,30 @@ const COPY = {
       contact: "Contact",
       about: "À propos",
     },
+    skipLink: "Aller au contenu",
     badge: "AI Finder gratuit · sans compte",
+    h1a: "Trouvez l’outil",
+    h1b: "IA parfait",
+    h1c: "pour votre besoin.",
     heroSub:
-      "Répondez à 4 questions. Neuriflux analyse votre usage, votre budget, votre niveau et votre priorité pour recommander les outils IA les plus pertinents.",
+      "Répondez à 4 questions. Neuriflux analyse votre usage, votre budget, votre niveau et votre priorité pour recommander les meilleurs outils IA 2026 — sans bullshit.",
+    heroSeoExtra:
+      "Comparez ChatGPT, Claude, Gemini, Midjourney, Runway, n8n, Make, Cursor, ElevenLabs et plus de 50 outils IA en quelques secondes.",
     heroCta: "Lancer le finder",
     secondaryCta: "Voir les comparatifs",
     proof1: "Sans compte",
     proof2: "Résultat instantané",
     proof3: "Méthode transparente",
+    proofs: ["Sans compte", "Résultat instantané", "Méthode transparente"],
     progress: "Progression",
+    back: "Retour",
     resultTitle: "Vos meilleurs outils IA",
-    resultSub: "Classement personnalisé selon votre profil, avec score, limites et alternatives.",
+    resultSub:
+      "Classement personnalisé selon votre profil, avec score, limites concrètes et alternatives sérieuses.",
     restart: "Recommencer",
+    restartConfirm: "Vraiment recommencer ? Vos réponses seront effacées.",
+    shareLink: "Partager ce résultat",
+    linkCopied: "Lien copié !",
     bestMatch: "Meilleur choix",
     alternatives: "Alternatives recommandées",
     why: "Pourquoi ce choix",
@@ -1750,8 +1940,10 @@ const COPY = {
     liveRanking: "Classement en direct",
     match: "compatibilité",
     rating: "Note Neuriflux",
+    toolsAnalyzed: "outils analysés",
     newToolsTitle: "Nouveautés & tendances",
-    newToolsSub: "Des outils récents, populaires ou en forte croissance à surveiller selon votre profil.",
+    newToolsSub:
+      "Des outils récents, populaires ou en forte croissance à surveiller selon votre profil.",
     methodologyTitle: "Méthode de recommandation",
     methodologyText:
       "Le score combine l’usage principal, le budget, le niveau, la priorité, la spécialisation réelle de l’outil, sa note éditoriale et quelques bonus contextuels. Le résultat n’est pas une vérité absolue : c’est un raccourci utile pour choisir plus vite.",
@@ -1762,6 +1954,17 @@ const COPY = {
     seoText:
       "Le marché des outils IA est devenu illisible : assistants généralistes, générateurs vidéo, moteurs de recherche IA, outils SEO, automatisation, voix, image, code, agents, IA locale et outils open source. Cette page vous aide à choisir plus vite sans comparer manuellement des dizaines de solutions.",
     categoriesTitle: "Cas d’usage couverts",
+    categories: [
+      "Outils IA de rédaction",
+      "Meilleurs outils IA pour le SEO",
+      "Générateurs vidéo IA",
+      "Générateurs image & design IA",
+      "Assistants IA pour le code",
+      "Outils d’automatisation IA",
+      "Générateurs voix & musique IA",
+      "Créateurs de présentations IA",
+      "IA locale / workflows open source",
+    ],
     finalCtaTitle: "Vous voulez comparer en détail ?",
     finalCtaText:
       "Consultez nos comparatifs complets avec scores, limites, prix, cas d’usage réels et verdicts honnêtes.",
@@ -1772,6 +1975,19 @@ const COPY = {
     brandDisclaimer:
       "Neuriflux est indépendant. Les noms, logos et marques appartiennent à leurs propriétaires respectifs. Leur présence ne signifie pas affiliation, partenariat ou validation officielle.",
     scoreBreakdown: "Détail du score",
+    scoreParts: {
+      goal: "Usage",
+      budget: "Budget",
+      level: "Niveau",
+      priority: "Priorité",
+      authority: "Signal",
+    },
+    finderHeading: "Trouver mon outil IA",
+    previewLabel: "AI Finder",
+    previewTools: "outils IA",
+    previewProfile: "Profil",
+    previewExample: "SEO + Recherche",
+    previewExtra: "Sans compte · résultat instantané",
     faqs: [
       {
         q: "L’AI Finder est-il gratuit ?",
@@ -1789,6 +2005,14 @@ const COPY = {
         q: "Pourquoi les scores ne sont-ils pas tous à 100% ?",
         a: "Parce qu’un outil IA a presque toujours des compromis : prix, facilité, spécialisation, qualité, API, confidentialité ou travail en équipe.",
       },
+      {
+        q: "Mes réponses sont-elles enregistrées ?",
+        a: "Oui, localement dans votre navigateur (pas envoyées à un serveur) pour que vous puissiez revenir sur vos résultats. Vous pouvez tout effacer avec le bouton « Recommencer ».",
+      },
+      {
+        q: "À quelle fréquence la liste est-elle mise à jour ?",
+        a: "Nous mettons la liste à jour à chaque sortie majeure d’un outil et au minimum chaque trimestre. Dernière mise à jour : avril 2026.",
+      },
     ],
   },
   en: {
@@ -1800,18 +2024,30 @@ const COPY = {
       contact: "Contact",
       about: "About",
     },
+    skipLink: "Skip to content",
     badge: "Free AI Finder · no account",
+    h1a: "Find the",
+    h1b: "perfect AI tool",
+    h1c: "for your workflow.",
     heroSub:
-      "Answer 4 questions. Neuriflux analyzes your use case, budget, skill level and top priority to recommend the most relevant AI tools.",
+      "Answer 4 questions. Neuriflux analyzes your use case, budget, skill level and top priority to recommend the best AI tools of 2026 — no bullshit.",
+    heroSeoExtra:
+      "Compare ChatGPT, Claude, Gemini, Midjourney, Runway, n8n, Make, Cursor, ElevenLabs and 50+ AI tools in seconds.",
     heroCta: "Start the finder",
     secondaryCta: "View comparisons",
     proof1: "No account",
     proof2: "Instant result",
     proof3: "Transparent method",
+    proofs: ["No account", "Instant result", "Transparent method"],
     progress: "Progress",
+    back: "Back",
     resultTitle: "Your best AI tools",
-    resultSub: "Personalized ranking based on your profile, with score, limitations and alternatives.",
+    resultSub:
+      "Personalized ranking based on your profile, with score, real limitations and serious alternatives.",
     restart: "Start over",
+    restartConfirm: "Really start over? Your answers will be cleared.",
+    shareLink: "Share this result",
+    linkCopied: "Link copied!",
     bestMatch: "Best match",
     alternatives: "Recommended alternatives",
     why: "Why this tool",
@@ -1821,8 +2057,10 @@ const COPY = {
     liveRanking: "Live ranking",
     match: "match",
     rating: "Neuriflux rating",
+    toolsAnalyzed: "AI tools analyzed",
     newToolsTitle: "New & trending tools",
-    newToolsSub: "Recent, popular or fast-growing tools worth watching depending on your profile.",
+    newToolsSub:
+      "Recent, popular or fast-growing tools worth watching depending on your profile.",
     methodologyTitle: "Recommendation method",
     methodologyText:
       "The score combines your main use case, budget, skill level, top priority, each tool’s real specialization, editorial rating and contextual bonuses. It is not an absolute truth: it is a practical shortcut to choose faster.",
@@ -1833,6 +2071,17 @@ const COPY = {
     seoText:
       "The AI tools market has become hard to read: general assistants, AI video generators, AI search engines, SEO tools, automation, voice, images, coding assistants, agents, local AI and open-source tools. This page helps you choose faster without manually comparing dozens of products.",
     categoriesTitle: "Covered use cases",
+    categories: [
+      "AI writing tools",
+      "Best AI tools for SEO",
+      "AI video generators",
+      "AI image & design generators",
+      "AI coding assistants",
+      "AI automation tools",
+      "AI voice & music generators",
+      "AI presentation builders",
+      "Local AI / open-source workflows",
+    ],
     finalCtaTitle: "Want a deeper comparison?",
     finalCtaText:
       "Read our full comparisons with scores, limitations, pricing, real-world use cases and honest verdicts.",
@@ -1843,6 +2092,19 @@ const COPY = {
     brandDisclaimer:
       "Neuriflux is independent. Product names, logos and brands are property of their respective owners. Their presence does not imply affiliation, partnership or official endorsement.",
     scoreBreakdown: "Score breakdown",
+    scoreParts: {
+      goal: "Use case",
+      budget: "Budget",
+      level: "Level",
+      priority: "Priority",
+      authority: "Signal",
+    },
+    finderHeading: "Find my AI tool",
+    previewLabel: "AI Finder",
+    previewTools: "AI tools",
+    previewProfile: "Profile",
+    previewExample: "SEO + Research",
+    previewExtra: "No account · instant result",
     faqs: [
       {
         q: "Is the AI Finder free?",
@@ -1860,156 +2122,148 @@ const COPY = {
         q: "Why are the scores not all 100%?",
         a: "Because every AI tool has trade-offs: price, ease of use, specialization, quality, API access, privacy or team features.",
       },
+      {
+        q: "Are my answers stored?",
+        a: "Yes, locally in your browser (not sent to a server) so you can come back to your results. You can clear everything with the “Start over” button.",
+      },
+      {
+        q: "How often is the list updated?",
+        a: "We update the list on every major tool release and at least every quarter. Last update: April 2026.",
+      },
     ],
   },
 } as const;
 
-function getSteps(lang: Lang) {
+
+/* ============================================================
+ * Step definitions (i18n-aware, strictly typed)
+ * ============================================================ */
+
+function getSteps(lang: Lang): Step[] {
   const fr = lang === "fr";
+
+  const goalOptions: ReadonlyArray<StepOption<Goal>> = [
+    ["writing", fr ? "Rédaction" : "Writing", fr ? "Articles, emails, scripts, contenus longs." : "Articles, emails, scripts, long-form content."],
+    ["seo", "SEO", fr ? "Contenus Google, comparatifs, mots-clés." : "Google content, comparisons, keywords."],
+    ["video", fr ? "Vidéo IA" : "AI video", fr ? "Clips, pubs, shorts, concepts vidéo." : "Clips, ads, shorts, video concepts."],
+    ["image", "Image / Design", fr ? "Visuels, thumbnails, branding, concepts." : "Visuals, thumbnails, branding, concepts."],
+    ["coding", fr ? "Code" : "Coding", fr ? "Développement, debug, architecture." : "Development, debugging, architecture."],
+    ["research", fr ? "Recherche" : "Research", fr ? "Sources, veille, analyse, informations fraîches." : "Sources, monitoring, analysis, fresh info."],
+    ["automation", fr ? "Automatisation" : "Automation", fr ? "Workflows, API, tâches répétitives." : "Workflows, APIs, repetitive tasks."],
+    ["presentation", fr ? "Présentation" : "Presentation", fr ? "Slides, pitch deck, documents visuels." : "Slides, pitch decks, visual documents."],
+    ["avatar", fr ? "Avatar vidéo" : "Video avatar", fr ? "Vidéos avec avatars IA, formation, vente." : "AI avatar videos, training, sales."],
+    ["local", fr ? "IA locale" : "Local AI", fr ? "Modèles locaux, confidentialité, open source." : "Local models, privacy, open source."],
+    ["agents", fr ? "Agents IA" : "AI agents", fr ? "Apps, automatisations avancées, agents." : "Apps, advanced automation, agents."],
+    ["audio", fr ? "Voix / Audio" : "Voice / Audio", fr ? "Voiceover, musique, podcast, doublage." : "Voiceover, music, podcast, dubbing."],
+  ];
+
+  const budgetOptions: ReadonlyArray<StepOption<Budget>> = [
+    ["free", fr ? "Gratuit" : "Free", fr ? "Je veux commencer sans payer." : "I want to start without paying."],
+    ["low", "< $20/mo", fr ? "Budget raisonnable pour un outil utile." : "Reasonable budget for a useful tool."],
+    ["pro", "Pro", fr ? "Je paie si le gain est réel." : "I pay if the value is clear."],
+    ["team", fr ? "Équipe" : "Team", fr ? "Usage sérieux, équipe ou entreprise." : "Serious team or business usage."],
+  ];
+
+  const levelOptions: ReadonlyArray<StepOption<Level>> = [
+    ["beginner", fr ? "Débutant" : "Beginner", fr ? "Je veux simple et rapide." : "I want simple and fast."],
+    ["intermediate", fr ? "Intermédiaire" : "Intermediate", fr ? "Je peux configurer un minimum." : "I can configure a few things."],
+    ["advanced", fr ? "Avancé" : "Advanced", fr ? "Je veux contrôle, API, workflows." : "I want control, APIs and workflows."],
+  ];
+
+  const priorityOptions: ReadonlyArray<StepOption<Priority>> = [
+    ["quality", fr ? "Qualité" : "Quality", fr ? "Je veux les meilleurs résultats." : "I want the best output."],
+    ["speed", fr ? "Rapidité" : "Speed", fr ? "Je veux gagner du temps vite." : "I want to save time fast."],
+    ["price", fr ? "Prix" : "Price", fr ? "Je veux le meilleur rapport qualité/prix." : "I want the best value."],
+    ["creative", fr ? "Créativité" : "Creativity", fr ? "Je veux des idées, visuels ou contenus forts." : "I want strong ideas, visuals or content."],
+    ["privacy", fr ? "Confidentialité" : "Privacy", fr ? "Je manipule des données sensibles." : "I handle sensitive data."],
+    ["team", fr ? "Collaboration" : "Team", fr ? "Je travaille avec une équipe." : "I work with a team."],
+    ["api", "API", fr ? "Je veux intégrer l’IA dans mes outils." : "I want to integrate AI into my tools."],
+  ];
 
   return [
     {
-      id: "goal" as const,
+      id: "goal",
       title: fr ? "Quel est votre besoin principal ?" : "What is your main goal?",
       subtitle: fr
         ? "Choisissez le cas d’usage le plus important pour vous."
         : "Choose the use case that matters most to you.",
-      options: [
-        ["writing", fr ? "Rédaction" : "Writing", fr ? "Articles, emails, scripts, contenus longs." : "Articles, emails, scripts, long-form content."],
-        ["seo", "SEO", fr ? "Contenus Google, comparatifs, mots-clés." : "Google content, comparisons, keywords."],
-        ["video", fr ? "Vidéo IA" : "AI video", fr ? "Clips, pubs, shorts, concepts vidéo." : "Clips, ads, shorts, video concepts."],
-        ["image", "Image / Design", fr ? "Visuels, thumbnails, branding, concepts." : "Visuals, thumbnails, branding, concepts."],
-        ["coding", fr ? "Code" : "Coding", fr ? "Développement, debug, architecture." : "Development, debugging, architecture."],
-        ["research", fr ? "Recherche" : "Research", fr ? "Sources, veille, analyse, informations fraîches." : "Sources, monitoring, analysis, fresh info."],
-        ["automation", fr ? "Automatisation" : "Automation", fr ? "Workflows, API, tâches répétitives." : "Workflows, APIs, repetitive tasks."],
-        ["presentation", fr ? "Présentation" : "Presentation", fr ? "Slides, pitch deck, documents visuels." : "Slides, pitch decks, visual documents."],
-        ["avatar", fr ? "Avatar vidéo" : "Video avatar", fr ? "Vidéos avec avatars IA, formation, vente." : "AI avatar videos, training, sales."],
-        ["local", fr ? "IA locale" : "Local AI", fr ? "Modèles locaux, confidentialité, open source." : "Local models, privacy, open source."],
-        ["agents", fr ? "Agents IA" : "AI agents", fr ? "Apps, automatisations avancées, agents." : "Apps, advanced automation, agents."],
-        ["audio", fr ? "Voix / Audio" : "Voice / Audio", fr ? "Voiceover, musique, podcast, doublage." : "Voiceover, music, podcast, dubbing."],
-      ],
+      options: goalOptions,
     },
     {
-      id: "budget" as const,
+      id: "budget",
       title: fr ? "Quel budget voulez-vous mettre ?" : "What is your budget?",
       subtitle: fr ? "Le prix change beaucoup selon les outils." : "Pricing varies a lot between tools.",
-      options: [
-        ["free", fr ? "Gratuit" : "Free", fr ? "Je veux commencer sans payer." : "I want to start without paying."],
-        ["low", "< $20/mo", fr ? "Budget raisonnable pour un outil utile." : "Reasonable budget for a useful tool."],
-        ["pro", "Pro", fr ? "Je paie si le gain est réel." : "I pay if the value is clear."],
-        ["team", fr ? "Équipe" : "Team", fr ? "Usage sérieux, équipe ou entreprise." : "Serious team or business usage."],
-      ],
+      options: budgetOptions,
     },
     {
-      id: "level" as const,
+      id: "level",
       title: fr ? "Quel est votre niveau ?" : "What is your skill level?",
-      subtitle: fr ? "On évite de vous recommander un outil trop complexe." : "We avoid recommending a tool that is too complex.",
-      options: [
-        ["beginner", fr ? "Débutant" : "Beginner", fr ? "Je veux simple et rapide." : "I want simple and fast."],
-        ["intermediate", fr ? "Intermédiaire" : "Intermediate", fr ? "Je peux configurer un minimum." : "I can configure a few things."],
-        ["advanced", fr ? "Avancé" : "Advanced", fr ? "Je veux contrôle, API, workflows." : "I want control, APIs and workflows."],
-      ],
+      subtitle: fr
+        ? "On évite de vous recommander un outil trop complexe."
+        : "We avoid recommending a tool that is too complex.",
+      options: levelOptions,
     },
     {
-      id: "priority" as const,
+      id: "priority",
       title: fr ? "Votre priorité absolue ?" : "Your top priority?",
       subtitle: fr ? "C’est ce qui départage les outils proches." : "This breaks ties between close recommendations.",
-      options: [
-        ["quality", fr ? "Qualité" : "Quality", fr ? "Je veux les meilleurs résultats." : "I want the best output."],
-        ["speed", fr ? "Rapidité" : "Speed", fr ? "Je veux gagner du temps vite." : "I want to save time fast."],
-        ["price", fr ? "Prix" : "Price", fr ? "Je veux le meilleur rapport qualité/prix." : "I want the best value."],
-        ["creative", fr ? "Créativité" : "Creativity", fr ? "Je veux des idées, visuels ou contenus forts." : "I want strong ideas, visuals or content."],
-        ["privacy", fr ? "Confidentialité" : "Privacy", fr ? "Je manipule des données sensibles." : "I handle sensitive data."],
-        ["team", fr ? "Collaboration" : "Team", fr ? "Je travaille avec une équipe." : "I work with a team."],
-        ["api", "API", fr ? "Je veux intégrer l’IA dans mes outils." : "I want to integrate AI into my tools."],
-      ],
+      options: priorityOptions,
     },
   ];
 }
 
-function starRating(rating: number) {
-  const full = Math.floor(rating);
-  const half = rating - full >= 0.5;
+/* ============================================================
+ * Helpers
+ * ============================================================ */
 
-  return "★".repeat(full) + (half ? "½" : "") + "☆".repeat(Math.max(0, 5 - full - (half ? 1 : 0)));
+/** Star rating display using full Unicode stars (no fractional glyphs). */
+function starRating(rating: number): string {
+  const rounded = Math.round(rating);
+  return "★".repeat(rounded) + "☆".repeat(Math.max(0, 5 - rounded));
 }
 
-function has<T extends string>(value: T | undefined, list: T[]) {
+function has<T extends string>(value: T | undefined, list: readonly T[]): boolean {
   return Boolean(value && list.includes(value));
 }
 
-function getContextualGoalBoost(tool: Tool, goal?: AnswerKey) {
+function getContextualGoalBoost(tool: Tool, goal: Goal | undefined): number {
   if (!goal) return 0;
-
-  const map: Record<string, string[]> = {
-    writing: ["chatgpt", "claude", "jasper", "copyai", "writesonic", "grammarly", "notion"],
-    seo: ["semrush", "surferseo", "frase", "perplexity", "jasper", "copyai", "writesonic", "chatgpt", "claude"],
-    video: ["runway", "kling", "pika", "luma", "heygen", "synthesia", "elevenlabs", "descript"],
-    image: ["midjourney", "leonardo", "ideogram", "canva", "firefly", "gemini"],
-    coding: ["cursor", "github-copilot", "replit", "bolt", "v0", "lovable", "chatgpt", "claude", "deepseek", "mistral"],
-    research: ["perplexity", "gemini", "chatgpt", "claude", "deepseek", "grok", "mistral", "huggingface"],
-    automation: ["make", "zapier", "n8n", "chatgpt"],
-    business: ["chatgpt", "claude", "gemini", "copilot", "notion", "jasper", "make", "zapier", "canva"],
-    social: ["canva", "pika", "suno", "udio", "descript", "midjourney", "heygen", "copyai", "writesonic"],
-    audio: ["elevenlabs", "suno", "udio", "descript"],
-    presentation: ["gamma", "tome", "canva", "copilot", "v0", "lovable", "synthesia"],
-    avatar: ["heygen", "synthesia", "runway", "elevenlabs"],
-    local: ["ollama", "huggingface", "n8n", "mistral"],
-    agents: ["n8n", "replit", "bolt", "lovable", "chatgpt", "mistral", "huggingface"],
-  };
-
-  return map[String(goal)]?.includes(tool.id) ? 14 : 0;
+  return CONTEXTUAL_GOAL_BOOST[goal]?.includes(tool.id) ? SCORE.contextBoost : 0;
 }
 
-function getBadgeBoost(badge?: ToolBadge) {
-  if (badge === "Pro Pick") return 4;
-  if (badge === "Best Value") return 3;
-  if (badge === "Free Pick") return 3;
-  if (badge === "Open Source") return 2;
-  if (badge === "Trending") return 2;
-  if (badge === "Enterprise") return 1;
-  if (badge === "New") return 1;
-  return 0;
+function getBadgeBoost(badge?: ToolBadge): number {
+  return badge ? (BADGE_BOOST[badge] ?? 0) : 0;
 }
 
-function scoreTools(answers: Answers, lang: Lang): ScoredTool[] {
-  const answered = Object.keys(answers).length;
+/** Pure scoring: only depends on `answers`. */
+function computeScores(answers: Answers): Array<Omit<ScoredTool, "reasons"> & { _contextBoost: number; _matches: Record<StepId, boolean> }> {
+  const answered = (Object.values(answers).filter(Boolean) as string[]).length;
 
   return TOOLS.map((tool) => {
-    const reasons: string[] = [];
+    const goalMatch = has<Goal>(answers.goal, tool.goals);
+    const budgetMatch = has<Budget>(answers.budget, tool.budgets);
+    const levelMatch = has<Level>(answers.level, tool.levels);
+    const priorityMatch = has<Priority>(answers.priority, tool.priorities);
 
-    const goalMatch = has(answers.goal as Goal | undefined, tool.goals);
-    const budgetMatch = has(answers.budget as Budget | undefined, tool.budgets);
-    const levelMatch = has(answers.level as Level | undefined, tool.levels);
-    const priorityMatch = has(answers.priority as Priority | undefined, tool.priorities);
-
-    const goalScore = !answers.goal ? 0 : goalMatch ? 38 : -7;
-    const budgetScore = !answers.budget ? 0 : budgetMatch ? 18 : -10;
-    const levelScore = !answers.level ? 0 : levelMatch ? 16 : -8;
-    const priorityScore = !answers.priority ? 0 : priorityMatch ? 20 : -4;
+    const goalScore = !answers.goal ? 0 : goalMatch ? SCORE.goalHit : SCORE.goalMiss;
+    const budgetScore = !answers.budget ? 0 : budgetMatch ? SCORE.budgetHit : SCORE.budgetMiss;
+    const levelScore = !answers.level ? 0 : levelMatch ? SCORE.levelHit : SCORE.levelMiss;
+    const priorityScore = !answers.priority ? 0 : priorityMatch ? SCORE.priorityHit : SCORE.priorityMiss;
 
     const contextBoost = getContextualGoalBoost(tool, answers.goal);
     const badgeBoost = getBadgeBoost(tool.badge);
-    const ratingBoost = Math.round((tool.rating - 4) * 6);
+    const ratingBoost = Math.round((tool.rating - 4) * SCORE.ratingFactor);
     const authorityScore = contextBoost + badgeBoost + ratingBoost;
 
-    if (goalMatch) reasons.push(lang === "fr" ? "Correspond à votre usage principal" : "Matches your main use case");
-    if (budgetMatch) reasons.push(lang === "fr" ? "Compatible avec votre budget" : "Fits your budget");
-    if (levelMatch) reasons.push(lang === "fr" ? "Adapté à votre niveau" : "Fits your skill level");
-    if (priorityMatch) reasons.push(lang === "fr" ? "Aligné avec votre priorité" : "Matches your top priority");
-
-    if (contextBoost > 0) {
-      reasons.push(lang === "fr" ? "Très spécialisé pour ce cas d’usage" : "Highly specialized for this use case");
-    }
-
-    const base = answered === 0 ? 48 + Math.round(tool.rating * 6) + badgeBoost : 28;
+    const base = answered === 0 ? SCORE.baseUnanswered + Math.round(tool.rating * SCORE.ratingFactor) + badgeBoost : SCORE.baseAnswered;
     const rawScore = base + goalScore + budgetScore + levelScore + priorityScore + authorityScore;
-    const score = Math.max(34, Math.min(98, rawScore));
+    const score = Math.max(SCORE.min, Math.min(SCORE.max, rawScore));
 
     return {
       ...tool,
       score,
-      reasons: reasons.length ? reasons.slice(0, 5) : [lang === "fr" ? "Bon outil généraliste à comparer" : "Good general tool to compare"],
+      confidence: Math.max(54, Math.min(98, Math.round(score - 3 + answered * 2))),
+      semanticTags: getToolTags(tool),
       breakdown: {
         goal: Math.max(0, goalScore + contextBoost),
         budget: Math.max(0, budgetScore),
@@ -2017,26 +2271,97 @@ function scoreTools(answers: Answers, lang: Lang): ScoredTool[] {
         priority: Math.max(0, priorityScore),
         authority: Math.max(0, badgeBoost + ratingBoost),
       },
+      _contextBoost: contextBoost,
+      _matches: { goal: goalMatch, budget: budgetMatch, level: levelMatch, priority: priorityMatch },
     };
   }).sort((a, b) => b.score - a.score || b.rating - a.rating || a.name.localeCompare(b.name));
 }
+
+/** Adds localized `reasons` (depends only on `lang`). */
+function attachReasons(
+  scored: ReturnType<typeof computeScores>,
+  lang: Lang,
+): ScoredTool[] {
+  return scored.map((tool) => {
+    const reasons: string[] = [];
+
+    if (tool._matches.goal)
+      reasons.push(lang === "fr" ? "Correspond à votre usage principal" : "Matches your main use case");
+    if (tool._matches.budget)
+      reasons.push(lang === "fr" ? "Compatible avec votre budget" : "Fits your budget");
+    if (tool._matches.level)
+      reasons.push(lang === "fr" ? "Adapté à votre niveau" : "Fits your skill level");
+    if (tool._matches.priority)
+      reasons.push(lang === "fr" ? "Aligné avec votre priorité" : "Matches your top priority");
+    if (tool._contextBoost > 0)
+      reasons.push(lang === "fr" ? "Très spécialisé pour ce cas d’usage" : "Highly specialized for this use case");
+
+    const finalReasons = reasons.length
+      ? reasons.slice(0, 5)
+      : [lang === "fr" ? "Bon outil généraliste à comparer" : "Good general tool to compare"];
+
+    // Strip internal helpers before returning the public-facing ScoredTool.
+    const { _contextBoost, _matches, ...publicTool } = tool;
+    void _contextBoost;
+    void _matches;
+    return { ...publicTool, reasons: finalReasons };
+  });
+}
+
+/** Safely escape `</script>` sequences in JSON-LD payloads. */
+function safeJson(obj: unknown): string {
+  return JSON.stringify(obj).replace(/</g, "\\u003c");
+}
+
+/** Validate an `Answers` object loaded from URL or localStorage. */
+function isAnswerKey<T extends string>(value: unknown, allowed: readonly T[]): value is T {
+  return typeof value === "string" && (allowed as readonly string[]).includes(value);
+}
+
+const ALL_GOALS: readonly Goal[] = [
+  "writing", "seo", "video", "image", "coding", "research", "automation",
+  "business", "social", "audio", "presentation", "avatar", "local", "agents",
+];
+const ALL_BUDGETS: readonly Budget[] = ["free", "low", "pro", "team"];
+const ALL_LEVELS: readonly Level[] = ["beginner", "intermediate", "advanced"];
+const ALL_PRIORITIES: readonly Priority[] = [
+  "quality", "speed", "price", "creative", "privacy", "team", "api",
+];
+
+function sanitizeAnswers(raw: Partial<Record<StepId, unknown>>): Answers {
+  const next: Answers = {};
+  if (isAnswerKey(raw.goal, ALL_GOALS)) next.goal = raw.goal;
+  if (isAnswerKey(raw.budget, ALL_BUDGETS)) next.budget = raw.budget;
+  if (isAnswerKey(raw.level, ALL_LEVELS)) next.level = raw.level;
+  if (isAnswerKey(raw.priority, ALL_PRIORITIES)) next.priority = raw.priority;
+  return next;
+}
+
+
+/* ============================================================
+ * Sub-components
+ * ============================================================ */
 
 function ToolLogo({ tool }: { tool: Tool }) {
   const [index, setIndex] = useState(0);
   const src = tool.logos[index];
 
   return (
-    <div className="toolLogo" style={{ ["--accent" as string]: tool.accent }}>
+    <div className="tool-logo" style={{ "--accent": tool.accent } as CSSVars}>
       {src ? (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={src}
-          alt={`${tool.name} logo`}
+          alt=""
+          width={28}
+          height={28}
           loading="lazy"
           decoding="async"
+          referrerPolicy="no-referrer"
           onError={() => setIndex((value) => value + 1)}
         />
       ) : (
-        <span>{tool.fallback}</span>
+        <span aria-hidden="true">{tool.fallback}</span>
       )}
     </div>
   );
@@ -2044,84 +2369,320 @@ function ToolLogo({ tool }: { tool: Tool }) {
 
 function Badge({ value, accent }: { value?: ToolBadge; accent: string }) {
   if (!value) return null;
-
   return (
-    <span className="toolBadge" style={{ ["--accent" as string]: accent }}>
+    <span className="tool-badge" style={{ "--accent": accent } as CSSVars}>
       {value}
     </span>
   );
 }
 
+
+function DisabledReviewButton({ label }: { label: string }) {
+  return (
+    <button type="button" className="btn btn-s btn-small review-disabled" disabled aria-disabled="true">
+      {label}
+    </button>
+  );
+}
+
+function getFreePlan(tool: Tool): boolean {
+  return tool.freePlan ?? tool.budgets.includes("free") ?? /free/i.test(tool.price);
+}
+
+function getToolTags(tool: Pick<Tool, "tags" | "goals" | "priorities" | "category">): string[] {
+  const fromCategory = CATEGORY_TAGS.find(([category]) => tool.category.toLowerCase().includes(category))?.[1] ?? [];
+  const fromGoals = tool.goals.flatMap((goal) => GOAL_SEMANTIC_TAGS[goal] ?? []);
+  const fromPriorities = tool.priorities.flatMap((priority) => PRIORITY_SEMANTIC_TAGS[priority] ?? []);
+  return Array.from(new Set([...(tool.tags ?? []), ...fromCategory, ...fromGoals, ...fromPriorities]))
+    .filter(Boolean)
+    .slice(0, 8);
+}
+
+function getSmartAlternatives(tool: Tool, pool: Tool[] = TOOLS): string[] {
+  if (tool.alternatives?.length) return tool.alternatives.slice(0, 4);
+  return pool
+    .filter((candidate) => candidate.id !== tool.id && candidate.category === tool.category)
+    .slice(0, 4)
+    .map((candidate) => candidate.name);
+}
+
+function ToolInsightRow({ tool, lang }: { tool: ScoredTool; lang: Lang }) {
+  const tags = tool.semanticTags.slice(0, 6);
+  const alternatives = getSmartAlternatives(tool).slice(0, 4);
+  return (
+    <div className="tool-insights" aria-label={lang === "fr" ? "Informations rapides" : "Quick insights"}>
+      <div className="tool-badges-row">
+        <span>{lang === "fr" ? "Score IA" : "AI score"}: {tool.score}/100</span>
+        <span>{getFreePlan(tool) ? (lang === "fr" ? "Plan gratuit" : "Free plan") : (lang === "fr" ? "Payant" : "Paid")}</span>
+        {tool.apiAvailable || tool.priorities.includes("api") ? <span>API</span> : null}
+        {tool.setupMinutes ? <span>{tool.setupMinutes} min setup</span> : null}
+      </div>
+      {tags.length ? (
+        <div className="tag-cloud" aria-label={lang === "fr" ? "Tags d’usage" : "Use case tags"}>
+          {tags.map((tag) => <span key={`${tool.id}-${tag}`}>#{tag}</span>)}
+        </div>
+      ) : null}
+      {alternatives.length ? (
+        <p className="alt-line">
+          <strong>{lang === "fr" ? "Alternatives" : "Alternatives"}:</strong> {alternatives.join(" · ")}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function ComparisonTable({ tools, lang }: { tools: ScoredTool[]; lang: Lang }) {
+  return (
+    <section className="comparison-table" aria-labelledby="comparison-table-heading">
+      <div className="section-head compact">
+        <div>
+          <div className="stag">{lang === "fr" ? "Comparatif rapide" : "Quick comparison"}</div>
+          <h2 id="comparison-table-heading" className="stitle">
+            {lang === "fr" ? "Résumé des meilleurs résultats" : "Top results summary"}
+          </h2>
+          <p className="ssub">
+            {lang === "fr"
+              ? "Une vue lisible pour comparer prix, usage, API et alternatives sans quitter la page."
+              : "A readable view to compare price, use case, API and alternatives without leaving the page."}
+          </p>
+        </div>
+      </div>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>{lang === "fr" ? "Outil" : "Tool"}</th>
+              <th>{lang === "fr" ? "Score" : "Score"}</th>
+              <th>{lang === "fr" ? "Plan gratuit" : "Free plan"}</th>
+              <th>API</th>
+              <th>{lang === "fr" ? "Idéal pour" : "Best for"}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tools.slice(0, 8).map((tool) => (
+              <tr key={`table-${tool.id}`}>
+                <td><strong>{tool.name}</strong><span>{tool.category}</span></td>
+                <td>{tool.score}/100</td>
+                <td>{getFreePlan(tool) ? "Yes" : "No"}</td>
+                <td>{tool.apiAvailable || tool.priorities.includes("api") ? "Yes" : "—"}</td>
+                <td>{tool.bestFor[lang].slice(0, 2).join(" · ")}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
+function PopularSearches({ lang }: { lang: Lang }) {
+  const searches = lang === "fr"
+    ? [
+        ["/ai-tools-for-seo", "Outils IA pour SEO"],
+        ["/ai-video-tools", "Outils IA vidéo"],
+        ["/free-ai-tools", "Outils IA gratuits"],
+        ["/ai-tools-for-developers", "IA pour développeurs"],
+        ["/ai-tools-for-students", "Outils IA pour étudiants"],
+        ["/local-ai-tools", "IA locale et privée"],
+      ]
+    : [
+        ["/ai-tools-for-seo", "AI tools for SEO"],
+        ["/ai-video-tools", "AI video tools"],
+        ["/free-ai-tools", "Free AI tools"],
+        ["/ai-tools-for-developers", "AI tools for developers"],
+        ["/ai-tools-for-students", "AI tools for students"],
+        ["/local-ai-tools", "Local and private AI"],
+      ];
+
+  return (
+    <section className="popular-searches" aria-labelledby="popular-searches-heading">
+      <div className="stag">{lang === "fr" ? "Recherches populaires" : "Popular searches"}</div>
+      <h2 id="popular-searches-heading" className="stitle">
+        {lang === "fr" ? "Pages IA à fort potentiel SEO" : "High-intent AI pages"}
+      </h2>
+      <p className="ssub">
+        {lang === "fr"
+          ? "Ces liens créent du maillage interne vers les intentions longues traînes les plus recherchées."
+          : "These links build internal relevance around high-intent long-tail searches."}
+      </p>
+      <div className="search-pill-grid">
+        {searches.map(([href, label]) => (
+          <Link key={href} href={href} className="search-pill">
+            {label} →
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+ * Main component
+ * ============================================================ */
+
 export default function AiFinderClient({ lang }: { lang: Lang }) {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const rawMenuId = useId();
   const menuId = `menu-${rawMenuId.replace(/:/g, "")}`;
 
-  const t = COPY[lang];
+  // Defensive fallback so an invalid `lang` prop doesn't crash the page.
+  const t = COPY[lang] ?? COPY.en;
   const steps = useMemo(() => getSteps(lang), [lang]);
 
   const [answers, setAnswers] = useState<Answers>({});
   const [stepIndex, setStepIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
 
-  const results = useMemo(() => scoreTools(answers, lang), [answers, lang]);
-  const finished = Object.keys(answers).length === steps.length;
-  const progress = Math.round((Object.keys(answers).length / steps.length) * 100);
+  const questionTitleRef = useRef<HTMLHeadingElement | null>(null);
+  const menuButtonRef = useRef<HTMLButtonElement | null>(null);
+  const firstMenuLinkRef = useRef<HTMLAnchorElement | null>(null);
+
+  /* --------- Two-stage memo: scoring is lang-independent --------- */
+  const rawScored = useMemo(() => computeScores(answers), [answers]);
+  const results = useMemo(() => attachReasons(rawScored, lang), [rawScored, lang]);
+
+  const answeredCount = useMemo(
+    () => (Object.values(answers).filter(Boolean) as string[]).length,
+    [answers],
+  );
+  const finished = answeredCount === steps.length;
+  const progress = Math.round((answeredCount / steps.length) * 100);
   const current = steps[stepIndex];
   const winner = results[0];
 
   const l = useCallback((p = "") => `/${lang}${p}`, [lang]);
 
-  const switchLang = useCallback(
-    (next: Lang) => {
-      if (next === lang) return;
+  const closeMobileMenu = useCallback(() => {
+    setMenuOpen(false);
+  }, []);
 
-      trackEvent("ai_finder_language_switch", { from: lang, to: next });
+  /* --------- Hydrate from URL / localStorage on first mount --------- */
+  useEffect(() => {
+    let initial: Answers = {};
 
-      const nextPath = pathname.startsWith(`/${lang}`)
-        ? pathname.replace(`/${lang}`, `/${next}`)
-        : `/${next}/ai-finder`;
+    // 1) Try URL params (shareable links).
+    const fromUrl: Partial<Record<StepId, unknown>> = {
+      goal: searchParams.get("goal") ?? undefined,
+      budget: searchParams.get("budget") ?? undefined,
+      level: searchParams.get("level") ?? undefined,
+      priority: searchParams.get("priority") ?? undefined,
+    };
+    const urlSan = sanitizeAnswers(fromUrl);
 
-      router.push(nextPath);
-    },
-    [lang, pathname, router]
-  );
+    if (Object.keys(urlSan).length > 0) {
+      initial = urlSan;
+    } else {
+      // 2) Fallback to localStorage if recent enough.
+      try {
+        const raw = window.localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw) as { ts?: number; answers?: Partial<Record<StepId, unknown>> };
+          if (parsed.ts && Date.now() - parsed.ts < STORAGE_TTL_MS && parsed.answers) {
+            initial = sanitizeAnswers(parsed.answers);
+          }
+        }
+      } catch {
+        /* ignore corrupt storage */
+      }
+    }
 
+    if (Object.keys(initial).length > 0) {
+      setAnswers(initial);
+      // Jump to first unanswered step (or stay at end if all answered).
+      const order: StepId[] = ["goal", "budget", "level", "priority"];
+      const firstMissing = order.findIndex((k) => !initial[k]);
+      setStepIndex(firstMissing === -1 ? order.length - 1 : firstMissing);
+    }
+
+    setHydrated(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /* --------- Persist answers to localStorage --------- */
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      window.localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ ts: Date.now(), answers }),
+      );
+    } catch {
+      /* storage may be unavailable (private mode, quota) */
+    }
+  }, [answers, hydrated]);
+
+  /* --------- Scroll listener for sticky nav shadow --------- */
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", fn, { passive: true });
     fn();
-
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
+  /* --------- Close mobile menu on route change --------- */
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
 
+  /* --------- Mobile menu: scroll lock, Escape, focus trap --------- */
   useEffect(() => {
     if (!menuOpen) return;
 
     const onEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMenuOpen(false);
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
     };
 
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     document.addEventListener("keydown", onEscape);
 
+    // Move focus into the menu for keyboard users.
+    const focusTimer = window.setTimeout(() => {
+      firstMenuLinkRef.current?.focus();
+    }, 30);
+
     return () => {
       document.body.style.overflow = prev;
       document.removeEventListener("keydown", onEscape);
+      window.clearTimeout(focusTimer);
     };
   }, [menuOpen]);
 
+  /* --------- Focus management when step changes --------- */
+  useEffect(() => {
+    if (finished) return;
+    // Move focus to the question heading so screen-reader users hear the new question.
+    questionTitleRef.current?.focus();
+  }, [stepIndex, finished]);
+
+  /* --------- Handlers --------- */
+
+  const switchLang = useCallback(
+    (next: Lang) => {
+      if (next === lang) return;
+      trackEvent("ai_finder_language_switch", { from: lang, to: next });
+
+      // Anchored regex to swap only the leading locale segment.
+      const nextPath = pathname.replace(new RegExp(`^/${lang}(?=/|$)`), `/${next}`);
+      const finalPath = nextPath.startsWith(`/${next}`) ? nextPath : `/${next}/aifinder`;
+      router.push(finalPath);
+    },
+    [lang, pathname, router],
+  );
+
   const select = useCallback(
-    (key: AnswerKey) => {
+    (key: Goal | Budget | Level | Priority) => {
+      if (!current) return;
       const id = current.id;
-      const next = { ...answers, [id]: key };
+      const next: Answers = { ...answers, [id]: key };
 
       setAnswers(next);
 
@@ -2129,445 +2690,738 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
         step: id,
         value: key,
         lang,
-        progress: Math.round((Object.keys(next).length / steps.length) * 100),
+        progress: Math.round(((Object.values(next).filter(Boolean) as string[]).length / steps.length) * 100),
       });
 
       if (stepIndex < steps.length - 1) {
         setStepIndex(stepIndex + 1);
       }
     },
-    [answers, current.id, lang, stepIndex, steps.length]
+    [answers, current, lang, stepIndex, steps.length],
   );
 
   const restart = useCallback(() => {
+    if (typeof window !== "undefined" && answeredCount > 0) {
+      // Light confirmation to prevent accidental loss.
+      if (!window.confirm(t.restartConfirm)) return;
+    }
     setAnswers({});
     setStepIndex(0);
+    try {
+      window.localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
     trackEvent("ai_finder_restart", { lang });
-  }, [lang]);
+  }, [answeredCount, lang, t.restartConfirm]);
 
   const goBack = useCallback(() => {
     setStepIndex((value) => Math.max(0, value - 1));
-    trackEvent("ai_finder_back", { lang, from_step: current.id });
-  }, [current.id, lang]);
+    if (current) trackEvent("ai_finder_back", { lang, from_step: current.id });
+  }, [current, lang]);
 
-  const newTools = useMemo(
-    () => TOOLS.filter((tool) => ["New", "Trending", "Open Source"].includes(tool.badge ?? "")).slice(0, 9),
-    []
+  const shareResult = useCallback(async () => {
+    const params = new URLSearchParams();
+    (Object.keys(answers) as StepId[]).forEach((k) => {
+      const v = answers[k];
+      if (v) params.set(k, v);
+    });
+
+    const url = `${SITE_URL}/${lang}/aifinder?${params.toString()}`;
+
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard) {
+        await navigator.clipboard.writeText(url);
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 2200);
+      }
+    } catch {
+      /* clipboard may be unavailable */
+    }
+
+    trackEvent("ai_finder_share", { lang, ...answers });
+  }, [answers, lang]);
+
+  const makeAffiliateClick = useCallback(
+    (toolId: string, toolName: string, score: number, position: number) => () => {
+      trackEvent("ai_finder_affiliate_click", {
+        tool: toolId,
+        tool_name: toolName,
+        score,
+        lang,
+        position,
+      });
+    },
+    [lang],
   );
 
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: "Neuriflux AI Finder",
-    url: `https://neuriflux.com/${lang}/ai-finder`,
-    applicationCategory: "BusinessApplication",
-    operatingSystem: "Web",
-    description:
-      lang === "fr"
-        ? "Outil interactif gratuit pour trouver le meilleur outil IA selon votre besoin."
-        : "Free interactive tool to find the best AI tool for your needs.",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
-  };
+  /* --------- JSON-LD schemas (memoized) --------- */
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: t.faqs.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: f.a,
+  const pageUrl = `${SITE_URL}/${lang}/aifinder`;
+
+  const schema = useMemo(
+    () => ({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "@id": `${pageUrl}#webapp`,
+      name: "Neuriflux AI Finder",
+      url: pageUrl,
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Web",
+      browserRequirements: "Requires JavaScript. Requires HTML5.",
+      inLanguage: lang === "fr" ? "fr-FR" : "en-US",
+      description:
+        lang === "fr"
+          ? "Outil interactif gratuit pour trouver le meilleur outil IA selon votre besoin, votre budget et votre niveau. Plus de 30 outils IA analysés."
+          : "Free interactive tool to find the best AI tool for your needs, budget and skill level. Over 30 AI tools analyzed.",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: AVG_RATING,
+        bestRating: 5,
+        worstRating: 1,
+        ratingCount: TOOL_COUNT,
       },
-    })),
-  };
+      publisher: {
+        "@type": "Organization",
+        name: "Neuriflux",
+        url: SITE_URL,
+      },
+    }),
+    [lang, pageUrl],
+  );
 
-  const itemListSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    name: lang === "fr" ? "Outils IA recommandés par Neuriflux" : "AI tools recommended by Neuriflux",
-    itemListElement: TOOLS.map((tool, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      name: tool.name,
-      url: tool.affiliate,
-    })),
-  };
+  const faqSchema = useMemo(
+    () => ({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: t.faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    }),
+    [t.faqs],
+  );
+
+  const howToSchema = useMemo(
+    () => ({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      name: lang === "fr" ? "Comment trouver le bon outil IA" : "How to find the right AI tool",
+      description:
+        lang === "fr"
+          ? "Quatre questions rapides pour identifier l'outil IA le mieux adapté à votre besoin."
+          : "Four quick questions to identify the AI tool that best fits your needs.",
+      totalTime: "PT1M",
+      step: steps.map((s, i) => ({
+        "@type": "HowToStep",
+        position: i + 1,
+        name: s.title,
+        text: s.subtitle,
+      })),
+    }),
+    [lang, steps],
+  );
+
+  const itemListSchema = useMemo(
+    () => ({
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: lang === "fr" ? "Outils IA recommandés par Neuriflux" : "AI tools recommended by Neuriflux",
+      numberOfItems: TOOL_COUNT,
+      itemListElement: TOOLS.map((tool, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: tool.name,
+        url: tool.affiliate,
+      })),
+    }),
+    [lang],
+  );
+
+  const breadcrumbSchema = useMemo(
+    () => ({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Neuriflux", item: `${SITE_URL}/${lang}` },
+        { "@type": "ListItem", position: 2, name: "AI Finder", item: pageUrl },
+      ],
+    }),
+    [lang, pageUrl],
+  );
+
+
+  /* --------- Render --------- */
 
   return (
     <>
-      <Script id="ai-finder-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <Script id="ai-finder-faq-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <Script id="ai-finder-itemlist-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      <Script
+        id="ai-finder-schema"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: safeJson(schema) }}
+      />
+      <Script
+        id="ai-finder-faq-schema"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: safeJson(faqSchema) }}
+      />
+      <Script
+        id="ai-finder-howto-schema"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: safeJson(howToSchema) }}
+      />
+      <Script
+        id="ai-finder-itemlist-schema"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: safeJson(itemListSchema) }}
+      />
+      <Script
+        id="ai-finder-breadcrumb-schema"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: safeJson(breadcrumbSchema) }}
+      />
 
-      <style>{`
-        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        :root{
-          --bg:#080c10;--bg2:#0d1117;--bg3:#111820;
-          --border:rgba(255,255,255,.075);--border2:rgba(0,230,190,.22);
-          --cyan:#00e6be;--cyan2:#64ffe4;--text:#edf2f7;--muted:#8292a4;--dim:#425266;
-          --font:'Syne',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
-          --pad:clamp(1.15rem,5vw,4rem);--r:22px;
+      <style jsx global>{`
+        *, *::before, *::after { box-sizing: border-box; }
+        :root { --bg: #080c10; --bg2: #0d1117; --bg3: #111820; --bg4: #151e29; --border: rgba(255,255,255,.065); --glow: rgba(0,230,190,.2); --cyan: #00e6be; --cdim: rgba(0,230,190,.09); --text: #edf2f7; --muted: #7a8a9a; --dim: #405164; --d: 'Syne', sans-serif; --m: 'JetBrains Mono', monospace; --r: 14px; --pad: clamp(1.25rem, 5vw, 4rem); }
+        html { scroll-behavior: smooth; }
+        body { background: var(--bg); color: var(--text); font-family: var(--d); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+        .sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important; }
+        .skip-link { position: absolute; left: 12px; top: -100px; z-index: 500; background: var(--cyan); color: #071018; padding: 10px 14px; border-radius: 8px; font-family: var(--m); font-size: .72rem; font-weight: 700; text-decoration: none; transition: top .2s; }
+        .skip-link:focus { top: 12px; }
+
+        .bg-grid { position: fixed; inset: 0; background-image: linear-gradient(rgba(0,230,190,.018) 1px, transparent 1px), linear-gradient(90deg, rgba(0,230,190,.018) 1px, transparent 1px); background-size: 72px 72px; pointer-events: none; z-index: 0; }
+        .bg-glow { position: fixed; top: -20%; left: 50%; transform: translateX(-50%); width: min(900px, 92vw); height: 560px; background: radial-gradient(ellipse, rgba(0,230,190,.06) 0%, transparent 68%); pointer-events: none; z-index: 0; }
+
+        .site-nav { position: sticky; top: 0; z-index: 200; backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); background: rgba(8,12,16,.9); border-bottom: 1px solid var(--border); padding: 0 var(--pad); height: 64px; display: flex; align-items: center; justify-content: space-between; transition: box-shadow .25s, background .25s; }
+        .site-nav.scrolled { box-shadow: 0 8px 32px rgba(0,0,0,.42); background: rgba(8,12,16,.97); }
+        .logo { font-family: var(--d); font-weight: 800; font-size: 1.15rem; letter-spacing: -.03em; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: .45rem; }
+        .logo em { color: var(--cyan); font-style: normal; }
+        .logo-dot { width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 8px var(--cyan); animation: blink 2s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+
+        .nav-links { display: flex; align-items: center; gap: 1.75rem; list-style: none; padding: 0; margin: 0; }
+        .nav-links a { font-family: var(--m); font-size: .74rem; color: var(--muted); text-decoration: none; letter-spacing: .03em; transition: color .15s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--cyan); }
+        .nav-links a.nav-ai { color: var(--cyan); font-weight: 700; }
+
+        .nav-right { display: flex; align-items: center; gap: .65rem; }
+        .lt { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 3px; display: flex; gap: 2px; }
+        .lb { font-family: var(--m); font-size: .67rem; font-weight: 600; padding: 4px 9px; border-radius: 6px; border: none; cursor: pointer; background: transparent; color: var(--muted); transition: all .15s; }
+        .lb.on { background: var(--cyan); color: #080c10; }
+        .hb { display: none; flex-direction: column; gap: 4px; cursor: pointer; padding: 6px; background: none; border: none; }
+        .hb span { display: block; width: 18px; height: 1.5px; background: var(--muted); border-radius: 2px; }
+
+        @media (max-width: 720px) {
+          .nav-links { display: none; }
+          .nav-links.open { display: flex; flex-direction: column; align-items: flex-start; position: fixed; top: 64px; left: 0; right: 0; background: rgba(13,17,23,.98); border-bottom: 1px solid var(--border); padding: 1.2rem var(--pad) 1.4rem; gap: 1rem; z-index: 99; }
+          .hb { display: flex; }
         }
-        body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:hidden}
-        a{text-decoration:none;color:inherit}
-        button,a{-webkit-tap-highlight-color:transparent}
-        button:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
-        .page{min-height:100vh;background:radial-gradient(circle at 18% 4%,rgba(0,230,190,.16),transparent 30%),radial-gradient(circle at 82% 8%,rgba(168,85,247,.13),transparent 30%),linear-gradient(180deg,#080c10 0%,#0b1117 46%,#080c10 100%);position:relative;overflow:hidden}
-        .page::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.72),transparent 70%)}
-        .page::after{content:"";position:fixed;width:560px;height:560px;right:-200px;top:160px;background:radial-gradient(circle,rgba(0,230,190,.08),transparent 65%);pointer-events:none;filter:blur(3px)}
-        .nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(20px);background:rgba(8,12,16,.78);border-bottom:1px solid var(--border);transition:.22s ease}
-        .nav.scrolled{background:rgba(8,12,16,.96);box-shadow:0 12px 38px rgba(0,0,0,.38)}
-        .navin{max-width:1180px;margin:auto;height:68px;padding:0 var(--pad);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-        .logo{display:flex;align-items:center;gap:.55rem;font-weight:850;letter-spacing:-.04em}
-        .dot{width:11px;height:11px;border-radius:50%;background:var(--cyan);box-shadow:0 0 24px rgba(0,230,190,.9)}
-        .logo em{font-style:normal;color:var(--cyan)}
-        .navlinks{display:flex;align-items:center;gap:1rem;font-family:var(--mono);font-size:.72rem;color:var(--muted);list-style:none}
-        .navlinks a:hover,.navlinks a.active{color:var(--cyan)}
-        .navRight{display:flex;align-items:center;gap:.65rem}
-        .lt{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:3px;display:flex;gap:2px}
-        .lb{font-family:var(--mono);font-size:.67rem;font-weight:700;padding:4px 9px;border-radius:6px;border:0;cursor:pointer;background:transparent;color:var(--muted)}
-        .lb.on{background:var(--cyan);color:#080c10}
-        .hb{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:6px;background:none;border:none}
-        .hb span{display:block;width:18px;height:1.5px;background:var(--muted);border-radius:2px}
-        .hero{max-width:1180px;margin:auto;padding:clamp(4rem,8vw,7.5rem) var(--pad) 2.8rem;text-align:center;position:relative}
-        .heroPreview{position:absolute;inset:auto 0 0;height:220px;pointer-events:none;opacity:.56}
-        .previewCard{position:absolute;border:1px solid rgba(0,230,190,.18);background:rgba(17,24,32,.66);backdrop-filter:blur(18px);border-radius:18px;padding:1rem;box-shadow:0 24px 80px rgba(0,0,0,.35);text-align:left}
-        .previewMain{left:2%;bottom:10px;width:275px}.previewFloat{right:4%;bottom:58px;width:230px}
-        .previewCard span{display:block;color:var(--cyan);font-family:var(--mono);font-size:.62rem;margin-bottom:.4rem}
-        .previewCard strong{display:block;font-size:1.15rem;letter-spacing:-.035em}
-        .previewCard small{display:block;color:var(--muted);font-family:var(--mono);font-size:.65rem;margin-top:.4rem;line-height:1.5}
-        .badge{display:inline-flex;align-items:center;gap:.5rem;padding:7px 14px;border-radius:999px;border:1px solid var(--border2);background:rgba(0,230,190,.075);color:var(--cyan);font-family:var(--mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;margin-bottom:1.25rem;position:relative;z-index:1}
-        .pulse{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 18px rgba(0,230,190,.9);animation:pulse 1.8s infinite}
-        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.82)}}
-        h1{max-width:940px;margin:0 auto .95rem;font-size:clamp(2.45rem,6vw,5.35rem);line-height:.96;letter-spacing:-.07em;font-weight:900;position:relative;z-index:1}
-        h1 span{color:var(--cyan);text-shadow:0 0 42px rgba(0,230,190,.24)}
-        .sub{max-width:790px;margin:0 auto 1.55rem;font-family:var(--mono);font-size:clamp(.82rem,1.4vw,.96rem);line-height:1.85;color:var(--muted);position:relative;z-index:1}
-        .heroactions{display:flex;justify-content:center;flex-wrap:wrap;gap:.8rem;margin-bottom:1.35rem;position:relative;z-index:1}
-        .btn{border:1px solid var(--border);border-radius:12px;padding:13px 18px;font-weight:850;font-size:.82rem;cursor:pointer;transition:.18s ease;display:inline-flex;align-items:center;justify-content:center;gap:.45rem;background:transparent;font-family:var(--font)}
-        .primary{background:var(--cyan);color:#06100e;border-color:var(--cyan);box-shadow:0 0 28px rgba(0,230,190,.22)}
-        .primary:hover{transform:translateY(-2px);filter:brightness(1.08)}
-        .secondary{background:rgba(255,255,255,.035);color:var(--text)}
-        .secondary:hover{border-color:var(--border2);color:var(--cyan);transform:translateY(-2px)}
-        .proof{display:flex;justify-content:center;flex-wrap:wrap;gap:.7rem;color:var(--muted);font-family:var(--mono);font-size:.68rem;position:relative;z-index:1}
-        .proof span{padding:7px 11px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.025)}
-        .wrap{max-width:1180px;margin:auto;padding:1rem var(--pad) 5rem;position:relative;z-index:1}
-        .finder{display:grid;grid-template-columns:minmax(0,1.1fr) 360px;gap:1rem;align-items:start}
-        .panel{border:1px solid var(--border);border-radius:var(--r);background:linear-gradient(180deg,rgba(17,24,32,.92),rgba(10,15,21,.90));box-shadow:0 18px 70px rgba(0,0,0,.32);overflow:hidden;position:relative}
-        .panel::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 30% 0%,rgba(0,230,190,.11),transparent 38%)}
-        .question,.results{position:relative;z-index:1;padding:1.45rem}
-        .topline{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.2rem}
-        .mono{font-family:var(--mono);font-size:.7rem;color:var(--muted);letter-spacing:.04em}
-        .backBtn{border:1px solid var(--border);background:rgba(255,255,255,.025);color:var(--muted);border-radius:999px;padding:6px 10px;font-family:var(--mono);font-size:.66rem;cursor:pointer}
-        .backBtn:hover:not(:disabled){color:var(--cyan);border-color:var(--border2)}
-        .backBtn:disabled{opacity:.35;cursor:not-allowed}
-        .bar{height:8px;background:rgba(255,255,255,.055);border-radius:999px;overflow:hidden;margin-bottom:1.35rem}
-        .bar i{display:block;height:100%;width:var(--w);background:linear-gradient(90deg,var(--cyan),var(--cyan2));box-shadow:0 0 22px rgba(0,230,190,.5);border-radius:999px;transition:.28s ease}
-        .question h2{font-size:clamp(1.55rem,3vw,2.35rem);letter-spacing:-.045em;margin-bottom:.45rem}
-        .question p,.results p{color:var(--muted);font-family:var(--mono);font-size:.78rem;line-height:1.7;margin-bottom:1.2rem}
-        .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
-        .option{width:100%;text-align:left;border:1px solid var(--border);background:rgba(255,255,255,.028);color:var(--text);border-radius:15px;padding:1rem;cursor:pointer;transition:.18s ease;font-family:var(--font)}
-        .option:hover{transform:translateY(-3px);border-color:var(--border2);background:rgba(0,230,190,.055);box-shadow:0 16px 40px rgba(0,0,0,.24)}
-        .option b{display:block;font-size:.95rem;margin-bottom:.35rem}
-        .option small{display:block;color:var(--muted);line-height:1.55;font-family:var(--mono);font-size:.68rem}
-        .side{padding:1rem;position:sticky;top:88px}
-        .side h3{font-size:1rem;letter-spacing:-.02em;margin-bottom:.8rem}
-        .mini{display:flex;align-items:center;justify-content:space-between;gap:.8rem;padding:.75rem;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.025);margin-bottom:.55rem}
-        .miniLeft{display:flex;align-items:center;gap:.65rem;flex:1;min-width:0}
-        .miniIcon .toolLogo{width:26px;height:26px;border-radius:8px;box-shadow:none}
-        .miniIcon .toolLogo img{width:15px;height:15px}
-        .miniIcon .toolLogo span{font-size:.55rem}
-        .mini strong{font-size:.82rem;display:block}
-        .miniBadge{display:inline-flex;margin-left:.35rem;color:var(--cyan);font-family:var(--mono);font-size:.52rem;font-weight:700;vertical-align:middle}
-        .miniBar{height:4px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden;margin-top:.38rem}
-        .miniBar i{display:block;height:100%;width:var(--score);background:linear-gradient(90deg,var(--cyan),var(--cyan2));border-radius:999px}
-        .mini span{font-family:var(--mono);font-size:.68rem;color:var(--cyan)}
-        .resultsHead{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1rem}
-        .results h2{font-size:clamp(1.65rem,3vw,2.55rem);letter-spacing:-.045em;margin-bottom:.35rem}
-        .winnerCard{position:relative;margin-bottom:1rem;padding:1.35rem;border-radius:20px;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);background:radial-gradient(circle at 20% 0%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 40%),linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));box-shadow:0 0 60px color-mix(in srgb,var(--accent) 13%,transparent)}
-        .winnerLabel{display:inline-flex;padding:5px 10px;border-radius:999px;background:var(--cyan);color:#06100e;font-family:var(--mono);font-weight:850;font-size:.62rem;margin-bottom:.75rem}
-        .toolBadge{display:inline-flex;padding:4px 8px;border-radius:999px;font-family:var(--mono);font-size:.58rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#06100e;background:var(--accent);box-shadow:0 0 18px color-mix(in srgb,var(--accent) 22%,transparent);margin-left:.45rem}
-        .winnerLayout{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start}
-        .toolIdentity{display:flex;align-items:flex-start;gap:.9rem;min-width:0}
-        .toolLogo{width:48px;height:48px;border-radius:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 18%,transparent),rgba(255,255,255,.035));border:1px solid color-mix(in srgb,var(--accent) 36%,transparent);box-shadow:0 0 28px color-mix(in srgb,var(--accent) 18%,transparent);overflow:hidden}
-        .toolLogo img{width:27px;height:27px;object-fit:contain}
-        .toolLogo span{display:grid;place-items:center;width:100%;height:100%;font-weight:900;color:var(--accent);font-size:.78rem}
-        .winnerMeta{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:.8rem}
-        .ratingPill,.pricePill{border:1px solid var(--border);background:rgba(255,255,255,.03);border-radius:999px;padding:6px 10px;color:var(--muted);font-family:var(--mono);font-size:.66rem}
-        .stars{color:#facc15;letter-spacing:.04em}
-        .scoreBig{font-family:var(--mono);color:var(--cyan);border:1px solid rgba(0,230,190,.24);border-radius:14px;padding:.75rem;min-width:104px;text-align:center;background:rgba(0,230,190,.055)}
-        .scoreBig strong{display:block;font-size:1.4rem}
-        .scoreBig span{font-size:.62rem;color:var(--muted)}
-        .breakdown{display:grid;grid-template-columns:repeat(5,1fr);gap:.45rem;margin-top:.9rem}
-        .breakItem{border:1px solid var(--border);border-radius:10px;padding:.55rem;background:rgba(0,0,0,.12)}
-        .breakItem small{display:block;color:var(--muted);font-family:var(--mono);font-size:.58rem;margin-bottom:.25rem}
-        .breakItem strong{font-family:var(--mono);font-size:.72rem;color:var(--cyan)}
-        .resultCard{border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.03);padding:1rem;margin-bottom:.85rem;transition:.18s ease}
-        .resultCard:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent) 35%,transparent);box-shadow:0 16px 46px rgba(0,0,0,.25)}
-        .resultTop{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start;margin-bottom:.65rem}
-        .tag{display:inline-flex;padding:5px 9px;border-radius:999px;background:rgba(0,230,190,.09);color:var(--cyan);border:1px solid rgba(0,230,190,.18);font-family:var(--mono);font-size:.63rem;margin-bottom:.55rem}
-        .score{font-family:var(--mono);color:var(--cyan);font-size:.8rem;border:1px solid rgba(0,230,190,.22);border-radius:999px;padding:6px 9px;white-space:nowrap}
-        .resultCard h3,.winnerCard h3{font-size:1.3rem;letter-spacing:-.035em;margin-bottom:.2rem}
-        .resultCard p,.winnerCard p{color:var(--muted);font-family:var(--mono);font-size:.73rem;line-height:1.65}
-        .cols{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.9rem}
-        .box{border:1px solid var(--border);border-radius:13px;padding:.75rem;background:rgba(0,0,0,.14)}
-        .box b{display:block;font-size:.72rem;margin-bottom:.45rem;color:var(--text)}
-        .box ul{list-style:none;display:grid;gap:.34rem}
-        .box li{color:var(--muted);font-family:var(--mono);font-size:.66rem;line-height:1.45}
-        .actions{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:.9rem}
-        .smallbtn{font-size:.72rem;padding:9px 11px;border-radius:10px}
-        .newTools,.methodCard,.seoCard,.faq,.finalCta{border:1px solid var(--border);border-radius:var(--r);background:rgba(255,255,255,.025);padding:1.25rem}
-        .newTools{margin-top:1rem}
-        .sectionHead{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:1rem}
-        .sectionHead p{color:var(--muted);font-family:var(--mono);font-size:.72rem;line-height:1.6;max-width:560px}
-        .newGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
-        .newTool{display:flex;align-items:center;gap:.75rem;border:1px solid color-mix(in srgb,var(--accent) 22%,transparent);background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 9%,transparent),rgba(255,255,255,.02));border-radius:15px;padding:.85rem;transition:.18s ease}
-        .newTool:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(0,0,0,.24)}
-        .newTool .toolLogo{width:38px;height:38px;border-radius:12px}
-        .newTool .toolLogo img{width:22px;height:22px}
-        .newTool strong{display:block;font-size:.82rem}
-        .newTool span{display:block;margin-top:.2rem;color:var(--accent);font-family:var(--mono);font-size:.62rem}
-        .method,.seo{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
-        .methodCard strong,.seoCard h2,.seoCard h3,.faq h2,.finalCta h2{letter-spacing:-.035em;margin-bottom:.65rem;display:block}
-        .methodCard p,.seoCard p,.seoCard li,.finalCta p{color:var(--muted);font-family:var(--mono);font-size:.74rem;line-height:1.75}
-        .seoCard ul{list-style:none;display:grid;gap:.45rem}
-        .faq,.finalCta{margin-top:1rem}
-        .faq h2{margin-bottom:.9rem}
-        details{border-top:1px solid var(--border);padding:.9rem 0}
-        details:first-of-type{border-top:0}
-        summary{cursor:pointer;font-weight:850}
-        details p{margin-top:.55rem;color:var(--muted);font-family:var(--mono);font-size:.74rem;line-height:1.7}
-        .finalCta{text-align:center;background:radial-gradient(circle at 50% 0%,rgba(0,230,190,.12),transparent 45%),rgba(255,255,255,.025)}
-        .finalCta p{max-width:640px;margin:0 auto 1rem}
-        .brandDisclaimer{margin-top:1rem;font-family:var(--mono);font-size:.62rem;color:var(--dim);line-height:1.6}
-        .footer{max-width:1180px;margin:auto;padding:2rem var(--pad);border-top:1px solid var(--border);color:var(--dim);font-family:var(--mono);font-size:.68rem;display:flex;justify-content:space-between;gap:1rem;position:relative;z-index:1}
-        @media(max-width:980px){.finder{grid-template-columns:1fr}.side{position:relative;top:auto}.seo,.method{grid-template-columns:1fr}.heroPreview{display:none}.newGrid{grid-template-columns:1fr}.sectionHead{align-items:flex-start;flex-direction:column}.breakdown{grid-template-columns:repeat(2,1fr)}}
-        @media(max-width:720px){.hb{display:flex}.navlinks{display:none}.navlinks.open{display:flex;flex-direction:column;align-items:flex-start;position:fixed;top:68px;left:0;right:0;background:rgba(13,17,23,.98);border-bottom:1px solid var(--border);padding:1.2rem var(--pad) 1.4rem;gap:1rem;z-index:99}}
-        @media(max-width:640px){.grid{grid-template-columns:1fr}.cols{grid-template-columns:1fr}.resultsHead,.winnerLayout,.resultTop{flex-direction:column}.scoreBig{width:100%;text-align:left}.footer{flex-direction:column}}
-        @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+        .page { min-height: 100vh; position: relative; }
+        .hero { position: relative; z-index: 1; max-width: 1160px; margin: 0 auto; padding: clamp(3.5rem, 8vw, 6rem) var(--pad) clamp(2rem, 4vw, 3rem); display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .hero-wrap { max-width: 840px; width: 100%; display: flex; flex-direction: column; align-items: center; }
+
+        .breadcrumbs { display: flex; gap: .4rem; align-items: center; font-family: var(--m); font-size: .62rem; color: var(--dim); margin-bottom: 1rem; letter-spacing: .05em; }
+        .breadcrumbs a { color: var(--muted); text-decoration: none; transition: color .15s; }
+        .breadcrumbs a:hover { color: var(--cyan); }
+        .breadcrumbs .sep { color: var(--dim); }
+
+        .hbadge { display: inline-flex; align-items: center; gap: .45rem; font-family: var(--m); font-size: .67rem; letter-spacing: .07em; color: var(--cyan); background: var(--cdim); border: 1px solid var(--glow); border-radius: 100px; padding: 6px 14px; margin-bottom: 1.35rem; }
+        .hbadge .pulse { width: 5px; height: 5px; background: var(--cyan); border-radius: 50%; animation: blink 2s infinite; }
+
+        h1 { font-size: clamp(2.15rem, 5.6vw, 4.1rem); font-weight: 800; line-height: 1.04; letter-spacing: -.045em; margin-bottom: .75rem; color: var(--text); }
+        h1 em { color: var(--cyan); font-style: normal; position: relative; }
+        h1 em::after { content: ''; position: absolute; bottom: 2px; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--cyan), transparent); opacity: .45; border-radius: 2px; }
+
+        .hero-sub { font-family: var(--m); font-size: .86rem; font-weight: 300; color: var(--muted); line-height: 1.85; max-width: 680px; margin-bottom: 1rem; text-align: center; }
+        .hero-fresh { font-family: var(--m); font-size: .65rem; color: var(--dim); letter-spacing: .06em; margin-bottom: .85rem; }
+        .ctas { display: flex; gap: .7rem; flex-wrap: wrap; margin-bottom: 1.2rem; justify-content: center; }
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; font-family: var(--d); font-weight: 700; font-size: .84rem; padding: 12px 22px; border-radius: 10px; text-decoration: none; transition: all .2s; letter-spacing: -.01em; border: none; cursor: pointer; }
+        .btn-p { background: var(--cyan); color: var(--bg); }
+        .btn-p:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,230,190,.26); }
+        .btn-p:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-s { background: transparent; color: var(--text); border: 1px solid var(--border); }
+        .btn-s:hover { border-color: var(--glow); background: var(--cdim); color: var(--cyan); }
+        .btn-small { font-size: .72rem; padding: 9px 13px; border-radius: 8px; }
+
+        .review-disabled,
+        .review-disabled:hover,
+        .review-disabled:disabled { opacity: .55; cursor: not-allowed; pointer-events: none; filter: grayscale(.15); border-color: rgba(255,255,255,.08); background: rgba(255,255,255,.04); color: rgba(255,255,255,.55); transform: none; box-shadow: none; }
+        .tool-insights { margin-top: .75rem; display: grid; gap: .55rem; }
+        .tool-badges-row { display: flex; flex-wrap: wrap; gap: .42rem; }
+        .tool-badges-row span { font-family: var(--m); font-size: .61rem; font-weight: 700; color: var(--cyan); background: rgba(0,230,190,.07); border: 1px solid rgba(0,230,190,.13); border-radius: 999px; padding: 5px 9px; }
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: .38rem; }
+        .tag-cloud span { font-family: var(--m); font-size: .58rem; color: var(--muted); background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.07); border-radius: 999px; padding: 4px 8px; }
+        .alt-line { margin: 0; font-family: var(--m); font-size: .68rem; color: var(--muted); line-height: 1.65; }
+        .alt-line strong { color: var(--text); }
+        .comparison-table, .popular-searches { margin-top: 1.2rem; background: rgba(255,255,255,.025); border: 1px solid var(--border); border-radius: 18px; padding: clamp(1rem, 2vw, 1.4rem); }
+        .section-head.compact { margin-bottom: .9rem; }
+        .table-wrap { overflow-x: auto; border: 1px solid rgba(255,255,255,.06); border-radius: 14px; }
+        table { width: 100%; border-collapse: collapse; min-width: 680px; }
+        th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,.06); font-family: var(--m); font-size: .72rem; color: var(--muted); }
+        th { color: var(--text); background: rgba(255,255,255,.035); font-weight: 800; }
+        td strong { display: block; color: var(--text); font-family: var(--d); font-size: .82rem; margin-bottom: 2px; }
+        td span { display: block; color: var(--dim); font-size: .63rem; }
+        tr:last-child td { border-bottom: 0; }
+        .search-pill-grid { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+        .search-pill { display: inline-flex; align-items: center; border: 1px solid rgba(0,230,190,.14); background: rgba(0,230,190,.055); color: var(--cyan); text-decoration: none; border-radius: 999px; padding: 9px 13px; font-family: var(--m); font-size: .68rem; font-weight: 700; transition: transform .18s, background .18s; }
+        .search-pill:hover { transform: translateY(-1px); background: rgba(0,230,190,.09); }
+
+
+        .proof { display: flex; flex-wrap: wrap; gap: .55rem; justify-content: center; margin-bottom: 1.5rem; }
+        .proof span { font-family: var(--m); font-size: .68rem; color: var(--cyan); background: rgba(0,230,190,.06); border: 1px solid rgba(0,230,190,.12); padding: 6px 12px; border-radius: 999px; }
+
+        .section { position: relative; z-index: 1; max-width: 1160px; margin: 0 auto; padding: clamp(2rem, 4vw, 3rem) var(--pad); }
+        .stag { font-family: var(--m); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--cyan); margin-bottom: .45rem; display: flex; align-items: center; gap: .4rem; }
+        .stag::before { content: ''; width: 14px; height: 1px; background: var(--cyan); display: inline-block; }
+        .stitle { font-size: clamp(1.2rem, 2.6vw, 1.62rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; color: var(--text); }
+        .ssub { font-family: var(--m); font-size: .72rem; color: var(--muted); font-weight: 300; margin-top: .35rem; letter-spacing: .02em; line-height: 1.7; max-width: 580px; }
+
+        /* Finder layout */
+        .finder-grid { display: grid; grid-template-columns: 1.35fr .65fr; gap: 1.2rem; align-items: flex-start; }
+        @media (max-width: 980px) { .finder-grid { grid-template-columns: 1fr; } }
+        .panel { border: 1px solid var(--border); background: var(--bg2); border-radius: 16px; padding: clamp(1.25rem, 3vw, 1.8rem); }
+        .panel.sticky { position: sticky; top: 84px; }
+        @media (max-width: 980px) { .panel.sticky { position: relative; top: auto; } }
+
+        .question h2 { font-size: clamp(1.4rem, 3vw, 2rem); letter-spacing: -.035em; line-height: 1.15; margin-bottom: .35rem; outline: none; }
+        .question p { font-family: var(--m); font-size: .76rem; color: var(--muted); margin-bottom: 1.1rem; line-height: 1.7; }
+        .topline { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: .8rem; }
+        .topline .mono { font-family: var(--m); font-size: .65rem; color: var(--muted); letter-spacing: .06em; }
+        .back-btn { background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 8px; padding: 5px 11px; font-family: var(--m); font-size: .68rem; cursor: pointer; transition: all .15s; }
+        .back-btn:hover:not(:disabled) { color: var(--cyan); border-color: rgba(0,230,190,.24); }
+        .back-btn:disabled { opacity: .35; cursor: not-allowed; }
+        .bar { position: relative; height: 4px; background: rgba(255,255,255,.06); border-radius: 999px; overflow: hidden; margin-bottom: 1.25rem; }
+        .bar i { position: absolute; inset: 0 auto 0 0; width: var(--w); background: linear-gradient(90deg, var(--cyan), #64ffe4); border-radius: 999px; transition: width .35s ease; }
+
+        .opt-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .65rem; }
+        @media (max-width: 640px) { .opt-grid { grid-template-columns: 1fr; } }
+        .opt { text-align: left; cursor: pointer; border: 1px solid var(--border); background: rgba(255,255,255,.025); border-radius: 12px; padding: .85rem .95rem; transition: all .18s; display: flex; flex-direction: column; gap: .25rem; }
+        .opt:hover { border-color: rgba(0,230,190,.32); background: rgba(0,230,190,.04); transform: translateY(-1px); }
+        .opt b { font-family: var(--d); font-weight: 700; font-size: .9rem; color: var(--text); letter-spacing: -.01em; }
+        .opt small { font-family: var(--m); font-size: .66rem; color: var(--muted); line-height: 1.55; }
+
+        /* Live ranking sidebar */
+        .side h2 { font-size: 1rem; letter-spacing: -.02em; margin-bottom: .9rem; }
+        .mini { display: flex; align-items: center; justify-content: space-between; gap: .8rem; padding: .7rem .8rem; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,.022); margin-bottom: .5rem; }
+        .mini-left { display: flex; align-items: center; gap: .6rem; flex: 1; min-width: 0; }
+        .mini-icon .tool-logo { width: 26px; height: 26px; border-radius: 7px; box-shadow: none; }
+        .mini-icon .tool-logo :global(img) { width: 14px; height: 14px; }
+        .mini-icon .tool-logo :global(span) { font-size: .55rem; }
+        .mini-body { flex: 1; min-width: 0; }
+        .mini strong { font-size: .82rem; display: block; }
+        .mini-bar { height: 4px; background: rgba(255,255,255,.06); border-radius: 999px; overflow: hidden; margin-top: .35rem; }
+        .mini-bar i { display: block; height: 100%; width: var(--score); background: linear-gradient(90deg, var(--cyan), #64ffe4); border-radius: 999px; }
+        .mini-score { font-family: var(--m); font-size: .68rem; color: var(--cyan); }
+
+        /* Results */
+        .results-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
+        .results-actions { display: flex; gap: .5rem; flex-wrap: wrap; }
+        .results h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); letter-spacing: -.04em; margin-bottom: .35rem; }
+        .results-sub { font-family: var(--m); font-size: .74rem; color: var(--muted); line-height: 1.7; }
+        .meta-bar { font-family: var(--m); font-size: .65rem; color: var(--dim); margin-top: .3rem; letter-spacing: .04em; }
+
+        .winner-card { position: relative; margin-bottom: 1rem; padding: 1.35rem; border-radius: 18px; border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); background: radial-gradient(circle at 20% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 40%), linear-gradient(145deg, rgba(255,255,255,.04), rgba(255,255,255,.015)); box-shadow: 0 0 60px color-mix(in srgb, var(--accent) 13%, transparent); }
+        .winner-label { display: inline-flex; padding: 5px 10px; border-radius: 999px; background: var(--cyan); color: #06100e; font-family: var(--m); font-weight: 800; font-size: .6rem; letter-spacing: .06em; text-transform: uppercase; margin-bottom: .75rem; }
+        .winner-layout { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; flex-wrap: wrap; }
+        .tool-identity { display: flex; align-items: flex-start; gap: .9rem; min-width: 0; flex: 1; }
+        .tool-logo { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 18%, transparent), rgba(255,255,255,.03)); border: 1px solid color-mix(in srgb, var(--accent) 36%, transparent); box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 16%, transparent); overflow: hidden; }
+        .tool-logo :global(img) { width: 26px; height: 26px; object-fit: contain; }
+        .tool-logo :global(span) { display: grid; place-items: center; width: 100%; height: 100%; font-weight: 900; color: var(--accent); font-size: .78rem; }
+        .winner-meta { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+        .rating-pill, .price-pill { border: 1px solid var(--border); background: rgba(255,255,255,.025); border-radius: 999px; padding: 5px 10px; color: var(--muted); font-family: var(--m); font-size: .64rem; }
+        .stars { color: #facc15; letter-spacing: .04em; }
+        .score-big { font-family: var(--m); color: var(--cyan); border: 1px solid rgba(0,230,190,.24); border-radius: 14px; padding: .75rem; min-width: 96px; text-align: center; background: rgba(0,230,190,.05); }
+        .score-big strong { display: block; font-size: 1.4rem; font-family: var(--m); }
+        .score-big span { font-size: .6rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+        .tool-badge { display: inline-flex; padding: 4px 8px; border-radius: 999px; font-family: var(--m); font-size: .56rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #06100e; background: var(--accent); box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 22%, transparent); margin-left: .45rem; vertical-align: middle; }
+
+        .breakdown { display: grid; grid-template-columns: repeat(5, 1fr); gap: .45rem; margin-top: .9rem; }
+        @media (max-width: 640px) { .breakdown { grid-template-columns: repeat(2, 1fr); } }
+        .break-item { border: 1px solid var(--border); border-radius: 10px; padding: .55rem; background: rgba(0,0,0,.12); }
+        .break-item small { display: block; color: var(--muted); font-family: var(--m); font-size: .56rem; margin-bottom: .25rem; text-transform: uppercase; letter-spacing: .06em; }
+        .break-item strong { font-family: var(--m); font-size: .72rem; color: var(--cyan); }
+
+        .cols { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-top: .9rem; }
+        @media (max-width: 640px) { .cols { grid-template-columns: 1fr; } }
+        .box { border: 1px solid var(--border); border-radius: 12px; padding: .8rem; background: rgba(0,0,0,.14); }
+        .box b { display: block; font-size: .72rem; margin-bottom: .45rem; color: var(--text); font-family: var(--d); }
+        .box ul { list-style: none; display: grid; gap: .34rem; padding: 0; margin: 0; }
+        .box li { color: var(--muted); font-family: var(--m); font-size: .66rem; line-height: 1.55; }
+
+        .verdict { margin-top: .9rem; font-family: var(--m); font-size: .76rem; color: var(--text); line-height: 1.75; padding-top: .9rem; border-top: 1px solid var(--border); }
+        .card-actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1rem; }
+
+        /* Alternative cards */
+        .alt-card { border: 1px solid var(--border); border-radius: 14px; background: var(--bg2); padding: 1rem; margin-bottom: .85rem; transition: all .18s; }
+        .alt-card:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 35%, transparent); box-shadow: 0 14px 38px rgba(0,0,0,.25); }
+        .alt-top { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; margin-bottom: .65rem; }
+        .alt-card .tag { display: inline-flex; padding: 4px 8px; border-radius: 999px; background: rgba(0,230,190,.08); color: var(--cyan); border: 1px solid rgba(0,230,190,.16); font-family: var(--m); font-size: .58rem; margin-bottom: .45rem; letter-spacing: .06em; text-transform: uppercase; }
+        .alt-card h3 { font-size: 1.05rem; letter-spacing: -.02em; margin-bottom: .25rem; line-height: 1.2; }
+        .alt-card p { color: var(--muted); font-family: var(--m); font-size: .7rem; line-height: 1.65; }
+        .alt-score { font-family: var(--m); color: var(--cyan); font-size: .75rem; border: 1px solid rgba(0,230,190,.22); border-radius: 999px; padding: 5px 10px; white-space: nowrap; }
+
+        .alts-tag { display: inline-flex; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.04); color: var(--muted); border: 1px solid var(--border); font-family: var(--m); font-size: .6rem; margin: 1.25rem 0 .8rem; letter-spacing: .08em; text-transform: uppercase; }
+
+        .brand-disclaimer { margin-top: 1.5rem; font-family: var(--m); font-size: .6rem; color: var(--dim); line-height: 1.7; }
+        .copied-toast { display: inline-block; margin-left: .55rem; font-family: var(--m); font-size: .65rem; color: var(--cyan); }
+
+        /* New tools section */
+        .new-tools { border: 1px solid var(--border); border-radius: 16px; background: var(--bg2); padding: 1.5rem; margin-top: 2rem; }
+        .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 1.1rem; flex-wrap: wrap; }
+        .new-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; }
+        @media (max-width: 900px) { .new-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 560px) { .new-grid { grid-template-columns: 1fr; } }
+        .new-tool { display: flex; align-items: center; gap: .8rem; border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent); background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 8%, transparent), rgba(255,255,255,.018)); border-radius: 14px; padding: .85rem; transition: all .18s; text-decoration: none; }
+        .new-tool:hover { transform: translateY(-2px); box-shadow: 0 14px 38px rgba(0,0,0,.24); }
+        .new-tool .tool-logo { width: 36px; height: 36px; border-radius: 11px; }
+        .new-tool .tool-logo :global(img) { width: 20px; height: 20px; }
+        .new-tool strong { display: block; font-size: .85rem; color: var(--text); }
+        .new-tool span { display: block; margin-top: .2rem; color: var(--accent); font-family: var(--m); font-size: .6rem; letter-spacing: .06em; text-transform: uppercase; }
+
+        /* Method / SEO / FAQ / Final CTA */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+        @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+        .method-card, .seo-card { border: 1px solid var(--border); border-radius: 16px; background: var(--bg2); padding: 1.4rem; }
+        .method-card strong, .seo-card h2, .seo-card h3, .faq-block h2, .final-cta h2 { letter-spacing: -.03em; margin-bottom: .65rem; display: block; font-family: var(--d); font-weight: 800; }
+        .method-card p, .seo-card p, .seo-card li { color: var(--muted); font-family: var(--m); font-size: .74rem; line-height: 1.8; }
+        .seo-card ul { list-style: none; display: grid; gap: .5rem; padding: 0; margin: 0; }
+
+        .faq-block { border: 1px solid var(--border); border-radius: 16px; background: var(--bg2); padding: 1.5rem; margin-top: 2rem; }
+        .faq-block h2 { font-size: clamp(1.2rem, 2.6vw, 1.6rem); margin-bottom: 1rem; }
+        .faq-list { display: flex; flex-direction: column; gap: .55rem; }
+        .faq-item { border: 1px solid var(--border); border-radius: 12px; background: rgba(8,12,16,.4); overflow: hidden; transition: border-color .18s; }
+        .faq-item[open] { border-color: rgba(0,230,190,.22); }
+        .faq-item summary { cursor: pointer; padding: .9rem 1.1rem; font-family: var(--d); font-size: .88rem; font-weight: 700; color: var(--text); list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; transition: color .15s; }
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-item summary::after { content: '+'; color: var(--cyan); font-family: var(--m); font-size: 1rem; transition: transform .2s; flex-shrink: 0; }
+        .faq-item[open] summary::after { content: '−'; }
+        .faq-item summary:hover { color: var(--cyan); }
+        .faq-item p { padding: 0 1.1rem 1rem; color: var(--muted); font-family: var(--m); font-size: .74rem; line-height: 1.8; }
+
+        .final-cta { text-align: center; border: 1px solid var(--glow); border-radius: 16px; background: radial-gradient(circle at 50% 0%, rgba(0,230,190,.1), transparent 45%), var(--bg2); padding: 2rem 1.5rem; margin-top: 2rem; }
+        .final-cta h2 { font-size: clamp(1.3rem, 2.8vw, 1.75rem); }
+        .final-cta p { font-family: var(--m); font-size: .76rem; color: var(--muted); line-height: 1.8; max-width: 580px; margin: 0 auto 1rem; }
+
+        footer { position: relative; z-index: 1; border-top: 1px solid var(--border); padding: 2rem var(--pad); max-width: 1160px; margin: 0 auto; display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; color: var(--dim); font-family: var(--m); font-size: .68rem; }
+
+        button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
+        h2:focus-visible { outline: none; }
+
+        @media (prefers-reduced-motion: reduce) {
+          *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+        }
       `}</style>
 
-      <main className="page">
-        <nav className={`nav${scrolled ? " scrolled" : ""}`} aria-label={t.menu}>
-          <div className="navin">
-            <Link href={l("")} className="logo" onClick={() => trackEvent("ai_finder_nav_click", { location: "logo", lang })}>
-              <span className="dot" />
-              Neuri<em>flux</em>
+      <a href="#main-content" className="skip-link">{t.skipLink}</a>
+      <div className="bg-grid" aria-hidden="true" />
+      <div className="bg-glow" aria-hidden="true" />
+
+      <nav className={`site-nav${scrolled ? " scrolled" : ""}`} aria-label={t.menu}>
+        <Link
+          href={l("")}
+          className="logo"
+          onClick={() => trackEvent("ai_finder_nav_click", { location: "logo", lang })}
+        >
+          <span className="logo-dot" aria-hidden="true" />
+          Neuri<em>flux</em>
+        </Link>
+
+        <ul id={menuId} className={`nav-links${menuOpen ? " open" : ""}`} role="list">
+          <li>
+            <Link
+              ref={firstMenuLinkRef}
+              href={l("/aifinder")}
+              className="nav-ai active"
+              aria-current="page"
+              onClick={() => { closeMobileMenu(); trackEvent("ai_finder_nav_click", { location: "nav_aifinder", lang }); }}
+            >
+              {t.nav.aifinder}
             </Link>
+          </li>
+          <li><Link href={l("/blog")} onClick={() => { closeMobileMenu(); trackEvent("ai_finder_nav_click", { location: "nav_blog", lang }); }}>{t.nav.blog}</Link></li>
+          <li><Link href={l("/comparatifs")} onClick={() => { closeMobileMenu(); trackEvent("ai_finder_nav_click", { location: "nav_comparatifs", lang }); }}>{t.nav.comparatifs}</Link></li>
+          <li><Link href={l("/newsletter")} onClick={() => { closeMobileMenu(); trackEvent("ai_finder_nav_click", { location: "nav_newsletter", lang }); }}>{t.nav.newsletter}</Link></li>
+          <li><Link href={l("/contact")} onClick={() => { closeMobileMenu(); trackEvent("ai_finder_nav_click", { location: "nav_contact", lang }); }}>{t.nav.contact}</Link></li>
+          <li><Link href={l("/about")} onClick={() => { closeMobileMenu(); trackEvent("ai_finder_nav_click", { location: "nav_about", lang }); }}>{t.nav.about}</Link></li>
+        </ul>
 
-            <ul id={menuId} className={`navlinks${menuOpen ? " open" : ""}`} role="list">
-              <li><Link href={l("/aifinder")} className="active">{t.nav.aifinder}</Link></li>
-              <li><Link href={l("/blog")}>{t.nav.blog}</Link></li>
-              <li><Link href={l("/comparatifs")}>{t.nav.comparatifs}</Link></li>
-              <li><Link href={l("/newsletter")}>{t.nav.newsletter}</Link></li>
-              <li><Link href={l("/contact")}>{t.nav.contact}</Link></li>
-              <li><Link href={l("/about")}>{t.nav.about}</Link></li>
-            </ul>
+        <div className="nav-right">
+          <div className="lt" role="group" aria-label={t.langSwitch}>
+            <button
+              type="button"
+              className={`lb${lang === "fr" ? " on" : ""}`}
+              aria-pressed={lang === "fr"}
+              onClick={() => switchLang("fr")}
+            >
+              FR
+            </button>
+            <button
+              type="button"
+              className={`lb${lang === "en" ? " on" : ""}`}
+              aria-pressed={lang === "en"}
+              onClick={() => switchLang("en")}
+            >
+              EN
+            </button>
+          </div>
 
-            <div className="navRight">
-              <div className="lt" aria-label={t.langSwitch}>
-                <button className={`lb${lang === "fr" ? " on" : ""}`} aria-pressed={lang === "fr"} onClick={() => switchLang("fr")}>FR</button>
-                <button className={`lb${lang === "en" ? " on" : ""}`} aria-pressed={lang === "en"} onClick={() => switchLang("en")}>EN</button>
-              </div>
+          <button
+            ref={menuButtonRef}
+            type="button"
+            className="hb"
+            onClick={() => {
+              const next = !menuOpen;
+              setMenuOpen(next);
+              trackEvent("ai_finder_menu_toggle", { lang, open: next });
+            }}
+            aria-label={menuOpen ? t.closeMenu : t.menu}
+            aria-expanded={menuOpen}
+            aria-controls={menuId}
+          >
+            <span /><span /><span />
+          </button>
+        </div>
+      </nav>
 
-              <button
-                className="hb"
-                onClick={() => {
-                  setMenuOpen((value) => !value);
-                  trackEvent("ai_finder_menu_toggle", { lang, open: !menuOpen });
-                }}
-                aria-label={menuOpen ? t.closeMenu : t.menu}
-                aria-expanded={menuOpen}
-                aria-controls={menuId}
+      <main id="main-content" className="page" lang={lang}>
+        <section className="hero" aria-labelledby="page-h1">
+          <div className="hero-wrap">
+            <nav className="breadcrumbs" aria-label="Breadcrumb">
+              <Link href={l("")}>Neuriflux</Link>
+              <span className="sep" aria-hidden="true">/</span>
+              <span aria-current="page">AI Finder</span>
+            </nav>
+
+            <div className="hbadge">
+              <span className="pulse" aria-hidden="true" />
+              {t.badge}
+            </div>
+
+            <h1 id="page-h1">
+              {t.h1a} <em>{t.h1b}</em> {t.h1c}
+            </h1>
+
+            <div className="hero-fresh">✦ {lang === "fr" ? "Dernière mise à jour : avril 2026" : "Last updated: April 2026"}</div>
+            <p className="hero-sub">{t.heroSub}</p>
+            <p className="sr-only">{t.heroSeoExtra}</p>
+
+            <div className="ctas">
+              <a
+                href="#finder"
+                className="btn btn-p"
+                onClick={() => trackEvent("ai_finder_start_click", { lang })}
               >
-                <span /><span /><span />
-              </button>
-            </div>
-          </div>
-        </nav>
-
-        <section className="hero">
-          <div className="heroPreview" aria-hidden="true">
-            <div className="previewCard previewMain">
-              <span>AI Finder</span>
-              <strong>{TOOLS.length}+ AI tools</strong>
-              <small>ChatGPT · Claude · Perplexity · Cursor · Runway · n8n</small>
+                {t.heroCta} →
+              </a>
+              <Link href={l("/comparatifs")} className="btn btn-s">
+                {t.secondaryCta}
+              </Link>
             </div>
 
-            <div className="previewCard previewFloat">
-              <span>Profile</span>
-              <strong>SEO + Research</strong>
-              <small>No account required · instant result</small>
+            <div className="proof" role="list">
+              {t.proofs.map((p) => (
+                <span key={p} role="listitem">✓ {p}</span>
+              ))}
             </div>
-          </div>
-
-          <div className="badge"><span className="pulse" />{t.badge}</div>
-
-          <h1>
-            {lang === "fr" ? (
-              <>Trouvez <span>l’outil IA</span> parfait pour votre besoin.</>
-            ) : (
-              <>Find the <span>perfect AI tool</span> for your workflow.</>
-            )}
-          </h1>
-
-          <p className="sub">{t.heroSub}</p>
-
-          <div className="heroactions">
-            <a href="#finder" className="btn primary" onClick={() => trackEvent("ai_finder_start_click", { lang })}>
-              {t.heroCta} →
-            </a>
-
-            <Link href={l("/comparatifs")} className="btn secondary">
-              {t.secondaryCta}
-            </Link>
-          </div>
-
-          <div className="proof">
-            <span>✓ {t.proof1}</span>
-            <span>✓ {t.proof2}</span>
-            <span>✓ {t.proof3}</span>
           </div>
         </section>
 
-        <section className="wrap" id="finder">
-          <div className="finder">
+        <section id="finder" className="section" aria-labelledby="finder-heading">
+          <div className="stag">{t.finderHeading}</div>
+          <h2 id="finder-heading" className="sr-only">{t.finderHeading}</h2>
+
+          <div className="finder-grid">
             <div className="panel">
               {!finished ? (
                 <div className="question">
                   <div className="topline">
-                    <button type="button" className="backBtn" disabled={stepIndex === 0} onClick={goBack}>
-                      ← {lang === "fr" ? "Retour" : "Back"}
+                    <button
+                      type="button"
+                      className="back-btn"
+                      disabled={stepIndex === 0}
+                      onClick={goBack}
+                    >
+                      ← {t.back}
                     </button>
-
                     <span className="mono">
                       {t.progress} · {progress}% · {stepIndex + 1}/{steps.length}
                     </span>
                   </div>
 
-                  <div className="bar" style={{ ["--w" as string]: `${progress}%` }}>
+                  <div className="bar" style={{ "--w": `${progress}%` } as CSSVars}>
                     <i />
                   </div>
 
-                  <h2>{current.title}</h2>
-                  <p>{current.subtitle}</p>
+                  {current && (
+                    <>
+                      <h2 ref={questionTitleRef} tabIndex={-1}>
+                        {current.title}
+                      </h2>
+                      <p>{current.subtitle}</p>
 
-                  <div className="grid">
-                    {current.options.map(([key, title, desc]) => (
-                      <button key={key} className="option" onClick={() => select(key as AnswerKey)} type="button">
-                        <b>{title}</b>
-                        <small>{desc}</small>
-                      </button>
-                    ))}
-                  </div>
+                      <div className="opt-grid">
+                        {current.options.map(([key, title, desc]) => (
+                          <button
+                            key={`${current.id}-${key}`}
+                            className="opt"
+                            type="button"
+                            onClick={() => select(key)}
+                            aria-label={`${title} — ${desc}`}
+                          >
+                            <b>{title}</b>
+                            <small>{desc}</small>
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
               ) : (
                 <div className="results">
-                  <div className="resultsHead">
+                  <div className="results-head">
                     <div>
-                      <span className="tag">{t.bestMatch}</span>
+                      <div className="stag">{t.bestMatch}</div>
                       <h2>{t.resultTitle}</h2>
-                      <p>{t.resultSub}</p>
+                      <p className="results-sub">{t.resultSub}</p>
+                      <div className="meta-bar">
+                        ✓ {TOOL_COUNT} {t.toolsAnalyzed}
+                      </div>
                     </div>
 
-                    <button className="btn secondary smallbtn" onClick={restart} type="button">
-                      {t.restart}
-                    </button>
+                    <div className="results-actions">
+                      <button
+                        type="button"
+                        className="btn btn-s btn-small"
+                        onClick={shareResult}
+                      >
+                        {copied ? `✓ ${t.linkCopied}` : t.shareLink}
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-s btn-small"
+                        onClick={restart}
+                      >
+                        {t.restart}
+                      </button>
+                    </div>
                   </div>
 
                   {winner && (
-                    <article className="winnerCard" style={{ ["--accent" as string]: winner.accent }}>
-                      <span className="winnerLabel">{t.bestMatch}</span>
+                    <article
+                      className="winner-card"
+                      style={{ "--accent": winner.accent } as CSSVars}
+                    >
+                      <span className="winner-label">{t.bestMatch}</span>
                       <Badge value={winner.badge} accent={winner.accent} />
 
-                      <div className="winnerLayout">
-                        <div className="toolIdentity">
+                      <div className="winner-layout">
+                        <div className="tool-identity">
                           <ToolLogo tool={winner} />
                           <div>
                             <h3>{winner.name}</h3>
                             <p>{winner.desc[lang]}</p>
 
-                            <div className="winnerMeta">
-                              <span className="ratingPill">
-                                <span className="stars">{starRating(winner.rating)}</span> {winner.rating}/5 · {t.rating}
+                            <div className="winner-meta">
+                              <span className="rating-pill">
+                                <span className="stars" aria-hidden="true">{starRating(winner.rating)}</span>{" "}
+                                {winner.rating}/5 · {t.rating}
                               </span>
-                              <span className="pricePill">{winner.price}</span>
+                              <span className="price-pill">{winner.price}</span>
                             </div>
+                            <ToolInsightRow tool={winner} lang={lang} />
                           </div>
                         </div>
 
-                        <div className="scoreBig">
+                        <div className="score-big" aria-label={`${winner.score}% ${t.match}`}>
                           <strong>{winner.score}%</strong>
                           <span>{t.match}</span>
                         </div>
                       </div>
 
                       <div className="breakdown" aria-label={t.scoreBreakdown}>
-                        <div className="breakItem"><small>Use case</small><strong>+{winner.breakdown.goal}</strong></div>
-                        <div className="breakItem"><small>Budget</small><strong>+{winner.breakdown.budget}</strong></div>
-                        <div className="breakItem"><small>Level</small><strong>+{winner.breakdown.level}</strong></div>
-                        <div className="breakItem"><small>Priority</small><strong>+{winner.breakdown.priority}</strong></div>
-                        <div className="breakItem"><small>Signal</small><strong>+{winner.breakdown.authority}</strong></div>
+                        <div className="break-item">
+                          <small>{t.scoreParts.goal}</small>
+                          <strong>+{winner.breakdown.goal}</strong>
+                        </div>
+                        <div className="break-item">
+                          <small>{t.scoreParts.budget}</small>
+                          <strong>+{winner.breakdown.budget}</strong>
+                        </div>
+                        <div className="break-item">
+                          <small>{t.scoreParts.level}</small>
+                          <strong>+{winner.breakdown.level}</strong>
+                        </div>
+                        <div className="break-item">
+                          <small>{t.scoreParts.priority}</small>
+                          <strong>+{winner.breakdown.priority}</strong>
+                        </div>
+                        <div className="break-item">
+                          <small>{t.scoreParts.authority}</small>
+                          <strong>+{winner.breakdown.authority}</strong>
+                        </div>
                       </div>
 
                       <div className="cols">
                         <div className="box">
                           <b>{t.why}</b>
                           <ul>
-                            {winner.reasons.concat(winner.bestFor[lang].slice(0, 2)).slice(0, 5).map((x) => (
-                              <li key={x}>✓ {x}</li>
-                            ))}
+                            {[...winner.reasons, ...winner.bestFor[lang].slice(0, 2)]
+                              .slice(0, 5)
+                              .map((x, i) => (
+                                <li key={`${winner.id}-why-${i}`}>✓ {x}</li>
+                              ))}
                           </ul>
                         </div>
 
                         <div className="box">
                           <b>{t.limits}</b>
                           <ul>
-                            {winner.limits[lang].map((x) => (
-                              <li key={x}>• {x}</li>
+                            {winner.limits[lang].map((x, i) => (
+                              <li key={`${winner.id}-lim-${i}`}>• {x}</li>
                             ))}
                           </ul>
                         </div>
                       </div>
 
-                      <p style={{ marginTop: ".9rem", marginBottom: 0 }}>{winner.verdict[lang]}</p>
+                      <p className="verdict">{winner.verdict[lang]}</p>
 
-                      <div className="actions">
+                      <div className="card-actions">
                         <a
                           href={winner.affiliate}
                           target="_blank"
                           rel="nofollow sponsored noopener noreferrer"
-                          className="btn primary smallbtn"
-                          onClick={() =>
-                            trackEvent("ai_finder_affiliate_click", {
-                              tool: winner.id,
-                              tool_name: winner.name,
-                              score: winner.score,
-                              lang,
-                              position: 1,
-                            })
-                          }
+                          className="btn btn-p btn-small"
+                          data-tool-id={winner.id}
+                          onClick={makeAffiliateClick(winner.id, winner.name, winner.score, 1)}
                         >
-                          {t.visit}
+                          {t.visit} →
                         </a>
-
-                        <Link href={l(winner.review)} className="btn secondary smallbtn">
-                          {t.review}
-                        </Link>
+                        <DisabledReviewButton label={lang === "fr" ? "Avis bientôt disponible" : "Review coming soon"} />
                       </div>
                     </article>
                   )}
 
-                  <span className="tag">{t.alternatives}</span>
+                  <div className="alts-tag">{t.alternatives}</div>
 
                   {results.slice(1, 8).map((tool, index) => (
-                    <article className="resultCard" key={tool.id} style={{ ["--accent" as string]: tool.accent }}>
-                      <div className="resultTop">
-                        <div className="toolIdentity">
+                    <article
+                      key={tool.id}
+                      className="alt-card"
+                      style={{ "--accent": tool.accent } as CSSVars}
+                    >
+                      <div className="alt-top">
+                        <div className="tool-identity">
                           <ToolLogo tool={tool} />
                           <div>
                             <span className="tag">{tool.category}</span>
@@ -2576,8 +3430,7 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
                             <p>{tool.short[lang]}</p>
                           </div>
                         </div>
-
-                        <span className="score">{tool.score}%</span>
+                        <span className="alt-score">{tool.score}%</span>
                       </div>
 
                       <p>{tool.desc[lang]}</p>
@@ -2586,103 +3439,96 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
                         <div className="box">
                           <b>{t.why}</b>
                           <ul>
-                            {tool.bestFor[lang].map((x) => (
-                              <li key={x}>✓ {x}</li>
+                            {tool.bestFor[lang].map((x, i) => (
+                              <li key={`${tool.id}-why-${i}`}>✓ {x}</li>
                             ))}
                           </ul>
                         </div>
-
                         <div className="box">
                           <b>{t.limits}</b>
                           <ul>
-                            {tool.limits[lang].map((x) => (
-                              <li key={x}>• {x}</li>
+                            {tool.limits[lang].map((x, i) => (
+                              <li key={`${tool.id}-lim-${i}`}>• {x}</li>
                             ))}
                           </ul>
                         </div>
                       </div>
 
-                      <div className="winnerMeta">
-                        <span className="ratingPill">
-                          <span className="stars">{starRating(tool.rating)}</span> {tool.rating}/5
+                      <div className="winner-meta">
+                        <span className="rating-pill">
+                          <span className="stars" aria-hidden="true">{starRating(tool.rating)}</span>{" "}
+                          {tool.rating}/5
                         </span>
-                        <span className="pricePill">{tool.price}</span>
+                        <span className="price-pill">{tool.price}</span>
                       </div>
+                      <ToolInsightRow tool={tool} lang={lang} />
 
-                      <div className="actions">
+                      <div className="card-actions">
                         <a
                           href={tool.affiliate}
                           target="_blank"
                           rel="nofollow sponsored noopener noreferrer"
-                          className="btn primary smallbtn"
-                          onClick={() =>
-                            trackEvent("ai_finder_affiliate_click", {
-                              tool: tool.id,
-                              tool_name: tool.name,
-                              score: tool.score,
-                              lang,
-                              position: index + 2,
-                            })
-                          }
+                          className="btn btn-p btn-small"
+                          data-tool-id={tool.id}
+                          onClick={makeAffiliateClick(tool.id, tool.name, tool.score, index + 2)}
                         >
                           {t.visit}
                         </a>
-
-                        <Link href={l(tool.review)} className="btn secondary smallbtn">
-                          {t.review}
-                        </Link>
+                        <DisabledReviewButton label={lang === "fr" ? "Avis bientôt disponible" : "Review coming soon"} />
                       </div>
                     </article>
                   ))}
 
-                  <p className="brandDisclaimer">{t.brandDisclaimer}</p>
+                  <p className="brand-disclaimer">{t.brandDisclaimer}</p>
                 </div>
               )}
             </div>
 
-            <aside className="panel side">
-              <h3>{t.liveRanking}</h3>
+            <aside className="panel sticky side" aria-label={t.liveRanking}>
+              <h2>{t.liveRanking}</h2>
 
               {results.slice(0, 9).map((tool) => (
                 <div className="mini" key={tool.id}>
-                  <div className="miniLeft">
-                    <div className="miniIcon">
+                  <div className="mini-left">
+                    <div className="mini-icon">
                       <ToolLogo tool={tool} />
                     </div>
-
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <strong>
-                        {tool.name}
-                        {tool.badge && <small className="miniBadge">{tool.badge}</small>}
-                      </strong>
-
-                      <div className="miniBar" style={{ ["--score" as string]: `${tool.score}%` }}>
+                    <div className="mini-body">
+                      <strong>{tool.name}</strong>
+                      <div
+                        className="mini-bar"
+                        style={{ "--score": `${tool.score}%` } as CSSVars}
+                        aria-label={`${tool.score}%`}
+                      >
                         <i />
                       </div>
                     </div>
                   </div>
-
-                  <span>{tool.score}%</span>
+                  <span className="mini-score">{tool.score}%</span>
                 </div>
               ))}
             </aside>
           </div>
 
-          <section className="newTools">
-            <div className="sectionHead">
-              <span className="tag">{t.newToolsTitle}</span>
-              <p>{t.newToolsSub}</p>
+          <section className="new-tools" aria-labelledby="new-tools-heading">
+            <div className="section-head">
+              <div>
+                <div className="stag">{t.newToolsTitle}</div>
+                <h2 id="new-tools-heading" className="stitle">{t.newToolsTitle}</h2>
+                <p className="ssub">{t.newToolsSub}</p>
+              </div>
             </div>
 
-            <div className="newGrid">
-              {newTools.map((tool) => (
+            <div className="new-grid">
+              {NEW_TOOLS.map((tool) => (
                 <a
                   key={tool.id}
                   href={tool.affiliate}
                   target="_blank"
                   rel="nofollow sponsored noopener noreferrer"
-                  className="newTool"
-                  style={{ ["--accent" as string]: tool.accent }}
+                  className="new-tool"
+                  style={{ "--accent": tool.accent } as CSSVars}
+                  data-tool-id={tool.id}
                   onClick={() => trackEvent("ai_finder_new_tool_click", { tool: tool.id, lang })}
                 >
                   <ToolLogo tool={tool} />
@@ -2695,64 +3541,72 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
             </div>
           </section>
 
-          <div className="method">
-            <section className="methodCard">
-              <strong>{t.methodologyTitle}</strong>
+          <ComparisonTable tools={results} lang={lang} />
+
+          <PopularSearches lang={lang} />
+
+          <div className="two-col">
+            <section className="method-card" aria-labelledby="method-heading">
+              <strong id="method-heading">{t.methodologyTitle}</strong>
               <p>{t.methodologyText}</p>
             </section>
-
-            <section className="methodCard">
-              <strong>{t.independenceTitle}</strong>
+            <section className="method-card" aria-labelledby="indep-heading">
+              <strong id="indep-heading">{t.independenceTitle}</strong>
               <p>{t.independenceText}</p>
             </section>
           </div>
 
-          <div className="seo">
-            <section className="seoCard">
-              <h2>{t.seoTitle}</h2>
+          <div className="two-col">
+            <section className="seo-card" aria-labelledby="seo-heading">
+              <h2 id="seo-heading">{t.seoTitle}</h2>
               <p>{t.seoText}</p>
             </section>
-
-            <section className="seoCard">
-              <h3>{t.categoriesTitle}</h3>
+            <section className="seo-card" aria-labelledby="cat-heading">
+              <h3 id="cat-heading">{t.categoriesTitle}</h3>
               <ul>
-                <li>✓ AI writing tools</li>
-                <li>✓ Best AI tools for SEO</li>
-                <li>✓ AI video generators</li>
-                <li>✓ AI image & design generators</li>
-                <li>✓ AI coding assistants</li>
-                <li>✓ AI automation tools</li>
-                <li>✓ AI voice & music generators</li>
-                <li>✓ AI presentation builders</li>
-                <li>✓ Local AI / open-source workflows</li>
+                {t.categories.map((c) => (
+                  <li key={c}>✓ {c}</li>
+                ))}
               </ul>
             </section>
           </div>
 
-          <section className="faq">
-            <h2>{t.faqTitle}</h2>
-
-            {t.faqs.map((f) => (
-              <details key={f.q}>
-                <summary>{f.q}</summary>
-                <p>{f.a}</p>
-              </details>
-            ))}
+          <section className="faq-block" aria-labelledby="faq-heading">
+            <h2 id="faq-heading">{t.faqTitle}</h2>
+            <div className="faq-list">
+              {t.faqs.map((f) => (
+                <details
+                  key={f.q}
+                  className="faq-item"
+                  onToggle={(e) => {
+                    if ((e.currentTarget as HTMLDetailsElement).open) {
+                      trackEvent("ai_finder_faq_open", { question: f.q, lang });
+                    }
+                  }}
+                >
+                  <summary>{f.q}</summary>
+                  <p>{f.a}</p>
+                </details>
+              ))}
+            </div>
           </section>
 
-          <section className="finalCta">
-            <h2>{t.finalCtaTitle}</h2>
+          <section className="final-cta" aria-labelledby="final-cta-heading">
+            <h2 id="final-cta-heading">{t.finalCtaTitle}</h2>
             <p>{t.finalCtaText}</p>
-
-            <Link href={l("/comparatifs")} className="btn primary">
+            <Link
+              href={l("/comparatifs")}
+              className="btn btn-p"
+              onClick={() => trackEvent("ai_finder_final_cta_click", { lang })}
+            >
               {t.secondaryCta} →
             </Link>
           </section>
         </section>
 
-        <footer className="footer">
+        <footer>
           <span>© 2026 Neuriflux</span>
-          <span>Honest AI tools comparisons.</span>
+          <span>{lang === "fr" ? "Comparatifs IA honnêtes et indépendants." : "Honest, independent AI comparisons."}</span>
         </footer>
       </main>
     </>
