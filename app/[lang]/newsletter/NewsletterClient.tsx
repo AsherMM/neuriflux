@@ -192,9 +192,27 @@ export default function NewsletterClient({ lang }: { lang: Lang }) {
   };
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 60);
+    if (typeof window === "undefined") return;
+
+    let frame = 0;
+
+    const fn = () => {
+      if (frame) return;
+
+      frame = window.requestAnimationFrame(() => {
+        const nextScrolled = window.scrollY > 60;
+        setScrolled((previous) => (previous === nextScrolled ? previous : nextScrolled));
+        frame = 0;
+      });
+    };
+
+    fn();
     window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", fn);
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -641,7 +659,7 @@ export default function NewsletterClient({ lang }: { lang: Lang }) {
                   <span key={j} className="tcard-star">★</span>
                 ))}
               </div>
-              <p className="tcard-text">"{item.text}"</p>
+              <p className="tcard-text"><span aria-hidden="true">&ldquo;</span>{item.text}<span aria-hidden="true">&rdquo;</span></p>
               <div className="tcard-foot">
                 <div className="tcard-av">{item.avatar}</div>
                 <div>

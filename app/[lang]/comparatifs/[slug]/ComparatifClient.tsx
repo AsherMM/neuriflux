@@ -256,7 +256,7 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel, animDelay }: {
 
       {/* Verdict */}
       <div style={{ background: "var(--bg3)", border: "1px solid var(--border)", borderRadius: 8, padding: "0.8rem 1rem", fontFamily: "var(--m)", fontSize: "0.73rem", color: "var(--muted)", lineHeight: 1.65, fontWeight: 300, fontStyle: "italic" }}>
-        "{tool.verdict[lang]}"
+        <span aria-hidden="true">&ldquo;</span>{tool.verdict[lang]}<span aria-hidden="true">&rdquo;</span>
       </div>
 
       {/* CTA */}
@@ -361,26 +361,115 @@ function RelatedArticles({ toolNames, lang, l, L }: { toolNames: string[]; lang:
 
 // ─── TOC ─────────────────────────────────────────────────────────────────────
 function TableOfContents({ content, lang, L }: { content: string; lang: Lang; L: Record<string,string> }) {
-  const [active, setActive] = useState("");
-  const headings = content.match(/^## (.+)$/gm)?.map(h => ({ text: h.replace("## ", ""), id: slugify(h.replace("## ", "")) })) || [];
+  const headings = content.match(/^## (.+)$/gm)?.map((heading) => {
+    const text = heading.replace("## ", "").trim();
+    return { text, id: slugify(text) };
+  }) || [];
+
+  const [active, setActive] = useState(headings[0]?.id ?? "");
+  const [progress, setProgress] = useState(0);
+
   useEffect(() => {
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
-    }, { rootMargin: "-60px 0px -60% 0px" });
-    headings.forEach(h => { const el = document.getElementById(h.id); if (el) obs.observe(el); });
-    return () => obs.disconnect();
-  }, []);
+    if (!headings.length || typeof window === "undefined") return;
+
+    let frame = 0;
+
+    const update = () => {
+      if (frame) return;
+
+      frame = window.requestAnimationFrame(() => {
+        const article = document.querySelector(".prose");
+        const firstHeading = document.getElementById(headings[0].id);
+        const lastHeading = document.getElementById(headings[headings.length - 1].id);
+
+        if (!article || !firstHeading || !lastHeading) {
+          frame = 0;
+          return;
+        }
+
+        const scrollY = window.scrollY;
+        const offset = 96;
+
+        let current = headings[0].id;
+
+        for (const heading of headings) {
+          const element = document.getElementById(heading.id);
+          if (!element) continue;
+
+          if (element.offsetTop - offset <= scrollY) {
+            current = heading.id;
+          } else {
+            break;
+          }
+        }
+
+        const start = Math.max(0, firstHeading.offsetTop - offset);
+        const end = Math.max(start + 1, article.getBoundingClientRect().height + article.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.55);
+        const nextProgress = Math.min(100, Math.max(0, ((scrollY - start) / (end - start)) * 100));
+
+        setActive((previous) => (previous === current ? previous : current));
+        setProgress((previous) => (Math.abs(previous - nextProgress) < 0.35 ? previous : nextProgress));
+
+        frame = 0;
+      });
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [content, headings]);
+
+  const onTocClick = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    event.preventDefault();
+
+    window.history.replaceState(null, "", `#${id}`);
+    window.scrollTo({
+      top: Math.max(0, element.offsetTop - 82),
+      behavior: "smooth",
+    });
+
+    setActive(id);
+  };
+
   if (!headings.length) return null;
+
   return (
-    <div className="sbox">
-      <div className="sbox-hd"><div className="sbox-title">📋 {L.toc}</div></div>
-      <div className="sbox-bd" style={{ padding: "0.5rem 0" }}>
-        {headings.map(h => (
-          <a key={h.id} href={`#${h.id}`}
-            style={{ display: "block", padding: "0.45rem 1.1rem", fontFamily: "var(--m)", fontSize: "0.68rem", fontWeight: active === h.id ? 600 : 300, color: active === h.id ? "var(--cyan)" : "var(--muted)", textDecoration: "none", borderLeft: `2px solid ${active === h.id ? "var(--cyan)" : "transparent"}`, transition: "all 0.15s", lineHeight: 1.4 }}>
-            {h.text}
-          </a>
-        ))}
+    <div className="sbox toc-box">
+      <div className="sbox-hd">
+        <div className="sbox-title">📋 {L.toc}</div>
+        <div className="toc-progress-label">{Math.round(progress)}%</div>
+      </div>
+
+      <div className="toc-progress" aria-hidden="true">
+        <div style={{ width: `${progress}%` }} />
+      </div>
+
+      <div className="sbox-bd toc-list">
+        {headings.map((heading, index) => {
+          const isActive = active === heading.id;
+
+          return (
+            <a
+              key={`${heading.id}-${index}`}
+              href={`#${heading.id}`}
+              onClick={(event) => onTocClick(event, heading.id)}
+              aria-current={isActive ? "true" : undefined}
+              className={isActive ? "toc-link active" : "toc-link"}
+            >
+              <span className="toc-index">{String(index + 1).padStart(2, "0")}</span>
+              <span>{heading.text}</span>
+            </a>
+          );
+        })}
       </div>
     </div>
   );
@@ -418,14 +507,36 @@ function renderMd(md: string): string {
 // ─── Progress bar ─────────────────────────────────────────────────────────────
 function ProgressBar({ color }: { color: string }) {
   const [p, setP] = useState(0);
+
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    let frame = 0;
+
     const fn = () => {
-      const el = document.documentElement;
-      setP(el.scrollHeight - el.clientHeight > 0 ? (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100 : 0);
+      if (frame) return;
+
+      frame = window.requestAnimationFrame(() => {
+        const el = document.documentElement;
+        const max = el.scrollHeight - el.clientHeight;
+        const next = max > 0 ? (el.scrollTop / max) * 100 : 0;
+
+        setP((previous) => (Math.abs(previous - next) < 0.25 ? previous : next));
+        frame = 0;
+      });
     };
+
+    fn();
     window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
+    window.addEventListener("resize", fn);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", fn);
+      window.removeEventListener("resize", fn);
+    };
   }, []);
+
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 3, zIndex: 300, background: "rgba(0,0,0,.45)" }}>
       <div style={{ height: "100%", width: `${p}%`, background: color, transition: "width 0.08s linear", boxShadow: `0 0 10px ${color}80` }} />
@@ -452,15 +563,42 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
   const [exitShown, setExitShown] = useState(false);
   const [showExit, setShowExit] = useState(false);
 
-  useEffect(() => { setShareUrl(window.location.href); }, []);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const frame = window.requestAnimationFrame(() => {
+      setShareUrl(window.location.href);
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    let frame = 0;
+
     const fn = () => {
-      setScrolled(window.scrollY > 60);
-      setShowNavCta(window.scrollY > 320);
+      if (frame) return;
+
+      frame = window.requestAnimationFrame(() => {
+        const nextScrolled = window.scrollY > 60;
+        const nextShowNavCta = window.scrollY > 320;
+
+        setScrolled((previous) => (previous === nextScrolled ? previous : nextScrolled));
+        setShowNavCta((previous) => (previous === nextShowNavCta ? previous : nextShowNavCta));
+
+        frame = 0;
+      });
     };
+
+    fn();
     window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", fn);
+    };
   }, []);
 
   // Exit-intent (desktop)
@@ -739,6 +877,18 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
         .score-row{display:flex;align-items:center;justify-content:space-between;padding:.48rem 0;border-bottom:1px solid var(--border)}
         .score-row:last-child{border-bottom:none}
         .score-row.hovered{background:rgba(255,255,255,.02)}
+
+
+        .toc-box .sbox-hd{display:flex;align-items:center;justify-content:space-between;gap:.75rem}
+        .toc-progress-label{font-family:var(--m);font-size:.58rem;color:var(--cyan);font-weight:700;letter-spacing:.04em}
+        .toc-progress{height:3px;background:rgba(255,255,255,.045);overflow:hidden}
+        .toc-progress div{height:100%;background:var(--cyan);box-shadow:0 0 12px rgba(0,230,190,.75);transition:width .12s linear}
+        .toc-list{padding:.55rem 0!important;max-height:calc(100vh - 260px);overflow:auto;scrollbar-width:thin;scrollbar-color:rgba(0,230,190,.35) transparent}
+        .toc-link{display:grid;grid-template-columns:26px 1fr;gap:.55rem;padding:.48rem 1.05rem;font-family:var(--m);font-size:.68rem;font-weight:300;color:var(--muted);text-decoration:none;border-left:2px solid transparent;transition:color .15s,border-color .15s,background .15s;line-height:1.45}
+        .toc-link:hover{color:var(--text);background:rgba(255,255,255,.025)}
+        .toc-link.active{color:var(--cyan);border-left-color:var(--cyan);background:rgba(0,230,190,.045);font-weight:600}
+        .toc-index{font-size:.56rem;color:var(--dim);padding-top:.04rem}
+        .toc-link.active .toc-index{color:var(--cyan)}
 
         /* Sidebar winner */
         .sbox-win{position:relative;overflow:hidden}

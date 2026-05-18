@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "anthropic-xai-datacenter-2026",
   "ai-memory-agents-2026",
   "prompt-errors-2026",
   "chatgpt-alternatives-2026",
@@ -38,6 +39,7 @@ const ARTICLE_SLUGS = [
 ];
 
 const COMPARATIF_SLUGS = [
+  "chatgpt-memory-vs-claude-projects-vs-gemini-workspace-2026",
   "cursor-vs-windsurf-vs-zed-2026",
   "gamma-vs-tome-vs-beautiful-ai-2026",
   "lovable-vs-bolt-vs-v0-2026",
