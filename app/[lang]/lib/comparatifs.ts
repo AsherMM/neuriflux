@@ -15,6 +15,8 @@ export interface ComparisonImage {
 
 export interface ToolScore {
   name: string;
+  brand?: { name: string };
+  ratingValue?: number;
   logo: string;
   color: string;
   globalScore: number;
@@ -119,7 +121,7 @@ const TOOL_SLUG_ALIASES: Record<string, string> = {
   "Stable Diffusion": "stable-diffusion",
 };
 
-const RAW_COMPARATIFS: RawComparatif[] = [] = [
+const RAW_COMPARATIFS: RawComparatif[] = [
 // ─── ChatGPT Memory vs Claude Projects vs Gemini Workspace ───────────────────
 {
   slug: "chatgpt-memory-vs-claude-projects-vs-gemini-workspace-2026",
@@ -688,488 +690,445 @@ They are slowly becoming full digital work environments.
 },
 
 // ─── Cursor vs Windsurf vs Zed — IDEs IA 2026 ────────────────────────────────
-  {
-    slug: "cursor-vs-windsurf-vs-zed-2026",
-    tag: "Code",
-    date: { fr: "12 mai 2026", en: "May 12, 2026" },
-    featured: true,
-    winner: "Cursor",
-    criteria: {
-      fr: ["Autocomplétion IA", "Agent & édition multi-fichiers", "Contexte codebase", "Vitesse & performance", "Intégrations & écosystème", "Rapport qualité/prix"],
-      en: ["AI autocomplete", "Agent & multi-file editing", "Codebase context", "Speed & performance", "Integrations & ecosystem", "Value for money"],
-    },
-    tools: [
-      {
-        name: "Cursor",
-        logo: "◎",
-        color: "#00e6be",
-        globalScore: 9.2,
-        scores: [
-          { fr: "Autocomplétion IA", en: "AI autocomplete", value: 9.0 },
-          { fr: "Agent & édition multi-fichiers", en: "Agent & multi-file editing", value: 9.5 },
-          { fr: "Contexte codebase", en: "Codebase context", value: 9.5 },
-          { fr: "Vitesse & performance", en: "Speed & performance", value: 8.5 },
-          { fr: "Intégrations & écosystème", en: "Integrations & ecosystem", value: 9.5 },
-          { fr: "Rapport qualité/prix", en: "Value for money", value: 8.5 },
-        ],
-        price: "Gratuit / 20$/mois",
-        priceFull: {
-          fr: "Gratuit (2 000 complétions, 50 requêtes lentes) · Pro 20$/mois (requêtes illimitées, Claude 3.5/GPT-4o, accès modèles premium) · Business 40$/utilisateur/mois (SSO, politique d'utilisation centralisée) · Enterprise sur devis",
-          en: "Free (2,000 completions, 50 slow requests) · Pro $20/month (unlimited requests, Claude 3.5/GPT-4o, premium model access) · Business $40/user/month (SSO, centralized usage policy) · Enterprise custom",
-        },
-        pros: {
-          fr: [
-            "Cursor Composer Agent : génère, modifie et relie des dizaines de fichiers en une seule instruction — le mode d'édition multi-fichiers le plus avancé du marché en 2026",
-            "Indexation complète du codebase en arrière-plan : le chat et les suggestions connaissent l'architecture entière de votre projet, pas juste le fichier ouvert",
-            "Choix de modèles à la carte : Claude 3.7 Sonnet, GPT-4o, Gemini 2.5 Pro et o3 accessibles dans le même IDE selon la tâche — aucun concurrent ne propose cette flexibilité",
-            "Codebase Search sémantique natif : trouvez une fonction, un pattern ou un concept en langage naturel plutôt qu'avec une regex — réduit le temps de navigation de 60%",
-            "Fork VS Code parfait : toutes vos extensions, thèmes et raccourcis migrent en 2 minutes, zéro friction pour les développeurs VS Code existants",
-            "Bug Bot en mode Agent : Cursor lit la trace d'erreur, identifie la cause racine et propose un correctif multi-fichiers testé automatiquement — boucle de debug réduite à quelques échanges",
-          ],
-          en: [
-            "Cursor Composer Agent: generates, modifies, and links dozens of files in a single instruction — the most advanced multi-file editing mode on the market in 2026",
-            "Full background codebase indexing: chat and suggestions know your entire project architecture, not just the open file",
-            "À la carte model selection: Claude 3.7 Sonnet, GPT-4o, Gemini 2.5 Pro, and o3 accessible in the same IDE depending on the task — no competitor offers this flexibility",
-            "Native semantic Codebase Search: find a function, pattern, or concept in plain language rather than regex — reduces navigation time by 60%",
-            "Perfect VS Code fork: all your extensions, themes, and shortcuts migrate in 2 minutes, zero friction for existing VS Code developers",
-            "Bug Bot in Agent mode: Cursor reads the error trace, identifies the root cause, and proposes an automatically tested multi-file fix — debug loop reduced to a few exchanges",
-          ],
-        },
-        cons: {
-          fr: [
-            "Plus lent au démarrage que Zed : l'indexation du codebase prend 1 à 3 minutes sur les monorepos de grande taille (100k+ fichiers), frustrante quand on veut coder immédiatement",
-            "Consommation mémoire élevée : Cursor utilise 400-600 Mo de RAM au repos sur les grands projets — problématique sur les machines avec moins de 16 Go",
-            "Le plan gratuit est trop limité pour une utilisation quotidienne sérieuse : 50 requêtes lentes s'épuisent en une demi-journée de développement intensif",
-            "Dépendance cloud totale pour les fonctionnalités IA : sans connexion, vous retombez sur un VS Code standard sans aucune des fonctionnalités qui justifient l'abonnement",
-            "Cursor est fermé-source malgré son héritage VS Code — impossibilité d'auditer le code envoyé aux serveurs, ce qui peut poser des problèmes de conformité dans certains secteurs",
-          ],
-          en: [
-            "Slower startup than Zed: codebase indexing takes 1 to 3 minutes on large monorepos (100k+ files) — frustrating when you want to code immediately",
-            "High memory consumption: Cursor uses 400-600 MB RAM at rest on large projects — problematic on machines with less than 16 GB",
-            "Free plan is too limited for serious daily use: 50 slow requests run out in half a day of intensive development",
-            "Total cloud dependency for AI features: without connectivity, you fall back to a standard VS Code without any of the features that justify the subscription",
-            "Cursor is closed-source despite its VS Code heritage — impossible to audit code sent to servers, which can create compliance issues in certain sectors",
-          ],
-        },
-        verdict: {
-          fr: "Le meilleur IDE IA pour la productivité au quotidien en 2026. Son agent multi-fichiers et son indexation codebase complète n'ont pas d'équivalent direct. Pour un développeur qui cherche à maximiser sa vitesse sur des projets réels de taille moyenne à grande, le ROI du plan Pro à 20$/mois est évident dès la première semaine.",
-          en: "The best AI IDE for daily productivity in 2026. Its multi-file agent and complete codebase indexing have no direct equivalent. For a developer looking to maximize speed on real medium-to-large projects, the ROI of the $20/month Pro plan is evident within the first week.",
-        },
-        affiliate: "https://cursor.com",
-        badge: { fr: "🏆 Notre choix", en: "🏆 Our pick" },
-      },
-      {
-        name: "Windsurf",
-        logo: "🌊",
-        color: "#6366f1",
-        globalScore: 8.6,
-        scores: [
-          { fr: "Autocomplétion IA", en: "AI autocomplete", value: 8.5 },
-          { fr: "Agent & édition multi-fichiers", en: "Agent & multi-file editing", value: 9.0 },
-          { fr: "Contexte codebase", en: "Codebase context", value: 8.5 },
-          { fr: "Vitesse & performance", en: "Speed & performance", value: 9.0 },
-          { fr: "Intégrations & écosystème", en: "Integrations & ecosystem", value: 8.0 },
-          { fr: "Rapport qualité/prix", en: "Value for money", value: 9.0 },
-        ],
-        price: "Gratuit / 15$/mois",
-        priceFull: {
-          fr: "Gratuit (crédits limités, accès aux modèles de base) · Pro 15$/mois (crédits premium illimités, accès Claude 3.7 Sonnet et GPT-4o) · Teams 30$/utilisateur/mois · Enterprise sur devis",
-          en: "Free (limited credits, access to base models) · Pro $15/month (unlimited premium credits, Claude 3.7 Sonnet and GPT-4o access) · Teams $30/user/month · Enterprise custom",
-        },
-        pros: {
-          fr: [
-            "Cascade Agent : le concurrent direct de Cursor Composer, avec une interface conversationnelle plus claire qui montre en temps réel les fichiers modifiés, les tests lancés et les erreurs détectées",
-            "25% moins cher que Cursor à fonctionnalités équivalentes — pour une équipe de 5 développeurs, c'est 75$/mois d'économie soit 900$ par an",
-            "Flows : automatisations de workflow IA qui enchaînent plusieurs actions (recherche, modification, test, commit) en une seule instruction — unique dans ce comparatif",
-            "Mémoire de session persistante : Windsurf se souvient de vos décisions d'architecture entre les sessions, pas seulement dans la conversation courante",
-            "Rachat par OpenAI en 2025 : infrastructure et modèles directement alimentés par OpenAI, avec un accès potentiel anticipé aux futurs modèles o3 et GPT-5",
-            "Interface plus épurée que Cursor : le panneau Cascade est moins encombré, ce qui réduit la charge cognitive sur les longues sessions de développement",
-          ],
-          en: [
-            "Cascade Agent: the direct competitor to Cursor Composer, with a clearer conversational interface that shows in real time which files are being modified, tests being run, and errors detected",
-            "25% cheaper than Cursor at equivalent features — for a team of 5 developers, that's $75/month saved, or $900/year",
-            "Flows: AI workflow automations that chain multiple actions (search, modify, test, commit) in a single instruction — unique in this comparison",
-            "Persistent session memory: Windsurf remembers your architectural decisions between sessions, not just in the current conversation",
-            "Acquired by OpenAI in 2025: infrastructure and models directly powered by OpenAI, with potential early access to future o3 and GPT-5 models",
-            "Cleaner interface than Cursor: the Cascade panel is less cluttered, reducing cognitive load during long development sessions",
-          ],
-        },
-        cons: {
-          fr: [
-            "Écosystème d'extensions moins mature que Cursor : certaines extensions VS Code populaires fonctionnent mais avec des bugs intermittents — à vérifier avant migration si vous dépendez d'extensions spécifiques",
-            "L'indexation codebase est moins profonde que Cursor sur les projets en Python et Ruby — les suggestions contextuelles manquent parfois de cohérence sur les projets non-TypeScript",
-            "La promesse 'rachat OpenAI = meilleurs modèles' n'a pas encore totalement tenu : en mai 2026, l'accès aux modèles premium reste comparable à Cursor, pas différenciant",
-            "Pas de mode offline : comme Cursor, Windsurf est 100% cloud-dépendant pour ses fonctionnalités IA",
-            "Communauté plus petite que Cursor — moins de ressources, templates et snippets partagés disponibles en ligne pour débloquer des cas d'usage spécifiques",
-          ],
-          en: [
-            "Less mature extension ecosystem than Cursor: some popular VS Code extensions work but with intermittent bugs — verify before migrating if you depend on specific extensions",
-            "Codebase indexing is less deep than Cursor on Python and Ruby projects — contextual suggestions sometimes lack coherence on non-TypeScript projects",
-            "The 'OpenAI acquisition = better models' promise hasn't fully materialized yet: as of May 2026, access to premium models remains comparable to Cursor, not differentiated",
-            "No offline mode: like Cursor, Windsurf is 100% cloud-dependent for its AI features",
-            "Smaller community than Cursor — fewer shared resources, templates, and snippets available online to unblock specific use cases",
-          ],
-        },
-        verdict: {
-          fr: "Le challenger sérieux de Cursor en 2026. Windsurf offre une expérience Agent très proche de Cursor à 25% moins cher, avec une interface plus propre et la promesse d'un accès privilégié aux futurs modèles OpenAI. Pour les équipes budget-conscientes qui veulent un agent IA performant sans payer le premium Cursor, c'est l'alternative évidente.",
-          en: "Cursor's serious challenger in 2026. Windsurf offers an Agent experience very close to Cursor at 25% less, with a cleaner interface and the promise of privileged access to future OpenAI models. For budget-conscious teams wanting a performant AI agent without paying the Cursor premium, it's the obvious alternative.",
-        },
-        affiliate: "https://windsurf.ai",
-        badge: { fr: "Meilleur rapport qualité/prix", en: "Best value for money" },
-      },
-      {
-        name: "Zed",
-        logo: "⚡",
-        color: "#f59e0b",
-        globalScore: 7.8,
-        scores: [
-          { fr: "Autocomplétion IA", en: "AI autocomplete", value: 7.5 },
-          { fr: "Agent & édition multi-fichiers", en: "Agent & multi-file editing", value: 7.0 },
-          { fr: "Contexte codebase", en: "Codebase context", value: 7.5 },
-          { fr: "Vitesse & performance", en: "Speed & performance", value: 10.0 },
-          { fr: "Intégrations & écosystème", en: "Integrations & ecosystem", value: 6.0 },
-          { fr: "Rapport qualité/prix", en: "Value for money", value: 9.5 },
-        ],
-        price: "Gratuit / 20$/mois",
-        priceFull: {
-          fr: "Gratuit (accès IA de base, extensions communautaires) · Pro 20$/mois (modèles premium illimités, agents avancés) · Zed for Teams sur devis · Open source : auto-hébergeable gratuitement",
-          en: "Free (basic AI access, community extensions) · Pro $20/month (unlimited premium models, advanced agents) · Zed for Teams custom · Open source: self-hostable for free",
-        },
-        pros: {
-          fr: [
-            "Le plus rapide du comparatif sans discussion : démarrage en moins de 300ms, zéro lag de frappe sur des fichiers de 100 000 lignes — écrit en Rust avec une architecture GPU-native qui surpasse VS Code de 3 à 5× sur les benchmarks de rendu",
-            "100% open source (licence Apache 2.0) : vous pouvez auditer chaque ligne de code, auto-héberger le serveur IA, et contribuer aux fonctionnalités que vous voulez — transparence totale impossible chez Cursor ou Windsurf",
-            "Collaboration multi-curseurs en temps réel native : deux développeurs peuvent éditer le même fichier simultanément avec leurs curseurs visibles, comme Google Docs — aucun plugin nécessaire",
-            "Agents IA extensibles via MCP (Model Context Protocol) : connectez vos propres modèles, bases de données vectorielles ou outils internes sans configuration complexe",
-            "Profils de langage ultra-précis : le support LSP (Language Server Protocol) natif de Zed est le plus fidèle du comparatif sur Rust, Go et Elixir — fait par les créateurs d'Atom et Tree-sitter",
-            "Plan gratuit généreux : accès aux agents IA de base, extensions communautaires et fonctionnalités de collaboration sans limite de temps ni de projet",
-          ],
-          en: [
-            "Fastest in this comparison by a wide margin: startup under 300ms, zero typing lag on 100,000-line files — written in Rust with GPU-native architecture that outperforms VS Code by 3-5× on rendering benchmarks",
-            "100% open source (Apache 2.0 license): you can audit every line of code, self-host the AI server, and contribute features you want — total transparency impossible with Cursor or Windsurf",
-            "Native real-time multi-cursor collaboration: two developers can edit the same file simultaneously with their cursors visible, like Google Docs — no plugin required",
-            "Extensible AI agents via MCP (Model Context Protocol): connect your own models, vector databases, or internal tools without complex configuration",
-            "Ultra-precise language profiles: Zed's native LSP support is the most faithful in this comparison for Rust, Go, and Elixir — built by the creators of Atom and Tree-sitter",
-            "Generous free plan: access to basic AI agents, community extensions, and collaboration features with no time or project limit",
-          ],
-        },
-        cons: {
-          fr: [
-            "L'agent multi-fichiers est significativement moins avancé que Cursor ou Windsurf : Zed AI peut modifier plusieurs fichiers mais sans la cohérence architecturale du Composer Cursor — il faut davantage superviser chaque changement",
-            "Bibliothèque d'extensions restreinte : ~800 extensions disponibles contre des milliers pour VS Code/Cursor — certains outils indispensables (Docker, SSH Remote, certains linters) manquent encore",
-            "Pas de support Windows stable en mai 2026 — Zed reste principalement macOS et Linux, ce qui bloque son adoption dans les équipes avec des développeurs Windows",
-            "Indexation codebase moins profonde que Cursor : Zed comprend la structure des fichiers mais sans l'analyse sémantique croisée qui fait la force de Cursor sur les grands projets",
-            "Courbe d'apprentissage réelle pour les habitués VS Code : le système de keybindings et la philosophie de configuration par fichier TOML sont différents — comptez 1 à 2 jours pour être à l'aise",
-          ],
-          en: [
-            "Multi-file agent is significantly less advanced than Cursor or Windsurf: Zed AI can modify multiple files but without the architectural coherence of Cursor Composer — you need to supervise each change more carefully",
-            "Limited extension library: ~800 extensions available versus thousands for VS Code/Cursor — some essential tools (Docker, SSH Remote, certain linters) are still missing",
-            "No stable Windows support as of May 2026 — Zed remains primarily macOS and Linux, which blocks adoption in teams with Windows developers",
-            "Less deep codebase indexing than Cursor: Zed understands file structure but without the cross-semantic analysis that makes Cursor powerful on large projects",
-            "Real learning curve for VS Code veterans: the keybinding system and TOML configuration file philosophy are different — expect 1 to 2 days to feel comfortable",
-          ],
-        },
-        verdict: {
-          fr: "L'IDE le plus rapide et le plus transparent du marché. Si la vitesse brute, l'open source ou la collaboration temps réel native sont vos priorités absolues, Zed est dans une catégorie à part. Pour la puissance de l'agent IA et l'écosystème d'extensions, Cursor reste supérieur — mais Zed comble l'écart à chaque release mensuelle.",
-          en: "The fastest and most transparent IDE on the market. If raw speed, open source, or native real-time collaboration are your absolute priorities, Zed is in a category of its own. For AI agent power and extension ecosystem, Cursor remains superior — but Zed closes the gap with every monthly release.",
-        },
-        affiliate: "https://zed.dev",
-        badge: { fr: "Le plus rapide", en: "Fastest editor" },
-      },
-    ],
-    fr: {
-      title: "Cursor vs Windsurf vs Zed : quel IDE IA choisir en 2026 ?",
-      desc: "Cursor, Windsurf, Zed — trois IDEs IA radicalement différents testés pendant 6 semaines sur des projets réels. Agent multi-fichiers, vitesse, prix, écosystème : notre verdict complet pour choisir l'IDE qui va vraiment booster votre productivité.",
-      metaTitle: "Cursor vs Windsurf vs Zed 2026 : comparatif IDE IA complet | Neuriflux",
-      metaDesc: "Comparatif complet Cursor vs Windsurf vs Zed en 2026. Tests sur 6 semaines, scores sur 6 critères, verdict. Quel IDE IA choisir pour votre stack en 2026 ?",
-      intro: "Cursor vs GitHub Copilot, c'était 2024. En 2026, le vrai comparatif qui compte est Cursor contre Windsurf et Zed. Windsurf (ex-Codeium) a pivoté vers un IDE complet après son rachat par OpenAI. Zed a intégré des agents IA natifs en architecture Rust et explose sur les forums dev depuis février 2026. Ces trois IDEs représentent trois philosophies radicalement différentes — la puissance de l'agent (Cursor), le rapport qualité/prix (Windsurf), et la vitesse + open source (Zed). On les a testés en parallèle pendant 6 semaines sur trois stacks différentes : un monorepo Next.js/Supabase de 80 000 lignes, une API FastAPI avec PostgreSQL, et un service Go microservices. Ce qu'on a observé contredit plusieurs idées reçues qui circulent sur les forums.",
-      verdict: "Cursor pour la puissance de l'agent et l'écosystème le plus mature. Windsurf pour le meilleur rapport qualité/prix sur une expérience agent proche. Zed pour la vitesse brute, l'open source et la collaboration temps réel — mais avec des lacunes à accepter sur l'agent.",
-      content: `
-## Trois IDEs, trois philosophies irréconciliables
-
-Avant de comparer les scores, il faut comprendre pourquoi ces trois outils ne visent pas le même développeur. Choisir sans ce contexte, c'est risquer de payer pour des fonctionnalités dont vous n'avez pas besoin.
-
-**Cursor est un IDE de productivité maximale.** Sa philosophie : vous devez pouvoir décrire en langage naturel ce que vous voulez construire, et l'agent doit le construire à travers tous les fichiers concernés sans que vous ayez à naviguer manuellement. L'indexation complète du codebase, le Composer Agent multi-fichiers et la liberté de choix de modèles en font l'outil le plus complet du marché — au prix d'une consommation de ressources et d'un tarif plus élevés.
-
-**Windsurf est l'IDE de l'équipe budget-consciente.** Né de Codeium (le champion du gratuit) mais reconstruit autour d'un agent IA sérieux après son acquisition par OpenAI, Windsurf offre une expérience très proche de Cursor à 25% moins cher. Son pari : la différence de qualité entre Cursor et Windsurf est trop faible pour justifier 5$/mois d'écart sur chaque siège de développeur. Sur nos tests, le pari tient largement.
-
-**Zed est l'IDE de la vitesse et de la transparence.** Écrit en Rust par les créateurs d'Atom et Tree-sitter, Zed démarre en 300ms, ne lague jamais sur les gros fichiers, et propose une collaboration multi-curseurs native sans plugin. Son agent IA rattrape progressivement Cursor et Windsurf mais n'est pas encore au même niveau. Pour les développeurs qui valorisent la fluidité de l'éditeur au-dessus de la puissance de l'agent, c'est une révélation.
-
-## Test 1 — L'agent multi-fichiers : le vrai critère de 2026
-
-On a donné exactement la même instruction aux trois IDEs sur notre codebase Next.js : "Ajoute un système de notifications en temps réel avec WebSocket : créer le hook React côté client, le handler côté serveur, mettre à jour le schéma Prisma, écrire les migrations et mettre à jour les types TypeScript globaux."
-
-**Cursor Composer Agent** a exécuté l'instruction en 4 minutes 20. Résultat : 8 fichiers créés ou modifiés, le hook React correctement connecté au handler serveur, la migration Prisma générée et applicable directement. On a dû corriger un bug mineur dans la gestion des erreurs WebSocket. Le reste était fonctionnel au premier essai.
-
-**Windsurf Cascade Agent** a pris 5 minutes 50 pour le même résultat. La qualité était très comparable — 7 fichiers modifiés, avec une différence notable : le panneau Cascade montrait en temps réel chaque fichier ouvert, chaque test lancé et chaque erreur détectée. Cette visibilité est pédagogiquement supérieure à Cursor, qui est plus opaque sur ce qu'il fait. Le résultat final nécessitait 2 corrections mineures.
-
-**Zed AI** a géré 4 des 8 fichiers correctement, mais a manqué la synchronisation entre le hook client et les types TypeScript globaux. On a dû compléter manuellement 3 fichiers. Pas une catastrophe, mais la cohérence architecturale d'une seule instruction multi-fichiers reste le point faible évident de Zed en mai 2026.
-
-**Verdict agent : Cursor 9.5/10 · Windsurf 9.0/10 · Zed 7.0/10**
-
-## Test 2 — Vitesse et performance native : Zed sans discussion
-
-C'est le test où Zed change de dimension. On a ouvert les mêmes fichiers sur les trois IDEs et mesuré les temps de démarrage, de scroll et de recherche.
-
-**Zed** : démarrage en 280ms à froid. Scroll fluide à 120fps sur un fichier de 45 000 lignes. Recherche regex sur 80 000 fichiers en 1,2 secondes. Pas de lag observable lors de la frappe même avec 8 fichiers ouverts simultanément.
-
-**Cursor** : démarrage en 3,8 secondes (indexation incluse). Scroll légèrement saccadé au-delà de 20 000 lignes. Recherche comparable à Zed sur les fichiers courts, 3× plus lente sur le monorepo complet. Consommation mémoire : 520 Mo au repos.
-
-**Windsurf** : démarrage en 2,9 secondes. Performance intermédiaire entre Cursor et Zed. Recherche globale en 2,1 secondes sur le même monorepo. Consommation mémoire : 380 Mo au repos.
-
-Pour les développeurs sur des machines avec 8-16 Go de RAM ou sur des projets avec des centaines de milliers de fichiers, la différence de performance entre Zed et les deux autres n'est pas marginale. C'est fonctionnel vs fluide.
-
-**Verdict performance : Zed 10/10 · Windsurf 9.0/10 · Cursor 8.5/10**
-
-## Test 3 — Contexte et compréhension du codebase
-
-On a posé des questions de compréhension sur notre codebase sans ouvrir de fichier : "Pourquoi le composant Dashboard re-rend-il à chaque changement de route ?" "Quelle est la différence entre les hooks useUser et useSession dans notre projet ?" "Où est définie la logique de rate limiting ?"
-
-**Cursor** a répondu correctement aux trois questions en citant les fichiers et lignes exacts. Son indexation sémantique de l'ensemble du codebase est la fonctionnalité qui fait le plus de différence sur les projets de taille réelle. Trouver un bug ou comprendre une décision d'architecture prend 10 secondes au lieu de 5 minutes de navigation manuelle.
-
-**Windsurf** a correctement répondu à 2 questions sur 3 — la question sur le rate limiting a renvoyé vers la mauvaise couche d'abstraction. Sur les projets TypeScript, la qualité du contexte est très proche de Cursor. Sur Python et les langages moins communs, l'écart se creuse davantage.
-
-**Zed** a partiellement répondu aux trois questions — les informations étaient généralement correctes mais moins précises sur les lignes exactes et les dépendances croisées. Suffisant pour s'orienter, pas pour déboguer directement.
-
-**Verdict contexte : Cursor 9.5/10 · Windsurf 8.5/10 · Zed 7.5/10**
-
-## Le tableau des prix — ce que vous payez vraiment
-
-| | Cursor | Windsurf | Zed |
-|---|---|---|---|
-| **Plan gratuit** | 2 000 complétions, 50 requêtes lentes | Crédits limités, modèles de base | Accès IA de base, collaboration illimitée |
-| **Plan pro individuel** | 20$/mois | 15$/mois | 20$/mois |
-| **Plan équipe** | Business 40$/utilisateur/mois | Teams 30$/utilisateur/mois | Sur devis |
-| **Open source** | ❌ | ❌ | ✅ Apache 2.0 |
-| **Self-hosting** | ❌ | ❌ | ✅ (serveur IA) |
-| **Modèles inclus** | Claude 3.7, GPT-4o, o3, Gemini 2.5 | Claude 3.7, GPT-4o | Claude 3.7, GPT-4o + modèles locaux |
-
-**Le calcul Cursor pro individuel** : 20$/mois pour des requêtes illimitées aux meilleurs modèles, Composer Agent et indexation codebase complète. À 220 jours ouvrés par an, c'est ~1,09$ par jour de développement. Si l'agent vous économise 30 minutes par jour, le ROI est immédiat.
-
-**Le calcul Windsurf** : 15$/mois pour une expérience très proche de Cursor. Sur une équipe de 5 développeurs, c'est 75$/mois ou 900$/an d'économie par rapport à Cursor — de quoi financer deux abonnements annuels supplémentaires.
-
-**Le calcul Zed** : 20$/mois pour le plan Pro, mais le plan gratuit est genuine — collaboration illimitée, agents IA de base, et si vous êtes à l'aise pour auto-héberger, l'option open source est techniquement gratuite à l'infini.
-
-## Cursor vs Windsurf vs Zed : le vrai tableau comparatif
-
-| Critère | Cursor | Windsurf | Zed |
-|---|---|---|---|
-| Agent multi-fichiers | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
-| Vitesse de l'éditeur | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| Contexte codebase | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
-| Bibliothèque d'extensions | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ |
-| Collaboration temps réel | ⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ |
-| Transparence / open source | ❌ | ❌ | ⭐⭐⭐⭐⭐ |
-| Prix (solo) | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
-| Prix (équipe) | ⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
-
-## Les angles que personne ne mentionne
-
-**L'angle confidentialité : seul Zed vous donne le contrôle**
-Cursor et Windsurf envoient des extraits de votre code à leurs serveurs pour alimenter l'indexation et l'agent — c'est documenté dans leurs politiques mais peu mis en avant. Pour les équipes qui travaillent sur du code propriétaire sensible (fintech, défense, santé), cette réalité mérite une attention sérieuse. Zed, open source et auto-hébergeable, est la seule option qui permet d'audit complet de ce qui sort de votre machine.
-
-**L'angle Windows : Zed n'est pas encore là**
-Si votre équipe a des développeurs Windows (courant dans les environnements enterprise), Zed est de facto exclu en mai 2026. Le support Windows est en beta instable. Cursor et Windsurf fonctionnent de façon identique sur Windows, macOS et Linux.
-
-**L'angle investissement Windsurf/OpenAI**
-Le rachat de Windsurf (ex-Codeium) par OpenAI en 2025 est potentiellement le facteur le plus sous-estimé de ce comparatif. Si l'intégration se matérialise pleinement — accès anticipé aux modèles, optimisation des prompts pour l'IDE — Windsurf pourrait dépasser Cursor d'ici 12-18 mois sans changer de prix. À surveiller de très près.
-
-**L'angle Zed et la vélocité des releases**
-Zed sort une update majeure par mois depuis début 2026. L'écart de fonctionnalités avec Cursor s'est réduit de moitié en 6 mois sur l'agent. Si la trajectoire se maintient, le comparatif de novembre 2026 pourrait avoir des scores très différents.
-
-## Notre matrice de décision
-
-**Choisissez Cursor si :**
-- Vous travaillez sur des projets complexes avec des dizaines de fichiers interdépendants
-- Le contexte codebase complet et l'agent multi-fichiers sont au cœur de votre workflow
-- Vous êtes sur VS Code et voulez migrer sans friction
-- Votre stack principale est TypeScript/React/Next.js — terrain où Cursor excelle le plus
-- Le budget 20$/mois est acceptable et vous voulez l'outil le plus mature
-
-**Choisissez Windsurf si :**
-- Vous voulez une expérience agent proche de Cursor à 5$/mois de moins par siège
-- La visibilité des actions de l'agent (quels fichiers sont modifiés, quels tests sont lancés) a de la valeur pour votre workflow
-- Votre équipe est budget-consciente et cherche à maximiser le ROI sans compromis majeur
-- Vous attendez de voir comment l'intégration OpenAI va se matérialiser sur les prochains mois
-
-**Choisissez Zed si :**
-- La performance brute de l'éditeur est non-négociable — vous développez sur de très gros fichiers ou avec des ressources contraintes
-- L'open source et la possibilité d'auditer le code envoyé à l'IA sont des exigences de conformité
-- Vous faites de la collaboration en temps réel intensive avec d'autres développeurs sur les mêmes fichiers
-- Vous êtes sur macOS ou Linux et travaillez principalement sur Rust, Go ou Elixir
-- Vous êtes prêt à accepter un agent IA moins avancé en échange d'une expérience éditeur supérieure
-
-**N'utilisez pas Zed si :**
-- Votre équipe inclut des développeurs Windows
-- Vous dépendez d'extensions VS Code spécifiques non encore portées sur Zed
-- L'agent multi-fichiers autonome est au cœur de votre productivité quotidienne
-
-## FAQ
-
-### Cursor ou Windsurf — la différence en vaut-elle le prix ?
-
-Pour un solo developer, la différence de 5$/mois est négligeable — choisissez selon vos préférences d'interface. Pour une équipe de 10 développeurs, c'est 600$/an d'économie avec Windsurf pour une expérience très proche. Notre verdict : si vous n'êtes pas encore sur Cursor, commencez directement sur Windsurf. Si vous êtes déjà sur Cursor et que ça fonctionne, pas de raison de migrer pour 5$.
-
-### Zed peut-il remplacer VS Code pour un usage quotidien en 2026 ?
-
-Sur macOS et Linux, oui — avec l'acceptation de 2-3 extensions manquantes et une courbe d'adaptation de 1-2 jours. La vitesse compense largement les manques pour la majorité des workflows. Sur Windows, non encore — le support est trop instable. Dans 6-12 mois, la réponse sera probablement différente.
-
-### Ces IDEs fonctionnent-ils bien avec des langages autres que JavaScript/TypeScript ?
-
-Cursor est le plus fort sur TypeScript de loin. Windsurf suit de très près. Zed excelle sur Rust et Go (ses langages natifs), est bon sur Python, et est comparable aux autres sur la plupart des langages courants. Pour des stacks Elixir, Haskell ou Nix, Zed est souvent le premier choix grâce à son support LSP natif exceptionnel.
-
-### Faut-il migrer de GitHub Copilot vers un de ces trois IDEs ?
-
-Oui, si l'agent multi-fichiers est important pour vous. GitHub Copilot reste excellent pour l'autocomplétion inline, mais son agent reste nettement derrière Cursor et Windsurf sur l'édition cohérente de plusieurs fichiers simultanément. Pour les développeurs qui font beaucoup de refactoring, d'ajout de features et de débogage complexe, la migration vers Cursor ou Windsurf produit un gain de productivité mesurable dès la première semaine.
-      `,
-    },
-    en: {
-      title: "Cursor vs Windsurf vs Zed: Which AI IDE to Choose in 2026?",
-      desc: "Cursor, Windsurf, Zed — three radically different AI IDEs tested for six weeks on real projects. Multi-file agent, speed, pricing, ecosystem: our complete verdict to find the IDE that will actually boost your productivity.",
-      metaTitle: "Cursor vs Windsurf vs Zed 2026: complete AI IDE comparison | Neuriflux",
-      metaDesc: "Full comparison of Cursor vs Windsurf vs Zed in 2026. 6-week tests, scores across 6 criteria, verdict. Which AI IDE to choose for your stack in 2026?",
-      intro: "Cursor vs GitHub Copilot was the 2024 comparison. In 2026, the comparison that actually matters is Cursor against Windsurf and Zed. Windsurf (formerly Codeium) pivoted to a full IDE after its acquisition by OpenAI. Zed integrated native AI agents in a Rust architecture and exploded on dev forums since February 2026. These three IDEs represent three radically different philosophies — agent power (Cursor), value for money (Windsurf), and speed plus open source (Zed). We tested them in parallel for six weeks across three different stacks: an 80,000-line Next.js/Supabase monorepo, a FastAPI with PostgreSQL API, and a Go microservices service. What we observed contradicts several prevailing assumptions circulating on forums.",
-      verdict: "Cursor for agent power and the most mature ecosystem. Windsurf for the best value for money on a near-equivalent agent experience. Zed for raw speed, open source, and native real-time collaboration — but with agent gaps to accept.",
-      content: `
-## Three IDEs, three irreconcilable philosophies
-
-Before comparing scores, you need to understand why these three tools don't target the same developer. Choosing without this context risks paying for features you don't need.
-
-**Cursor is a maximum-productivity IDE.** Its philosophy: you should be able to describe in plain language what you want to build, and the agent should build it across all relevant files without you navigating manually. Complete codebase indexing, the multi-file Composer Agent, and freedom of model choice make it the most complete tool on the market — at the cost of higher resource consumption and a higher price.
-
-**Windsurf is the budget-conscious team's IDE.** Born from Codeium (the free tier champion) but rebuilt around a serious AI agent after its OpenAI acquisition, Windsurf offers an experience very close to Cursor at 25% less. Its bet: the quality difference between Cursor and Windsurf is too small to justify $5/month per developer seat. In our testing, the bet largely holds.
-
-**Zed is the speed and transparency IDE.** Written in Rust by the creators of Atom and Tree-sitter, Zed starts in 300ms, never lags on large files, and offers native multi-cursor collaboration without a plugin. Its AI agent is progressively catching up to Cursor and Windsurf but isn't at the same level yet. For developers who value editor fluidity above agent power, it's a revelation.
-
-## Test 1 — The multi-file agent: the real 2026 criterion
-
-We gave the exact same instruction to all three IDEs on our Next.js codebase: "Add a real-time notification system with WebSocket: create the React hook client-side, the server-side handler, update the Prisma schema, write the migrations, and update global TypeScript types."
-
-**Cursor Composer Agent** executed the instruction in 4 minutes 20 seconds. Result: 8 files created or modified, the React hook correctly connected to the server handler, the Prisma migration generated and directly applicable. We had to fix a minor bug in WebSocket error handling. The rest was functional on the first attempt.
-
-**Windsurf Cascade Agent** took 5 minutes 50 seconds for the same result. Quality was very comparable — 7 files modified, with one notable difference: the Cascade panel showed in real time each file being opened, each test being run, and each error detected. This visibility is pedagogically superior to Cursor, which is more opaque about what it's doing. The final result required 2 minor corrections.
-
-**Zed AI** handled 4 of the 8 files correctly but missed the synchronization between the client hook and global TypeScript types. We had to manually complete 3 files. Not a disaster, but the architectural coherence of a single multi-file instruction remains Zed's obvious weak point as of May 2026.
-
-**Agent verdict: Cursor 9.5/10 · Windsurf 9.0/10 · Zed 7.0/10**
-
-## Test 2 — Raw speed and native performance: Zed no contest
-
-This is the test where Zed changes dimension. We opened the same files in all three IDEs and measured startup, scroll, and search times.
-
-**Zed**: cold startup in 280ms. Smooth scrolling at 120fps on a 45,000-line file. Regex search across 80,000 files in 1.2 seconds. No observable typing lag even with 8 files open simultaneously.
-
-**Cursor**: startup in 3.8 seconds (indexing included). Slightly choppy scroll past 20,000 lines. Search comparable to Zed on short files, 3× slower on the full monorepo. Memory consumption: 520 MB at rest.
-
-**Windsurf**: startup in 2.9 seconds. Performance intermediate between Cursor and Zed. Global search in 2.1 seconds on the same monorepo. Memory consumption: 380 MB at rest.
-
-For developers on machines with 8-16 GB RAM or on projects with hundreds of thousands of files, the performance difference between Zed and the other two isn't marginal. It's functional versus fluid.
-
-**Performance verdict: Zed 10/10 · Windsurf 9.0/10 · Cursor 8.5/10**
-
-## Test 3 — Codebase context and comprehension
-
-We asked comprehension questions about our codebase without opening any file: "Why does the Dashboard component re-render on every route change?" "What's the difference between the useUser and useSession hooks in our project?" "Where is the rate limiting logic defined?"
-
-**Cursor** answered all three correctly, citing exact files and line numbers. Its semantic indexing of the entire codebase is the feature that makes the most difference on real-world projects of meaningful size. Finding a bug or understanding an architectural decision takes 10 seconds instead of 5 minutes of manual navigation.
-
-**Windsurf** correctly answered 2 of 3 questions — the rate limiting question pointed to the wrong abstraction layer. On TypeScript projects, context quality is very close to Cursor. On Python and less common languages, the gap widens.
-
-**Zed** partially answered all three questions — the information was generally correct but less precise on exact lines and cross-file dependencies. Sufficient to get oriented, not to debug directly.
-
-**Context verdict: Cursor 9.5/10 · Windsurf 8.5/10 · Zed 7.5/10**
-
-## Real pricing — what you actually pay
-
-| | Cursor | Windsurf | Zed |
-|---|---|---|---|
-| **Free plan** | 2,000 completions, 50 slow requests | Limited credits, base models | Basic AI access, unlimited collaboration |
-| **Pro individual** | $20/month | $15/month | $20/month |
-| **Team plan** | Business $40/user/month | Teams $30/user/month | Custom |
-| **Open source** | ❌ | ❌ | ✅ Apache 2.0 |
-| **Self-hosting** | ❌ | ❌ | ✅ (AI server) |
-| **Models included** | Claude 3.7, GPT-4o, o3, Gemini 2.5 | Claude 3.7, GPT-4o | Claude 3.7, GPT-4o + local models |
-
-**The Cursor Pro math**: $20/month for unlimited requests to the best models, Composer Agent, and complete codebase indexing. At 220 working days per year, that's ~$1.09 per development day. If the agent saves you 30 minutes per day, the ROI is immediate.
-
-**The Windsurf math**: $15/month for an experience very close to Cursor. On a team of 5 developers, that's $75/month or $900/year saved compared to Cursor — enough to fund two additional annual subscriptions.
-
-**The Zed math**: $20/month for the Pro plan, but the free plan is genuine — unlimited collaboration, basic AI agents. And if you're comfortable self-hosting, the open source option is technically free indefinitely.
-
-## Cursor vs Windsurf vs Zed: the real comparison table
-
-| Criteria | Cursor | Windsurf | Zed |
-|---|---|---|---|
-| Multi-file agent | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
-| Editor speed | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| Codebase context | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
-| Extension library | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ |
-| Real-time collaboration | ⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ |
-| Transparency / open source | ❌ | ❌ | ⭐⭐⭐⭐⭐ |
-| Price (solo) | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
-| Price (team) | ⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
-
-## The angles nobody mentions
-
-**The privacy angle: only Zed gives you control**
-Cursor and Windsurf send code excerpts to their servers to power indexing and the agent — documented in their policies but not prominently featured. For teams working on sensitive proprietary code (fintech, defense, healthcare), this reality deserves serious attention. Zed, open source and self-hostable, is the only option that allows a full audit of what leaves your machine.
-
-**The Windows angle: Zed isn't there yet**
-If your team has Windows developers (common in enterprise environments), Zed is de facto excluded as of May 2026. Windows support is in unstable beta. Cursor and Windsurf work identically across Windows, macOS, and Linux.
-
-**The Windsurf/OpenAI investment angle**
-The acquisition of Windsurf (formerly Codeium) by OpenAI in 2025 is potentially the most underestimated factor in this comparison. If the integration fully materializes — early model access, prompt optimization for the IDE — Windsurf could surpass Cursor within 12-18 months without changing its price. Watch this space very closely.
-
-**The Zed release velocity angle**
-Zed ships a major update monthly since early 2026. The feature gap with Cursor has halved in 6 months on the agent. If the trajectory holds, the November 2026 comparison may have very different scores.
-
-## Our decision matrix
-
-**Choose Cursor if:**
-- You work on complex projects with dozens of interdependent files
-- Complete codebase context and multi-file agent are at the core of your workflow
-- You're on VS Code and want to migrate without friction
-- Your main stack is TypeScript/React/Next.js — the terrain where Cursor excels most
-- The $20/month budget is acceptable and you want the most mature tool
-
-**Choose Windsurf if:**
-- You want an agent experience close to Cursor at $5/month less per seat
-- Visibility into agent actions (which files are modified, which tests run) adds value to your workflow
-- Your team is budget-conscious and wants to maximize ROI without major compromises
-- You're waiting to see how the OpenAI integration materializes over the next months
-
-**Choose Zed if:**
-- Raw editor performance is non-negotiable — you develop on very large files or with constrained resources
-- Open source and the ability to audit code sent to AI are compliance requirements
-- You do intensive real-time collaboration with other developers on the same files
-- You're on macOS or Linux and primarily work in Rust, Go, or Elixir
-- You're willing to accept a less advanced AI agent in exchange for a superior editing experience
-
-**Do NOT use Zed if:**
-- Your team includes Windows developers
-- You depend on specific VS Code extensions not yet ported to Zed
-- The autonomous multi-file agent is at the core of your daily productivity
-
-## FAQ
-
-### Cursor or Windsurf — is the difference worth the price gap?
-
-For a solo developer, the $5/month difference is negligible — choose based on interface preferences. For a team of 10 developers, that's $600/year saved with Windsurf for a very similar experience. Our verdict: if you're not already on Cursor, start directly on Windsurf. If you're already on Cursor and it's working, no reason to migrate for $5.
-
-### Can Zed replace VS Code for daily use in 2026?
-
-On macOS and Linux, yes — with acceptance of 2-3 missing extensions and a 1-2 day adjustment period. The speed more than compensates for the gaps for the majority of workflows. On Windows, not yet — support is too unstable. In 6-12 months, the answer will likely be different.
-
-### Do these IDEs work well with languages other than JavaScript/TypeScript?
-
-Cursor is strongest on TypeScript by far. Windsurf follows very closely. Zed excels on Rust and Go (its native languages), is good on Python, and is comparable on most common languages. For Elixir, Haskell, or Nix stacks, Zed is often the first choice thanks to its exceptional native LSP support.
-
-### Should you migrate from GitHub Copilot to one of these three IDEs?
-
-Yes, if multi-file agent work matters to you. GitHub Copilot remains excellent for inline autocomplete, but its agent still lags well behind Cursor and Windsurf on coherent simultaneous editing of multiple files. For developers who do a lot of refactoring, feature additions, and complex debugging, migration to Cursor or Windsurf produces a measurable productivity gain within the first week.
-      `,
-    },
+{
+  slug: "cursor-vs-windsurf-vs-zed-2026",
+  tag: "Code",
+  date: { fr: "12 mai 2026", en: "May 12, 2026" },
+  featured: true,
+  winner: "Cursor",
+  criteria: {
+    fr: ["Autocomplétion IA", "Agent & édition multi-fichiers", "Contexte codebase", "Vitesse & performance", "Intégrations & écosystème", "Rapport qualité/prix"],
+    en: ["AI autocomplete", "Agent & multi-file editing", "Codebase context", "Speed & performance", "Integrations & ecosystem", "Value for money"],
   },
+
+  tools: [
+    {
+      name: "Cursor",
+      logo: "◎",
+      color: "#00e6be",
+      globalScore: 9.2,
+      scores: [
+        { fr: "Autocomplétion IA", en: "AI autocomplete", value: 9.0 },
+        { fr: "Agent & édition multi-fichiers", en: "Agent & multi-file editing", value: 9.5 },
+        { fr: "Contexte codebase", en: "Codebase context", value: 9.5 },
+        { fr: "Vitesse & performance", en: "Speed & performance", value: 8.5 },
+        { fr: "Intégrations & écosystème", en: "Integrations & ecosystem", value: 9.5 },
+        { fr: "Rapport qualité/prix", en: "Value for money", value: 8.5 },
+      ],
+      price: "Gratuit / 20$/mois",
+      priceFull: {
+        fr: "Gratuit (2 000 complétions, 50 requêtes lentes) · Pro 20$/mois (requêtes illimitées, Claude 3.5/GPT-4o, accès modèles premium) · Business 40$/utilisateur/mois (SSO, politique d'utilisation centralisée) · Enterprise sur devis",
+        en: "Free (2,000 completions, 50 slow requests) · Pro $20/month (unlimited requests, Claude 3.5/GPT-4o, premium model access) · Business $40/user/month (SSO, centralized usage policy) · Enterprise custom",
+      },
+      pros: {
+        fr: [
+          "Cursor Composer Agent reste aujourd’hui le système d’édition multi-fichiers le plus impressionnant du marché",
+          "Indexation complète du codebase avec compréhension sémantique réelle des dépendances",
+          "Choix de modèles ultra-flexible : Claude, GPT-4o, Gemini et o3 dans le même IDE",
+          "Migration instantanée depuis VS Code avec compatibilité quasi parfaite",
+          "Recherche sémantique native extrêmement puissante sur les gros projets",
+          "Très gros gain de productivité sur React, Next.js et TypeScript",
+        ],
+        en: [
+          "Cursor Composer Agent remains the most impressive multi-file editing system on the market",
+          "Complete codebase indexing with real semantic dependency understanding",
+          "Extremely flexible model selection: Claude, GPT-4o, Gemini, and o3 inside the same IDE",
+          "Instant migration from VS Code with near-perfect compatibility",
+          "Extremely powerful native semantic search on large projects",
+          "Massive productivity gains on React, Next.js, and TypeScript workflows",
+        ],
+      },
+      cons: {
+        fr: [
+          "Consommation RAM importante sur les gros monorepos",
+          "Indexation parfois lente au démarrage",
+          "Plan gratuit trop limité pour une utilisation intensive",
+          "Dépendance cloud totale pour les fonctionnalités IA",
+          "Closed-source malgré son héritage VS Code",
+        ],
+        en: [
+          "High RAM consumption on large monorepos",
+          "Indexing can feel slow during startup",
+          "Free plan is too limited for serious daily use",
+          "Complete cloud dependency for AI features",
+          "Closed-source despite its VS Code heritage",
+        ],
+      },
+      verdict: {
+        fr: "Cursor reste aujourd’hui l’IDE IA le plus mature et le plus performant globalement pour les développeurs travaillant sur des projets réels.",
+        en: "Cursor remains the most mature and capable AI IDE overall for developers working on real-world projects.",
+      },
+      affiliate: "https://cursor.com",
+      badge: { fr: "🏆 Notre choix", en: "🏆 Our pick" },
+    },
+
+    {
+      name: "Windsurf",
+      logo: "🌊",
+      color: "#6366f1",
+      globalScore: 8.6,
+      scores: [
+        { fr: "Autocomplétion IA", en: "AI autocomplete", value: 8.5 },
+        { fr: "Agent & édition multi-fichiers", en: "Agent & multi-file editing", value: 9.0 },
+        { fr: "Contexte codebase", en: "Codebase context", value: 8.5 },
+        { fr: "Vitesse & performance", en: "Speed & performance", value: 9.0 },
+        { fr: "Intégrations & écosystème", en: "Integrations & ecosystem", value: 8.0 },
+        { fr: "Rapport qualité/prix", en: "Value for money", value: 9.0 },
+      ],
+      price: "Gratuit / 15$/mois",
+      priceFull: {
+        fr: "Gratuit (crédits limités) · Pro 15$/mois · Teams 30$/utilisateur/mois",
+        en: "Free (limited credits) · Pro $15/month · Teams $30/user/month",
+      },
+      pros: {
+        fr: [
+          "Cascade Agent est aujourd’hui extrêmement proche de Cursor",
+          "Interface plus claire et plus pédagogique",
+          "Excellent rapport qualité/prix",
+          "Très bonne vitesse globale",
+          "Mémoire de session persistante utile sur les projets longs",
+          "Très prometteur depuis le rachat OpenAI",
+        ],
+        en: [
+          "Cascade Agent is now extremely close to Cursor",
+          "Cleaner and more educational interface",
+          "Excellent value for money",
+          "Very strong overall speed",
+          "Persistent session memory is useful on long projects",
+          "Very promising since the OpenAI acquisition",
+        ],
+      },
+      cons: {
+        fr: [
+          "Écosystème moins mature que Cursor",
+          "Moins performant sur certains projets Python/Ruby",
+          "Communauté encore plus petite",
+          "Moins de ressources disponibles en ligne",
+          "Toujours cloud-dependent",
+        ],
+        en: [
+          "Less mature ecosystem than Cursor",
+          "Less performant on some Python/Ruby projects",
+          "Smaller community",
+          "Fewer online resources available",
+          "Still cloud-dependent",
+        ],
+      },
+      verdict: {
+        fr: "Windsurf devient progressivement l’alternative la plus crédible à Cursor pour les développeurs qui veulent maximiser leur ROI.",
+        en: "Windsurf is rapidly becoming the most credible Cursor alternative for developers looking to maximize ROI.",
+      },
+      affiliate: "https://windsurf.ai",
+      badge: { fr: "Meilleur rapport qualité/prix", en: "Best value for money" },
+    },
+
+    {
+      name: "Zed",
+      logo: "⚡",
+      color: "#f59e0b",
+      globalScore: 7.8,
+      scores: [
+        { fr: "Autocomplétion IA", en: "AI autocomplete", value: 7.5 },
+        { fr: "Agent & édition multi-fichiers", en: "Agent & multi-file editing", value: 7.0 },
+        { fr: "Contexte codebase", en: "Codebase context", value: 7.5 },
+        { fr: "Vitesse & performance", en: "Speed & performance", value: 10.0 },
+        { fr: "Intégrations & écosystème", en: "Integrations & ecosystem", value: 6.0 },
+        { fr: "Rapport qualité/prix", en: "Value for money", value: 9.5 },
+      ],
+      price: "Gratuit / 20$/mois",
+      priceFull: {
+        fr: "Gratuit · Pro 20$/mois · Open source et auto-hébergeable",
+        en: "Free · Pro $20/month · Open source and self-hostable",
+      },
+      pros: {
+        fr: [
+          "Le plus rapide du comparatif",
+          "Architecture Rust ultra moderne",
+          "Open source complet",
+          "Collaboration multi-curseurs native",
+          "Consommation mémoire extrêmement faible",
+          "Expérience de frappe et de navigation exceptionnelle",
+        ],
+        en: [
+          "Fastest editor in this comparison",
+          "Ultra-modern Rust architecture",
+          "Fully open source",
+          "Native multi-cursor collaboration",
+          "Extremely low memory consumption",
+          "Exceptional typing and navigation experience",
+        ],
+      },
+      cons: {
+        fr: [
+          "Agent IA encore derrière Cursor",
+          "Écosystème d’extensions limité",
+          "Support Windows encore immature",
+          "Indexation codebase moins profonde",
+          "Moins adapté aux workflows enterprise complexes",
+        ],
+        en: [
+          "AI agent still behind Cursor",
+          "Limited extension ecosystem",
+          "Windows support still immature",
+          "Less advanced codebase indexing",
+          "Less suited for complex enterprise workflows",
+        ],
+      },
+      verdict: {
+        fr: "Zed est l’éditeur le plus impressionnant techniquement du marché, mais son agent IA reste encore derrière Cursor et Windsurf.",
+        en: "Zed is technically the most impressive editor on the market, but its AI agent still trails behind Cursor and Windsurf.",
+      },
+      affiliate: "https://zed.dev",
+      badge: { fr: "Le plus rapide", en: "Fastest editor" },
+    },
+  ],
+
+  fr: {
+    title: "Cursor vs Windsurf vs Zed : quel IDE IA choisir en 2026 ?",
+    desc: "Cursor, Windsurf et Zed dominent aujourd’hui le marché des IDEs IA. Après plusieurs semaines de tests sur des projets réels, voici notre comparatif complet et notre verdict.",
+    metaTitle: "Cursor vs Windsurf vs Zed 2026 : comparatif complet | Neuriflux",
+    metaDesc: "Comparatif complet Cursor vs Windsurf vs Zed en 2026. Agent multi-fichiers, vitesse, contexte codebase, prix, performances et verdict final.",
+
+    intro: "Le marché des IDEs IA évolue à une vitesse absurde. Il y a encore un an, GitHub Copilot dominait presque seul la conversation. En 2026, le vrai débat oppose désormais Cursor, Windsurf et Zed. Trois outils, trois philosophies, trois visions totalement différentes du futur du développement assisté par IA.",
+
+    verdict: "Cursor reste l’IDE IA le plus mature globalement. Windsurf offre le meilleur rapport qualité/prix. Zed domine complètement sur la vitesse et la fluidité native.",
+
+    content: `
+## Pourquoi les IDEs IA changent complètement le développement
+
+Les assistants IA ne servent plus uniquement à compléter quelques lignes de code.
+
+Les nouveaux IDEs IA comprennent désormais :
+- l’architecture globale d’un projet ;
+- les dépendances ;
+- les conventions ;
+- les composants liés ;
+- les relations entre fichiers.
+
+La différence de productivité devient énorme dès qu’un agent comprend réellement votre codebase.
+
+C’est précisément ce qui explique l’explosion de Cursor, Windsurf et Zed.
+
+## Cursor : toujours la référence globale
+
+Cursor reste aujourd’hui l’IDE IA le plus complet du marché.
+
+Sur des projets React, Next.js et TypeScript complexes, son Composer Agent reste largement au-dessus de la concurrence en matière d’édition multi-fichiers cohérente.
+
+Dans nos tests, Cursor :
+- créait automatiquement les hooks ;
+- reliait les composants ;
+- modifiait Prisma ;
+- générait les types ;
+- corrigeait certains bugs automatiquement.
+
+Le tout avec très peu d’interventions manuelles.
+
+L’autre énorme avantage de Cursor reste évidemment l’écosystème VS Code. La migration est quasiment instantanée.
+
+Le principal problème reste néanmoins la consommation de ressources. Sur les gros monorepos, Cursor devient rapidement lourd en RAM et en CPU.
+
+## Windsurf : le concurrent qui monte extrêmement vite
+
+Windsurf est beaucoup plus proche de Cursor que ce que beaucoup de développeurs imaginent.
+
+Le Cascade Agent offre une expérience très convaincante avec :
+- une interface plus claire ;
+- des actions mieux visualisées ;
+- une très bonne vitesse ;
+- un excellent rapport qualité/prix.
+
+Sur certains projets TypeScript, les résultats étaient extrêmement proches de Cursor.
+
+L’écart existe encore principalement sur :
+- la profondeur du contexte ;
+- les très gros refactorings ;
+- la cohérence architecture globale.
+
+Mais l’écart diminue très rapidement.
+
+Pour beaucoup de freelances et petites équipes, Windsurf devient probablement l’option la plus intelligente financièrement.
+
+## Zed : l’éditeur qui impressionne le plus techniquement
+
+Zed est probablement l’éditeur le plus fluide de ce comparatif.
+
+La différence de vitesse est immédiatement perceptible :
+- démarrage ultra rapide ;
+- zéro lag ;
+- navigation instantanée ;
+- consommation mémoire extrêmement faible.
+
+Après plusieurs heures sur Cursor ou Windsurf, revenir sur Zed donne presque l’impression de passer sur une application native optimisée.
+
+Son architecture Rust et son rendu GPU-native font une énorme différence.
+
+L’aspect open source devient également un argument de plus en plus important pour certaines entreprises.
+
+Le principal problème reste l’écosystème :
+- moins d’extensions ;
+- agent IA encore derrière ;
+- support Windows encore immature.
+
+## Quel IDE choisir réellement ?
+
+Si votre priorité absolue est :
+- la puissance de l’agent ;
+- les workflows complexes ;
+- les gros projets TypeScript/React ;
+
+Cursor reste devant.
+
+Si vous cherchez le meilleur équilibre entre :
+- prix ;
+- productivité ;
+- simplicité ;
+
+Windsurf est probablement le meilleur choix actuellement.
+
+Et si votre priorité est :
+- la vitesse ;
+- la fluidité ;
+- l’open source ;
+
+alors Zed devient extrêmement intéressant.
+
+## Verdict final
+
+Le plus impressionnant dans ce comparatif, ce n’est pas la domination actuelle de Cursor.
+
+C’est surtout la vitesse à laquelle Windsurf et Zed progressent.
+
+Le marché des IDEs IA évolue désormais presque chaque mois.
+
+Et honnêtement :
+l’écart entre ces trois outils sera probablement encore beaucoup plus faible d’ici fin 2026.
+`,
+  },
+
+  en: {
+    title: "Cursor vs Windsurf vs Zed: Which AI IDE Should You Choose in 2026?",
+    desc: "Cursor, Windsurf, and Zed are currently dominating the AI IDE market. After several weeks of real-world testing, here’s our complete comparison and final verdict.",
+    metaTitle: "Cursor vs Windsurf vs Zed 2026: complete comparison | Neuriflux",
+    metaDesc: "Complete comparison of Cursor vs Windsurf vs Zed in 2026. Multi-file agents, speed, codebase understanding, pricing, performance and final verdict.",
+
+    intro: "The AI IDE market is evolving absurdly fast. Just a year ago, GitHub Copilot dominated the conversation almost alone. In 2026, the real battle is now between Cursor, Windsurf, and Zed — three completely different visions of AI-assisted development.",
+
+    verdict: "Cursor remains the most mature AI IDE overall. Windsurf offers the strongest value for money. Zed completely dominates raw speed and native fluidity.",
+
+    content: `
+## Why AI IDEs are changing software development entirely
+
+AI assistants are no longer just autocomplete tools.
+
+Modern AI IDEs now understand:
+- project architecture;
+- dependencies;
+- conventions;
+- linked components;
+- relationships between files.
+
+The productivity difference becomes massive once an IDE truly understands your codebase.
+
+That’s exactly why Cursor, Windsurf, and Zed are exploding right now.
+
+## Cursor: still the overall reference
+
+Cursor remains the most complete AI IDE currently available.
+
+On large React, Next.js, and TypeScript projects, its Composer Agent still clearly leads the market for coherent multi-file editing.
+
+During our testing, Cursor automatically:
+- created hooks;
+- connected components;
+- updated Prisma schemas;
+- generated types;
+- fixed certain bugs automatically.
+
+All with very little manual intervention.
+
+Its other massive advantage remains the VS Code ecosystem. Migration is almost instant.
+
+The biggest downside remains resource consumption. On large monorepos, Cursor quickly becomes heavy on RAM and CPU usage.
+
+## Windsurf: the rapidly rising competitor
+
+Windsurf is much closer to Cursor than many developers realize.
+
+Cascade Agent delivers a very convincing experience with:
+- a cleaner interface;
+- clearer action visibility;
+- strong overall speed;
+- excellent value for money.
+
+On several TypeScript projects, results were extremely close to Cursor.
+
+The remaining gap mostly concerns:
+- deeper contextual understanding;
+- very large refactors;
+- architectural consistency.
+
+But the gap is shrinking quickly.
+
+For many freelancers and smaller teams, Windsurf is probably the smartest financial choice right now.
+
+## Zed: the technically most impressive editor
+
+Zed is probably the smoothest editor in this comparison.
+
+The speed difference is immediately noticeable:
+- ultra-fast startup;
+- zero typing lag;
+- instant navigation;
+- extremely low memory usage.
+
+After spending hours inside Cursor or Windsurf, going back to Zed almost feels like switching to a highly optimized native application.
+
+Its Rust architecture and GPU-native rendering make a very real difference.
+
+Its open-source nature is also becoming increasingly important for certain companies.
+
+The biggest weakness remains the ecosystem:
+- fewer extensions;
+- AI agent still behind Cursor;
+- immature Windows support.
+
+## Which IDE should you actually choose?
+
+If your top priority is:
+- agent power;
+- complex workflows;
+- large TypeScript/React projects;
+
+Cursor still leads overall.
+
+If you want the best balance between:
+- pricing;
+- productivity;
+- simplicity;
+
+Windsurf is probably the smartest choice right now.
+
+And if your priority is:
+- speed;
+- fluidity;
+- open source;
+
+then Zed becomes extremely compelling.
+
+## Final verdict
+
+The most impressive thing about this comparison is not Cursor’s current dominance.
+
+It’s how fast Windsurf and Zed are improving.
+
+The AI IDE market is now evolving almost monthly.
+
+And honestly:
+the gap between these three tools will probably become much smaller before the end of 2026.
+`,
+  },
+},
 
 // ─── Gamma vs Tome vs Beautiful.ai — Présentations IA 2026 ───────────────────
   {
@@ -1480,23 +1439,7 @@ La génération par prompt de Beautiful.ai est nettement moins avancée que Gamm
 - Vos présentations s'inscrivent dans des workflows corporate avec relecture et validation formelle
 - La qualité visuelle finale est non-négociable et vous êtes prêt à y mettre le prix
 
-## FAQ
 
-### Gamma peut-il vraiment remplacer PowerPoint ?
-
-Pour la plupart des usages modernes, oui. Gamma produit des présentations plus rapides, plus partageables et plus interactives que PowerPoint. La seule limite réelle : si vos interlocuteurs exigent un fichier .pptx modifiable, l'export Gamma reste imparfait sur les mises en page complexes. Pour des présentations destinées à être affichées (pas modifiées), Gamma est supérieur à PowerPoint sur presque tous les critères.
-
-### Ces outils fonctionnent-ils bien en français ?
-
-Gamma et Tome gèrent très bien le français — la génération IA depuis un brief en français produit des slides en français cohérentes et bien rédigées. Beautiful.ai est également compatible mais ses templates sont principalement conçus pour un contexte anglophone. Les trois outils supportent le contenu en français sans problème majeur.
-
-### Peut-on utiliser ces outils pour des présentations en direct (keynote) ?
-
-Gamma a un mode présentation intégré avec plein écran et navigation clavier. Tome également. Beautiful.ai est le plus adapté aux présentations en salle grâce à son format PowerPoint natif. Pour une keynote avec 500 personnes, on recommanderait d'exporter en PDF ou PPT depuis n'importe lequel des trois plutôt que de présenter directement depuis l'interface web.
-
-### Lequel est le meilleur pour les pitchs de startups ?
-
-Gamma pour la rapidité et le suivi analytics (savoir si l'investisseur a lu le deck). Tome pour la profondeur narrative et la cohérence argumentative. En pratique, les fondateurs qui pitchent souvent utilisent Gamma pour la première version et ajustent par prompt, puis exportent si l'investisseur demande un fichier PowerPoint.
       `,
     },
     en: {
@@ -1618,23 +1561,7 @@ Beautiful.ai's prompt-based generation lags significantly behind Gamma or Tome. 
 - Your presentations fit into corporate workflows with formal review and approval processes
 - Final visual quality is non-negotiable and you're willing to pay for it
 
-## FAQ
 
-### Can Gamma actually replace PowerPoint?
-
-For most modern use cases, yes. Gamma produces presentations that are faster to create, more shareable, and more interactive than PowerPoint. The only genuine limitation: if your audience needs an editable .pptx file, Gamma's export remains imperfect on complex layouts. For presentations meant to be displayed (not edited), Gamma outperforms PowerPoint on nearly every dimension.
-
-### Do these tools work well in languages other than English?
-
-Gamma and Tome handle multilingual content well — AI generation from a French, Spanish, or German brief produces coherent slides in that language. Beautiful.ai is compatible with non-English content but its template library and default tone are primarily designed for an English-speaking context. All three support non-English presentations without major issues.
-
-### Can you use these tools for live keynote presentations?
-
-Gamma has a built-in full-screen presentation mode with keyboard navigation. Tome as well. Beautiful.ai is best suited to in-room presentations through its native PowerPoint format. For a keynote with 500 people, we'd recommend exporting to PDF or PPT from any of the three rather than presenting directly from the web interface.
-
-### Which is best for startup pitches?
-
-Gamma for speed and analytics tracking (knowing if the investor actually read the deck). Tome for narrative depth and argumentative coherence. In practice, founders who pitch frequently use Gamma for the initial version and refine by prompt, then export if the investor requests a PowerPoint file.
       `,
     },
   },
@@ -1959,23 +1886,7 @@ L'autre nuance : pour des projets qui devront évoluer significativement, être 
 - Vous êtes à l'aise avec la configuration manuelle du backend
 - Vous utilisez déjà l'écosystème Vercel et voulez l'intégration native
 
-## FAQ
 
-### Peut-on vraiment créer une app professionnelle avec ces outils ?
-
-Oui, avec Lovable notamment. Des centaines d'applications en production utilisées par des vrais clients ont été construites avec Lovable. La limite n'est pas la qualité initiale du code — c'est la scalabilité et la maintenabilité à long terme sur des projets très complexes. Pour un SaaS jusqu'à quelques milliers d'utilisateurs, ces outils sont tout à fait adaptés.
-
-### Faut-il savoir coder pour utiliser Lovable, Bolt ou V0 ?
-
-Pour Lovable et Bolt, non — c'est explicitement leur cible. Vous pouvez construire une app fonctionnelle en décrivant ce que vous voulez en français ou en anglais, sans écrire une ligne de code. Pour V0, une base de connaissances en React/Next.js est recommandée pour intégrer correctement le code généré dans un projet existant.
-
-### Ces outils remplacent-ils les développeurs ?
-
-Non, mais ils changent le travail des développeurs. Pour créer un MVP ou un prototype, un non-développeur peut maintenant aller très loin seul. Pour un produit à long terme, une équipe qui scale, ou des fonctionnalités complexes, les développeurs restent indispensables — mais ils peuvent utiliser ces outils pour accélérer leur propre travail, notamment sur la partie frontend.
-
-### Lequel est le plus adapté pour un premier projet ?
-
-Lovable, sans hésitation. La combinaison React + Supabase + Netlify préconfiguré, la mémoire contextuelle et le déploiement en un clic en font l'outil le plus adapté pour quelqu'un qui découvre le vibe coding et veut voir quelque chose de fonctionnel tourner en quelques heures.
       `,
     },
     en: {
@@ -2108,23 +2019,7 @@ The other nuance: for projects that need to evolve significantly, be maintained 
 - You're comfortable with manual backend configuration
 - You're already in the Vercel ecosystem and want native integration
 
-## FAQ
 
-### Can you really build a professional app with these tools?
-
-Yes, with Lovable especially. Hundreds of production applications used by real customers have been built with Lovable. The limitation isn't initial code quality — it's scalability and long-term maintainability on very complex projects. For a SaaS serving up to a few thousand users, these tools are entirely appropriate.
-
-### Do you need to know how to code to use Lovable, Bolt, or V0?
-
-For Lovable and Bolt, no — that's explicitly their target audience. You can build a functional app by describing what you want in plain English, without writing a single line of code. For V0, a working knowledge of React/Next.js is recommended to properly integrate the generated code into an existing project.
-
-### Do these tools replace developers?
-
-No, but they change what developers work on. For MVPs and prototypes, a non-developer can now go surprisingly far alone. For a long-term product, a scaling team, or complex features, developers remain essential — but they can use these tools to accelerate their own work, particularly on the frontend side.
-
-### Which is best for a first project?
-
-Lovable, without hesitation. The preconfigured React + Supabase + Netlify stack, cross-session contextual memory, and one-click deployment make it the most accessible tool for someone discovering vibe coding who wants to see something functional running within a few hours.
       `,
     },
   },
@@ -2474,23 +2369,7 @@ L'essentiel à retenir : l'IA dans ces outils est un accélérateur de workflow,
 
 **La combinaison idéale :** Semrush Guru + Surfer Scale pour une équipe complète. Ahrefs Standard + Surfer Essential pour un expert SEO centré sur le technique et le contenu.
 
-## FAQ
 
-### Semrush ou Ahrefs — lequel a les meilleures données ?
-
-Ça dépend de ce que vous cherchez. Ahrefs a les données de backlinks les plus précises et les plus fraîches du marché — c'est son avantage historique. Semrush a la base de mots-clés la plus large (25 milliards vs 20 milliards pour Ahrefs) et les meilleures données de trafic concurrentiel. Pour le link building, Ahrefs. Pour la stratégie de contenu et l'analyse concurrentielle globale, Semrush.
-
-### Peut-on utiliser Surfer SEO seul sans Semrush ni Ahrefs ?
-
-Techniquement oui, mais ce n'est pas recommandé pour une stratégie SEO sérieuse. Surfer est excellent pour optimiser du contenu existant, mais il ne remplace pas la recherche de mots-clés approfondie, l'audit technique et l'analyse de backlinks que Semrush ou Ahrefs fournissent. L'utiliser seul, c'est comme avoir un excellent maçon mais pas d'architecte.
-
-### Ces outils fonctionnent-ils bien pour le SEO en français ?
-
-Oui, les trois outils supportent le SEO en français avec des bases de données conséquentes. Semrush a historiquement la meilleure couverture sur les marchés francophones (France, Belgique, Suisse, Canada). Ahrefs est excellent sur les backlinks français. Surfer optimise bien sur les requêtes françaises via son analyse NLP. Aucun des trois ne vous désavantagera sur un marché francophone.
-
-### Y a-t-il des alternatives moins chères qui valent le coup ?
-
-Ubersuggest (29$/mois) et SE Ranking (65$/mois) offrent des fonctionnalités similaires à un prix inférieur. La qualité des données est cependant significativement moindre sur les marchés compétitifs. Pour un site personnel ou un projet hobby, ces alternatives sont suffisantes. Pour un projet professionnel avec un enjeu commercial réel, investir dans Semrush, Ahrefs ou Surfer se justifie rapidement par le ROI généré.
       `,
     },
     en: {
@@ -2648,23 +2527,7 @@ The key takeaway: AI in these tools is a workflow accelerator, not a substitute 
 
 **The ideal combination:** Semrush Guru + Surfer Scale for a complete team. Ahrefs Standard + Surfer Essential for a technical SEO expert focused on backlinks and content.
 
-## FAQ
 
-### Semrush or Ahrefs — which has better data?
-
-It depends what you're looking for. Ahrefs has the most accurate and freshest backlink data on the market — that's been its historic edge. Semrush has the largest keyword database (25 billion vs 20 billion for Ahrefs) and better competitive traffic intelligence. For link building: Ahrefs. For content strategy and overall competitive analysis: Semrush.
-
-### Can you use Surfer SEO alone without Semrush or Ahrefs?
-
-Technically yes, but it's not recommended for a serious SEO strategy. Surfer is excellent for optimizing existing content, but it doesn't replace the deep keyword research, technical auditing, and backlink analysis that Semrush or Ahrefs provide. Using it alone is like having a great builder but no architect.
-
-### Do these tools work well for non-English SEO?
-
-Yes, all three support international SEO with substantial non-English databases. Semrush has historically strong coverage on European markets. Ahrefs is excellent on international backlink data. Surfer optimizes well for non-English queries via its NLP analysis. None of the three will put you at a disadvantage on a non-English market.
-
-### Are there cheaper alternatives worth considering?
-
-Ubersuggest ($29/month) and SE Ranking ($65/month) offer similar features at lower price points. Data quality is however significantly lower on competitive markets. For a personal site or a hobby project, these alternatives are sufficient. For a professional project with real commercial stakes, investing in Semrush, Ahrefs, or Surfer pays for itself quickly through the ROI generated.
       `,
     },
   },
@@ -5209,9 +5072,50 @@ function appendBottomRecommendations(comparatif: Comparatif, lang: Lang): string
   return `${comparatif[lang].content.trim()}\n\n---\n\n${heading}\n\n${links}`;
 }
 
+
+function inferToolBrandName(name: string): string {
+  const normalized = normalizeWhitespace(name);
+  const map: Record<string, string> = {
+    "ChatGPT": "OpenAI",
+    "ChatGPT Plus": "OpenAI",
+    "OpenAI TTS": "OpenAI",
+    "DALL-E 3": "OpenAI",
+    "Claude": "Anthropic",
+    "Claude Projects": "Anthropic",
+    "Gemini": "Google",
+    "Gemini Advanced": "Google",
+    "Gemini Workspace": "Google",
+    "Google Veo": "Google",
+    "GitHub Copilot": "GitHub",
+    "V0": "Vercel",
+    "Bolt.new": "StackBlitz",
+    "Stable Diffusion": "Stability AI",
+    "Perplexity Pro": "Perplexity",
+    "Beautiful.ai": "Beautiful.ai",
+    "D-ID": "D-ID"
+  };
+
+  if (map[normalized]) return map[normalized];
+
+  return normalized
+    .replace(/\s+(Pro|Plus|Advanced|Projects|Max|Team|Teams|Enterprise|Gen-\d+|\d+(?:\.\d+)?|AI)$/i, "")
+    .replace(/\s+/g, " ")
+    .trim() || normalized;
+}
+
+function normalizeRatingValue(value: number | undefined, fallback: number): number {
+  const rating = typeof value === "number" ? value : fallback;
+  return Math.min(10, Math.max(0, Number(rating.toFixed(1))));
+}
+
 function normalizeTool(tool: ToolScore): ToolScore {
+  const ratingValue = normalizeRatingValue(tool.ratingValue, tool.globalScore);
+
   return {
     ...tool,
+    brand: tool.brand ?? { name: inferToolBrandName(tool.name) },
+    ratingValue,
+    globalScore: normalizeRatingValue(tool.globalScore, ratingValue),
     bestFor: tool.bestFor ?? {
       fr: tool.badge?.fr ?? `Meilleur pour ${tool.name}`,
       en: tool.badge?.en ?? `Best for ${tool.name}`,
@@ -5401,7 +5305,11 @@ export function assertComparatifDataIntegrity(): { ok: true } {
     if (comparatif.criteria.fr.length !== comparatif.criteria.en.length) throw new Error(`Criteria length mismatch on ${comparatif.slug}`);
     for (const tool of comparatif.tools) {
       if (tool.scores.length !== comparatif.criteria.fr.length) throw new Error(`Score length mismatch on ${comparatif.slug} / ${tool.name}`);
+      if (!tool.name) throw new Error(`Missing tool name on ${comparatif.slug}`);
+      if (!tool.brand?.name) throw new Error(`Missing tool brand name on ${comparatif.slug} / ${tool.name}`);
+      if (typeof tool.ratingValue !== "number") throw new Error(`Missing ratingValue on ${comparatif.slug} / ${tool.name}`);
       if (tool.globalScore < 0 || tool.globalScore > 10) throw new Error(`Invalid score on ${comparatif.slug} / ${tool.name}`);
+      if (tool.ratingValue < 0 || tool.ratingValue > 10) throw new Error(`Invalid ratingValue on ${comparatif.slug} / ${tool.name}`);
     }
   }
   return { ok: true };

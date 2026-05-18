@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, type CSSProperties } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { getComparatifBySlug, COMPARATIFS, type ToolScore } from "../../lib/comparatifs";
 import { ARTICLES } from "../../lib/articles";
@@ -8,6 +8,11 @@ import { useNewsletter } from "@/lib/useNewsletter";
 
 type Lang = "fr" | "en";
 type Tab = "overview" | "details" | "analysis";
+
+type ComparisonData = NonNullable<ReturnType<typeof getComparatifBySlug>>;
+type ArticleData = (typeof ARTICLES)[number];
+type RelatedCard = { key: string; href: string; tag: string; title: string; meta: string };
+
 
 const TAG_COLORS: Record<string, string> = {
   Chatbots: "#00e6be", Code: "#3b82f6", Rédaction: "#f59e0b",
@@ -27,6 +32,65 @@ const isNew = (d: string) => {
   try { return (Date.now() - new Date(d).getTime()) / 86400000 <= 12; }
   catch { return false; }
 };
+
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+const sanitizeHref = (href: string) => {
+  const trimmed = href.trim();
+  if (/^(https?:\/\/|\/|#)/i.test(trimmed)) return trimmed;
+  return "#";
+};
+
+const getBrandName = (toolName: string) => {
+  const clean = toolName.replace(/\b(Pro|Plus|Advanced|AI|Workspace|Projects|Max|Team)\b/gi, "").replace(/\s+/g, " ").trim();
+  if (/chatgpt/i.test(toolName)) return "OpenAI";
+  if (/gemini/i.test(toolName)) return "Google";
+  if (/claude/i.test(toolName)) return "Anthropic";
+  if (/copilot/i.test(toolName)) return "GitHub";
+  if (/dall|sora/i.test(toolName)) return "OpenAI";
+  return clean || toolName;
+};
+
+const getNumericPrice = (price: string) => {
+  const normalized = price.toLowerCase();
+  if (normalized.includes("gratuit") || normalized.includes("free")) return 0;
+  const match = normalized.match(/(\d+(?:[.,]\d+)?)/);
+  return match ? Number(match[1].replace(",", ".")) : 999;
+};
+
+const getBestValueTool = (tools: ToolScore[]) =>
+  [...tools].sort((a, b) => {
+    const valueA = a.globalScore / Math.max(1, getNumericPrice(a.price));
+    const valueB = b.globalScore / Math.max(1, getNumericPrice(b.price));
+    return valueB - valueA;
+  })[0] ?? tools[0];
+
+function ToolMark({ tool, size = 34 }: { tool: Pick<ToolScore, "name" | "logo" | "color">; size?: number }) {
+  const isImage = typeof tool.logo === "string" && /^(\/|https?:\/\/).+\.(svg|png|jpg|jpeg|webp)$/i.test(tool.logo);
+  const initial = tool.name.slice(0, 1).toUpperCase();
+
+  return (
+    <span
+      className="tool-mark"
+      style={{
+        width: size,
+        height: size,
+        borderColor: `${tool.color}38`,
+        background: `linear-gradient(180deg, ${tool.color}18, rgba(255,255,255,.025))`,
+        boxShadow: `inset 0 1px 0 rgba(255,255,255,.08), 0 0 ${Math.round(size / 2)}px ${tool.color}16`,
+      }}
+      aria-label={tool.name}
+    >
+      {isImage ? <img src={tool.logo} alt="" loading="lazy" /> : <span>{tool.logo || initial}</span>}
+    </span>
+  );
+}
 
 // ─── Score bar animée ─────────────────────────────────────────────────────────
 function ScoreBar({ value, color, delay = 0 }: { value: number; color: string; delay?: number }) {
@@ -81,7 +145,7 @@ function RadarChart({ tools, criteria }: { tools: ToolScore[]; criteria: string[
 }
 
 // ─── Quick Compare Table ──────────────────────────────────────────────────────
-function QuickCompare({ tools, lang, l, L }: { tools: ToolScore[]; lang: Lang; l: (p: string) => string; L: Record<string,string> }) {
+function QuickCompare({ tools, lang, L }: { tools: ToolScore[]; lang: Lang; L: Record<string,string> }) {
   const sorted = [...tools].sort((a, b) => b.globalScore - a.globalScore);
   return (
     <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 16, overflow: "hidden", marginBottom: "2.5rem" }}>
@@ -105,7 +169,7 @@ function QuickCompare({ tools, lang, l, L }: { tools: ToolScore[]; lang: Lang; l
                 <tr key={tool.name} style={{ borderTop: "1px solid var(--border)", background: isWin ? `${tool.color}05` : "transparent" }}>
                   <td style={{ padding: "12px 16px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-                      <span style={{ fontSize: "1.1rem" }}>{tool.logo}</span>
+                      <ToolMark tool={tool} size={30} />
                       <div>
                         <div style={{ fontFamily: "var(--d)", fontWeight: isWin ? 800 : 600, color: isWin ? tool.color : "var(--text)", fontSize: "0.88rem" }}>
                           {isWin && "🏆 "}{tool.name}
@@ -125,7 +189,7 @@ function QuickCompare({ tools, lang, l, L }: { tools: ToolScore[]; lang: Lang; l
                     {tool.affiliate ? (
                       <a href={tool.affiliate} target="_blank" rel="noopener noreferrer sponsored"
                         style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem", background: isWin ? tool.color : "transparent", color: isWin ? "#080c10" : tool.color, border: `1px solid ${tool.color}`, borderRadius: 7, padding: "6px 14px", fontFamily: "var(--d)", fontWeight: 700, fontSize: "0.73rem", textDecoration: "none", whiteSpace: "nowrap" as const, transition: "all 0.18s" }}>
-                        {isWin ? (lang === "fr" ? "Essayer →" : "Try →") : (lang === "fr" ? "Voir →" : "View →")}
+                        {isWin ? (lang === "fr" ? "Site officiel →" : "Official site →") : (lang === "fr" ? "Comparer →" : "Compare →")}
                       </a>
                     ) : <span style={{ color: "var(--dim)", fontSize: "0.7rem" }}>—</span>}
                   </td>
@@ -141,32 +205,134 @@ function QuickCompare({ tools, lang, l, L }: { tools: ToolScore[]; lang: Lang; l
 
 // ─── Best For section ─────────────────────────────────────────────────────────
 function BestForSection({ tools, lang, L }: { tools: ToolScore[]; lang: Lang; L: Record<string,string> }) {
+  const highest = tools.reduce((a, b) => (a.globalScore >= b.globalScore ? a : b));
+  const beginner = tools.reduce((a, b) => (a.globalScore <= b.globalScore ? a : b));
+  const value = getBestValueTool(tools);
+  const fastest = [...tools].sort((a, b) => {
+    const speedA = a.scores.find((s) => /vitesse|speed|performance/i.test(`${s.fr} ${s.en}`))?.value ?? a.globalScore;
+    const speedB = b.scores.find((s) => /vitesse|speed|performance/i.test(`${s.fr} ${s.en}`))?.value ?? b.globalScore;
+    return speedB - speedA;
+  })[0] ?? highest;
+
   const profiles = lang === "fr" ? [
-    { icon: "🚀", label: "Débutant", desc: "Première fois avec cet outil", pick: tools.reduce((a, b) => a.globalScore <= b.globalScore ? a : b) },
-    { icon: "💼", label: "Professionnel", desc: "Usage quotidien intensif", pick: tools.reduce((a, b) => a.globalScore >= b.globalScore ? a : b) },
-    { icon: "💰", label: "Budget serré", desc: "Meilleur rapport qualité/prix", pick: [...tools].sort((a, b) => a.price.localeCompare(b.price))[0] },
-    { icon: "⚡", label: "Power user", desc: "Fonctionnalités avancées", pick: tools.reduce((a, b) => a.globalScore >= b.globalScore ? a : b) },
+    { icon: "🚀", label: "Débutant", desc: "Le plus simple pour commencer sans se perdre", pick: beginner },
+    { icon: "💼", label: "Professionnel", desc: "Le meilleur choix pour un usage quotidien sérieux", pick: highest },
+    { icon: "💰", label: "Budget serré", desc: "Le meilleur équilibre score / prix réel", pick: value },
+    { icon: "⚡", label: "Power user", desc: "Le plus solide pour les workflows avancés", pick: fastest },
   ] : [
-    { icon: "🚀", label: "Beginner", desc: "First time with this type of tool", pick: tools.reduce((a, b) => a.globalScore <= b.globalScore ? a : b) },
-    { icon: "💼", label: "Professional", desc: "Daily intensive use", pick: tools.reduce((a, b) => a.globalScore >= b.globalScore ? a : b) },
-    { icon: "💰", label: "Budget-conscious", desc: "Best value for money", pick: [...tools].sort((a, b) => a.price.localeCompare(b.price))[0] },
-    { icon: "⚡", label: "Power user", desc: "Advanced features needed", pick: tools.reduce((a, b) => a.globalScore >= b.globalScore ? a : b) },
+    { icon: "🚀", label: "Beginner", desc: "The simplest option to start without friction", pick: beginner },
+    { icon: "💼", label: "Professional", desc: "The strongest pick for serious daily usage", pick: highest },
+    { icon: "💰", label: "Budget-conscious", desc: "Best real score-to-price balance", pick: value },
+    { icon: "⚡", label: "Power user", desc: "The strongest option for advanced workflows", pick: fastest },
   ];
+
   return (
-    <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 16, padding: "1.5rem", marginBottom: "2.5rem" }}>
+    <div className="choice-grid-wrap">
       <div className="sec-tag">{L.bestFor}</div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(180px,1fr))", gap: "0.85rem" }}>
+      <div className="choice-grid">
         {profiles.map((p, i) => (
-          <div key={i} style={{ background: "var(--bg3)", border: `1px solid ${p.pick.color}25`, borderRadius: 12, padding: "1rem", display: "flex", flexDirection: "column" as const, gap: "0.45rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <span style={{ fontSize: "1.1rem" }}>{p.icon}</span>
-              <span style={{ fontFamily: "var(--m)", fontSize: "0.65rem", color: "var(--muted)", fontWeight: 300 }}>{p.label}</span>
-            </div>
-            <div style={{ fontFamily: "var(--d)", fontWeight: 700, fontSize: "0.82rem", color: p.pick.color }}>{p.pick.logo} {p.pick.name}</div>
-            <div style={{ fontFamily: "var(--m)", fontSize: "0.62rem", color: "var(--dim)" }}>{p.desc}</div>
+          <div key={i} className="choice-card" style={{ "--accent": p.pick.color } as CSSProperties}>
+            <div className="choice-top"><span>{p.icon}</span><span>{p.label}</span></div>
+            <div className="choice-pick"><ToolMark tool={p.pick} size={28} /> <span>{p.pick.name}</span></div>
+            <p>{p.desc}</p>
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+function QuickVerdictGrid({ tools, winner, lang }: { tools: ToolScore[]; winner?: ToolScore; lang: Lang }) {
+  const bestValue = getBestValueTool(tools);
+  const bestSpecialist = [...tools].sort((a, b) => {
+    const maxA = Math.max(...a.scores.map((s) => s.value));
+    const maxB = Math.max(...b.scores.map((s) => s.value));
+    return maxB - maxA;
+  })[0] ?? winner ?? tools[0];
+  const mostBalanced = [...tools].sort((a, b) => {
+    const spreadA = Math.max(...a.scores.map((s) => s.value)) - Math.min(...a.scores.map((s) => s.value));
+    const spreadB = Math.max(...b.scores.map((s) => s.value)) - Math.min(...b.scores.map((s) => s.value));
+    return spreadA - spreadB;
+  })[0] ?? winner ?? tools[0];
+
+  const items = lang === "fr" ? [
+    { label: "Meilleur choix global", desc: "Le plus fiable pour la majorité des usages", tool: winner ?? tools[0] },
+    { label: "Meilleur rapport valeur", desc: "Le plus rentable selon score et prix", tool: bestValue },
+    { label: "Meilleur spécialiste", desc: "Le plus fort sur son critère dominant", tool: bestSpecialist },
+    { label: "Le plus équilibré", desc: "Le moins de compromis visibles", tool: mostBalanced },
+  ] : [
+    { label: "Best overall", desc: "Most reliable for most users", tool: winner ?? tools[0] },
+    { label: "Best value", desc: "Strongest score-to-price ratio", tool: bestValue },
+    { label: "Best specialist", desc: "Strongest on its dominant criterion", tool: bestSpecialist },
+    { label: "Most balanced", desc: "Fewest visible compromises", tool: mostBalanced },
+  ];
+
+  return (
+    <section className="snapshot-grid" aria-label={lang === "fr" ? "Verdict rapide" : "Quick verdict"}>
+      {items.map((item) => (
+        <div key={item.label} className="snapshot-card" style={{ "--accent": item.tool.color } as CSSProperties}>
+          <span className="snapshot-label">{item.label}</span>
+          <strong><ToolMark tool={item.tool} size={24} /> {item.tool.name}</strong>
+          <p>{item.desc}</p>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+function TrustSignals({ lang, date, readMinutes, toolsCount }: { lang: Lang; date: string; readMinutes: number; toolsCount: number }) {
+  const signals = lang === "fr" ? [
+    `Mis à jour ${date}`,
+    `${toolsCount} outils comparés`,
+    `${readMinutes} min de lecture`,
+    "Classement éditorial transparent",
+  ] : [
+    `Updated ${date}`,
+    `${toolsCount} tools compared`,
+    `${readMinutes} min read`,
+    "Transparent editorial ranking",
+  ];
+
+  return <div className="trust-row">{signals.map((signal) => <span key={signal}>✓ {signal}</span>)}</div>;
+}
+
+function TestingMethodology({ lang, toolsCount, criteriaCount }: { lang: Lang; toolsCount: number; criteriaCount: number }) {
+  const steps = lang === "fr" ? [
+    { k: "01", t: "Usage réel", d: "Comparaison basée sur des workflows concrets, pas uniquement sur les fiches produit." },
+    { k: "02", t: `${criteriaCount} critères`, d: "Chaque score repose sur les mêmes critères pour éviter les verdicts arbitraires." },
+    { k: "03", t: `${toolsCount} outils`, d: "Le gagnant est choisi pour son équilibre global, pas pour une seule fonctionnalité spectaculaire." },
+    { k: "04", t: "Mise à jour", d: "Les comparatifs sont retravaillés quand les offres, modèles ou prix changent." },
+  ] : [
+    { k: "01", t: "Real usage", d: "Comparison based on real workflows, not only vendor feature lists." },
+    { k: "02", t: `${criteriaCount} criteria`, d: "Every score uses the same criteria to avoid arbitrary conclusions." },
+    { k: "03", t: `${toolsCount} tools`, d: "The winner is selected for overall balance, not one flashy feature." },
+    { k: "04", t: "Updated", d: "Comparisons are refreshed when pricing, models or product positioning change." },
+  ];
+
+  return (
+    <section className="method-card">
+      <div className="sec-tag">{lang === "fr" ? "Méthodologie" : "Methodology"}</div>
+      <div className="method-steps">
+        {steps.map((step) => (
+          <div key={step.k} className="method-step">
+            <span>{step.k}</span>
+            <strong>{step.t}</strong>
+            <p>{step.d}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function MobileTocButton({ content, L }: { content: string; L: Record<string,string> }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="mobile-toc-wrap">
+      <button className="mobile-toc-btn" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
+        📋 {L.toc}
+      </button>
+      {open && <div className="mobile-toc-panel"><TableOfContents content={content} L={L} /></div>}
     </div>
   );
 }
@@ -200,7 +366,7 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel, animDelay }: {
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" as const, gap: "0.5rem" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          <div style={{ width: 46, height: 46, background: `${tool.color}18`, border: `2px solid ${tool.color}38`, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.35rem", flexShrink: 0 }}>{tool.logo}</div>
+          <ToolMark tool={tool} size={46} />
           <div>
             <div style={{ fontFamily: "var(--d)", fontWeight: 800, fontSize: "1.1rem", letterSpacing: "-0.02em", color: "var(--text)" }}>{tool.name}</div>
             <div style={{ fontFamily: "var(--m)", fontSize: "0.68rem", color: "var(--dim)", fontWeight: 300, marginTop: "0.1rem" }}>{tool.price}</div>
@@ -270,7 +436,7 @@ function ToolCard({ tool, lang, isWinner, proLabel, conLabel, animDelay }: {
           )}
           <a href={tool.affiliate} target="_blank" rel="noopener noreferrer sponsored"
             style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem", background: isWinner ? tool.color : "transparent", color: isWinner ? "#080c10" : tool.color, border: `1px solid ${tool.color}`, borderRadius: 9, padding: isWinner ? "12px 16px" : "10px 16px", fontFamily: "var(--d)", fontWeight: 800, fontSize: isWinner ? "0.88rem" : "0.82rem", textDecoration: "none", transition: "all 0.2s", boxShadow: isWinner ? `0 4px 18px ${tool.color}35` : "none" }}>
-            {isWinner ? "🏆 " : ""}{lang === "fr" ? "Essayer" : "Try"} {tool.name} →
+            {isWinner ? "🏆 " : ""}{lang === "fr" ? "Site officiel" : "Official site"} →
           </a>
           {isWinner && (
             <div style={{ fontFamily: "var(--m)", fontSize: "0.58rem", color: "var(--muted)", textAlign: "center" as const }}>{lang === "fr" ? "Accès immédiat · Sans engagement" : "Instant access · No commitment"}</div>
@@ -296,7 +462,7 @@ function WinnerCTA({ winner, lang }: { winner: ToolScore; lang: Lang }) {
       </div>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "2rem", flexWrap: "wrap" as const, position: "relative" as const, zIndex: 1 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "1rem", flex: 1, minWidth: 220 }}>
-          <div style={{ width: 56, height: 56, background: `${winner.color}18`, border: `2px solid ${winner.color}35`, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.6rem", flexShrink: 0 }}>{winner.logo}</div>
+          <ToolMark tool={winner} size={56} />
           <div>
             <div style={{ fontFamily: "var(--d)", fontSize: "1.3rem", fontWeight: 800, letterSpacing: "-0.03em", color: "var(--text)", marginBottom: "0.2rem" }}>
               {winner.name}<span style={{ fontFamily: "var(--m)", fontSize: "0.95rem", fontWeight: 800, color: winner.color, marginLeft: "0.55rem" }}>{winner.globalScore.toFixed(1)}/10</span>
@@ -312,7 +478,7 @@ function WinnerCTA({ winner, lang }: { winner: ToolScore; lang: Lang }) {
         <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.55rem", alignItems: "stretch", flexShrink: 0, minWidth: 220 }}>
           <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored"
             style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", background: winner.color, color: "#080c10", fontFamily: "var(--d)", fontWeight: 800, fontSize: "1rem", padding: "15px 28px", borderRadius: 11, textDecoration: "none", whiteSpace: "nowrap" as const, boxShadow: `0 6px 24px ${winner.color}32`, transition: "all 0.2s" }}>
-            🚀 {lang === "fr" ? "Commencer gratuitement" : "Start for free"} →
+            {lang === "fr" ? "Voir le site officiel" : "Visit official site"} →
           </a>
           <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored"
             style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "transparent", color: "var(--text)", fontFamily: "var(--d)", fontWeight: 700, fontSize: "0.88rem", padding: "12px 22px", borderRadius: 10, textDecoration: "none", border: "1px solid rgba(255,255,255,0.1)", transition: "all 0.18s", whiteSpace: "nowrap" as const }}>
@@ -331,26 +497,60 @@ function WinnerCTA({ winner, lang }: { winner: ToolScore; lang: Lang }) {
 }
 
 // ─── Related articles ─────────────────────────────────────────────────────────
-function RelatedArticles({ toolNames, lang, l, L }: { toolNames: string[]; lang: Lang; l: (p: string) => string; L: Record<string,string> }) {
-  const related = ARTICLES.filter(a => {
-    const title = a[lang].title.toLowerCase();
-    return toolNames.some(n => title.includes(n.toLowerCase())) || a.featured;
-  }).slice(0, 3);
-  if (!related.length) return null;
-  const TAG_COLORS_LOCAL: Record<string, string> = { Chatbots: "#00e6be", Code: "#3b82f6", Rédaction: "#f59e0b", Writing: "#f59e0b", Image: "#a855f7", Productivité: "#10b981", Productivity: "#10b981", Audio: "#ef4444" };
+function RelatedArticles({ data, toolNames, lang, l, L }: { data: ComparisonData; toolNames: string[]; lang: Lang; l: (p: string) => string; L: Record<string,string> }) {
+  const relatedArticleSlugs = Array.isArray(data.relatedArticleSlugs) ? data.relatedArticleSlugs : [];
+  const relatedComparatifSlugs = Array.isArray(data.relatedComparatifSlugs) ? data.relatedComparatifSlugs : [];
+
+  const articlesFromSlugs = relatedArticleSlugs
+    .map((relatedSlug: string) => ARTICLES.find((article) => article.slug === relatedSlug))
+    .filter((article): article is ArticleData => Boolean(article));
+
+  const comparisonsFromSlugs = relatedComparatifSlugs
+    .map((relatedSlug: string) => COMPARATIFS.find((item) => item.slug === relatedSlug))
+    .filter((item): item is ComparisonData => Boolean(item));
+
+  const fallbackArticles = ARTICLES.filter((article) => {
+    const title = article[lang].title.toLowerCase();
+    return toolNames.some((name) => title.includes(name.toLowerCase())) || article.featured;
+  });
+
+  const cards: RelatedCard[] = [
+    ...comparisonsFromSlugs.map((item) => ({
+      key: `c-${item.slug}`,
+      href: l(`/comparatifs/${item.slug}`),
+      tag: item.tag,
+      title: item[lang].title,
+      meta: `${item.date?.[lang] ?? ""}`,
+    })),
+    ...articlesFromSlugs.map((article) => ({
+      key: `a-${article.slug}`,
+      href: l(`/blog/${article.slug}`),
+      tag: article.tag,
+      title: article[lang].title,
+      meta: `⏱ ${article.timeMin} min · ${article.date[lang]}`,
+    })),
+    ...fallbackArticles.map((article) => ({
+      key: `fallback-${article.slug}`,
+      href: l(`/blog/${article.slug}`),
+      tag: article.tag,
+      title: article[lang].title,
+      meta: `⏱ ${article.timeMin} min · ${article.date[lang]}`,
+    })),
+  ].filter((card, index, array) => array.findIndex((candidate) => candidate.href === card.href) === index).slice(0, 6);
+
+  if (!cards.length) return null;
+
   return (
-    <div style={{ marginTop: "3rem", paddingTop: "2.5rem", borderTop: "1px solid var(--border)" }}>
+    <div className="related-block">
       <div className="sec-tag">{L.relatedLabel}</div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(240px,1fr))", gap: "1rem" }}>
-        {related.map(a => {
-          const color = TAG_COLORS_LOCAL[a.tag] || "#00e6be";
+      <div className="related-grid">
+        {cards.map((card) => {
+          const color = TAG_COLORS[card.tag] || "#00e6be";
           return (
-            <a key={a.slug} href={l(`/blog/${a.slug}`)} style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 12, padding: "1.25rem", display: "flex", flexDirection: "column" as const, gap: "0.6rem", textDecoration: "none", transition: "all 0.2s" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = `${color}35`; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--border)"; (e.currentTarget as HTMLAnchorElement).style.transform = "none"; }}>
-              <span style={{ fontFamily: "var(--m)", fontSize: "0.58rem", letterSpacing: "0.1em", textTransform: "uppercase" as const, color, background: `${color}18`, border: `1px solid ${color}28`, padding: "2px 8px", borderRadius: 100, display: "inline-block", alignSelf: "flex-start" as const }}>{a.tag}</span>
-              <div style={{ fontFamily: "var(--d)", fontSize: "0.88rem", fontWeight: 700, color: "var(--text)", lineHeight: 1.3 }}>{a[lang].title}</div>
-              <div style={{ fontFamily: "var(--m)", fontSize: "0.65rem", color: "var(--dim)" }}>⏱ {a.timeMin} min · {a.date[lang]}</div>
+            <a key={card.key} href={card.href} className="related-card" style={{ "--accent": color } as CSSProperties}>
+              <span>{card.tag}</span>
+              <strong>{card.title}</strong>
+              <small>{card.meta}</small>
             </a>
           );
         })}
@@ -360,7 +560,7 @@ function RelatedArticles({ toolNames, lang, l, L }: { toolNames: string[]; lang:
 }
 
 // ─── TOC ─────────────────────────────────────────────────────────────────────
-function TableOfContents({ content, lang, L }: { content: string; lang: Lang; L: Record<string,string> }) {
+function TableOfContents({ content, L }: { content: string; L: Record<string,string> }) {
   const headings = content.match(/^## (.+)$/gm)?.map((heading) => {
     const text = heading.replace("## ", "").trim();
     return { text, id: slugify(text) };
@@ -477,27 +677,34 @@ function TableOfContents({ content, lang, L }: { content: string; lang: Lang; L:
 
 // ─── Markdown renderer ────────────────────────────────────────────────────────
 function renderMd(md: string): string {
-  let h = md.trim();
+  let h = escapeHtml(md.trim());
+
   h = h.replace(/\|(.+)\|\n\|[-| ]+\|\n((?:\|.+\|\n?)+)/g, (_, hd, body) => {
     const ths = hd.split("|").filter((c: string) => c.trim()).map((c: string) => `<th>${c.trim()}</th>`).join("");
     const rows = body.trim().split("\n").map((row: string) => "<tr>" + row.split("|").filter((c: string) => c.trim()).map((c: string) => `<td>${c.trim()}</td>`).join("") + "</tr>").join("");
     return `<table><thead><tr>${ths}</tr></thead><tbody>${rows}</tbody></table>`;
   });
+
   h = h.replace(/```[\w]*\n?([\s\S]*?)```/g, "<pre><code>$1</code></pre>");
   h = h.replace(/^### (.+)$/gm, (_, t) => `<h3 id="${slugify(t)}">${t}</h3>`);
   h = h.replace(/^## (.+)$/gm, (_, t) => `<h2 id="${slugify(t)}">${t}</h2>`);
   h = h.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
   h = h.replace(/\*(.+?)\*/g, "<em>$1</em>");
   h = h.replace(/`([^`]+)`/g, "<code>$1</code>");
-  h = h.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  h = h.replace(/\[(.+?)\]\((.+?)\)/g, (_, label, href) => {
+    const safeHref = sanitizeHref(href);
+    const isExternal = /^https?:\/\//i.test(safeHref);
+    return `<a href="${safeHref}"${isExternal ? ' target="_blank" rel="noopener noreferrer"' : ""}>${label}</a>`;
+  });
   h = h.replace(/(^- .+\n?)+/gm, (block) => {
-    const items = block.trim().split("\n").map(li => `<li>${li.replace(/^- /, "")}</li>`).join("");
+    const items = block.trim().split("\n").map((li) => `<li>${li.replace(/^- /, "")}</li>`).join("");
     return `<ul>${items}</ul>`;
   });
-  h = h.split(/\n\n+/).map(block => {
+  h = h.split(/\n\n+/).map((block) => {
     block = block.trim();
     if (!block) return "";
     if (/^<(h[123]|ul|ol|table|pre|blockquote|p)/.test(block)) return block;
+    if (block.length > 160 && /verdict|winner|best|meilleur|choisir|choose/i.test(block)) return `<blockquote>${block.replace(/\n/g, " ")}</blockquote>`;
     return `<p>${block.replace(/\n/g, " ")}</p>`;
   }).join("\n");
   h = h.replace(/<p>\s*<\/p>/g, "");
@@ -654,7 +861,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
     exitDesc: "Ce comparatif prend du temps. Sauvegardez-le pour y revenir.",
     exitCta: "Continuer la lecture",
     exitNl: "Recevoir nos analyses par email",
-    newBadge: "Nouveau",
+    newBadge: "Nouveau", bestOverall: "Meilleur choix", methodologyShort: "Méthode", officialSite: "Site officiel",
   } : {
     back: "← Comparisons", share: copied ? "✓ Copied!" : "🔗 Copy link",
     winner: "🏆 Winner", pros: "Strengths", cons: "Weaknesses",
@@ -673,7 +880,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
     exitDesc: "This comparison took weeks to write. Save it to come back later.",
     exitCta: "Keep reading",
     exitNl: "Get our analysis by email",
-    newBadge: "New",
+    newBadge: "New", bestOverall: "Best pick", methodologyShort: "Method", officialSite: "Official site",
   };
 
   if (!data || !comp) {
@@ -691,11 +898,48 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
   const compUrl = `https://neuriflux.com/${lang}/comparatifs/${slug}`;
   const estRead = readTime(comp.content);
   const _new = isNew(data.date.en);
+  const winnerAffiliate = winner?.affiliate ?? "";
+  let winnerOrigin: string | null = null;
+
+  if (winnerAffiliate) {
+    try {
+      winnerOrigin = new URL(winnerAffiliate).origin;
+    } catch {
+      winnerOrigin = null;
+    }
+  }
 
   // ── Schemas JSON-LD ──────────────────────────────────────────────────────────
+  const sortedTools = [...data.tools].sort((a, b) => b.globalScore - a.globalScore);
+  const graphTools = sortedTools.map((tool) => ({
+    "@type": "SoftwareApplication",
+    "@id": `${compUrl}#${slugify(tool.name)}`,
+    name: tool.name,
+    applicationCategory: "WebApplication",
+    operatingSystem: "Web",
+    url: tool.affiliate || compUrl,
+    description: tool.verdict[lang],
+    brand: { "@type": "Brand", name: getBrandName(tool.name) },
+    offers: {
+      "@type": "Offer",
+      price: getNumericPrice(tool.price),
+      priceCurrency: /€|eur/i.test(tool.price) ? "EUR" : "USD",
+      availability: "https://schema.org/InStock",
+      url: tool.affiliate || compUrl,
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: Number(tool.globalScore.toFixed(1)),
+      bestRating: 10,
+      worstRating: 0,
+      ratingCount: 1,
+    },
+  }));
+
   const articleSchema = {
     "@context": "https://schema.org", "@type": "Article",
-    headline: comp.title, description: comp.intro,
+    "@id": `${compUrl}#article`,
+    headline: comp.title, description: comp.desc || comp.intro,
     image: `https://neuriflux.com/og/${slug}.png`,
     author: { "@type": "Organization", name: "Neuriflux", url: "https://neuriflux.com" },
     publisher: { "@type": "Organization", name: "Neuriflux", logo: { "@type": "ImageObject", url: "https://neuriflux.com/logo.png", width: 200, height: 60 } },
@@ -703,11 +947,12 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
     url: compUrl, inLanguage: lang,
     timeRequired: `PT${estRead}M`,
     mainEntityOfPage: { "@type": "WebPage", "@id": compUrl },
-    about: data.tools.map(t => ({ "@type": "SoftwareApplication", name: t.name, applicationCategory: "WebApplication", offers: { "@type": "Offer", price: t.price, priceCurrency: "USD" } })),
+    about: graphTools.map((tool) => ({ "@id": tool["@id"] })),
   };
 
   const breadcrumbSchema = {
     "@context": "https://schema.org", "@type": "BreadcrumbList",
+    "@id": `${compUrl}#breadcrumb`,
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Neuriflux", item: `https://neuriflux.com/${lang}` },
       { "@type": "ListItem", position: 2, name: lang === "fr" ? "Comparatifs" : "Comparisons", item: `https://neuriflux.com/${lang}/comparatifs` },
@@ -717,36 +962,32 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
 
   const itemListSchema = {
     "@context": "https://schema.org", "@type": "ItemList",
+    "@id": `${compUrl}#ranking`,
     name: comp.title, description: comp.intro, url: compUrl,
-    numberOfItems: data.tools.length,
-    itemListElement: [...data.tools].sort((a, b) => b.globalScore - a.globalScore).map((t, i) => ({
-      "@type": "ListItem", position: i + 1, name: t.name, url: t.affiliate || compUrl,
+    numberOfItems: sortedTools.length,
+    itemListElement: sortedTools.map((tool, index) => ({
+      "@type": "ListItem", position: index + 1, item: { "@id": `${compUrl}#${slugify(tool.name)}` }, name: tool.name, url: tool.affiliate || compUrl,
     })),
   };
 
   const faqSchema = {
     "@context": "https://schema.org", "@type": "FAQPage",
+    "@id": `${compUrl}#faq`,
     mainEntity: [
-      ...data.tools.slice(0, 3).map(t => ({
+      ...data.tools.slice(0, 3).map((tool) => ({
         "@type": "Question",
-        name: lang === "fr" ? `${t.name} vaut-il le coup en 2026 ?` : `Is ${t.name} worth it in 2026?`,
-        acceptedAnswer: { "@type": "Answer", text: t.verdict[lang] },
+        name: lang === "fr" ? `${tool.name} vaut-il le coup en 2026 ?` : `Is ${tool.name} worth it in 2026?`,
+        acceptedAnswer: { "@type": "Answer", text: tool.verdict[lang] },
       })),
       {
         "@type": "Question",
-        name: lang === "fr" ? `Quel est le meilleur outil entre ${data.tools.map(t => t.name).join(", ")} ?` : `Which is best among ${data.tools.map(t => t.name).join(", ")}?`,
+        name: lang === "fr" ? `Quel est le meilleur outil entre ${data.tools.map((tool) => tool.name).join(", ")} ?` : `Which is best among ${data.tools.map((tool) => tool.name).join(", ")}?`,
         acceptedAnswer: { "@type": "Answer", text: lang === "fr" ? `D'après nos tests, ${data.winner} est le meilleur avec ${winner?.globalScore.toFixed(1)}/10. ${comp.verdict}` : `Based on our tests, ${data.winner} is the best with ${winner?.globalScore.toFixed(1)}/10. ${comp.verdict}` },
       },
     ],
   };
 
-  const productSchema = {
-    "@context": "https://schema.org", "@type": "Product",
-    name: winner?.name,
-    description: winner?.verdict[lang],
-    brand: { "@type": "Brand", name: winner?.name },
-    aggregateRating: { "@type": "AggregateRating", ratingValue: winner?.globalScore.toFixed(1), bestRating: "10", worstRating: "0", ratingCount: "1" },
-  };
+  const toolsSchema = { "@context": "https://schema.org", "@graph": graphTools };
 
   return (
     <>
@@ -754,8 +995,8 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
-      {winner?.affiliate && <link rel="preconnect" href={(() => { try { return new URL(winner.affiliate).origin; } catch { return ""; } })()} />}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(toolsSchema) }} />
+      {winnerOrigin && <link rel="preconnect" href={winnerOrigin} />}
 
       <style>{`
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -938,6 +1179,53 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
         .ft-links a{font-family:var(--m);font-size:.62rem;color:var(--dim);text-decoration:none;transition:color .15s}
         .ft-links a:hover{color:var(--muted)}
 
+
+        /* ── PREMIUM UX ADDITIONS ── */
+        .tool-mark{display:inline-flex;align-items:center;justify-content:center;border:1px solid;border-radius:12px;flex-shrink:0;overflow:hidden;font-size:1.05rem;font-family:var(--d);font-weight:800;color:var(--text)}
+        .tool-mark img{width:70%;height:70%;object-fit:contain;display:block}
+        .hero-shell{position:relative;isolation:isolate;border:1px solid var(--border);border-radius:24px;padding:2.1rem;margin-bottom:1.25rem;background:linear-gradient(135deg,rgba(255,255,255,.035),rgba(255,255,255,.012));overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.25)}
+        .hero-shell::before{content:'';position:absolute;inset:-35% -20% auto auto;width:520px;height:320px;background:radial-gradient(ellipse,var(--hero-glow,rgba(0,230,190,.1)),transparent 70%);z-index:-1}
+        .hero-score-ghost{position:absolute;right:1.2rem;bottom:-1.5rem;font-family:var(--d);font-size:clamp(4rem,12vw,8rem);font-weight:800;letter-spacing:-.08em;color:var(--hero-color,var(--cyan));opacity:.055;line-height:.8;pointer-events:none}
+        .trust-row{display:flex;flex-wrap:wrap;gap:.5rem;margin:.9rem 0 0}
+        .trust-row span{font-family:var(--m);font-size:.61rem;color:var(--muted);background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:999px;padding:5px 9px}
+        .snapshot-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;margin:1.35rem 0 2rem}
+        @media(max-width:860px){.snapshot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(max-width:520px){.snapshot-grid{grid-template-columns:1fr}}
+        .snapshot-card{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012));border:1px solid color-mix(in srgb,var(--accent) 24%,rgba(255,255,255,.07));border-radius:16px;padding:1rem;min-height:126px;transition:transform .2s,border-color .2s,box-shadow .2s}
+        .snapshot-card:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 48%,rgba(255,255,255,.08));box-shadow:0 18px 50px rgba(0,0,0,.28)}
+        .snapshot-label{font-family:var(--m);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+        .snapshot-card strong{display:flex;align-items:center;gap:.45rem;margin:.65rem 0 .35rem;font-family:var(--d);font-size:.92rem;color:var(--text)}
+        .snapshot-card p{font-family:var(--m);font-size:.65rem;color:var(--muted);line-height:1.55}
+        .choice-grid-wrap,.method-card{background:linear-gradient(180deg,rgba(255,255,255,.026),rgba(255,255,255,.01));border:1px solid var(--border);border-radius:18px;padding:1.5rem;margin-bottom:2.5rem;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+        .choice-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.85rem}
+        .choice-card{background:rgba(255,255,255,.025);border:1px solid color-mix(in srgb,var(--accent) 22%,rgba(255,255,255,.06));border-radius:14px;padding:1rem;transition:transform .18s,border-color .18s}
+        .choice-card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent) 46%,rgba(255,255,255,.08))}
+        .choice-top{display:flex;align-items:center;gap:.45rem;font-family:var(--m);font-size:.64rem;color:var(--muted);margin-bottom:.65rem}
+        .choice-pick{display:flex;align-items:center;gap:.45rem;font-family:var(--d);font-weight:800;font-size:.86rem;color:var(--accent);margin-bottom:.4rem}
+        .choice-card p{font-family:var(--m);font-size:.62rem;color:var(--dim);line-height:1.5}
+        .method-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem}
+        @media(max-width:860px){.method-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(max-width:520px){.method-steps{grid-template-columns:1fr}}
+        .method-step{position:relative;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1rem;min-height:145px}
+        .method-step span{display:block;font-family:var(--m);font-size:.6rem;color:var(--cyan);margin-bottom:.65rem}
+        .method-step strong{font-family:var(--d);font-size:.92rem;color:var(--text)}
+        .method-step p{font-family:var(--m);font-size:.64rem;color:var(--muted);line-height:1.6;margin-top:.45rem}
+        .related-block{margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--border)}
+        .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1rem}
+        .related-card{position:relative;display:flex;flex-direction:column;gap:.6rem;text-decoration:none;background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.01));border:1px solid var(--border);border-radius:14px;padding:1.25rem;transition:transform .2s,border-color .2s,box-shadow .2s;overflow:hidden}
+        .related-card::before{content:'';position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.55}
+        .related-card:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 38%,rgba(255,255,255,.08));box-shadow:0 18px 45px rgba(0,0,0,.28)}
+        .related-card span{font-family:var(--m);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+        .related-card strong{font-family:var(--d);font-size:.9rem;line-height:1.3;color:var(--text)}
+        .related-card small{font-family:var(--m);font-size:.63rem;color:var(--dim)}
+        .prose{max-width:760px}
+        .prose blockquote{position:relative;margin:1.6rem 0;padding:1.25rem 1.5rem;border-left:3px solid var(--cyan);background:linear-gradient(90deg,rgba(0,230,190,.06),rgba(255,255,255,.012));border-radius:0 12px 12px 0;font-family:var(--d);font-size:1.06rem;line-height:1.7;color:var(--text)}
+        .prose p:first-of-type{font-size:1.08rem;line-height:1.95;color:#d7e2ec}
+        .mobile-toc-wrap{display:none;margin-bottom:1rem}
+        .mobile-toc-btn{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:var(--d);font-weight:800;padding:12px;cursor:pointer}
+        .mobile-toc-panel{margin-top:.7rem}
+        @media(max-width:980px){.mobile-toc-wrap{display:block}.mobile-toc-panel .sbox{display:block}.mobile-toc-panel .toc-list{max-height:340px}}
+
         /* ── DETAIL TABLE ── */
         .detail-table th,.detail-table td{padding:10px 16px;border:1px solid var(--border)}
         .detail-table th{background:var(--bg3);color:var(--dim);font-weight:400;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase}
@@ -1005,6 +1293,8 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
             </ol>
           </nav>
 
+          <section className="hero-shell" style={{ "--hero-color": tagColor, "--hero-glow": `${tagColor}18` } as CSSProperties}>
+            {winner && <div className="hero-score-ghost">{winner.globalScore.toFixed(1)}</div>}
           <div className="art-meta">
             <span className="tag-b" style={{ color: tagColor, background: `${tagColor}18`, border: `1px solid ${tagColor}35` }}>{data.tag}</span>
             {_new && <span style={{ fontFamily: "var(--m)", fontSize: ".58rem", color: "#10b981", background: "rgba(16,185,129,.1)", border: "1px solid rgba(16,185,129,.25)", padding: "3px 8px", borderRadius: 100, fontWeight: 600 }}>✦ {L.newBadge}</span>}
@@ -1016,15 +1306,21 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
           <div className="read-time">⏱ {estRead} {L.readTime} · {lang === "fr" ? "Dernière mise à jour" : "Last updated"} {data.date[lang]}</div>
 
           <p className="art-desc" style={{ borderLeft: `2px solid ${tagColor}` }}>{comp.intro}</p>
+          <TrustSignals lang={lang} date={data.date[lang]} readMinutes={estRead} toolsCount={data.tools.length} />
+          </section>
+
+          <QuickVerdictGrid tools={data.tools} winner={winner} lang={lang} />
 
           {/* Quick compare table */}
-          <QuickCompare tools={data.tools} lang={lang} l={l} L={L} />
+          <QuickCompare tools={data.tools} lang={lang} L={L} />
+
+          <TestingMethodology lang={lang} toolsCount={data.tools.length} criteriaCount={criteriaLabels.length} />
 
           {/* Winner banner */}
           {winner && (
             <div className="winner-banner" style={{ background: `${winner.color}0d`, border: `1px solid ${winner.color}30` }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg,transparent,${winner.color},transparent)` }} />
-              <div style={{ width: 50, height: 50, background: `${winner.color}18`, border: `2px solid ${winner.color}35`, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", flexShrink: 0 }}>{winner.logo}</div>
+              <ToolMark tool={winner} size={50} />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontFamily: "var(--m)", fontSize: "0.62rem", letterSpacing: "0.1em", textTransform: "uppercase" as const, color: winner.color, marginBottom: "0.25rem" }}>{L.winner}</div>
                 <div style={{ fontFamily: "var(--d)", fontSize: "1.25rem", fontWeight: 800, letterSpacing: "-0.02em", color: "var(--text)", whiteSpace: "nowrap" as const, overflow: "hidden", textOverflow: "ellipsis" }}>{winner.name}</div>
@@ -1150,7 +1446,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
               </div>
 
               {winner && <WinnerCTA winner={winner} lang={lang} />}
-              <RelatedArticles toolNames={data.tools.map(t => t.name)} lang={lang} l={l} L={L} />
+              <RelatedArticles data={data} toolNames={data.tools.map(t => t.name)} lang={lang} l={l} L={L} />
             </div>
           )}
 
@@ -1195,7 +1491,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
               )}
 
               {winner && <WinnerCTA winner={winner} lang={lang} />}
-              <RelatedArticles toolNames={data.tools.map(t => t.name)} lang={lang} l={l} L={L} />
+              <RelatedArticles data={data} toolNames={data.tools.map(t => t.name)} lang={lang} l={l} L={L} />
             </div>
           )}
 
@@ -1203,9 +1499,10 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
           {activeTab === "analysis" && (
             <div>
               <div className="sec-tag" style={{ marginBottom: "1.5rem" }}>{L.methodology}</div>
+              <MobileTocButton content={comp.content} L={L} />
               <div className="prose" dangerouslySetInnerHTML={{ __html: renderMd(comp.content) }} />
               {winner && <WinnerCTA winner={winner} lang={lang} />}
-              <RelatedArticles toolNames={data.tools.map(t => t.name)} lang={lang} l={l} L={L} />
+              <RelatedArticles data={data} toolNames={data.tools.map(t => t.name)} lang={lang} l={l} L={L} />
             </div>
           )}
 
@@ -1223,7 +1520,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
         <aside className="sidebar">
 
           {/* TOC */}
-          {activeTab === "analysis" && <TableOfContents content={comp.content} lang={lang} L={L} />}
+          {activeTab === "analysis" && <TableOfContents content={comp.content} L={L} />}
 
           {/* Scores avec highlight au hover des cards */}
           <div className="sbox">
@@ -1251,13 +1548,13 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
           {/* Sidebar winner — haute conversion */}
           {winner?.affiliate && (
             <div className="sbox sbox-win"
-              style={{ "--wc": winner.color, background: `linear-gradient(160deg,${winner.color}0a,${winner.color}02)`, border: `1px solid ${winner.color}28` } as React.CSSProperties}>
+              style={{ "--wc": winner.color, background: `linear-gradient(160deg,${winner.color}0a,${winner.color}02)`, border: `1px solid ${winner.color}28` } as CSSProperties}>
               <div className="sbox-hd" style={{ borderBottomColor: `${winner.color}15` }}>
                 <div className="sbox-title" style={{ color: winner.color }}>{L.ourPick}</div>
               </div>
               <div className="sbox-bd">
                 <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.5rem" }}>
-                  <span style={{ fontSize: "1.35rem" }}>{winner.logo}</span>
+                  <ToolMark tool={winner} size={38} />
                   <div>
                     <div style={{ fontFamily: "var(--d)", fontSize: "0.92rem", fontWeight: 800, color: "var(--text)", letterSpacing: "-0.02em" }}>{winner.name}</div>
                     <div style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
@@ -1273,7 +1570,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
                 </div>
                 <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored"
                   className="win-btn win-btn-p" style={{ background: winner.color, color: "#080c10", boxShadow: `0 4px 16px ${winner.color}28` }}>
-                  🚀 {lang === "fr" ? "Commencer gratuitement" : "Start for free"} →
+                  {lang === "fr" ? "Voir le site officiel" : "Visit official site"} →
                 </a>
                 <a href={winner.affiliate} target="_blank" rel="noopener noreferrer sponsored"
                   className="win-btn win-btn-o" style={{ color: winner.color, borderColor: `${winner.color}40` }}>
