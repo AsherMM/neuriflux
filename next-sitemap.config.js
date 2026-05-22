@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "ai-browser-war-2026",
   "anthropic-xai-datacenter-2026",
   "ai-memory-agents-2026",
   "prompt-errors-2026",
@@ -39,6 +40,7 @@ const ARTICLE_SLUGS = [
 ];
 
 const COMPARATIF_SLUGS = [
+  "kling-vs-veo-vs-runway-2026",
   "chatgpt-memory-vs-claude-projects-vs-gemini-workspace-2026",
   "cursor-vs-windsurf-vs-zed-2026",
   "gamma-vs-tome-vs-beautiful-ai-2026",
