@@ -104,6 +104,456 @@ interface RawArticle {
 }
 
 const RAW_ARTICLES: RawArticle[] = [
+// ─── AI Browser War 2026 ──────────────────────────────────────────────────────
+{
+  slug: "ai-browser-war-2026",
+  image: "/articles/article30.png",
+  tag: "AI",
+  date: { fr: "22 mai 2026", en: "May 22, 2026" },
+  timeMin: "18",
+  featured: true,
+
+  affiliate: {
+    url: "https://neuriflux.com",
+    toolName: "Neuriflux",
+    label: {
+      fr: "Neuriflux.com",
+      en: "Neuriflux.com",
+    },
+  },
+
+  fr: {
+    title: "La guerre des navigateurs IA vient officiellement de commencer",
+
+    desc: "OpenAI prépare son navigateur IA, Perplexity pousse Comet, Google transforme Chrome autour de Gemini et les agents IA commencent à naviguer à notre place. Derrière cette bataille se cache une transformation beaucoup plus profonde : le navigateur devient progressivement le nouveau système d’exploitation de l’intelligence artificielle.",
+
+    metaTitle: "La guerre des navigateurs IA vient de commencer | Neuriflux",
+
+    metaDesc: "OpenAI, Google et Perplexity transforment les navigateurs web autour de l’IA. Pourquoi la prochaine guerre technologique se jouera dans le navigateur et non plus uniquement dans les chatbots.",
+
+    content: `
+
+## La prochaine guerre de l’IA ne se joue déjà plus dans les chatbots
+
+Pendant presque deux ans, toute l’industrie de l’intelligence artificielle s’est concentrée sur exactement le même terrain : les assistants conversationnels.
+
+Chaque entreprise poursuivait la même obsession. Construire le modèle le plus intelligent possible. Réduire les hallucinations. Ajouter plus de mémoire, plus de contexte, plus d’agents, plus d’outils. Toute la compétition semblait tourner autour des benchmarks et des capacités conversationnelles.
+
+Mais depuis plusieurs mois, quelque chose de beaucoup plus important est discrètement en train de changer.
+
+Le véritable champ de bataille de l’IA commence progressivement à se déplacer vers le navigateur lui-même.
+
+Et honnêtement, la majorité des utilisateurs n’a probablement pas encore réalisé l’ampleur de cette transition.
+
+Parce qu’au fond, le navigateur n’est plus seulement un outil permettant d’ouvrir des sites web. Il devient progressivement l’interface principale entre l’utilisateur et Internet lui-même.
+
+Cette nuance change absolument tout.
+
+## Google, OpenAI et Perplexity poursuivent désormais exactement le même objectif
+
+Pendant longtemps, ces entreprises semblaient construire des produits très différents.
+
+Google dominait la recherche web traditionnelle.
+OpenAI dominait les assistants conversationnels.
+Perplexity se présentait comme un moteur de réponse IA hybride.
+Microsoft poussait Copilot dans Windows et Office.
+Anthropic avançait surtout sur les usages professionnels.
+
+Mais depuis le début de l’année 2026, toutes ces stratégies commencent progressivement à converger vers la même direction.
+
+Google transforme Chrome autour de Gemini et pousse de plus en plus agressivement AI Mode directement dans Search. L’entreprise ne veut plus simplement afficher des résultats : elle veut devenir une couche d’assistance permanente capable d’accompagner l’utilisateur pendant toute sa navigation.
+
+Pendant ce temps, Perplexity pousse Comet avec une logique encore plus radicale. L’objectif n’est plus uniquement de répondre à des questions. L’objectif est de remplacer progressivement la navigation traditionnelle par une expérience IA-native, capable de résumer le web en temps réel.
+
+Et au milieu de cette bataille, OpenAI semble désormais vouloir lui aussi contrôler l’accès au web, non plus uniquement à travers ChatGPT, mais potentiellement via son propre environnement de navigation.
+
+Autrement dit : tout le monde tente désormais de contrôler la même couche stratégique.
+
+La couche qui donne accès à Internet.
+
+## Pourquoi le navigateur devient beaucoup plus important que le chatbot
+
+Le problème des assistants conversationnels classiques est relativement simple : ils restent passifs.
+
+Vous ouvrez ChatGPT.
+Vous écrivez un prompt.
+Le modèle répond.
+Puis l’interaction se termine.
+
+Mais les nouveaux navigateurs IA fonctionnent avec une logique totalement différente.
+
+Ils ne veulent plus simplement répondre à vos questions. Ils veulent progressivement agir à votre place.
+
+Chercher une information.
+Comparer plusieurs produits.
+Analyser des pages.
+Lire des dizaines d’articles.
+Résumer des recherches.
+Naviguer automatiquement entre différents sites.
+Exécuter certaines tâches.
+Automatiser une partie du web.
+
+Et c’est précisément cette transition qui change complètement l’équilibre du marché.
+
+Parce qu’à partir du moment où une IA devient capable de naviguer pour vous, le navigateur devient progressivement beaucoup plus stratégique que le chatbot lui-même.
+
+Le navigateur cesse d’être une simple fenêtre vers Internet. Il devient un environnement d’exécution pour des agents IA.
+
+## Google comprend probablement mieux que personne le danger actuel
+
+Pendant plus de vingt ans, Google a contrôlé l’accès au web grâce à la recherche.
+
+Le modèle économique était extrêmement simple :
+l’utilisateur tape une requête, Google affiche des liens, les sites récupèrent du trafic et Google monétise l’attention avec la publicité.
+
+Toute l’économie moderne du web s’est construite autour de cette logique.
+
+Mais l’IA conversationnelle casse progressivement ce modèle.
+
+Avec les moteurs de réponse IA, l’utilisateur clique moins. Les réponses arrivent directement dans l’interface. Les recherches deviennent conversationnelles. Les informations sont résumées automatiquement. Et surtout, les utilisateurs passent beaucoup moins de temps à naviguer manuellement.
+
+Pour Google, le danger est colossal.
+
+Parce que si l’interface principale du web devient un agent conversationnel capable de répondre directement aux besoins des utilisateurs, alors le rôle traditionnel de Search devient beaucoup plus fragile.
+
+C’est précisément pour cette raison que Google accélère aussi agressivement sur Gemini, AI Mode et Chrome.
+
+L’entreprise ne défend pas simplement un produit.
+Elle défend littéralement son rôle historique comme porte d’entrée d’Internet.
+
+## Perplexity avance probablement plus vite que prévu
+
+Il y a encore un an, énormément de personnes voyaient Perplexity comme un simple “ChatGPT avec des sources”.
+
+Cette vision devient de plus en plus fausse.
+
+Perplexity essaye progressivement de construire quelque chose de beaucoup plus ambitieux : une nouvelle interface de navigation IA-native.
+
+Avec Comet, l’objectif n’est plus uniquement de répondre à des questions. L’objectif est de transformer entièrement la manière dont les utilisateurs explorent Internet.
+
+Et c’est précisément ce qui rend Perplexity particulièrement dangereux pour Google.
+
+Parce qu’au fond, Perplexity ne cherche plus uniquement à concurrencer ChatGPT.
+
+Il cherche progressivement à remplacer la logique même du moteur de recherche traditionnel.
+
+L’expérience proposée est fondamentalement différente du web classique. Les réponses arrivent immédiatement. Les pages sont analysées automatiquement. Les sources sont résumées. Les recherches deviennent contextuelles. L’utilisateur passe moins de temps à ouvrir vingt onglets différents.
+
+Et surtout, l’ensemble paraît beaucoup plus rapide cognitivement.
+
+C’est probablement le point le plus important de toute cette transition : les navigateurs IA ne cherchent pas seulement à gagner du temps. Ils cherchent à réduire la charge mentale liée à la navigation web.
+
+## OpenAI prépare probablement quelque chose de beaucoup plus gros qu’un simple navigateur
+
+La majorité des utilisateurs voient encore OpenAI comme “l’entreprise derrière ChatGPT”.
+
+Mais en réalité, OpenAI construit progressivement un écosystème beaucoup plus large :
+mémoire persistante, agents, outils, workflows, navigation, automatisation et probablement demain une véritable couche système autour de l’IA.
+
+C’est précisément pour cette raison que les rumeurs autour d’un navigateur OpenAI deviennent extrêmement importantes.
+
+Parce qu’un navigateur contrôlé directement par OpenAI permettrait :
+- d’intégrer les agents nativement ;
+- de contrôler les interactions web ;
+- de récupérer énormément plus de contexte utilisateur ;
+- de réduire la dépendance à Google ;
+- d’installer ChatGPT comme interface principale du web moderne.
+
+Et honnêtement, ce serait probablement l’un des mouvements les plus stratégiques de toute l’histoire récente de l’entreprise.
+
+Parce que le vrai sujet n’est plus uniquement la qualité du modèle.
+
+Le vrai sujet devient progressivement :
+qui contrôle l’interface entre l’utilisateur et Internet.
+
+## Le web “manuel” commence déjà à disparaître
+
+La majorité des internautes utilisent encore le web exactement comme il y a dix ans.
+
+Ouvrir Google.
+Cliquer sur des liens.
+Lire plusieurs pages.
+Comparer manuellement les résultats.
+Naviguer d’onglet en onglet.
+
+Mais cette logique commence déjà à s’effondrer.
+
+Les nouveaux systèmes IA résument directement les informations. Les agents commencent à exécuter certaines tâches automatiquement. Les navigateurs IA réduisent progressivement le besoin même de visiter les sites manuellement.
+
+Et plus ces systèmes deviennent efficaces, plus cette transition pourrait devenir violente pour une partie du web actuel.
+
+Parce qu’une IA qui répond directement réduit mécaniquement le besoin de cliquer.
+
+Pour énormément de médias, de blogs et même de SaaS dépendants du trafic organique, cette évolution pourrait transformer radicalement la manière dont le trafic est distribué sur Internet.
+
+## Cette guerre pourrait aussi transformer complètement le SEO
+
+C’est probablement l’une des conséquences les plus importantes de toute cette transition.
+
+Pendant des années, le SEO consistait principalement à ranker sur Google, optimiser des mots-clés, récupérer des clics et améliorer le CTR.
+
+Mais les navigateurs IA changent progressivement les règles du jeu.
+
+Le contenu n’est plus uniquement lu par des humains.
+Il est désormais lu, résumé, interprété et parfois même réécrit directement par des agents IA.
+
+Cela pourrait rendre beaucoup plus importantes :
+- l’autorité éditoriale ;
+- les sources ;
+- les données originales ;
+- les analyses profondes ;
+- les marques fortes ;
+- la crédibilité média.
+
+Autrement dit, le simple contenu SEO générique pourrait progressivement perdre énormément de valeur.
+
+Les sites qui survivront probablement le mieux seront ceux capables de produire :
+- de vraies analyses ;
+- des données originales ;
+- des points de vue forts ;
+- une expertise identifiable.
+
+## Le navigateur devient progressivement le nouveau système d’exploitation IA
+
+C’est probablement la conclusion la plus importante de toute cette guerre technologique.
+
+Pendant longtemps, le navigateur était simplement un outil permettant d’accéder à Internet.
+
+Mais les nouveaux navigateurs IA deviennent progressivement :
+- des assistants ;
+- des moteurs de recherche ;
+- des outils d’automatisation ;
+- des agents ;
+- des environnements de travail ;
+- des couches d’exécution IA.
+
+Autrement dit : le navigateur commence progressivement à ressembler à un véritable système d’exploitation intelligent.
+
+Et c’est précisément pour cette raison que cette guerre devient probablement beaucoup plus importante que la simple bataille des chatbots.
+
+Parce qu’au final, le véritable gagnant ne sera pas forcément l’entreprise avec le meilleur modèle IA.
+
+Le véritable gagnant sera probablement celle qui contrôlera la couche d’accès principale au web moderne.
+
+Et honnêtement, cette bataille ne fait probablement que commencer.
+
+`,
+  },
+
+  en: {
+    title: "The AI Browser War Has Officially Started",
+
+    desc: "OpenAI is reportedly building an AI browser, Perplexity is pushing Comet aggressively, and Google is transforming Chrome around Gemini. Behind this battle lies something much bigger: the browser is slowly becoming the new operating system for artificial intelligence.",
+
+    metaTitle: "The AI Browser War Has Officially Started | Neuriflux",
+
+    metaDesc: "OpenAI, Google and Perplexity are transforming web browsers around AI agents. Why the next major AI war will happen inside the browser — not inside chatbots.",
+
+    content: `
+
+## The next AI war is no longer happening inside chatbots
+
+For almost two years, the entire AI industry focused on the exact same battlefield: conversational assistants.
+
+Every company seemed obsessed with the same objective. Build the smartest model possible. Reduce hallucinations. Add more memory, more context, more tools, more agents. The entire competition revolved around benchmarks and chatbot capabilities.
+
+But over the past few months, something far more important has quietly started happening.
+
+The real AI battlefield is slowly moving toward the browser itself.
+
+And honestly, most users probably still haven’t realized how significant this shift actually is.
+
+Because the browser is no longer just a tool used to open websites. It is gradually becoming the primary interface between humans and the internet itself.
+
+That difference changes everything.
+
+## Google, OpenAI and Perplexity are now chasing the exact same strategic layer
+
+For years, these companies looked like they were building entirely different products.
+
+Google dominated web search.
+OpenAI dominated conversational AI.
+Perplexity positioned itself as an AI-native answer engine.
+Microsoft pushed Copilot into Windows and Office.
+Anthropic focused heavily on enterprise workflows.
+
+But since early 2026, all of these strategies have started converging toward the same destination.
+
+Google is turning Chrome into a Gemini-powered AI environment while aggressively expanding AI Mode directly inside Search. The company no longer wants to simply display links. It wants to become a persistent intelligence layer capable of assisting users throughout their entire browsing experience.
+
+Meanwhile, Perplexity is pushing Comet with an even more aggressive vision. The goal is no longer just answering questions. The goal is to replace traditional browsing itself with a fully AI-native navigation experience.
+
+And in the middle of all this, OpenAI increasingly appears interested in controlling access to the web directly, not only through ChatGPT, but potentially through its own browser environment.
+
+In other words, everyone is now fighting for the same thing.
+
+Control over the interface layer that gives users access to the internet.
+
+## Why browsers are becoming more important than chatbots
+
+Traditional chatbots remain fundamentally passive.
+
+You open ChatGPT.
+You type a prompt.
+The model responds.
+The interaction ends.
+
+AI browsers operate very differently.
+
+They no longer want to simply answer questions. They increasingly want to act on your behalf.
+
+Search information.
+Compare products.
+Read pages.
+Analyze articles.
+Summarize research.
+Navigate automatically between websites.
+Complete workflows.
+Execute tasks.
+
+And that transition completely changes the balance of power.
+
+Because the moment AI becomes capable of browsing for you, the browser itself becomes far more strategic than the chatbot.
+
+The browser stops being a simple gateway to the web. It becomes an execution environment for AI agents.
+
+## Google probably understands the danger better than anyone else
+
+For more than twenty years, Google controlled access to the internet through search.
+
+The model was incredibly simple:
+users typed queries, Google displayed links, websites received traffic, and Google monetized attention through advertising.
+
+Modern web economics were built around this structure.
+
+AI fundamentally threatens that model.
+
+With conversational AI search systems, users click less. Answers appear directly inside interfaces. Information gets summarized automatically. Browsing becomes more conversational. And users spend less time manually navigating websites.
+
+For Google, the implications are enormous.
+
+Because if conversational agents become the primary interface layer for the internet, then Search itself becomes far less defensible.
+
+That is precisely why Google is accelerating so aggressively around Gemini, AI Mode, and Chrome.
+
+The company is not simply protecting a product.
+It is protecting its historical role as the gateway to the web.
+
+## Perplexity may be moving faster than most people realize
+
+A year ago, many people still viewed Perplexity as “ChatGPT with sources.”
+
+That interpretation increasingly misses what the company is actually building.
+
+Perplexity appears to be constructing something far more ambitious: a fully AI-native browsing interface.
+
+With Comet, the goal is no longer limited to answering questions. The goal is to transform how users explore the web itself.
+
+And that is exactly what makes Perplexity particularly dangerous for Google.
+
+Because fundamentally, Perplexity is no longer just competing with ChatGPT.
+
+It is increasingly competing with the traditional search engine model itself.
+
+The experience feels fundamentally different from classical web browsing. Answers arrive immediately. Sources are summarized. Research becomes contextual. Users no longer need twenty tabs open simultaneously.
+
+And perhaps most importantly, the entire experience feels cognitively lighter.
+
+That may actually be the most important shift happening right now: AI browsers are not merely trying to save time. They are trying to reduce the mental friction of using the internet itself.
+
+## OpenAI is likely building something much bigger than a browser
+
+Most people still see OpenAI as “the company behind ChatGPT.”
+
+But OpenAI is increasingly building an entire AI ecosystem:
+persistent memory, agents, workflows, tools, automation, browsing, and eventually perhaps an entire AI operating layer.
+
+That is why rumors surrounding an OpenAI browser matter so much.
+
+Because a browser directly controlled by OpenAI would allow the company to:
+- integrate agents natively;
+- control web interactions;
+- gather significantly more user context;
+- reduce dependence on Google;
+- position ChatGPT as the main interface layer of the modern web.
+
+And honestly, it would probably become one of the most strategic moves in the company’s history.
+
+Because the real battle is no longer only about model quality.
+
+The real battle is increasingly about controlling the interface between humans and the internet itself.
+
+## Manual browsing is already starting to disappear
+
+Most users still interact with the internet exactly the same way they did a decade ago.
+
+Open Google.
+Click links.
+Read multiple pages.
+Compare results manually.
+Jump between tabs.
+
+But that workflow is already beginning to collapse.
+
+AI systems now summarize information directly. Agents increasingly execute tasks automatically. AI browsers gradually reduce the need to manually visit websites at all.
+
+And the more effective these systems become, the more disruptive this transition could become for large parts of the modern web economy.
+
+Because an AI that answers directly naturally reduces the need for clicks.
+
+For media companies, blogs, publishers, and even SaaS businesses dependent on search traffic, this shift could radically transform how traffic gets distributed online.
+
+## This war may completely reshape SEO itself
+
+This is probably one of the most important long-term consequences of the entire transition.
+
+For years, SEO mainly meant ranking on Google, optimizing keywords, increasing CTR, and capturing search clicks.
+
+AI browsers are slowly changing those rules.
+
+Content is no longer read exclusively by humans.
+It is increasingly parsed, summarized, interpreted, and sometimes rewritten directly by AI systems.
+
+That could make entirely different signals more valuable:
+- editorial authority;
+- strong brands;
+- original data;
+- deep analysis;
+- credible sourcing;
+- identifiable expertise.
+
+In other words, generic SEO farm content may progressively lose enormous amounts of value.
+
+The websites most likely to survive this transition are probably the ones capable of producing genuinely valuable analysis and distinctive editorial positioning.
+
+## The browser is becoming the new AI operating system
+
+That may ultimately be the most important conclusion of this entire technological shift.
+
+For years, browsers were simply gateways to the web.
+
+But modern AI browsers are gradually becoming:
+- assistants;
+- search engines;
+- automation layers;
+- workflow systems;
+- agent environments;
+- AI execution platforms.
+
+In other words, the browser is slowly evolving into a true AI operating system.
+
+And that is exactly why this battle may become far more important than the chatbot war itself.
+
+Because ultimately, the winner may not be the company with the smartest model.
+
+The winner may simply be the company that controls the primary interface layer of the modern internet.
+
+And honestly, this war is probably only getting started.
+
+`,
+  },
+},
+
 // ─── Anthropic xAI Datacenter 2026 ───────────────────────────────────────────
 {
   slug: "anthropic-xai-datacenter-2026",
@@ -9858,7 +10308,7 @@ Both tools are complementary. If you only choose one: **Midjourney for quality, 
   // ─── 5. GitHub Copilot vs Codeium ───────────────────────────────────────────
   {
     slug: "github-copilot-vs-codeium",
-    image: "/images/articles/default-ai-cover.webp",
+    image: "/articles/article31.png",
     tag: "Code",
     date: { fr: "3 mars 2026", en: "March 3, 2026" },
     timeMin: "10",
@@ -10572,29 +11022,29 @@ const EN_MONTHS: Record<string, string> = {
 };
 
 const NEUTRAL_SLUGS: Record<string, string> = {
-  "heygen-review-2026": "heygen-2026",
-  "claude-code-review-2026": "claude-code-2026",
-  "ia-2026": "llm-hallucinations-2026",
-  "prompts-ia-2026": "prompt-engineering-2026",
-  "openai-fonds-852-milliards-2026": "openai-852b-2026",
-  "claude-mythos-next-anthropic-2026": "claude-mythos-2026",
-  "money-ia-2026": "ai-income-2026",
-  "vibe-coding-tools-2026": "vibe-coding-2026",
-  "chatgpt-claude-gemini-2026": "llm-selection-2026",
-  "sora-fermeture-openai-2026": "sora-end-2026",
-  "grok-review-2026": "grok-2026",
-  "deepseek-review-2026": "deepseek-2026",
-  "perplexity-ai-review-2026": "perplexity-2026",
-  "jasper-ai-review-2026": "jasper-2026",
-  "chatgpt-vs-claude-vs-gemini-2026": "llm-benchmark-2026",
-  "cursor-ai-review-2026": "cursor-2026",
-  "alternatives-gratuites-chatgpt": "chatgpt-alternatives-2026",
-  "midjourney-vs-dalle-2026": "midjourney-dalle-2026",
-  "github-copilot-vs-codeium": "copilot-codeium-2026",
-  "notion-ai-review": "notion-ai-2026",
-  "elevenlabs-review-2026": "elevenlabs-2026",
-  "jasper-vs-copyai": "jasper-copyai-2026",
-  "stable-diffusion-guide": "stable-diffusion-2026",
+  "heygen-2026": "heygen-review-2026",
+  "claude-code-2026": "claude-code-review-2026",
+  "llm-hallucinations-2026": "ia-2026",
+  "prompt-engineering-2026": "prompts-ia-2026",
+  "openai-852b-2026": "openai-fonds-852-milliards-2026",
+  "claude-mythos-2026": "claude-mythos-next-anthropic-2026",
+  "ai-income-2026": "money-ia-2026",
+  "vibe-coding-2026": "vibe-coding-tools-2026",
+  "llm-selection-2026": "chatgpt-claude-gemini-2026",
+  "sora-end-2026": "sora-fermeture-openai-2026",
+  "grok-2026": "grok-review-2026",
+  "deepseek-2026": "deepseek-review-2026",
+  "perplexity-2026": "perplexity-ai-review-2026",
+  "jasper-2026": "jasper-ai-review-2026",
+  "llm-benchmark-2026": "chatgpt-vs-claude-vs-gemini-2026",
+  "cursor-2026": "cursor-ai-review-2026",
+  "chatgpt-alternatives-2026": "alternatives-gratuites-chatgpt",
+  "midjourney-dalle-2026": "midjourney-vs-dalle-2026",
+  "copilot-codeium-2026": "github-copilot-vs-codeium",
+  "notion-ai-2026": "notion-ai-review",
+  "elevenlabs-2026": "elevenlabs-review-2026",
+  "jasper-copyai-2026": "jasper-vs-copyai",
+  "stable-diffusion-2026": "stable-diffusion-guide",
 };
 
 const AFFILIATE_FALLBACKS: Partial<Record<string, ArticleAffiliate>> = {

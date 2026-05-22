@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import ArticleClient from "./ArticleClient";
 import { ARTICLES, getArticleBySlug, type Article } from "../../lib/articles";
 
@@ -18,6 +18,11 @@ type ArticleLocaleSeo = {
   metaDesc?: string;
 };
 
+type LocalizedArticleData = {
+  article: Article;
+  localized: ArticleLocaleSeo;
+};
+
 const SITE_URL = "https://neuriflux.com";
 const SITE_NAME = "Neuriflux";
 const TWITTER_HANDLE = "@NeurifluxCom";
@@ -32,10 +37,48 @@ const cleanText = (value: string, max = 160) =>
 const jsonLd = (data: unknown) =>
   JSON.stringify(data).replace(/</g, "\\u003c");
 
-const getLocalizedArticle = (slug: string, lang: Lang) => {
-  const article = getArticleBySlug(slug) as (Article & {
-    updatedAt?: Partial<Record<Lang, string>>;
-  }) | undefined;
+const absoluteUrl = (pathOrUrl?: string | null) => {
+  if (!pathOrUrl) return OG_DEFAULT;
+  if (pathOrUrl.startsWith("http://") || pathOrUrl.startsWith("https://")) {
+    return pathOrUrl;
+  }
+  return `${SITE_URL}${pathOrUrl.startsWith("/") ? "" : "/"}${pathOrUrl}`;
+};
+
+const getArticleImageUrl = (article: Article) => {
+  if (article.heroImage?.src) return absoluteUrl(article.heroImage.src);
+  if (article.image) return absoluteUrl(article.image);
+  return OG_DEFAULT;
+};
+
+const getIsoDate = (value?: string | null) => {
+  if (!value) return undefined;
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? undefined : parsed.toISOString();
+};
+
+const getPublishedTime = (article: Article) =>
+  getIsoDate(article.publishedAt) ?? getIsoDate(article.updatedAtIso) ?? undefined;
+
+const getModifiedTime = (article: Article) =>
+  getIsoDate(article.updatedAtIso) ?? getPublishedTime(article);
+
+const getCanonicalSlug = (article: Article) => article.slug;
+
+const getCanonicalUrl = (lang: Lang, article: Article) =>
+  `${SITE_URL}/${lang}/blog/${getCanonicalSlug(article)}`;
+
+const getLanguageUrls = (article: Article) => {
+  const canonicalSlug = getCanonicalSlug(article);
+
+  return {
+    fr: `${SITE_URL}/fr/blog/${canonicalSlug}`,
+    en: `${SITE_URL}/en/blog/${canonicalSlug}`,
+  };
+};
+
+const getLocalizedArticle = (slug: string, lang: Lang): LocalizedArticleData | null => {
+  const article = getArticleBySlug(slug);
 
   if (!article) return null;
 
@@ -83,21 +126,22 @@ export async function generateMetadata({
   }
 
   const { article, localized } = data;
-
+  const canonicalSlug = getCanonicalSlug(article);
+  const canonicalUrl = getCanonicalUrl(lang, article);
+  const languageUrls = getLanguageUrls(article);
   const title = cleanText(localized.metaTitle ?? localized.title, 70);
   const description = cleanText(localized.metaDesc ?? localized.desc, 160);
+  const publishedTime = getPublishedTime(article);
+  const modifiedTime = getModifiedTime(article);
+  const imageUrl = getArticleImageUrl(article);
 
-  const canonicalUrl = `${SITE_URL}/${lang}/blog/${slug}`;
-  const frUrl = `${SITE_URL}/fr/blog/${slug}`;
-  const enUrl = `${SITE_URL}/en/blog/${slug}`;
-
-  const publishedTime = article.date?.en;
-  const modifiedTime = article.updatedAt?.en ?? article.date?.en;
-
-  const commonKeywords =
-    lang === "fr"
-      ? ["IA", "outils IA", "intelligence artificielle", "avis IA", "test IA", String(article.tag)]
-      : ["AI", "AI tools", "artificial intelligence", "AI review", "AI test", String(article.tag)];
+  const commonKeywords = [
+    ...(article.keywords ?? []),
+    ...(lang === "fr"
+      ? ["IA", "outils IA", "intelligence artificielle", "avis IA", "test IA"]
+      : ["AI", "AI tools", "artificial intelligence", "AI review", "AI test"]),
+    String(article.tag),
+  ].filter(Boolean);
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -113,11 +157,11 @@ export async function generateMetadata({
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        fr: frUrl,
-        "fr-FR": frUrl,
-        en: enUrl,
-        "en-US": enUrl,
-        "x-default": frUrl,
+        fr: languageUrls.fr,
+        "fr-FR": languageUrls.fr,
+        en: languageUrls.en,
+        "en-US": languageUrls.en,
+        "x-default": languageUrls.en,
       },
     },
 
@@ -136,10 +180,10 @@ export async function generateMetadata({
       tags: commonKeywords,
       images: [
         {
-          url: OG_DEFAULT,
-          width: 1200,
-          height: 630,
-          alt: title,
+          url: imageUrl,
+          width: article.heroImage?.width ?? 1200,
+          height: article.heroImage?.height ?? 630,
+          alt: article.heroImage?.alt?.[lang] ?? title,
           type: "image/png",
         },
       ],
@@ -151,14 +195,14 @@ export async function generateMetadata({
       creator: TWITTER_HANDLE,
       title,
       description,
-      images: [OG_DEFAULT],
+      images: [imageUrl],
     },
 
     robots: {
-      index: true,
+      index: slug === canonicalSlug,
       follow: true,
       googleBot: {
-        index: true,
+        index: slug === canonicalSlug,
         follow: true,
         "max-snippet": -1,
         "max-image-preview": "large",
@@ -174,34 +218,47 @@ export default async function ArticlePage({
   params: Promise<PageParams>;
 }) {
   const { lang: rawLang, slug } = await params;
-  const lang = resolveLang(rawLang);
 
+  if (!isLang(rawLang)) notFound();
+
+  const lang = resolveLang(rawLang);
   const data = getLocalizedArticle(slug, lang);
+
   if (!data) notFound();
 
   const { article, localized } = data;
+  const canonicalSlug = getCanonicalSlug(article);
 
-  const title = cleanText(localized.metaTitle ?? localized.title, 70);
-  const description = cleanText(localized.metaDesc ?? localized.desc, 160);
-  const canonicalUrl = `${SITE_URL}/${lang}/blog/${slug}`;
-  const publishedTime = article.date?.en;
-  const modifiedTime = article.updatedAt?.en ?? article.date?.en;
+  if (slug !== canonicalSlug) {
+    permanentRedirect(`/${lang}/blog/${canonicalSlug}`);
+  }
+
+  const title = cleanText(localized.metaTitle ?? localized.title, 110);
+  const description = cleanText(localized.metaDesc ?? localized.desc, 220);
+  const canonicalUrl = getCanonicalUrl(lang, article);
+  const languageUrls = getLanguageUrls(article);
+  const publishedTime = getPublishedTime(article);
+  const modifiedTime = getModifiedTime(article);
+  const imageUrl = getArticleImageUrl(article);
 
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
+    "@id": `${canonicalUrl}#article`,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": canonicalUrl,
     },
     headline: title,
     description,
-    image: [OG_DEFAULT],
+    image: [imageUrl],
     datePublished: publishedTime,
     dateModified: modifiedTime,
-    inLanguage: lang,
+    inLanguage: lang === "fr" ? "fr-FR" : "en-US",
     articleSection: String(article.tag),
-    timeRequired: `PT${article.timeMin ?? 5}M`,
+    keywords: article.keywords?.join(", "),
+    timeRequired: `PT${article.timeMin ?? "5"}M`,
+    isAccessibleForFree: true,
     author: {
       "@type": "Organization",
       name: SITE_NAME,
@@ -214,19 +271,97 @@ export default async function ArticlePage({
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/logo.png`,
+        width: 200,
+        height: 60,
       },
     },
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "@id": `${canonicalUrl}#breadcrumb`,
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: SITE_NAME,
+        item: `${SITE_URL}/${lang}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: lang === "fr" ? "Blog" : "Blog",
+        item: `${SITE_URL}/${lang}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: title,
+        item: canonicalUrl,
+      },
+    ],
+  };
+
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": canonicalUrl,
+    url: canonicalUrl,
+    name: title,
+    description,
+    inLanguage: lang === "fr" ? "fr-FR" : "en-US",
+    isPartOf: {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}#website`,
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+      url: imageUrl,
+    },
+    breadcrumb: {
+      "@id": `${canonicalUrl}#breadcrumb`,
+    },
+  };
+
+  const hreflangSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE_URL}#website`,
+    name: SITE_NAME,
+    url: SITE_URL,
+    inLanguage: ["fr-FR", "en-US"],
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${SITE_URL}/${lang}/search?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+    sameAs: [languageUrls.fr, languageUrls.en],
   };
 
   return (
     <>
       <script
         type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(webPageSchema) }}
+      />
+      <script
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(hreflangSchema) }}
       />
 
       <Suspense fallback={null}>
-        <ArticleClient lang={lang} slug={slug} />
+        <ArticleClient lang={lang} slug={canonicalSlug} />
       </Suspense>
     </>
   );

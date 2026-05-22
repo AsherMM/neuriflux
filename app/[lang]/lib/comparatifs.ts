@@ -122,6 +122,544 @@ const TOOL_SLUG_ALIASES: Record<string, string> = {
 };
 
 const RAW_COMPARATIFS: RawComparatif[] = [
+// ─── Kling vs Veo vs Runway 2026 ──────────────────────────────────────────────
+{
+  slug: "kling-vs-veo-vs-runway-2026",
+  tag: "Video",
+  date: { fr: "22 mai 2026", en: "May 22, 2026" },
+  featured: true,
+  winner: "Veo",
+
+  criteria: {
+    fr: [
+      "Qualité visuelle",
+      "Mouvement & physique",
+      "Workflow production",
+      "Contrôle créatif",
+      "Rapidité & génération",
+      "Potentiel futur",
+    ],
+    en: [
+      "Visual quality",
+      "Motion & physics",
+      "Production workflow",
+      "Creative control",
+      "Speed & generation",
+      "Future potential",
+    ],
+  },
+
+  tools: [
+    {
+      name: "Google Veo",
+      logo: "✦",
+      color: "#4285f4",
+      globalScore: 9.5,
+
+      scores: [
+        { fr: "Qualité visuelle", en: "Visual quality", value: 9.8 },
+        { fr: "Mouvement & physique", en: "Motion & physics", value: 9.6 },
+        { fr: "Workflow production", en: "Production workflow", value: 8.8 },
+        { fr: "Contrôle créatif", en: "Creative control", value: 9.0 },
+        { fr: "Rapidité & génération", en: "Speed & generation", value: 8.5 },
+        { fr: "Potentiel futur", en: "Future potential", value: 10.0 },
+      ],
+
+      price: "Accès limité",
+
+      priceFull: {
+        fr: "Accès encore restreint en 2026 via Google AI Ultra / partenaires sélectionnés",
+        en: "Still limited access in 2026 through Google AI Ultra / selected partners",
+      },
+
+      pros: {
+        fr: [
+          "Probablement le modèle vidéo IA le plus impressionnant techniquement actuellement",
+          "Compréhension cinématographique extrêmement avancée : caméra, lumière, profondeur, rythme et cohérence globale",
+          "Mouvements particulièrement naturels avec très peu d'artefacts visibles",
+          "Google possède probablement l'infrastructure la plus dangereuse à long terme pour la vidéo IA",
+          "Le potentiel d'intégration avec YouTube pourrait devenir gigantesque",
+          "Très fort sur les scènes complexes et la cohérence physique",
+        ],
+
+        en: [
+          "Arguably the most technically impressive AI video model currently available",
+          "Extremely advanced cinematic understanding: camera movement, lighting, depth, pacing, and scene coherence",
+          "Motion quality feels unusually natural with very few visible artifacts",
+          "Google likely has the most dangerous long-term infrastructure advantage in AI video",
+          "Potential integration with YouTube could become massive",
+          "Particularly strong on complex scenes and physical consistency",
+        ],
+      },
+
+      cons: {
+        fr: [
+          "Accès encore très limité pour la majorité des utilisateurs",
+          "Écosystème créateur moins mature que Runway actuellement",
+          "Moins orienté workflow concret de production quotidienne",
+          "Google reste encore flou sur la stratégie commerciale exacte",
+          "Les temps de génération restent parfois importants",
+        ],
+
+        en: [
+          "Still extremely limited access for most users",
+          "Creator ecosystem remains less mature than Runway for now",
+          "Less optimized for real daily production workflows",
+          "Google remains relatively unclear about its long-term commercial strategy",
+          "Generation times can still be relatively slow",
+        ],
+      },
+
+      verdict: {
+        fr: "Veo représente probablement l'avenir le plus crédible de la vidéo IA haut de gamme. Google ne construit pas simplement un générateur vidéo : l'entreprise semble progressivement construire une infrastructure complète capable de transformer YouTube, la publicité et une partie de l'industrie audiovisuelle.",
+        en: "Veo likely represents the most credible future of high-end AI video. Google is not merely building a video generator — the company appears to be building an entire infrastructure layer capable of transforming YouTube, advertising, and large parts of the entertainment industry.",
+      },
+
+      affiliate: "https://deepmind.google",
+      badge: { fr: "🏆 Meilleur potentiel futur", en: "🏆 Best future potential" },
+    },
+
+    {
+      name: "Kling AI",
+      logo: "◉",
+      color: "#7c3aed",
+      globalScore: 9.2,
+
+      scores: [
+        { fr: "Qualité visuelle", en: "Visual quality", value: 9.5 },
+        { fr: "Mouvement & physique", en: "Motion & physics", value: 9.7 },
+        { fr: "Workflow production", en: "Production workflow", value: 7.0 },
+        { fr: "Contrôle créatif", en: "Creative control", value: 8.2 },
+        { fr: "Rapidité & génération", en: "Speed & generation", value: 8.5 },
+        { fr: "Potentiel futur", en: "Future potential", value: 9.0 },
+      ],
+
+      price: "Freemium",
+
+      priceFull: {
+        fr: "Version gratuite limitée · Plans premium selon crédits de génération",
+        en: "Limited free version · Premium plans based on generation credits",
+      },
+
+      pros: {
+        fr: [
+          "Le modèle qui a probablement le plus choqué Internet visuellement ces derniers mois",
+          "Physique et mouvements souvent supérieurs à la majorité des concurrents",
+          "Très fort sur les plans cinématiques réalistes et les mouvements complexes",
+          "Résultats souvent immédiatement viraux sur X/Twitter",
+          "Très bonne compréhension des mouvements humains",
+          "Rapport qualité visuelle / simplicité extrêmement impressionnant",
+        ],
+
+        en: [
+          "Probably the model that shocked the internet the most visually over the past months",
+          "Motion physics often outperform most competitors",
+          "Extremely strong on realistic cinematic shots and complex movement",
+          "Outputs frequently go viral on X/Twitter immediately",
+          "Excellent understanding of human motion",
+          "Very impressive visual quality-to-simplicity ratio",
+        ],
+      },
+
+      cons: {
+        fr: [
+          "Workflow encore limité pour les productions longues",
+          "Écosystème moins mature que Runway",
+          "Contrôle créatif parfois frustrant",
+          "Moins adapté aux pipelines professionnels complexes",
+          "Cohérence encore irrégulière sur certaines générations longues",
+        ],
+
+        en: [
+          "Workflow still limited for longer productions",
+          "Ecosystem remains less mature than Runway",
+          "Creative control can feel frustrating at times",
+          "Less adapted for complex professional production pipelines",
+          "Consistency still varies on longer generations",
+        ],
+      },
+
+      verdict: {
+        fr: "Kling domine actuellement l'effet 'wow'. Peu de modèles IA produisent des vidéos aussi immédiatement impressionnantes. Son vrai défi sera désormais de transformer cette avance visuelle en véritable plateforme de création durable.",
+        en: "Kling currently dominates the raw 'wow effect.' Very few AI models generate videos that feel this instantly impressive. The real challenge now will be transforming that visual lead into a long-term creator platform.",
+      },
+
+      affiliate: "https://klingai.com",
+      badge: { fr: "🔥 Meilleur effet visuel", en: "🔥 Best visual impact" },
+    },
+
+    {
+      name: "Runway",
+      logo: "△",
+      color: "#06b6d4",
+      globalScore: 8.9,
+
+      scores: [
+        { fr: "Qualité visuelle", en: "Visual quality", value: 8.8 },
+        { fr: "Mouvement & physique", en: "Motion & physics", value: 8.4 },
+        { fr: "Workflow production", en: "Production workflow", value: 10.0 },
+        { fr: "Contrôle créatif", en: "Creative control", value: 9.2 },
+        { fr: "Rapidité & génération", en: "Speed & generation", value: 9.0 },
+        { fr: "Potentiel futur", en: "Future potential", value: 8.5 },
+      ],
+
+      price: "Freemium / Pro",
+
+      priceFull: {
+        fr: "Gratuit limité · Standard, Pro et Unlimited selon usage vidéo",
+        en: "Limited free plan · Standard, Pro and Unlimited depending on video usage",
+      },
+
+      pros: {
+        fr: [
+          "Le meilleur workflow vidéo IA actuellement pour les créateurs réels",
+          "Énorme avance sur les outils de montage et d'édition",
+          "Pipeline beaucoup plus mature pour les productions professionnelles",
+          "Très bon équilibre entre génération, édition et contrôle",
+          "Écosystème créatif déjà très solide",
+          "Très adapté aux agences, YouTube et contenus commerciaux",
+        ],
+
+        en: [
+          "Currently the best AI video workflow for real creators",
+          "Huge advantage in editing and post-production tooling",
+          "Far more mature production pipeline for professional usage",
+          "Excellent balance between generation, editing, and control",
+          "Already has a strong creative ecosystem",
+          "Very well adapted for agencies, YouTube, and commercial content",
+        ],
+      },
+
+      cons: {
+        fr: [
+          "Moins impressionnant visuellement que Veo ou Kling sur certaines scènes",
+          "Le facteur viral pur reste plus faible",
+          "Certaines générations peuvent sembler plus 'IA' visuellement",
+          "Coût qui monte rapidement pour les gros workflows",
+          "Innovation perçue comme légèrement moins agressive récemment",
+        ],
+
+        en: [
+          "Less visually impressive than Veo or Kling on certain scenes",
+          "Raw viral impact remains lower",
+          "Some generations still feel more visibly 'AI-generated'",
+          "Costs rise quickly for heavy workflows",
+          "Innovation pace feels slightly less aggressive recently",
+        ],
+      },
+
+      verdict: {
+        fr: "Runway reste probablement l'outil le plus réaliste pour les créateurs professionnels aujourd'hui. Là où Veo impressionne et Kling choque visuellement, Runway reste celui qui s'intègre le mieux dans de vrais workflows de production.",
+        en: "Runway remains the most realistic AI video platform for professional creators today. While Veo impresses and Kling shocks visually, Runway still integrates best into real production workflows.",
+      },
+
+      affiliate: "https://runwayml.com",
+      badge: { fr: "🎬 Meilleur workflow pro", en: "🎬 Best professional workflow" },
+    },
+  ],
+
+  fr: {
+    title: "Kling vs Veo vs Runway : quelle IA vidéo domine réellement en 2026 ?",
+
+    desc: "Kling impressionne Internet, Veo inquiète toute l'industrie et Runway reste l'outil préféré des créateurs professionnels. Après plusieurs semaines d'analyse et des centaines de générations observées, voici le vrai état de la guerre de la vidéo IA en 2026.",
+
+    metaTitle: "Kling vs Veo vs Runway 2026 : le meilleur générateur vidéo IA ? | Neuriflux",
+
+    metaDesc: "Comparatif complet Kling vs Veo vs Runway en 2026. Qualité vidéo, réalisme, workflow, génération IA, cinéma, YouTube et avenir des modèles vidéo IA.",
+
+    intro: "La vidéo IA est en train de passer d'un simple gadget viral à une véritable révolution industrielle. Ce qui semblait encore expérimental il y a deux ans commence désormais à menacer directement une partie de l'industrie créative traditionnelle.",
+
+    verdict: "Veo possède probablement le plus gros potentiel technologique à long terme. Kling domine encore l'effet viral et le réalisme pur. Runway reste aujourd'hui la solution la plus mature pour les workflows professionnels réels.",
+
+    content: `
+## La vidéo IA n'est plus un gadget
+
+Pendant longtemps, les générateurs vidéo IA ressemblaient surtout à des démonstrations technologiques amusantes. Les mouvements étaient étranges, les personnages se déformaient constamment et la cohérence globale restait extrêmement limitée.
+
+Mais depuis plusieurs mois, quelque chose a changé.
+
+Les meilleurs modèles vidéo commencent désormais à produire des scènes capables de réellement tromper certains utilisateurs pendant plusieurs secondes. Les mouvements deviennent plus naturels. La physique progresse. Les transitions caméra deviennent beaucoup plus crédibles. Et surtout, l'ensemble commence progressivement à ressembler à du vrai langage cinématographique.
+
+C'est précisément pour cette raison que la bataille entre Kling, Veo et Runway devient extrêmement importante.
+
+Parce que derrière ces outils se cache probablement l'une des prochaines grandes révolutions de l'industrie créative.
+
+## Kling est devenu le roi du "wow effect"
+
+S'il y a bien un modèle qui a explosé sur les réseaux sociaux ces derniers mois, c'est clairement Kling.
+
+La raison est simple : certaines générations sont honnêtement difficiles à distinguer d'images réelles lorsqu'elles apparaissent quelques secondes dans un feed Twitter ou TikTok.
+
+Les mouvements de caméra paraissent étonnamment fluides. Les personnages gardent une cohérence physique beaucoup plus crédible que sur énormément de concurrents. Les scènes donnent souvent une impression de poids et de réalisme que beaucoup de modèles IA peinent encore à reproduire.
+
+Et surtout, Kling comprend extrêmement bien ce qui fonctionne visuellement sur Internet.
+
+Certaines générations donnent immédiatement cette sensation "cinéma viral" parfaitement calibrée pour les réseaux sociaux.
+
+Mais malgré cette avance spectaculaire sur le plan visuel, Kling reste encore limité dès que l'on entre dans de vrais workflows de production complexes.
+
+Le modèle impressionne énormément.
+Le pipeline créatif, lui, reste encore relativement jeune.
+
+## Veo représente probablement la vraie menace stratégique
+
+Le cas de Veo est très différent.
+
+Là où Kling impressionne immédiatement, Veo donne surtout l'impression d'un modèle construit avec une ambition beaucoup plus large derrière lui.
+
+Google ne cherche probablement pas simplement à créer un générateur vidéo spectaculaire. L'entreprise semble progressivement construire une infrastructure complète autour de la vidéo IA.
+
+Et honnêtement, c'est probablement ce qui inquiète le plus une partie de l'industrie.
+
+Parce que Google possède déjà :
+- YouTube ;
+- Android ;
+- l'infrastructure cloud ;
+- Gemini ;
+- la recherche ;
+- la publicité ;
+- les outils créateurs.
+
+Autrement dit, si Veo atteint réellement un niveau de production stable à grande échelle, Google pourrait connecter toute sa machine autour de la vidéo IA beaucoup plus vite que la majorité de ses concurrents.
+
+Et technologiquement, Veo est déjà extrêmement impressionnant.
+
+La compréhension des mouvements caméra, des scènes complexes, de la lumière ou du rythme visuel paraît souvent plus avancée que ce que l'on voit ailleurs actuellement.
+
+Le modèle donne parfois l'impression de comprendre la logique cinématographique elle-même, pas simplement de générer des images animées.
+
+## Runway reste paradoxalement le plus important pour les créateurs
+
+Runway occupe une position beaucoup plus intéressante qu'on pourrait le croire.
+
+Parce que contrairement à Kling ou Veo, Runway ne cherche pas uniquement à impressionner avec des démos virales.
+
+Runway cherche surtout à devenir un véritable outil de production.
+
+Et cette différence change énormément de choses.
+
+Pour un créateur YouTube, une agence, un monteur ou un studio, la qualité brute d'une génération ne suffit pas. Il faut aussi :
+- éditer ;
+- corriger ;
+- ajuster ;
+- retravailler ;
+- exporter ;
+- intégrer dans un vrai pipeline créatif.
+
+Et aujourd'hui, Runway reste probablement l'écosystème le plus mature pour ce type d'utilisation réelle.
+
+Le modèle n'est pas toujours le plus spectaculaire visuellement, mais l'expérience globale reste extrêmement solide pour produire rapidement du contenu exploitable.
+
+## Le vrai sujet : Hollywood commence à regarder tout ça très sérieusement
+
+Il y a encore un an, une grande partie de l'industrie audiovisuelle regardait la vidéo IA comme une curiosité technologique.
+
+Ce n'est plus vraiment le cas aujourd'hui.
+
+Parce que les coûts de production potentiels deviennent gigantesques.
+
+Créer des plans complexes sans équipe complète.
+Prévisualiser des scènes instantanément.
+Produire des publicités plus vite.
+Automatiser une partie de la post-production.
+Créer des contenus courts massivement.
+
+Même si les modèles restent imparfaits, les gains potentiels deviennent trop importants pour être ignorés.
+
+Et honnêtement, nous sommes probablement encore au tout début.
+
+## Le plus gros problème actuel : la cohérence longue durée
+
+Malgré tous les progrès impressionnants, les modèles vidéo IA ont encore une faiblesse énorme : la cohérence.
+
+Sur quelques secondes, les résultats peuvent être bluffants.
+
+Mais dès qu'il faut maintenir :
+- un personnage ;
+- une logique physique ;
+- un environnement ;
+- une narration ;
+- une continuité visuelle,
+
+les limites apparaissent rapidement.
+
+C'est probablement le prochain immense défi technologique de toute l'industrie.
+
+Parce qu'au fond, générer une belle scène n'est pas le plus difficile.
+
+Le vrai défi consiste à générer un film cohérent.
+
+## Notre verdict final
+
+Kling domine aujourd'hui l'effet viral pur et le réalisme immédiat.
+
+Runway reste probablement le meilleur choix pour les créateurs qui veulent réellement produire du contenu dans un workflow professionnel.
+
+Mais Veo possède peut-être quelque chose d'encore plus important :
+le potentiel de transformer entièrement l'écosystème vidéo autour de Google.
+
+Et honnêtement, si cette trajectoire continue, la guerre de la vidéo IA pourrait devenir beaucoup plus importante que la simple bataille des chatbots.
+
+Parce que cette fois, l'IA ne transforme plus seulement le texte.
+
+Elle commence progressivement à transformer le langage visuel lui-même.
+    `,
+  },
+
+  en: {
+    title: "Kling vs Veo vs Runway: Which AI Video Model Actually Wins in 2026?",
+
+    desc: "Kling dominates social media, Veo worries the entire industry, and Runway remains the favorite tool for professional creators. After weeks of analysis and hundreds of generated clips observed, here’s the real state of the AI video war in 2026.",
+
+    metaTitle: "Kling vs Veo vs Runway 2026: Best AI Video Generator? | Neuriflux",
+
+    metaDesc: "Complete comparison of Kling, Veo, and Runway in 2026. AI video generation, realism, workflows, cinema, YouTube, motion quality, and the future of AI filmmaking.",
+
+    intro: "AI video generation is rapidly evolving from a viral curiosity into a genuine industrial shift. What still looked experimental two years ago is now starting to challenge parts of the traditional creative industry directly.",
+
+    verdict: "Veo likely has the strongest long-term technological potential. Kling still dominates raw visual impact and viral realism. Runway remains the most mature solution today for real professional production workflows.",
+
+    content: `
+## AI video is no longer a gimmick
+
+For years, AI video generators mostly looked like entertaining technology demos. Motion felt broken, characters constantly deformed, and visual consistency collapsed after a few seconds.
+
+But over the past months, something changed.
+
+The best AI video models are now capable of producing scenes that can genuinely fool viewers for several seconds. Camera movement looks more natural. Physics are improving rapidly. Visual pacing feels more cinematic. And perhaps most importantly, these systems are beginning to understand the language of filmmaking itself rather than simply animating images.
+
+That is exactly why the battle between Kling, Veo, and Runway matters so much.
+
+Because behind these tools lies what may become one of the biggest transformations in modern creative production.
+
+## Kling became the king of the "wow effect"
+
+If there is one AI video model that completely exploded across social media recently, it is clearly Kling.
+
+The reason is simple:
+some generations honestly look difficult to distinguish from real footage when seen briefly inside a Twitter or TikTok feed.
+
+Camera motion feels surprisingly fluid. Human movement appears significantly more coherent than on many competitors. Scenes often carry a sense of physical realism that most AI video systems still struggle to reproduce convincingly.
+
+And perhaps more importantly, Kling understands internet aesthetics extremely well.
+
+A lot of its outputs immediately feel engineered for virality.
+
+But despite this spectacular visual advantage, Kling still struggles once workflows become more demanding.
+
+The visual model is extremely impressive.
+The production ecosystem around it remains much younger.
+
+## Veo may be the real strategic threat
+
+Veo occupies a very different position.
+
+Where Kling impresses instantly, Veo feels like a system built with a far broader ambition behind it.
+
+Google is probably not merely building an AI video generator.
+The company appears to be constructing an entire infrastructure around AI-generated media.
+
+And honestly, that is probably what worries parts of the industry most.
+
+Because Google already controls:
+- YouTube;
+- Android;
+- cloud infrastructure;
+- Gemini;
+- search;
+- advertising;
+- creator ecosystems.
+
+In other words, if Veo eventually reaches stable large-scale production quality, Google could connect its entire ecosystem around AI video faster than almost anyone else.
+
+Technologically, Veo is already extremely impressive.
+
+Its understanding of cinematic movement, complex scenes, pacing, lighting, and camera logic often feels more advanced than what most competitors currently offer.
+
+Sometimes Veo feels less like a video generator and more like a system attempting to understand filmmaking itself.
+
+## Runway remains the most important tool for actual creators
+
+Runway occupies a surprisingly strong position in this race.
+
+Because unlike Kling or Veo, Runway is not only trying to impress the internet with viral demos.
+
+Runway is trying to become a true production tool.
+
+And that difference matters enormously.
+
+For YouTubers, agencies, editors, or studios, raw generation quality alone is not enough. Real workflows require:
+- editing;
+- iteration;
+- correction;
+- export pipelines;
+- asset integration;
+- post-production flexibility.
+
+And today, Runway still remains the most mature ecosystem for those real-world creative workflows.
+
+The generations are not always the most visually spectacular, but the overall production experience is extremely practical and usable.
+
+That matters more than many people realize.
+
+## Hollywood is starting to take this extremely seriously
+
+A year ago, large parts of the entertainment industry still viewed AI video as an experimental curiosity.
+
+That attitude is rapidly changing.
+
+Because the potential production cost reductions are enormous.
+
+Generating complex shots without large teams.
+Instant scene previs.
+Faster advertising production.
+Partial post-production automation.
+Massive short-form content creation.
+
+Even if the models remain imperfect, the potential efficiency gains are simply too large to ignore.
+
+And honestly, we are probably still incredibly early.
+
+## The biggest problem remains long-term consistency
+
+Despite the spectacular progress, AI video models still suffer from one enormous weakness:
+consistency.
+
+For a few seconds, outputs can look genuinely incredible.
+
+But once systems need to maintain:
+- stable characters;
+- coherent environments;
+- visual continuity;
+- narrative consistency;
+- physical logic,
+
+limitations appear very quickly.
+
+That is probably the next massive technological challenge for the entire industry.
+
+Because generating a beautiful scene is not the hardest problem anymore.
+
+Generating a coherent film is.
+
+## Final verdict
+
+Kling currently dominates raw viral impact and immediate visual realism.
+
+Runway remains the strongest choice for creators who actually need to produce content inside real professional workflows.
+
+But Veo may possess something even more important:
+the potential to transform the entire video ecosystem around Google's infrastructure.
+
+And honestly, if this trajectory continues, the AI video war could become far more important than the chatbot war itself.
+
+Because this time, AI is no longer only transforming text.
+
+It is starting to transform visual language itself.
+    `,
+  },
+},
+
 // ─── ChatGPT Memory vs Claude Projects vs Gemini Workspace ───────────────────
 {
   slug: "chatgpt-memory-vs-claude-projects-vs-gemini-workspace-2026",
