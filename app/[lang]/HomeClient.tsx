@@ -90,7 +90,7 @@ const SPOTLIGHT_EN = ARTICLES_EN.find((a) => a.isNew) ?? ARTICLES_EN[0];
 
 const T = {
   fr: {
-    nav: { aifinder: "AI-Finder", blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
+    nav: { aifinder: "AI-Finder", aitools: "Ai-Tools", blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
     hero: {
       badge: "Indépendant · Tests réels · Sans bullshit",
       h1a: "Les meilleurs outils IA,",
@@ -202,7 +202,7 @@ const T = {
     twitterHandle: "@NeurifluxCom",
   },
   en: {
-    nav: { aifinder: "AI-Finder", blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
+    nav: { aifinder: "AI-Finder", aitools: "Ai-Tools", blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
     hero: {
       badge: "Independent · Real tests · No bullshit",
       h1a: "The best AI tools,",
@@ -926,6 +926,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
 
         <ul id={menuId} className={`nav-links${menuOpen ? " open" : ""}`} role="list">
           <li><Link href={l("/aifinder")} className="nav-ai" onClick={() => trackEvent("homepage_nav_click", { location: "nav_aifinder", lang })}>{t.nav.aifinder}</Link></li>
+          <li><Link href={l("/aitools")} onClick={() => trackEvent("homepage_nav_click", { location: "nav_aitools", lang })}>{t.nav.aitools}</Link></li>
           <li><Link href={l("/blog")} onClick={() => trackEvent("homepage_nav_click", { location: "nav_blog", lang })}>{t.nav.blog}</Link></li>
           <li><Link href={l("/comparatifs")} onClick={() => trackEvent("homepage_nav_click", { location: "nav_comparatifs", lang })}>{t.nav.comparatifs}</Link></li>
           <li><Link href={l("/newsletter")} onClick={() => trackEvent("homepage_nav_click", { location: "nav_newsletter", lang })}>{t.nav.newsletter}</Link></li>

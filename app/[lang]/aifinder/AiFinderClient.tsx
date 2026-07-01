@@ -2281,6 +2281,7 @@ const COPY = {
   fr: {
     nav: {
       aifinder: "AI-Finder",
+      aitools:"Ai-Tools",
       blog: "Blog",
       comparatifs: "Comparatifs",
       newsletter: "Newsletter",
@@ -2397,6 +2398,7 @@ const COPY = {
   },
   en: {
     nav: {
+      aitools:"AI-Tools",
       aifinder: "AI-Finder",
       blog: "Blog",
       comparatifs: "Comparisons",
@@ -3879,6 +3881,7 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
               {t.nav.aifinder}
             </Link>
           </li>
+          <li><Link href={l("/aitools")} onClick={() => { closeMobileMenu(); trackEvent("ai_finder_nav_click", { location: "nav_aitools", lang }); }}>{t.nav.aitools}</Link></li>
           <li><Link href={l("/blog")} onClick={() => { closeMobileMenu(); trackEvent("ai_finder_nav_click", { location: "nav_blog", lang }); }}>{t.nav.blog}</Link></li>
           <li><Link href={l("/comparatifs")} onClick={() => { closeMobileMenu(); trackEvent("ai_finder_nav_click", { location: "nav_comparatifs", lang }); }}>{t.nav.comparatifs}</Link></li>
           <li><Link href={l("/newsletter")} onClick={() => { closeMobileMenu(); trackEvent("ai_finder_nav_click", { location: "nav_newsletter", lang }); }}>{t.nav.newsletter}</Link></li>

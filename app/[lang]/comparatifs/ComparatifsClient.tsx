@@ -237,7 +237,7 @@ const isNew = (d: string): boolean => {
 
 const T = {
   fr: {
-    nav: { aifinder:"Ai-Finder", blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
+    nav: { aifinder:"Ai-Finder", aitools:"Ai-Tools", blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
     badge: "Comparatifs & Benchmarks",
     title: "Les comparatifs", accent: "Neuriflux",
     subtitle: "Tests approfondis, scoring transparent, verdicts sans compromis sur les meilleurs outils IA.",
@@ -277,7 +277,7 @@ const T = {
     ftRights: "Tous droits réservés.", ftMade: "Fait avec ♥ en France",
   },
   en: {
-    nav: { aifinder:"Ai-Finder", blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
+    nav: { aifinder:"Ai-Finder", aitools:"Ai-Tools", blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
     badge: "Comparisons & Benchmarks",
     title: "Neuriflux", accent: "Comparisons",
     subtitle: "In-depth tests, transparent scoring, no-compromise verdicts on the best AI tools.",
@@ -954,6 +954,7 @@ export default function ComparatifsClient({ lang }: { lang: Lang }) {
         <a href={l("")} className="logo"><div className="logo-dot" />Neuri<em>flux</em></a>
         <ul className={`nav-links${menuOpen ? " open" : ""}`}>
           <li><a href={l("/aifinder")}>{t.nav.aifinder}</a></li>
+          <li><a href={l("/aitools")}>{t.nav.aitools}</a></li>
           <li><a href={l("/blog")}>{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")} className="active">{t.nav.comparatifs}</a></li>
           <li><a href={l("/newsletter")}>{t.nav.newsletter}</a></li>

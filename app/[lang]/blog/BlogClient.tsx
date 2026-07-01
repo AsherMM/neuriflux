@@ -170,6 +170,7 @@ const T = {
   fr: {
     nav: {
       aifinder: "Ai-Finder",
+      aitools:"Ai-Tools",
       blog: "Blog",
       comparatifs: "Comparatifs",
       newsletter: "Newsletter",
@@ -243,6 +244,7 @@ const T = {
   en: {
     nav: {
       aifinder: "Ai-Finder",
+      aitools:"Ai-Tools",
       blog: "Blog",
       comparatifs: "Comparisons",
       newsletter: "Newsletter",
@@ -1182,6 +1184,7 @@ export default function BlogClient({ lang }: { lang: Lang }) {
 
         <ul className={`nav-links${menuOpen ? " open" : ""}`} role="list">
           <li><a href={l("/aifinder")}>{t.nav.aifinder}</a></li>
+          <li><a href={l("/aitools")}>{t.nav.aitools}</a></li>
           <li><a href={l("/blog")} className="active">{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")}>{t.nav.comparatifs}</a></li>
           <li><a href={l("/newsletter")}>{t.nav.newsletter}</a></li>

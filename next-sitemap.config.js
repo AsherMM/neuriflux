@@ -74,6 +74,7 @@ const additionalPaths = async () => {
     urls.push({ loc: `${BASE}/${lang}/blog`, priority: 0.9, changefreq: "daily", lastmod: NOW });
     urls.push({ loc: `${BASE}/${lang}/comparatifs`, priority: 0.9, changefreq: "daily", lastmod: NOW });
     urls.push({ loc: `${BASE}/${lang}/aifinder`, priority: 0.9, changefreq: "daily", lastmod: NOW });
+    urls.push({ loc: `${BASE}/${lang}/aitools`, priority: 0.9, changefreq: "daily", lastmod: NOW });
   });
 
   LANGS.forEach((lang) => {

@@ -9,7 +9,7 @@ type Status = "idle" | "loading" | "success" | "error";
 // ─── Traductions ───────────────────────────────────────────────────────────────
 const T = {
   fr: {
-    nav: { aifinder:"Ai-Finder", blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
+    nav: { aifinder:"Ai-Finder", aitools:"Ai-Tools", blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
     badge: "On vous répond",
     title: "Une question ?",
     titleAccent: "Écrivez-nous.",
@@ -45,7 +45,7 @@ const T = {
     ftRights: "Tous droits réservés.", ftMade: "Fait avec ♥ en France",
   },
   en: {
-    nav: { aifinder:"Ai-Finder", blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
+    nav: { aifinder:"Ai-Finder", aitools:"Ai-Tools", blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
     badge: "We reply to everyone",
     title: "Got a question?",
     titleAccent: "Write to us.",
@@ -268,6 +268,7 @@ export default function ContactClient({ lang }: { lang: Lang }) {
         </a>
         <ul className={`nav-links${menuOpen ? " open" : ""}`}>
           <li><a href={l("/aifinder")}>{t.nav.aifinder}</a></li>
+          <li><a href={l("/aitools")}>{t.nav.aitools}</a></li>
           <li><a href={l("/blog")}>{t.nav.blog}</a></li>
           <li><a href={l("/comparatifs")}>{t.nav.comparatifs}</a></li>
           <li><a href={l("/newsletter")}>{t.nav.newsletter}</a></li>
