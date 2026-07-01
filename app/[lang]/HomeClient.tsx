@@ -90,7 +90,7 @@ const SPOTLIGHT_EN = ARTICLES_EN.find((a) => a.isNew) ?? ARTICLES_EN[0];
 
 const T = {
   fr: {
-    nav: { aifinder: "AI-Finder", aitools: "Ai-Tools", blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
+    nav: { aifinder: "Ai-Finder", aitools: "Ai-Tools", blog: "Blog", comparatifs: "Comparatifs", newsletter: "Newsletter", contact: "Contact", about: "À propos" },
     hero: {
       badge: "Indépendant · Tests réels · Sans bullshit",
       h1a: "Les meilleurs outils IA,",
@@ -202,7 +202,7 @@ const T = {
     twitterHandle: "@NeurifluxCom",
   },
   en: {
-    nav: { aifinder: "AI-Finder", aitools: "Ai-Tools", blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
+    nav: { aifinder: "Ai-Finder", aitools: "Ai-Tools", blog: "Blog", comparatifs: "Comparisons", newsletter: "Newsletter", contact: "Contact", about: "About" },
     hero: {
       badge: "Independent · Real tests · No bullshit",
       h1a: "The best AI tools,",
