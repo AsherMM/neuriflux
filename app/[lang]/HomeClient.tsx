@@ -375,6 +375,48 @@ function ScrollProgress() {
   );
 }
 
+function MouseAura() {
+  const reducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    let frame = 0;
+    const onMove = (event: PointerEvent) => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        document.documentElement.style.setProperty("--mx", `${event.clientX}px`);
+        document.documentElement.style.setProperty("--my", `${event.clientY}px`);
+        frame = 0;
+      });
+    };
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, [reducedMotion]);
+
+  return <div className="mouse-aura" aria-hidden="true" />;
+}
+
+function NeurifluxScoreCard({ score, color }: { score: number; color: string }) {
+  const pct = Math.round(score * 10);
+
+  return (
+    <div className="nf-score" style={{ "--score-color": color, "--score-pct": `${pct}%` } as React.CSSProperties}>
+      <div className="nf-score-ring" aria-hidden="true">
+        <span>{score.toFixed(1)}</span>
+      </div>
+      <div>
+        <div className="nf-score-label">Neuriflux Score™</div>
+        <div className="nf-score-sub">Quality · price · workflow · limits</div>
+      </div>
+    </div>
+  );
+}
+
 function Counter({ value }: { value: string }) {
   const [display, setDisplay] = useState("0");
   const ref = useRef<HTMLSpanElement>(null);
@@ -639,7 +681,7 @@ export default function HomeClient({ lang }: { lang: Lang }) {
 
       <style>{`
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#080c10;--bg2:#0d1117;--bg3:#111820;--bg4:#151e29;--border:rgba(255,255,255,.065);--glow:rgba(0,230,190,.2);--cyan:#00e6be;--cdim:rgba(0,230,190,.09);--text:#edf2f7;--muted:#7a8a9a;--dim:#405164;--d:'Syne',sans-serif;--m:'JetBrains Mono',monospace;--r:14px;--pad:clamp(1.25rem,5vw,4rem)}
+:root{--bg:#080c10;--bg2:#0d1117;--bg3:#111820;--bg4:#151e29;--mx:50vw;--my:20vh;--border:rgba(255,255,255,.065);--glow:rgba(0,230,190,.2);--cyan:#00e6be;--cdim:rgba(0,230,190,.09);--text:#edf2f7;--muted:#7a8a9a;--dim:#405164;--d:'Syne',sans-serif;--m:'JetBrains Mono',monospace;--r:14px;--pad:clamp(1.25rem,5vw,4rem)}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--d);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
@@ -647,6 +689,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--d);-webkit-font-sm
 .skip-link:focus{top:12px}
 .bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(0,230,190,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,190,.018) 1px,transparent 1px);background-size:72px 72px;pointer-events:none;z-index:0}
 .bg-glow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:min(900px,92vw);height:560px;background:radial-gradient(ellipse,rgba(0,230,190,.06) 0%,transparent 68%);pointer-events:none;z-index:0}
+.bg-noise{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.18;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");mix-blend-mode:soft-light}
+.mouse-aura{position:fixed;left:0;top:0;width:100vw;height:100vh;pointer-events:none;z-index:0;background:radial-gradient(420px circle at var(--mx) var(--my),rgba(0,230,190,.095),transparent 42%);opacity:.8;transition:opacity .2s}
+body::before{content:"";position:fixed;inset:-30%;z-index:0;pointer-events:none;background:conic-gradient(from 180deg at 50% 50%,rgba(0,230,190,.05),rgba(59,130,246,.05),rgba(168,85,247,.045),rgba(0,230,190,.05));filter:blur(70px);opacity:.45;animation:auroraSpin 22s linear infinite}
+@keyframes auroraSpin{to{transform:rotate(1turn)}}
 nav{position:sticky;top:0;z-index:200;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);background:rgba(8,12,16,.9);border-bottom:1px solid var(--border);padding:0 var(--pad);height:64px;display:flex;align-items:center;justify-content:space-between;transition:box-shadow .25s,background .25s}
 nav.scrolled{box-shadow:0 8px 32px rgba(0,0,0,.42);background:rgba(8,12,16,.97)}
 .logo{font-family:var(--d);font-weight:800;font-size:1.15rem;letter-spacing:-.03em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.45rem}
@@ -678,6 +724,9 @@ h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:2px;b
 .hero-fresh{font-family:var(--m);font-size:.65rem;color:var(--dim);letter-spacing:.06em;margin-bottom:.85rem}
 .hero-sub{font-family:var(--m);font-size:.86rem;font-weight:300;color:var(--muted);line-height:1.85;max-width:680px;margin-bottom:1rem;text-align:center}
 .hero-proof{font-family:var(--m);font-size:.72rem;color:var(--cyan);margin-bottom:1.55rem;background:rgba(0,230,190,.06);border:1px solid rgba(0,230,190,.12);padding:7px 14px;border-radius:999px;display:inline-flex;align-items:center;gap:.4rem}
+.hero-insight{font-family:var(--d);font-size:clamp(.98rem,2vw,1.18rem);line-height:1.5;color:var(--text);font-weight:650;max-width:720px;margin:-.55rem auto 1.1rem;letter-spacing:-.02em}
+.proof-wall{display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem;margin-bottom:1.45rem}
+.proof-wall span{font-family:var(--m);font-size:.64rem;color:var(--muted);border:1px solid rgba(255,255,255,.075);background:rgba(255,255,255,.03);border-radius:999px;padding:7px 10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
 .ctas{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1.2rem;justify-content:center}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;font-family:var(--d);font-weight:700;font-size:.84rem;padding:12px 22px;border-radius:10px;text-decoration:none;transition:all .2s;letter-spacing:-.01em;border:none;cursor:pointer}
 .btn-p{background:var(--cyan);color:var(--bg)}
@@ -703,6 +752,15 @@ h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:2px;b
 .finder-pill{font-family:var(--m);font-size:.62rem;color:var(--cyan);border:1px solid rgba(0,230,190,.16);background:rgba(0,230,190,.055);border-radius:999px;padding:5px 8px}
 .finder-actions{display:flex;gap:.65rem;flex-wrap:wrap}
 .finder-panel{display:grid;gap:.7rem}
+.finder-demo{border:1px solid rgba(0,230,190,.2);background:linear-gradient(145deg,rgba(0,230,190,.08),rgba(255,255,255,.025));border-radius:16px;padding:1rem;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.finder-demo-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;font-family:var(--m);font-size:.6rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
+.finder-demo-top strong{color:var(--cyan);font-size:.62rem}
+.finder-demo-step{display:flex;align-items:center;gap:.55rem;font-family:var(--m);font-size:.66rem;color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:.55rem .65rem;margin-top:.45rem;background:rgba(0,0,0,.14)}
+.finder-demo-step span{font-size:.55rem;color:var(--dim)}
+.finder-demo-step.is-on{color:var(--text);border-color:rgba(0,230,190,.23);background:rgba(0,230,190,.055)}
+.finder-demo-result{margin-top:.75rem;border-radius:12px;background:rgba(0,230,190,.09);border:1px solid rgba(0,230,190,.2);padding:.75rem}
+.finder-demo-result small{display:block;font-family:var(--m);font-size:.56rem;color:var(--dim);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.25rem}
+.finder-demo-result b{font-family:var(--d);font-size:.9rem;color:var(--text)}
 .finder-mini{border:1px solid var(--border);background:rgba(255,255,255,.035);border-radius:14px;padding:.9rem}
 .finder-mini strong{display:block;font-size:.82rem;color:var(--text);margin-bottom:.25rem}
 .finder-mini span{display:block;font-family:var(--m);font-size:.68rem;color:var(--muted);line-height:1.55}
@@ -757,6 +815,12 @@ h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:2px;b
 .art-time-pill{font-family:var(--m);font-size:.56rem;color:var(--dim);background:var(--bg3);border:1px solid var(--border);border-radius:100px;padding:2px 7px;white-space:nowrap}
 .cmp-title,.art-title{font-family:var(--d);font-size:.92rem;font-weight:700;letter-spacing:-.015em;line-height:1.34;color:var(--text)}
 .cmp-sub,.art-desc{font-family:var(--m);font-size:.68rem;color:var(--muted);line-height:1.7;font-weight:300;flex:1}
+.nf-score{display:flex;align-items:center;gap:.62rem;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025);border-radius:13px;padding:.6rem .65rem;margin:.1rem 0 .05rem}
+.nf-score-ring{--ring:conic-gradient(var(--score-color) var(--score-pct),rgba(255,255,255,.08) 0);width:42px;height:42px;border-radius:50%;background:var(--ring);display:grid;place-items:center;flex-shrink:0;box-shadow:0 0 18px color-mix(in srgb,var(--score-color) 25%,transparent)}
+.nf-score-ring::before{content:"";position:absolute}
+.nf-score-ring span{width:33px;height:33px;border-radius:50%;background:var(--bg2);display:grid;place-items:center;font-family:var(--m);font-size:.68rem;font-weight:800;color:var(--score-color)}
+.nf-score-label{font-family:var(--m);font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--score-color);font-weight:800}
+.nf-score-sub{font-family:var(--m);font-size:.57rem;color:var(--dim);margin-top:.18rem;line-height:1.35}
 .cmp-scores{display:flex;flex-direction:column;gap:.35rem}
 .cmp-score-row{display:flex;align-items:center;gap:.5rem}
 .cmp-score-name{font-family:var(--m);font-size:.6rem;color:var(--muted);min-width:70px}
@@ -821,7 +885,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
 .ft-bot{margin-top:1.75rem;padding-top:1.1rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem}
 .ft-copy{font-family:var(--m);font-size:.62rem;color:var(--dim)}
 .ft-copy em{color:var(--cyan);font-style:normal}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.logo-dot,.badge-dot{animation:none}.ticker-track{animation:none;transform:none}.cmp,.art,.cluster-card,.btn,.trust-cell,.spotlight-card{transition:none}.nav-cta{animation:none}*{transition-duration:.01ms!important}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.logo-dot,.badge-dot,body::before{animation:none}.mouse-aura{display:none}.ticker-track{animation:none;transform:none}.cmp,.art,.cluster-card,.btn,.trust-cell,.spotlight-card{transition:none}.nav-cta{animation:none}*{transition-duration:.01ms!important}}
 
 .art-cover{position:relative;aspect-ratio:1200/675;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.075);background:linear-gradient(135deg,var(--bg3),var(--bg2));margin-bottom:.15rem}
 .art-cover-img{object-fit:cover;transition:transform .35s ease,filter .35s ease}
@@ -852,6 +916,8 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
       <a href="#main-content" className="skip-link">{t.srSkip}</a>
       <div className="bg-grid" />
       <div className="bg-glow" />
+      <div className="bg-noise" aria-hidden="true" />
+      <MouseAura />
 
       <nav className={scrolled ? "scrolled" : ""} aria-label={t.menu}>
         <Link href={l("")} className="logo" onClick={() => trackEvent("homepage_nav_click", { location: "logo", lang })}>
@@ -905,6 +971,17 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
               <p className="hero-sub">{t.hero.sub}</p>
               <p className="sr-only">{t.hero.extraSeo}</p>
               <div className="hero-proof"><span aria-hidden="true">⭐</span> {t.hero.socialProof}</div>
+              <p className="hero-insight">
+                {lang === "fr"
+                  ? "Arrêtez de perdre des heures à tester des outils IA décevants. On les compare avant que vous ne payiez."
+                  : "Stop wasting hours on AI tools that disappoint. We compare them before you pay."}
+              </p>
+
+              <div className="proof-wall" aria-label={lang === "fr" ? "Preuves éditoriales" : "Editorial proof"}>
+                <span>⚡ {lang === "fr" ? "120+ outils testés" : "120+ tools tested"}</span>
+                <span>🧪 {lang === "fr" ? "Vrais workflows" : "Real workflows"}</span>
+                <span>🏆 {lang === "fr" ? "Score Neuriflux™" : "Neuriflux Score™"}</span>
+              </div>
 
               <div className="ctas">
                 <Link href={l("/aifinder")} className="btn btn-p" onClick={() => trackEvent("homepage_cta_click", { location: "hero_aifinder", lang })}>{t.hero.cta1}</Link>
@@ -949,6 +1026,19 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
               </div>
 
               <div className="finder-panel" aria-hidden="true">
+                <div className="finder-demo">
+                  <div className="finder-demo-top">
+                    <span>{lang === "fr" ? "Simulation" : "Simulation"}</span>
+                    <strong>AI Finder</strong>
+                  </div>
+                  <div className="finder-demo-step is-on"><span>01</span>{lang === "fr" ? "Besoin réel" : "Real use case"}</div>
+                  <div className="finder-demo-step"><span>02</span>{lang === "fr" ? "Budget" : "Budget"}</div>
+                  <div className="finder-demo-step"><span>03</span>{lang === "fr" ? "Priorité" : "Priority"}</div>
+                  <div className="finder-demo-result">
+                    <small>{lang === "fr" ? "Résultat probable" : "Likely match"}</small>
+                    <b>Claude · Perplexity · Make</b>
+                  </div>
+                </div>
                 {t.finder.cards.map((card) => (
                   <div key={card.k} className="finder-mini">
                     <strong>{card.k}</strong>
@@ -1066,6 +1156,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
                     </div>
                   </div>
                   <div className="cmp-title">{c.title}</div>
+                  <NeurifluxScoreCard score={c.winnerScore} color={c.color} />
                   <div className="cmp-sub">{c.subtitle}</div>
                   <div className="cmp-scores" aria-label="Scores">
                     {[...c.tools].sort((a, b) => b.score - a.score).map((tool, i) => (

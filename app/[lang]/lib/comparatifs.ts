@@ -122,6 +122,594 @@ const TOOL_SLUG_ALIASES: Record<string, string> = {
 };
 
 const RAW_COMPARATIFS: RawComparatif[] = [
+// ─── Claude Code vs Cline vs Kilo Code 2026 ───────────────────────────────────
+{
+  slug: "claude-code-vs-cline-vs-kilo-code-2026",
+  tag: "Dev Tools",
+  date: { fr: "1 juillet 2026", en: "July 1, 2026" },
+  featured: true,
+  winner: "Claude Code",
+
+  criteria: {
+    fr: [
+      "Qualité du code & raisonnement",
+      "Autonomie & agents",
+      "Contexte & compréhension du repo",
+      "Intégration IDE",
+      "Personnalisation & flexibilité modèles",
+      "Rapport qualité/prix",
+      "Potentiel futur",
+    ],
+    en: [
+      "Code quality & reasoning",
+      "Autonomy & agents",
+      "Context & repo understanding",
+      "IDE integration",
+      "Customization & model flexibility",
+      "Value for money",
+      "Future potential",
+    ],
+  },
+
+  tools: [
+    {
+      name: "Claude Code",
+      logo: "◆",
+      color: "#d97757",
+      globalScore: 9.4,
+
+      scores: [
+        { fr: "Qualité du code & raisonnement", en: "Code quality & reasoning", value: 9.8 },
+        { fr: "Autonomie & agents", en: "Autonomy & agents", value: 9.5 },
+        { fr: "Contexte & compréhension du repo", en: "Context & repo understanding", value: 9.6 },
+        { fr: "Intégration IDE", en: "IDE integration", value: 8.0 },
+        { fr: "Personnalisation & flexibilité modèles", en: "Customization & model flexibility", value: 6.5 },
+        { fr: "Rapport qualité/prix", en: "Value for money", value: 7.5 },
+        { fr: "Potentiel futur", en: "Future potential", value: 9.5 },
+      ],
+
+      price: "À partir de 20 $/mois",
+
+      priceFull: {
+        fr: "Pro à 20 $/mois (17 $/mois en annuel) · Max 5x à 100 $/mois · Max 20x à 200 $/mois · Team Premium à 100 $/siège/mois · API au token (Sonnet ≈ 3 $/15 $ par million de tokens entrée/sortie) · Aucun palier gratuit dédié à Claude Code",
+        en: "Pro at $20/month ($17/month annual) · Max 5x at $100/month · Max 20x at $200/month · Team Premium at $100/seat/month · Pay-per-token API (Sonnet ≈ $3/$15 per million input/output tokens) · No dedicated free tier for Claude Code itself",
+      },
+
+      pros: {
+        fr: [
+          "Probablement le meilleur raisonnement brut sur du code complexe actuellement disponible dans un agent",
+          "Conçu nativement pour le terminal : maîtrise du shell, des scripts, du git et des pipelines CI/CD sans passer par une IDE",
+          "Fenêtre de contexte massive et compréhension de repository entière plutôt que fragmentée",
+          "Agent Teams et sub-agents permettent une vraie parallélisation des tâches complexes",
+          "Extension VS Code désormais disponible en version stable pour les développeurs qui préfèrent rester dans leur IDE",
+          "Écosystème backé directement par Anthropic : mises à jour de modèles immédiates, support MCP natif, intégration Claude Agent SDK",
+        ],
+        en: [
+          "Arguably the strongest raw reasoning on complex code currently available in any agent",
+          "Built natively for the terminal: fluent with shell commands, scripts, git, and CI/CD pipelines without needing an IDE",
+          "Massive context window with whole-repository understanding rather than fragmented file-by-file reasoning",
+          "Agent Teams and sub-agents enable genuine parallelization on complex, multi-part tasks",
+          "A stable VS Code extension is now available for developers who prefer staying inside an editor",
+          "Backed directly by Anthropic: immediate model upgrades, native MCP support, and tight integration with the Claude Agent SDK",
+        ],
+      },
+
+      cons: {
+        fr: [
+          "Verrouillé sur les modèles Anthropic : aucune flexibilité multi-fournisseurs contrairement à Cline ou Kilo Code",
+          "Aucun palier gratuit : il faut au minimum un abonnement Pro ou des crédits API pour démarrer",
+          "Les coûts peuvent grimper très vite avec les sub-agents et les sessions longues, plusieurs équipes ayant rapporté des factures à quatre chiffres",
+          "Les fenêtres d'usage glissantes de 5 heures sur Pro peuvent frustrer les développeurs qui codent en continu toute la journée",
+          "Moins mature sur l'intégration IDE profonde (complétion inline, panneaux visuels) que des extensions natives comme Cline ou Kilo Code",
+        ],
+        en: [
+          "Locked to Anthropic models: no multi-provider flexibility, unlike Cline or Kilo Code",
+          "No free tier: you need at least a Pro subscription or API credits to get started",
+          "Costs can escalate quickly with sub-agents and long sessions, with some teams reporting four-figure bills",
+          "Pro's rolling 5-hour usage windows can frustrate developers who code continuously all day",
+          "Less mature on deep IDE integration (inline completions, visual panels) compared to native extensions like Cline or Kilo Code",
+        ],
+      },
+
+      verdict: {
+        fr: "Claude Code reste la référence pour qui veut le meilleur raisonnement possible sur des tâches de code complexes, avec une autonomie réelle en environnement terminal et CI/CD. Le prix d'entrée est plus élevé et la flexibilité modèle nulle, mais pour du travail exigeant, c'est aujourd'hui l'outil le plus fiable du marché.",
+        en: "Claude Code remains the benchmark for developers who want the strongest possible reasoning on complex coding tasks, with real autonomy in terminal and CI/CD environments. The entry price is higher and model flexibility is nonexistent, but for demanding work, it's currently the most reliable tool on the market.",
+      },
+
+      affiliate: "https://claude.com/claude-code",
+      badge: { fr: "🏆 Le plus puissant", en: "🏆 Most powerful" },
+    },
+
+    {
+      name: "Cline",
+      logo: "▲",
+      color: "#0ea5e9",
+      globalScore: 9.0,
+
+      scores: [
+        { fr: "Qualité du code & raisonnement", en: "Code quality & reasoning", value: 8.5 },
+        { fr: "Autonomie & agents", en: "Autonomy & agents", value: 8.7 },
+        { fr: "Contexte & compréhension du repo", en: "Context & repo understanding", value: 8.0 },
+        { fr: "Intégration IDE", en: "IDE integration", value: 9.3 },
+        { fr: "Personnalisation & flexibilité modèles", en: "Customization & model flexibility", value: 9.5 },
+        { fr: "Rapport qualité/prix", en: "Value for money", value: 8.5 },
+        { fr: "Potentiel futur", en: "Future potential", value: 8.3 },
+      ],
+
+      price: "Gratuit (BYOK)",
+
+      priceFull: {
+        fr: "Extension open source gratuite (Apache 2.0) · Coûts d'API à la charge de l'utilisateur, généralement 5-20 $/mois en usage léger et 50-200 $/mois en usage intensif · Plan Teams à environ 20 $/mois pour la facturation partagée",
+        en: "Free open-source extension (Apache 2.0) · API costs paid directly by the user, typically $5-20/month for light use and $50-200/month for heavy use · Teams plan around $20/month for shared billing",
+      },
+
+      pros: {
+        fr: [
+          "Le pionnier du protocole MCP : l'agent peut créer, configurer et installer lui-même de nouveaux serveurs MCP à la demande",
+          "Base installée massive avec plus de 5 millions d'installations et près de 58 000 étoiles GitHub, ce qui garantit un écosystème de plugins et de retours communautaires très riche",
+          "Sub-agents natifs et CLI 2.0 permettent désormais des workflows headless proches de ceux de Claude Code",
+          "Automatisation navigateur intégrée (Computer Use) pour tester et déboguer visuellement une application directement depuis l'agent",
+          "Support JetBrains natif de qualité production, un vrai avantage pour les équipes Java, Kotlin ou mobile",
+          "Contrôle humain fin sur chaque modification via son système d'approbation, rassurant pour les codebases sensibles",
+        ],
+        en: [
+          "The MCP pioneer: the agent can create, configure, and install new MCP servers on its own, on demand",
+          "A massive install base with over 5 million installs and nearly 58,000 GitHub stars, powering a rich plugin ecosystem and steady community feedback",
+          "Native sub-agents and CLI 2.0 now enable headless workflows approaching what Claude Code offers",
+          "Built-in browser automation (Computer Use) for visually testing and debugging an application directly from the agent",
+          "Production-grade native JetBrains support, a real advantage for Java, Kotlin, or mobile teams",
+          "Fine-grained human approval on every change, reassuring for sensitive or regulated codebases",
+        ],
+      },
+
+      cons: {
+        fr: [
+          "La qualité finale dépend entièrement du modèle choisi : sans un modèle haut de gamme, les résultats se dégradent nettement",
+          "Reste une extension IDE, avec des limites structurelles pour les pipelines totalement headless comparé à un CLI natif",
+          "Les coûts d'API BYOK peuvent devenir imprévisibles sur des sessions agentiques longues et itératives",
+          "Interface parfois perçue comme moins épurée que ses forks plus récents",
+          "Pas d'infrastructure cloud propriétaire équivalente à Roomote ou KiloClaw pour déléguer des tâches en arrière-plan",
+        ],
+        en: [
+          "Final quality depends entirely on the chosen model: without a top-tier model, results degrade noticeably",
+          "Still an IDE extension, with structural limits for fully headless pipelines compared to a native CLI",
+          "BYOK API costs can become unpredictable on long, iterative agentic sessions",
+          "The interface is sometimes seen as less polished than some of its newer forks",
+          "No proprietary cloud infrastructure equivalent to Roomote or KiloClaw for delegating background tasks",
+        ],
+      },
+
+      verdict: {
+        fr: "Cline reste le choix le plus solide pour les développeurs qui veulent un agent puissant directement dans leur IDE, sans dépendre d'un seul fournisseur de modèles. Sa maturité, son écosystème MCP et son support JetBrains en font une valeur sûre, presque un standard de facto pour l'agentic coding open source.",
+        en: "Cline remains the most solid choice for developers who want a powerful agent directly inside their IDE without depending on a single model provider. Its maturity, MCP ecosystem, and JetBrains support make it a safe bet — almost a de facto standard for open-source agentic coding.",
+      },
+
+      affiliate: "https://cline.bot",
+      badge: { fr: "🥈 Meilleur équilibre open source", en: "🥈 Best open-source balance" },
+    },
+
+    {
+      name: "Kilo Code",
+      logo: "◈",
+      color: "#7c3aed",
+      globalScore: 8.9,
+
+      scores: [
+        { fr: "Qualité du code & raisonnement", en: "Code quality & reasoning", value: 8.3 },
+        { fr: "Autonomie & agents", en: "Autonomy & agents", value: 8.9 },
+        { fr: "Contexte & compréhension du repo", en: "Context & repo understanding", value: 8.0 },
+        { fr: "Intégration IDE", en: "IDE integration", value: 9.0 },
+        { fr: "Personnalisation & flexibilité modèles", en: "Customization & model flexibility", value: 9.7 },
+        { fr: "Rapport qualité/prix", en: "Value for money", value: 8.0 },
+        { fr: "Potentiel futur", en: "Future potential", value: 8.7 },
+      ],
+
+      price: "Gratuit + à la carte",
+
+      priceFull: {
+        fr: "Extension et CLI gratuites (open source) · Accès à plus de 500 modèles sans markup, ou via la Kilo Gateway au tarif fournisseur · 20 $ de crédits offerts à l'inscription · Kilo Pass à partir de 19 $/mois (bonus de crédits) · KiloClaw (agents cloud) à partir de 9 $/mois · Plan Teams à partir de 15 $/utilisateur/mois",
+        en: "Free extension and CLI (open source) · Access to 500+ models with zero markup, or via the Kilo Gateway at provider rates · $20 in free credits on signup · Kilo Pass from $19/month (bonus credits) · KiloClaw (cloud agents) from $9/month · Teams plan from $15/user/month",
+      },
+
+      pros: {
+        fr: [
+          "Successeur direct de Roo Code : reprend nativement les configurations .roomodes et .roo/rules/, migration quasi immédiate pour les anciens utilisateurs",
+          "Le catalogue de modèles le plus large du marché : plus de 500 modèles accessibles sans markup, avec routage automatique par type de tâche",
+          "Mode Orchestrator particulièrement abouti : découpe une tâche complexe en sous-tâches et les distribue à des agents spécialisés (Architect, Code, Debug)",
+          "Surface multiplateforme impressionnante : VS Code, JetBrains, CLI, application mobile et intégration Slack pour démarrer une tâche depuis son téléphone",
+          "Transparence tarifaire totale sur le BYOK, vérifiée par plusieurs testeurs indépendants au centime près",
+          "Croissance très rapide (plus d'1,5 million d'utilisateurs) portée par une équipe expérimentée, dont un cofondateur de GitLab",
+        ],
+        en: [
+          "Direct successor to Roo Code: natively reads existing .roomodes and .roo/rules/ configs, making migration nearly instant for former users",
+          "The widest model catalog on the market: 500+ models accessible with zero markup, with automatic routing by task type",
+          "A particularly refined Orchestrator mode: breaks a complex task into subtasks and routes them to specialized agents (Architect, Code, Debug)",
+          "Impressive multi-platform surface: VS Code, JetBrains, CLI, a mobile app, and Slack integration to kick off a task from your phone",
+          "Full pricing transparency on BYOK, independently verified down to the cent by multiple testers",
+          "Very fast growth (over 1.5 million users) driven by an experienced team, including a GitLab co-founder",
+        ],
+      },
+
+      cons: {
+        fr: [
+          "Plateforme encore jeune et en évolution rapide : certaines fonctionnalités (agents cloud, déploiement en un clic) restent en maturation",
+          "Des utilisateurs ont rapporté des boucles d'agent coûteuses et des problèmes de facturation ponctuels sur KiloClaw et les crédits BYOK",
+          "Le mode Orchestrator peut parfois tourner en rond sur des tâches mal spécifiées",
+          "Pas de support Zed pour l'instant",
+          "Origine en tant que fork multiple (Cline + Roo Code) qui peut interroger sur l'identité produit à long terme, même si la trajectoire actuelle est solide",
+        ],
+        en: [
+          "Still a young, fast-moving platform: some features (cloud agents, one-click deploy) remain works in progress",
+          "Some users have reported costly agent loops and occasional billing issues on KiloClaw and BYOK credits",
+          "Orchestrator mode can occasionally loop on poorly specified tasks",
+          "No Zed support at this time",
+          "Its origin as a dual fork (Cline + Roo Code) raises questions about long-term product identity, even though its current trajectory looks solid",
+        ],
+      },
+
+      verdict: {
+        fr: "Kilo Code s'impose comme le successeur naturel de Roo Code et probablement l'outil le plus ambitieux des trois sur le plan de la couverture fonctionnelle. Si la flexibilité de modèles et l'orchestration multi-agents comptent plus que tout pour vous, c'est aujourd'hui l'option la plus complète.",
+        en: "Kilo Code stands out as the natural successor to Roo Code and probably the most ambitious of the three tools in terms of feature coverage. If model flexibility and multi-agent orchestration matter more than anything else to you, it's currently the most complete option.",
+      },
+
+      affiliate: "https://kilo.ai",
+      badge: { fr: "🔥 Meilleure flexibilité multi-modèles", en: "🔥 Best multi-model flexibility" },
+    },
+  ],
+
+  fr: {
+    title: "Claude Code vs Cline vs Kilo Code : quel agent IA choisir pour coder en 2026 ?",
+
+    desc: "Claude Code impose son autorité technique, Cline reste la référence open source dans l'IDE, et Kilo Code s'impose comme le successeur ambitieux de Roo Code. Voici le comparatif le plus complet sur les trois agents de codage IA qui dominent réellement 2026.",
+
+    metaTitle: "Claude Code vs Cline vs Kilo Code 2026 : le meilleur agent IA pour coder ? | Neuriflux",
+
+    metaDesc: "Comparatif complet Claude Code vs Cline vs Kilo Code en 2026 : prix, autonomie, MCP, workflow, sécurité, cas d'usage développeur solo, startup et entreprise.",
+
+    intro: "L'assistance au code a quitté le stade de la simple autocomplétion. En 2026, la vraie question n'est plus « quel outil me suggère la bonne ligne » mais « à quel agent puis-je confier une tâche entière et repartir avec un résultat fiable ». Claude Code, Cline et Kilo Code sont les trois réponses les plus sérieuses à cette question aujourd'hui.",
+
+    verdict: "Claude Code garde l'avantage sur le raisonnement pur et l'autonomie terminal, Cline reste le choix le plus équilibré pour un usage IDE quotidien multi-modèles, et Kilo Code s'impose comme l'option la plus ambitieuse pour qui veut une flexibilité et une orchestration maximales.",
+
+    content: `
+## L'agentic coding n'est plus une niche
+
+Il y a encore deux ans, la majorité des développeurs utilisait l'IA pour une chose précise : terminer une ligne de code plus vite. GitHub Copilot avait posé les bases, et l'autocomplétion semblait être l'horizon indépassable de l'assistance au développement.
+
+Ce n'est plus du tout le cas aujourd'hui.
+
+Les meilleurs outils de 2026 ne se contentent plus de suggérer. Ils explorent un repository entier, planifient une implémentation, écrivent le code sur plusieurs fichiers, lancent les tests, corrigent leurs propres erreurs, et parfois même ouvrent une pull request sans intervention humaine à chaque étape.
+
+C'est précisément ce changement de nature qui explique pourquoi Claude Code, Cline et Kilo Code sont devenus les trois noms qui reviennent systématiquement dans toute conversation sérieuse sur le développement assisté par IA.
+
+Chacun incarne une philosophie radicalement différente. Claude Code mise sur la puissance brute et l'intégration terminal native, backée directement par Anthropic. Cline mise sur la maturité open source et la liberté de modèle depuis l'intérieur de l'IDE. Kilo Code mise sur la couverture fonctionnelle maximale et une flexibilité de modèles sans équivalent.
+
+## Un mot sur Roo Code, avant de commencer
+
+Si vous cherchez ce comparatif, il y a de fortes chances que vous ayez déjà croisé le nom de Roo Code dans vos recherches. Il mérite une clarification rapide avant d'aller plus loin.
+
+Roo Code, l'un des forks de Cline les plus populaires de 2024 et 2025, a officiellement fermé le 15 mai 2026. L'extension VS Code, Roo Code Cloud et Roo Code Router ont été arrêtés, le dépôt GitHub a été archivé, et l'équipe fondatrice a choisi de tout miser sur un nouveau produit baptisé Roomote, un agent cloud opérant depuis Slack plutôt que depuis un éditeur de code.
+
+La recommandation officielle de Roo Code pour ses utilisateurs a été double : revenir vers Cline, le projet dont Roo Code était historiquement issu, ou migrer vers Kilo Code, un autre fork qui a eu l'intelligence de lire nativement les configurations .roomodes et .roo/rules/ existantes, rendant la transition presque transparente.
+
+C'est exactement pour cette raison que ce comparatif retient Kilo Code plutôt que Roo Code : c'est aujourd'hui le successeur le plus actif, le plus proche philosophiquement, et surtout le seul des trois à être encore réellement maintenu.
+
+## Trois philosophies, trois paris différents
+
+Comprendre Claude Code, Cline et Kilo Code demande d'abord de comprendre ce que chacun essaie de résoudre en priorité.
+
+Claude Code est né comme un outil en ligne de commande, pensé pour vivre dans le terminal plutôt que dans un éditeur. L'idée de fond est simple : un développeur senior ne travaille pas uniquement dans un IDE, il travaille dans un shell, avec git, avec des scripts de déploiement, avec des pipelines CI/CD. Claude Code a été construit pour être aussi à l'aise dans ces environnements que dans une fenêtre de chat. Anthropic a depuis ajouté une extension VS Code stable pour les développeurs qui préfèrent une expérience visuelle, mais l'ADN du produit reste résolument terminal-first.
+
+Cline, à l'inverse, est né comme une extension VS Code et a pendant longtemps porté à lui seul l'idée qu'un agent puisse vivre entièrement dans l'éditeur, avec une approbation humaine à chaque étape sensible. C'est également Cline qui a le plus contribué à populariser le protocole MCP (Model Context Protocol), au point de pouvoir aujourd'hui créer lui-même de nouveaux serveurs MCP à la demande.
+
+Kilo Code, enfin, part d'un pari différent : plutôt que de choisir un camp, pourquoi ne pas offrir la couverture la plus large possible ? VS Code, JetBrains, CLI, mobile, Slack, plus de 500 modèles sans markup, un mode d'orchestration multi-agents avancé. C'est le pari de la plateforme complète plutôt que de l'outil focalisé.
+
+## Claude Code en détail : la puissance brute, au prix de la flexibilité
+
+Claude Code s'est imposé comme la référence technique de 2026 pour une raison simple : sur les tâches de code réellement complexes, son raisonnement dépasse régulièrement celui de la concurrence, y compris lorsque celle-ci tourne sur le même modèle sous-jacent.
+
+Concrètement, cela se traduit par une meilleure compréhension des dépendances entre fichiers, une capacité supérieure à planifier une refactorisation multi-étapes sans perdre le fil, et un taux d'erreurs oubliées nettement plus faible sur les tâches longues.
+
+L'autre force de Claude Code, c'est son intégration terminal native. L'agent gère nativement les variables d'environnement, enchaîne des commandes shell, interagit directement avec le système d'exploitation, et s'intègre naturellement dans des pipelines CI/CD sans configuration exotique. C'est un vrai avantage structurel face à des extensions IDE qui ne peuvent qu'approximer ce niveau d'intégration système via le terminal intégré de l'éditeur.
+
+Anthropic a également introduit les Agent Teams et les sub-agents : la possibilité de faire travailler plusieurs instances de Claude Code en parallèle, chacune avec son propre contexte, pour des tâches suffisamment vastes pour être découpées. Un sub-agent peut par exemple lire trente fichiers dans son propre contexte et ne renvoyer qu'un résumé au contexte principal, ce qui garde la session principale légère même sur des explorations de code massives.
+
+La contrepartie est double. D'abord, Claude Code reste verrouillé sur les modèles d'Anthropic : contrairement à Cline ou Kilo Code, impossible de basculer vers un modèle moins cher pour une tâche simple. Ensuite, le coût peut grimper très vite. Plusieurs équipes ont documenté des sessions à sub-agents multiples ayant généré plusieurs milliers de dollars de consommation en quelques heures, notamment lorsque des dizaines d'agents tournent en parallèle sans supervision de coût. Pour un usage individuel raisonnable, la formule Pro à 20 dollars par mois reste largement suffisante ; c'est surtout à l'échelle équipe et sur des workflows d'agents intensifs que la facture mérite d'être surveillée de près.
+
+## Cline en détail : la maturité open source qui a posé les bases
+
+Cline occupe une place particulière dans cet écosystème : c'est littéralement le projet dont sont issus la plupart de ses concurrents, Roo Code puis Kilo Code y compris.
+
+Cette antériorité se traduit par une maturité rare. Avec plus de 5 millions d'installations et près de 58 000 étoiles sur GitHub, Cline dispose de l'un des écosystèmes communautaires les plus actifs de toute la catégorie. Le support MCP y est particulièrement abouti : l'agent peut littéralement créer, configurer et installer un nouveau serveur MCP tout seul, à la simple demande « ajoute un outil pour interagir avec telle base de données ».
+
+Techniquement, Cline a comblé une bonne partie de son retard sur l'autonomie pure grâce à l'introduction de sub-agents natifs et d'un CLI 2.0 permettant des workflows headless proches de ceux de Claude Code. L'agent conserve toutefois sa philosophie d'origine : un contrôle humain fin sur chaque modification, via un système d'approbation visuel qui rassure les équipes travaillant sur des codebases sensibles.
+
+Un autre avantage sous-estimé de Cline est son support JetBrains natif, de qualité réellement production. Pour les équipes travaillant en Java, Kotlin ou sur des projets mobiles Android Studio, c'est souvent la variable décisive face à des concurrents encore expérimentaux sur ces IDE.
+
+Sur le plan tarifaire, Cline reste un modèle BYOK classique : l'extension est gratuite et open source, mais chaque appel de modèle est facturé directement par le fournisseur choisi. Un usage léger tourne autour de 5 à 20 dollars par mois ; un usage intensif sur des sessions agentiques longues peut grimper entre 50 et 200 dollars par mois. C'est le prix de la liberté totale de modèle : pas d'abonnement fixe, mais une facture qui varie avec l'usage réel.
+
+## Kilo Code en détail : le successeur ambitieux qui veut tout couvrir
+
+Kilo Code est le plus jeune des trois, mais aussi celui qui a grandi le plus vite. Né d'un double fork de Cline et de Roo Code, porté par une équipe qui inclut un cofondateur de GitLab, l'outil a dépassé 1,5 million d'utilisateurs et plusieurs dizaines de milliers de milliards de tokens traités en un temps record.
+
+Sa proposition de valeur centrale tient en une phrase : la liberté de modèle poussée à son maximum. Plus de 500 modèles sont accessibles, sans aucun markup ajouté par Kilo, que ce soit via une clé API personnelle ou via la Kilo Gateway au tarif exact du fournisseur. Plusieurs testeurs indépendants ont vérifié cette promesse au centime près en comparant les factures Anthropic officielles avec les journaux d'utilisation Kilo.
+
+La fonctionnalité la plus intéressante reste le mode Orchestrator. Plutôt que de faire porter toute la charge cognitive à un seul agent généraliste, Kilo Code découpe une instruction complexe en sous-tâches et les distribue à des agents spécialisés : un mode Architect pour la planification, un mode Code pour l'implémentation, un mode Debug pour la correction d'erreurs. Dans les tests indépendants, cette approche a permis de traiter en une douzaine de minutes des refactorisations qui prennent habituellement entre 45 minutes et une heure et demie en travail manuel.
+
+Kilo Code va également plus loin que ses concurrents sur la couverture de surface : extension VS Code et JetBrains, CLI autonome, application mobile, et intégration Slack permettant littéralement de démarrer une tâche de développement depuis son téléphone et de la retrouver plus tard dans son éditeur.
+
+Cette ambition a un revers. Plusieurs utilisateurs ont rapporté des boucles d'agent coûteuses sur des tâches mal spécifiées, ainsi que des soucis ponctuels de facturation sur les crédits et le service cloud KiloClaw, notamment des débits inattendus liés à un basculement silencieux vers un modèle hébergé par Kilo plutôt que la clé API personnelle de l'utilisateur. Ce sont des désagréments réels, documentés publiquement, même s'ils restent proportionnellement rares au vu du volume d'utilisateurs.
+
+Étant le successeur reconnu de Roo Code, Kilo Code hérite directement de sa base d'utilisateurs migrés : reprise native des fichiers .roomodes et .roo/rules/, guide de migration officiel publié la semaine même de l'annonce de fermeture de Roo Code, et accueil explicite de l'équipe Kilo pour cette transition.
+
+## Le comparatif critère par critère
+
+**Qualité du code et du raisonnement.** Claude Code garde une avance nette ici, un constat partagé par la quasi-totalité des tests indépendants publiés en 2026. Cline et Kilo Code peuvent techniquement atteindre un niveau très proche lorsqu'ils sont configurés avec un modèle Claude haut de gamme, mais leur qualité moyenne dépend directement du choix de modèle fait par l'utilisateur — un vrai avantage pour Claude Code, où cette variable n'existe simplement pas.
+
+**Autonomie et agents.** Les trois outils proposent désormais une forme de sub-agents ou d'orchestration multi-tâches. Claude Code et Kilo Code sont les deux plus avancés sur ce terrain, avec des approches différentes : parallélisation brute côté Claude Code, spécialisation par mode côté Kilo Code. Cline reste très solide mais légèrement en retrait sur les workflows totalement headless.
+
+**Contexte et compréhension du repository.** Claude Code bénéficie d'une fenêtre de contexte et d'une compréhension de repository entière particulièrement large, pensée pour analyser des monorepos complets. Cline et Kilo Code restent performants sur ce plan mais dépendent davantage du modèle choisi en amont.
+
+**Intégration IDE.** C'est le terrain de Cline et Kilo Code. Les deux offrent une expérience VS Code et JetBrains nettement plus aboutie que Claude Code, dont l'extension IDE reste plus récente et moins riche visuellement que son cœur terminal.
+
+**Personnalisation et flexibilité de modèles.** Kilo Code domine largement avec ses plus de 500 modèles accessibles sans markup, suivi de près par Cline. Claude Code, verrouillé sur l'écosystème Anthropic, est structurellement en retrait sur ce critère précis — ce qui n'est pas un défaut en soi si vous êtes déjà pleinement engagé dans cet écosystème, mais devient un vrai manque si vous voulez arbitrer entre plusieurs fournisseurs selon le coût ou la tâche.
+
+**Rapport qualité/prix.** Cline et Kilo Code, en BYOK pur, permettent de payer au plus juste en ajustant le modèle à la difficulté de la tâche. Claude Code, avec ses formules par abonnement, offre un coût plus prévisible mais globalement plus élevé pour un usage intensif.
+
+**Potentiel futur.** Claude Code bénéficie du soutien direct d'Anthropic et d'un rythme de mise à jour de modèles inégalé. Cline capitalise sur sa communauté et son rôle historique de standard MCP. Kilo Code mise sur sa croissance fulgurante et une équipe expérimentée, mais reste le plus jeune des trois, avec une trajectoire encore à confirmer sur plusieurs années.
+
+## Cas d'usage : quel outil pour quel profil
+
+**Développeur solo sur un projet ambitieux.** Si le budget n'est pas la contrainte principale et que la priorité est la qualité de sortie sur des tâches réellement complexes, Claude Code reste le choix le plus rationnel. Sa formule Pro à 20 dollars par mois couvre largement un usage individuel raisonnable.
+
+**Startup en croissance rapide.** Cline ou Kilo Code offrent ici un vrai avantage : la flexibilité de modèle permet d'ajuster précisément les coûts à la maturité du produit, en réservant les modèles les plus puissants aux tâches critiques et en déléguant le reste à des modèles moins coûteux.
+
+**Équipe entreprise avec exigences de conformité.** Claude Code Team Premium et Cline, avec son système d'approbation humaine fin, répondent le mieux à des besoins de gouvernance stricte. Kilo Code, avec sa certification SOC 2 côté cloud, reste également une option crédible pour les organisations qui veulent conserver une trace d'audit claire.
+
+**Projets open source et communautaires.** Cline garde ici un net avantage historique grâce à sa communauté et son écosystème de plugins déjà installé. Kilo Code progresse très vite sur ce terrain également, porté par l'ancienne communauté Roo Code.
+
+**Automatisation et pipelines CI/CD.** Claude Code reste clairement en tête grâce à son intégration terminal native et son absence de dépendance à une interface graphique, un critère éliminatoire pour Cline et Kilo Code dans un environnement totalement headless.
+
+## MCP et l'avenir des agents connectés
+
+Le Model Context Protocol est devenu en 2026 le langage commun qui permet à ces agents de se connecter à des outils externes : bases de données, plateformes de déploiement, systèmes de monitoring, gestionnaires de tickets.
+
+Les trois outils supportent MCP, mais avec des maturités différentes. Cline reste le pionnier historique, avec le marketplace le plus riche et la capacité unique de générer lui-même de nouveaux serveurs MCP à la demande. Claude Code bénéficie d'une intégration MCP native profondément liée à l'écosystème Anthropic, avec un accès facilité aux serveurs officiels. Kilo Code propose de son côté une Mode Gallery et un marketplace de serveurs MCP en croissance rapide, hérité en partie de l'écosystème Roo Code.
+
+Cette convergence autour de MCP est probablement la tendance la plus importante à suivre pour 2027 : plus ces trois agents deviendront capables de manipuler des outils externes de façon fiable, plus la frontière entre « assistant de code » et « collègue numérique autonome » continuera de s'estomper.
+
+## Sécurité et confiance : deux logiques très différentes
+
+Claude Code, en tant que produit officiel Anthropic, offre une chaîne de responsabilité claire : un seul fournisseur, une politique de données documentée, et un support direct en cas de problème. C'est rassurant pour les organisations qui privilégient la simplicité contractuelle.
+
+Cline et Kilo Code, en BYOK, fonctionnent différemment : le code ne transite jamais par un serveur intermédiaire propriétaire, il va directement du poste du développeur au fournisseur de modèle choisi. Pour certaines organisations très sensibles à la souveraineté des données, c'est un vrai argument, puisqu'aucune entité tierce ne voit passer le code source, hormis le fournisseur de modèle lui-même.
+
+Il faut néanmoins noter que les deux logiques ont leurs propres angles morts. Le modèle par abonnement centralise la confiance sur un seul acteur ; le modèle BYOK multiplie les points de contact (extension, fournisseur de modèle, éventuel service cloud additionnel) et demande une vigilance accrue sur la configuration, comme l'ont montré certains cas de facturation inattendue documentés sur Kilo Code.
+
+## Les limites qu'il faut connaître avant de choisir
+
+Aucun de ces trois outils n'est parfait, et il serait malhonnête de le prétendre.
+
+Claude Code peut devenir onéreux très rapidement dès que l'on multiplie les sub-agents sans discipline de configuration, et son absence de flexibilité de modèle est un vrai manque pour qui veut arbitrer les coûts finement.
+
+Cline, malgré sa maturité, reste dépendant de la qualité du modèle choisi par l'utilisateur, et son architecture d'extension IDE impose des limites structurelles face à des besoins totalement headless.
+
+Kilo Code, enfin, est le plus jeune des trois et cela se ressent : boucles d'agent occasionnelles, quelques bugs de facturation documentés publiquement, et une plateforme encore en pleine évolution dont toutes les promesses ne sont pas encore totalement stabilisées.
+
+## Notre avis final
+
+Après avoir confronté les trois outils sur des critères concrets — qualité de raisonnement, autonomie, intégration, flexibilité, coût et trajectoire — Claude Code reste notre choix numéro un pour qui cherche la puissance de raisonnement la plus élevée possible sur des tâches de développement réellement exigeantes, avec une vraie autonomie en environnement terminal et CI/CD.
+
+Mais ce classement ne doit pas masquer une réalité plus nuancée : Cline demeure un choix extrêmement solide et probablement le plus équilibré pour un usage IDE quotidien multi-modèles, tandis que Kilo Code s'impose comme l'option la plus complète pour qui veut repousser au maximum la flexibilité et l'orchestration multi-agents.
+
+Le plus probable, à mesure que 2026 avance, est que de nombreux développeurs finissent par utiliser les trois en parallèle selon la tâche : Claude Code pour les refactorisations complexes et les pipelines automatisés, Cline ou Kilo Code pour le travail quotidien dans l'IDE avec un contrôle fin sur les coûts.
+
+## FAQ
+
+**Roo Code existe-t-il encore en 2026 ?**
+Non. Roo Code a officiellement fermé le 15 mai 2026. L'extension VS Code, Roo Code Cloud et Roo Code Router ont été arrêtés et le dépôt GitHub archivé. L'équipe s'est reconvertie vers Roomote, un agent cloud opérant depuis Slack. La migration officiellement recommandée se fait vers Cline ou Kilo Code.
+
+**Quel est le moins cher des trois outils ?**
+Cline et Kilo Code sont tous deux gratuits en tant qu'extension, avec des coûts d'API à la charge de l'utilisateur selon le modèle choisi. Claude Code nécessite au minimum un abonnement Pro à 20 dollars par mois, sans palier gratuit dédié.
+
+**Peut-on utiliser Claude Code avec un modèle autre qu'Anthropic ?**
+Non. Claude Code est nativement verrouillé sur les modèles Claude d'Anthropic. Pour une flexibilité multi-modèles, Cline ou Kilo Code sont les options à privilégier.
+
+**Kilo Code est-il fiable pour un usage professionnel malgré sa jeunesse ?**
+Oui dans l'ensemble, avec une réserve raisonnable : l'outil grandit très vite, il est porté par une équipe expérimentée et certifié SOC 2 Type II côté cloud, mais quelques bugs de facturation et boucles d'agent ont été documentés publiquement. Une surveillance active des coûts reste recommandée sur les premières semaines d'usage.
+
+**Quel outil choisir pour un pipeline CI/CD totalement automatisé ?**
+Claude Code, sans hésitation. Sa conception terminal-native et l'absence de dépendance à une interface graphique en font le seul des trois véritablement pensé pour ce cas d'usage dès le départ.
+
+**Faut-il absolument choisir un seul de ces trois outils ?**
+Pas nécessairement. De nombreuses équipes combinent déjà plusieurs agents selon le contexte : un outil terminal-first pour l'automatisation, une extension IDE pour le travail quotidien avec contrôle humain. Les trois cohabitent techniquement sans problème.
+
+## Conclusion
+
+La bataille des agents de code IA en 2026 ne se résume plus à une question de qualité de suggestion, mais à une question de confiance : à quel agent peut-on réellement déléguer une tâche complète, et sous quelles conditions.
+
+Claude Code, Cline et Kilo Code apportent chacun une réponse différente et légitime à cette question. Le bon choix dépend moins de la performance brute — les trois sont excellents — que de votre contexte réel : votre budget, votre besoin de flexibilité de modèle, votre environnement de travail, et votre tolérance au risque d'un écosystème encore jeune.
+
+Une chose est sûre : Roo Code a disparu, mais l'idée qu'il portait — un agent de code personnalisable, ouvert et proche du développeur — n'a jamais été aussi vivante qu'aujourd'hui, portée à la fois par Cline et par son successeur le plus ambitieux, Kilo Code.
+    `,
+  },
+
+  en: {
+    title: "Claude Code vs Cline vs Kilo Code: Which AI Coding Agent Should You Pick in 2026?",
+
+    desc: "Claude Code leads on raw technical power, Cline remains the open-source standard inside the IDE, and Kilo Code has emerged as Roo Code's ambitious successor. Here's the most complete comparison of the three AI coding agents that actually matter in 2026.",
+
+    metaTitle: "Claude Code vs Cline vs Kilo Code 2026: Best AI Coding Agent? | Neuriflux",
+
+    metaDesc: "Full 2026 comparison of Claude Code, Cline, and Kilo Code: pricing, autonomy, MCP, workflow, security, and use cases for solo developers, startups, and enterprises.",
+
+    intro: "Code assistance has outgrown simple autocomplete. In 2026, the real question isn't 'which tool suggests the right line' anymore — it's 'which agent can I hand an entire task to and trust the result.' Claude Code, Cline, and Kilo Code are the three most serious answers to that question today.",
+
+    verdict: "Claude Code holds the edge on raw reasoning and terminal-native autonomy, Cline remains the most balanced choice for daily multi-model IDE work, and Kilo Code stands out as the most ambitious option for maximum flexibility and multi-agent orchestration.",
+
+    content: `
+## Agentic coding stopped being a niche a while ago
+
+Two years ago, most developers used AI for one specific thing: finishing a line of code faster. GitHub Copilot set the template, and inline autocomplete looked like the ceiling of what AI-assisted development could be.
+
+That's simply not true anymore.
+
+The best tools of 2026 don't just suggest anymore. They explore an entire repository, plan a multi-step implementation, write code across many files, run the test suite, fix their own mistakes, and sometimes open a pull request with almost no human intervention along the way.
+
+That shift in kind — not just degree — is exactly why Claude Code, Cline, and Kilo Code are the three names that keep coming up in every serious conversation about AI-assisted development right now.
+
+Each embodies a genuinely different philosophy. Claude Code bets on raw power and native terminal integration, backed directly by Anthropic. Cline bets on open-source maturity and model freedom from inside the editor. Kilo Code bets on maximum feature coverage and unmatched model flexibility.
+
+## A quick note on Roo Code before we start
+
+If you're reading this comparison, there's a good chance Roo Code has come up somewhere in your research. It deserves a quick clarification before going further.
+
+Roo Code, one of the most popular Cline forks throughout 2024 and 2025, officially shut down on May 15, 2026. The VS Code extension, Roo Code Cloud, and Roo Code Router were all discontinued, the GitHub repository was archived, and the founding team bet everything on a new product called Roomote — a cloud agent that operates through Slack rather than inside a code editor.
+
+Roo Code's official recommendation to its users came in two forms: go back to Cline, the project Roo Code originally forked from, or migrate to Kilo Code, another fork smart enough to natively read existing .roomodes and .roo/rules/ configurations, making the switch nearly seamless.
+
+That's exactly why this comparison features Kilo Code instead of Roo Code: it's currently the most active successor, the closest in philosophy, and the only one of the three actually still being maintained.
+
+## Three philosophies, three different bets
+
+Understanding Claude Code, Cline, and Kilo Code starts with understanding what each one is trying to solve first.
+
+Claude Code was born as a command-line tool, designed to live in the terminal rather than inside an editor. The underlying idea is simple: a senior developer doesn't only work inside an IDE — they work in a shell, with git, with deployment scripts, with CI/CD pipelines. Claude Code was built to be just as comfortable in those environments as in a chat window. Anthropic has since shipped a stable VS Code extension for developers who want a more visual experience, but the product's DNA remains firmly terminal-first.
+
+Cline, on the other hand, started life as a VS Code extension, and for a long time was practically alone in proving that an agent could live entirely inside the editor while keeping a human in the loop for every sensitive change. Cline also did more than anyone to popularize the Model Context Protocol, to the point where it can now build and install new MCP servers on its own, just by being asked.
+
+Kilo Code takes yet another bet: rather than pick a side, why not offer the widest possible coverage? VS Code, JetBrains, CLI, mobile, Slack, 500+ models with zero markup, and an advanced multi-agent orchestration mode. It's a bet on the complete platform rather than the focused tool.
+
+## Claude Code, up close: raw power, at the cost of flexibility
+
+Claude Code has become the technical benchmark of 2026 for a straightforward reason: on genuinely complex coding tasks, its reasoning consistently outperforms the competition, even when they're running on the same underlying model.
+
+In practice, that shows up as better cross-file dependency understanding, a stronger ability to plan a multi-step refactor without losing the thread, and a noticeably lower rate of overlooked edge cases on long tasks.
+
+Claude Code's other core strength is native terminal integration. The agent natively handles environment variables, chains shell commands, interacts directly with the operating system, and slots naturally into CI/CD pipelines without exotic configuration — a real structural advantage over IDE extensions that can only approximate that level of system-level integration through an editor's built-in terminal.
+
+Anthropic has also introduced Agent Teams and sub-agents: the ability to run multiple Claude Code instances in parallel, each with its own context, for tasks large enough to be split up. A sub-agent might read thirty files inside its own context and return only a summary to the main session, keeping the primary conversation lean even during massive codebase exploration.
+
+There's a real cost to all this. First, Claude Code is locked to Anthropic's own models — unlike Cline or Kilo Code, there's no switching to a cheaper model for a trivial task. Second, spend can escalate fast. Several teams have documented multi-sub-agent sessions burning through several thousand dollars in a matter of hours, especially when dozens of agents run in parallel without cost oversight. For reasonable individual use, the $20/month Pro tier is more than enough; it's mainly at team scale and on aggressive agentic workflows where the bill deserves close monitoring.
+
+## Cline, up close: the open-source maturity that set the standard
+
+Cline holds a unique place in this landscape: it's literally the project most of its rivals were forked from, Roo Code and Kilo Code included.
+
+That head start shows up as unusual maturity. With over 5 million installs and nearly 58,000 GitHub stars, Cline runs one of the most active community ecosystems in the entire category. MCP support is particularly well developed here — the agent can literally build, configure, and install a new MCP server on its own with a simple request like "add a tool to talk to this database."
+
+Technically, Cline has closed much of its earlier autonomy gap by introducing native sub-agents and a CLI 2.0 that enables headless workflows approaching what Claude Code offers. The agent still keeps its founding philosophy intact, though: fine-grained human approval on every change, via a visual approval system that reassures teams working on sensitive codebases.
+
+An often underrated advantage is Cline's native JetBrains support, which is genuinely production-grade. For teams working in Java, Kotlin, or on Android Studio mobile projects, that's frequently the deciding factor against rivals still experimental on those IDEs.
+
+On pricing, Cline stays a classic BYOK model: the extension is free and open source, but every model call is billed directly by whichever provider you choose. Light use runs around $5-20/month; heavy use on long agentic sessions can climb to $50-200/month. That's the price of total model freedom — no fixed subscription, but a bill that tracks actual usage.
+
+## Kilo Code, up close: the ambitious successor trying to cover everything
+
+Kilo Code is the youngest of the three, and also the fastest-growing. Born from a double fork of Cline and Roo Code, and led by a team that includes a GitLab co-founder, the tool has surpassed 1.5 million users and processed tens of trillions of tokens in record time.
+
+Its core value proposition fits in one sentence: model freedom pushed to the maximum. Over 500 models are accessible with zero markup added by Kilo, whether through a personal API key or through the Kilo Gateway at the exact provider rate. Multiple independent testers have verified that promise down to the cent, comparing official Anthropic billing dashboards against Kilo's own usage logs.
+
+The most interesting feature is Orchestrator mode. Instead of pushing the entire cognitive load onto one general-purpose agent, Kilo Code breaks a complex instruction into subtasks and routes them to specialized agents: an Architect mode for planning, a Code mode for implementation, a Debug mode for fixing issues. In independent testing, this approach completed refactors in around twelve minutes that would normally take 45 minutes to an hour and a half of manual work.
+
+Kilo Code also goes further than its rivals on surface coverage: VS Code and JetBrains extensions, a standalone CLI, a mobile app, and Slack integration that literally lets you kick off a development task from your phone and pick it back up later in your editor.
+
+That ambition has a flip side. Several users have reported costly agent loops on under-specified tasks, plus occasional billing issues on KiloClaw credits and cloud service — including unexpected charges caused by the extension silently switching to a Kilo-hosted model instead of the user's own API key. These are real, publicly documented annoyances, even if they remain proportionally rare given the platform's user volume.
+
+As Roo Code's recognized successor, Kilo Code directly inherited its migrated user base: native support for existing .roomodes and .roo/rules/ files, an official migration guide published the very week Roo Code announced its shutdown, and an explicit welcome from the Kilo team for the transition.
+
+# Head-to-head, criterion by criterion
+
+**Code quality and reasoning.** Claude Code holds a clear lead here, a conclusion shared by nearly every independent test published in 2026. Cline and Kilo Code can technically get very close when configured with a top-tier Claude model, but their average output quality directly depends on the model the user chooses — a real advantage for Claude Code, where that variable simply doesn't exist.
+
+**Autonomy and agents.** All three tools now offer some form of sub-agents or multi-task orchestration. Claude Code and Kilo Code are the two most advanced here, taking different approaches: raw parallelization on Claude Code's side, mode-based specialization on Kilo Code's. Cline remains very solid but slightly behind on fully headless workflows.
+
+**Context and repo understanding.** Claude Code benefits from a particularly large context window and whole-repository understanding, built to analyze entire monorepos at once. Cline and Kilo Code remain strong here too, but depend more heavily on the underlying model chosen.
+
+**IDE integration.** This is Cline and Kilo Code's home turf. Both offer a markedly more polished VS Code and JetBrains experience than Claude Code, whose IDE extension remains newer and visually less rich than its terminal core.
+
+**Customization and model flexibility.** Kilo Code dominates here with its 500+ zero-markup models, closely followed by Cline. Claude Code, locked into the Anthropic ecosystem, is structurally behind on this specific criterion — not a flaw in itself if you're already fully committed to that ecosystem, but a real gap if you want to arbitrate between providers by cost or task.
+
+**Value for money.** Cline and Kilo Code, running pure BYOK, let you pay exactly what a task is worth by matching model choice to task difficulty. Claude Code's subscription tiers offer more predictable costs but generally run higher for heavy usage.
+
+**Future potential.** Claude Code benefits from Anthropic's direct backing and an unmatched pace of model upgrades. Cline capitalizes on its community and its historical role as the MCP standard-bearer. Kilo Code is riding explosive growth with an experienced team behind it, but remains the youngest of the three, with a track record still being written.
+
+## Which tool fits which profile
+
+**Solo developer on an ambitious project.** If budget isn't the main constraint and output quality on genuinely complex tasks is the priority, Claude Code is the most rational pick. Its $20/month Pro tier comfortably covers reasonable individual use.
+
+**Fast-growing startup.** Cline or Kilo Code offer a real advantage here: model flexibility lets you precisely tune costs to product maturity, reserving the most powerful models for critical tasks and offloading the rest to cheaper ones.
+
+**Enterprise team with compliance requirements.** Claude Code Team Premium and Cline, with its fine-grained human approval system, best serve strict governance needs. Kilo Code, with its SOC 2 certification on the cloud side, is also a credible option for organizations that want a clear audit trail.
+
+**Open-source and community projects.** Cline keeps a clear historical edge here thanks to its already-installed community and plugin ecosystem. Kilo Code is catching up fast too, carried by the former Roo Code community.
+
+**CI/CD automation and pipelines.** Claude Code is clearly ahead here, thanks to its native terminal integration and its lack of dependence on a graphical interface — a dealbreaker criterion for Cline and Kilo Code in a fully headless environment.
+
+## MCP and the future of connected agents
+
+The Model Context Protocol has become, in 2026, the common language that lets these agents connect to external tools: databases, deployment platforms, monitoring systems, ticketing tools.
+
+All three tools support MCP, but with different levels of maturity. Cline remains the historical pioneer, with the richest marketplace and the unique ability to generate new MCP servers on its own, on request. Claude Code benefits from a native MCP integration deeply tied to the Anthropic ecosystem, with easy access to official servers. Kilo Code offers its own Mode Gallery and a fast-growing MCP server marketplace, partly inherited from the Roo Code ecosystem.
+
+This convergence around MCP is probably the most important trend to watch heading into 2027: the more reliably these three agents can manipulate external tools, the more the line between "code assistant" and "autonomous digital colleague" will keep blurring.
+
+## Security and trust: two very different logics
+
+Claude Code, as an official Anthropic product, offers a clear chain of responsibility: a single vendor, a documented data policy, and direct support if something goes wrong. That's reassuring for organizations that prioritize contractual simplicity.
+
+Cline and Kilo Code, running BYOK, work differently: code never passes through a proprietary intermediary server — it goes straight from the developer's machine to whichever model provider is chosen. For organizations especially sensitive about data sovereignty, that's a genuine argument, since no third party sees the source code besides the model provider itself.
+
+Both logics have their own blind spots, though. The subscription model centralizes trust in a single actor; the BYOK model multiplies touchpoints (extension, model provider, any additional cloud service) and demands more configuration vigilance, as some documented cases of unexpected billing on Kilo Code have shown.
+
+## The limits worth knowing before you choose
+
+None of these three tools is perfect, and it would be dishonest to pretend otherwise.
+
+Claude Code can get expensive fast the moment sub-agents multiply without disciplined configuration, and its lack of model flexibility is a real gap for anyone who wants to fine-tune costs.
+
+Cline, despite its maturity, still depends on the quality of whichever model the user selects, and its IDE-extension architecture imposes structural limits against fully headless needs.
+
+Kilo Code, finally, is the youngest of the three, and it shows: occasional agent loops, a few publicly documented billing bugs, and a platform still very much in motion, with not every promise fully stabilized yet.
+
+## Our final take
+
+After weighing all three tools against concrete criteria — reasoning quality, autonomy, integration, flexibility, cost, and trajectory — Claude Code remains our top pick for anyone chasing the highest possible reasoning power on genuinely demanding development tasks, with real autonomy in terminal and CI/CD environments.
+
+That ranking shouldn't obscure a more nuanced reality, though: Cline remains an extremely solid choice and probably the most balanced option for daily, multi-model IDE work, while Kilo Code stands out as the most complete option for anyone who wants to push flexibility and multi-agent orchestration as far as possible.
+
+The most likely outcome, as 2026 continues, is that many developers end up using all three in parallel depending on the task: Claude Code for complex refactors and automated pipelines, Cline or Kilo Code for daily IDE work with tight cost control.
+
+## FAQ
+
+**Does Roo Code still exist in 2026?**
+No. Roo Code officially shut down on May 15, 2026. The VS Code extension, Roo Code Cloud, and Roo Code Router were all discontinued, and the GitHub repository was archived. The team pivoted to Roomote, a cloud agent operating through Slack. The officially recommended migration path is to Cline or Kilo Code.
+
+**Which of the three tools is the cheapest?**
+Cline and Kilo Code are both free as extensions, with API costs paid directly by the user depending on the chosen model. Claude Code requires at least a $20/month Pro subscription, with no dedicated free tier.
+
+**Can Claude Code be used with a non-Anthropic model?**
+No. Claude Code is natively locked to Anthropic's Claude models. For multi-model flexibility, Cline or Kilo Code are the tools to look at instead.
+
+**Is Kilo Code reliable enough for professional use despite being so new?**
+Largely yes, with one reasonable caveat: the tool is growing very fast, is led by an experienced team, and is SOC 2 Type II certified on the cloud side, but a few billing bugs and agent loops have been publicly documented. Active cost monitoring is recommended during the first few weeks of use.
+
+**Which tool should you pick for a fully automated CI/CD pipeline?**
+Claude Code, without hesitation. Its terminal-native design and lack of dependence on a graphical interface make it the only one of the three genuinely built for this use case from the ground up.
+
+**Do you have to pick just one of these three tools?**
+Not necessarily. Many teams already combine several agents depending on context: a terminal-first tool for automation, an IDE extension for daily work with human oversight. All three coexist technically without any real friction.
+
+## The bottom line
+
+The AI coding agent battle in 2026 no longer comes down to suggestion quality — it comes down to trust: which agent can you genuinely hand a complete task to, and under what conditions.
+
+Claude Code, Cline, and Kilo Code each offer a different, legitimate answer to that question. The right choice depends less on raw performance — all three are excellent — and more on your actual context: your budget, your need for model flexibility, your working environment, and your tolerance for the risk of a still-young ecosystem.
+
+One thing is certain: Roo Code is gone, but the idea it carried — a customizable, open, developer-close coding agent — has never been more alive, carried forward by both Cline and its most ambitious successor, Kilo Code.
+    `,
+  },
+},
+
 // ─── Kling vs Veo vs Runway 2026 ──────────────────────────────────────────────
 {
   slug: "kling-vs-veo-vs-runway-2026",

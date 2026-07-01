@@ -1,6 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 const ARTICLE_SLUGS = [
+  "gemini-3-5-pro-delayed-july-2026",
   "ai-browser-war-2026",
   "anthropic-xai-datacenter-2026",
   "ai-memory-agents-2026",
@@ -40,6 +41,7 @@ const ARTICLE_SLUGS = [
 ];
 
 const COMPARATIF_SLUGS = [
+  "claude-code-vs-cline-vs-kilo-code-2026",
   "kling-vs-veo-vs-runway-2026",
   "chatgpt-memory-vs-claude-projects-vs-gemini-workspace-2026",
   "cursor-vs-windsurf-vs-zed-2026",

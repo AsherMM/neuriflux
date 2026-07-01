@@ -104,6 +104,393 @@ interface RawArticle {
 }
 
 const RAW_ARTICLES: RawArticle[] = [
+// ─── Google Delays Gemini 3.5 Pro to July 2026 ────────────────────────────────
+{
+  slug: "gemini-3-5-pro-delayed-july-2026",
+  image: "/articles/article32.png",
+  tag: "AI",
+  date: { fr: "1 juillet 2026", en: "July 1, 2026" },
+  timeMin: "17",
+  featured: true,
+
+  affiliate: {
+    url: "https://gemini.google.com/app?is_sa=1&is_sa=1&android-min-version=301356232&ios-min-version=322.0&campaign_id=bkws&utm_source=sem&utm_medium=paid-media&utm_campaign=bkws&pt=9008&mt=8&ct=p-growth-sem-bkws&gclsrc=aw.ds&gad_source=1&gad_campaignid=20437330692&gclid=Cj0KCQjw9ZLSBhCcARIsAEhGKgPW2l9JIrO2ZBXFaPQ-TuGD21YdSSvv4ToI0eLDrHD4RqLQKJskUbEaAvt8EALw_wcB",
+    toolName: "Google Gemini",
+    label: {
+      fr: "Gemini.com",
+      en: "Gemini.com",
+    },
+  },
+
+  fr: {
+    title: "Google a repoussé Gemini 3.5 Pro à juillet 2026 : faut-il s'inquiéter ?",
+
+    desc: "Gemini 3.5 Pro, attendu fin juin, ne sortira finalement qu'en juillet 2026. Derrière ce simple report de calendrier se cache une histoire beaucoup plus intéressante : une fuite de chercheurs vers OpenAI et Anthropic, 225 milliards de dollars envolés en une séance boursière, et une question qui dépasse largement Google — qui contrôle réellement la frontière de l'IA en 2026 ?",
+
+    metaTitle: "Gemini 3.5 Pro repoussé à juillet 2026 : analyse complète | Neuriflux",
+
+    metaDesc: "Pourquoi Google a repoussé Gemini 3.5 Pro à juillet 2026, ce que révèle la fuite de chercheurs vers OpenAI et Anthropic, et ce que cela change pour les utilisateurs et développeurs dès maintenant.",
+
+    content: `
+
+## Ce qui vient officiellement de se passer
+
+Gemini 3.5 Pro devait sortir en juin 2026. C'est en tout cas ce que Sundar Pichai lui-même avait promis sur scène, lors de la conférence Google I/O du 19 mai, en annonçant que le modèle arriverait "le mois prochain".
+
+Juin est arrivé. Puis juin est reparti. Et Gemini 3.5 Pro n'est toujours pas disponible au public.
+
+Selon plusieurs sources reprises par Business Insider et confirmées par d'autres médias spécialisés, Google a discrètement repoussé la disponibilité générale du modèle à juillet 2026, invoquant le besoin d'intégrer davantage de retours utilisateurs et d'améliorer les performances sur les tâches longues et les usages agentiques. Fin juin, le modèle restait cantonné à un accès limité via Vertex AI, réservé à une poignée de clients entreprise triés sur le volet, ainsi qu'aux plateformes de test Antigravity et LMArena.
+
+Sur le papier, un report de quelques semaines n'a rien de dramatique. Les grands modèles de fondation glissent régulièrement de quelques jours ou de quelques semaines par rapport à leur calendrier initial. Mais ce report-là arrive au pire moment possible pour Google, et c'est précisément ce qui en fait une histoire qui mérite d'être racontée en détail.
+
+Parce qu'en l'espace de dix jours à peine, Google a cumulé trois mauvaises nouvelles simultanées : le report du modèle censé incarner sa réponse à la concurrence, le départ de plusieurs chercheurs parmi les plus respectés de l'industrie vers OpenAI et Anthropic, et une chute boursière d'environ 225 milliards de dollars de valorisation en une seule séance.
+
+Pris séparément, chacun de ces événements serait anecdotique. Pris ensemble, ils dessinent une question beaucoup plus large : Google est-il encore capable de tenir le rythme de la course à l'IA de frontière qu'il a lui-même largement contribué à lancer ?
+
+## Le calendrier exact du report
+
+Pour bien comprendre l'ampleur de la situation, il faut revenir sur la chronologie précise des événements.
+
+Le 19 mai 2026, lors de Google I/O, Sundar Pichai présente Gemini 3.5 Pro comme la prochaine évolution majeure de la famille Gemini, aux côtés de Gemini 3.5 Flash. Le message est clair : le modèle Pro doit arriver "le mois prochain", c'est-à-dire en juin.
+
+Dans la foulée, Google lance effectivement Gemini 3.5 Flash en accès général. Le modèle est positionné comme rapide, économique, et taillé pour le code et les usages agentiques. Il surpasse Gemini 3.1 Pro sur plusieurs benchmarks de codage tout en étant environ quatre fois plus rapide.
+
+Mais Gemini 3.5 Pro, lui, reste bloqué en préversion entreprise sur Vertex AI. Les semaines passent. Les marchés de prédiction, qui donnaient entre 50 et 55 % de chances à une sortie avant le 30 juin, finissent par se retourner : le 30 juin arrive, et il ne se passe rien.
+
+Selon les informations reprises par plusieurs médias tech fin juin, Google confirme alors en interne — sans communication officielle publique — que le lancement grand public est repoussé à juillet 2026. Un porte-parole de Google, sollicité sur le sujet, a pour sa part "refusé de commenter" les informations relatives au nouveau calendrier.
+
+Ce silence officiel n'est pas anodin. Il illustre une réalité simple : Google navigue actuellement en terrain miné, et toute communication publique sur un nouveau report ajouterait de l'huile sur un feu déjà bien alimenté par l'actualité des départs de chercheurs et la réaction des marchés.
+
+## Les raisons avancées pour justifier le report
+
+D'après les informations disponibles à ce stade, plusieurs raisons techniques sont avancées pour expliquer ce délai.
+
+La première concerne les retours des testeurs précoces. Gemini 3.5 Pro est actuellement utilisé par un nombre restreint de clients entreprise via Vertex AI, ainsi que par des testeurs sur Antigravity, l'environnement de développement de Google, et sur LMArena, la plateforme de benchmarking communautaire. Ces retours auraient mis en évidence des axes d'amélioration, notamment sur la gestion des tâches longues et complexes — exactement le type d'usage où les modèles agentiques sont censés exceller.
+
+La deuxième raison concerne la consommation de tokens. Certains utilisateurs de Gemini 3.5 Flash ont signalé une consommation de tokens jugée excessive, ce qui peut faire grimper les coûts de manière significative sur des prompts longs ou des tâches étendues. Google chercherait à corriger ce problème avant de le reproduire, potentiellement à plus grande échelle encore, sur la version Pro.
+
+La troisième raison, plus structurelle, concerne le positionnement même du modèle. Gemini 3.5 Pro est conçu pour exceller sur le raisonnement à long contexte et l'exécution de tâches agentiques complexes — pas simplement pour répondre rapidement à des questions ponctuelles. Or c'est précisément sur ce terrain que se joue actuellement la compétition la plus féroce entre laboratoires d'IA. Livrer un modèle qui sous-performe sur les tâches agentiques pourrait faire beaucoup plus de dégâts pour l'image de Google qu'un report de quelques semaines.
+
+Cette dernière raison mérite d'être soulignée, car elle révèle un changement de logique dans l'industrie tout entière. Il y a encore deux ans, la métrique reine restait la qualité des réponses conversationnelles. Aujourd'hui, la vraie bataille se joue sur la capacité d'un modèle à planifier, utiliser des outils, maintenir le contexte sur plusieurs étapes, et mener à bien des tâches complexes de bout en bout, sans supervision constante. Un simple report de calendrier, vu sous cet angle, devient presque un aveu implicite : Google préfère perdre quelques semaines plutôt que de perdre la bataille des agents dès le lancement.
+
+## Le vrai sujet : une fuite de talents sans précédent
+
+Le report en lui-même ne serait probablement pas devenu une histoire aussi importante s'il n'était pas arrivé au même moment qu'une vague de départs particulièrement spectaculaire.
+
+Selon Business Insider, quatre chercheurs seniors de l'équipe Gemini ont annoncé leur départ de Google au cours de la même semaine, entre le 21 et le 27 juin 2026, pour rejoindre OpenAI et Anthropic. Deux noms, en particulier, ont retenu l'attention de toute l'industrie.
+
+Noam Shazeer, vice-président ingénierie travaillant sur Gemini et co-auteur du papier de recherche "Attention Is All You Need" — le texte fondateur de 2017 qui a introduit l'architecture Transformer sur laquelle repose la quasi-totalité des grands modèles de langage actuels — quitterait Google pour OpenAI.
+
+John Jumper, chercheur chez Google DeepMind dont les travaux sur AlphaFold ont contribué à l'obtention du prix Nobel de chimie 2024, quitterait de son côté Google pour rejoindre Anthropic.
+
+Ces deux départs, à eux seuls, suffiraient à faire les gros titres de n'importe quelle semaine dans l'industrie de l'IA. Mais ils s'inscrivent en réalité dans un mouvement plus large : selon d'autres rapports, l'équipe de codage IA de Google aurait perdu six chercheurs au cours des cinq derniers mois, au profit de Meta, OpenAI et Anthropic.
+
+Perdre un chercheur reconnu, c'est un sujet de conversation en interne. Perdre Shazeer et Jumper la même semaine, c'est un sujet de marché. Et c'est exactement ce qui s'est produit.
+
+## Le choc boursier : 225 milliards de dollars envolés
+
+Le 22 juin 2026, l'action Alphabet a chuté de 5 % en une seule séance, effaçant environ 225 milliards de dollars de capitalisation boursière — la pire chute enregistrée par le titre depuis plus d'un an.
+
+Cette réaction des marchés ne s'explique pas uniquement par les départs de chercheurs. Elle reflète une inquiétude plus large des investisseurs : la crainte que Google, malgré des moyens colossaux, ne parvienne plus à retenir les talents qui ont historiquement défini sa position de leader en recherche fondamentale sur l'IA.
+
+Il est important de garder ces chiffres en perspective. Google DeepMind conserve un avantage structurel considérable : une puissance de calcul massive, une distribution inégalée via Search, Android et Workspace, et une activité cloud déjà installée chez la plupart des grandes entreprises qui cherchent à déployer de l'IA. Rien de tout cela ne disparaît du jour au lendemain à cause d'un report de calendrier ou de quelques départs, aussi médiatisés soient-ils.
+
+Mais la dynamique narrative compte, elle aussi, énormément dans ce marché. Et sur ce plan précis, la séquence de juin 2026 a clairement tourné en défaveur de Google : Anthropic a gagné un lauréat Nobel et de la traction sur le codage, OpenAI a récupéré le co-inventeur du Transformer, et Google, de son côté, a récolté un report et une série de titres peu flatteurs.
+
+## Gemini 3.5 Flash : ce qu'on peut déjà utiliser en attendant
+
+Il serait néanmoins injuste de résumer la situation de Google à ces seules mauvaises nouvelles. Pendant que Gemini 3.5 Pro reste en préversion, Gemini 3.5 Flash, lui, est bel et bien disponible en accès général — et les retours sur ce modèle sont plutôt solides.
+
+Flash surpasse Gemini 3.1 Pro sur plusieurs benchmarks de codage et de tâches agentiques, tout en étant environ quatre fois plus rapide. Sa tarification s'établit autour de 1,50 dollar pour un million de tokens en entrée et 9 dollars pour un million de tokens en sortie — un tarif qui a triplé par rapport au palier Flash précédent, ce qui illustre à quel point la puissance de calcul nécessaire pour ce type de modèle reste coûteuse, même sur un niveau censé rester "léger".
+
+Pour la grande majorité des usages quotidiens — écriture, recherche rapide, questions générales, automatisation simple — Flash couvre déjà l'essentiel des besoins. Le modèle Pro devient réellement pertinent uniquement pour des cas d'usage spécifiques : fenêtre de contexte massive, raisonnement approfondi sur des tâches complexes, ou traitement de documents et de bases de code particulièrement volumineux.
+
+Autrement dit, si vous êtes un utilisateur ou une petite structure qui n'a pas besoin de capacités de pointe extrêmes, l'absence de Gemini 3.5 Pro ne change quasiment rien à votre quotidien dès aujourd'hui.
+
+## Ce que Gemini 3.5 Pro promet vraiment
+
+Une partie de l'attente autour de Gemini 3.5 Pro se justifie néanmoins par des spécifications réellement impressionnantes, déjà confirmées par Google.
+
+Le modèle proposerait une fenêtre de contexte de deux millions de tokens, ce qui représente le double de celle de Claude Opus 4.8 et dépasse la quasi-totalité des modèles actuellement en accès général. Concrètement, cela signifie la capacité d'analyser des documents extrêmement longs, de raisonner sur des bases de code entières plutôt que sur des fragments isolés, ou de maintenir un contexte cohérent sur des sessions d'agents qui s'étalent sur de nombreuses étapes.
+
+Le modèle intègre également un mode baptisé Deep Think, l'équivalent chez Google du raisonnement étendu que l'on retrouve désormais chez la plupart des laboratoires de pointe, dans une logique proche de ce que propose OpenAI avec ses propres modes de raisonnement approfondi.
+
+Sur le papier, ces deux caractéristiques ne sont pas de simples arguments marketing. Elles répondent directement aux limites actuelles des modèles disponibles sur le marché lorsqu'il s'agit de traiter des tâches véritablement longues et complexes — exactement le type de travail que les entreprises cherchent aujourd'hui à automatiser via des agents IA.
+
+C'est d'ailleurs précisément parce que ces promesses sont ambitieuses que Google semble avoir préféré prendre plus de temps plutôt que de livrer une version encore instable de ces fonctionnalités.
+
+## Où se situe Google face à OpenAI et Anthropic
+
+Le report de Gemini 3.5 Pro arrive dans un contexte de marché particulièrement tendu, où les positions respectives des trois grands laboratoires évoluent rapidement.
+
+Selon le rapport "State of AI 2026" publié par la société d'analyse Sensor Tower, ChatGPT dominait le marché mondial des assistants IA avec 46 % de part de marché en mai 2026, contre 28 % pour Gemini et 10 % pour Claude. Le rapport souligne toutefois que Gemini, malgré cet écart encore important, s'impose comme le principal challenger de ChatGPT.
+
+Le signal le plus intéressant concerne néanmoins la progression de Claude sur le marché américain : sa part y serait passée de 5 % en décembre dernier à 14 % en mai 2026, portée notamment par ses performances sur le codage et la recherche approfondie.
+
+Sur le terrain spécifique du codage, justement, l'écart de performance entre laboratoires reste net. Selon un rapport de Nikkei, Claude Mythos 5 a obtenu un score de 80,3 % sur le benchmark SWE-Bench Pro, contre 58,6 % pour GPT-5.5 d'OpenAI et 55,1 % pour Gemini 3.5 Flash de Google — un écart de plus de vingt points de pourcentage que Nikkei a qualifié de difficile à combler en une seule génération de modèles.
+
+Pour Google, ce contexte ajoute une pression supplémentaire au calendrier de Gemini 3.5 Pro. Le modèle est censé représenter la réponse de l'entreprise sur exactement ce terrain — le raisonnement complexe et les tâches agentiques — là où l'écart avec la concurrence semble aujourd'hui le plus marqué.
+
+## Le facteur réglementaire, un angle mort trop souvent ignoré
+
+Il existe un autre élément de contexte, moins souvent évoqué, mais qui prend une importance croissante en 2026 : la disponibilité des modèles d'IA de pointe ne dépend plus uniquement de décisions commerciales. Elle dépend désormais aussi de décisions gouvernementales.
+
+Fin juin 2026, GPT-5.6 d'OpenAI reste verrouillé pour l'accès public, réservé à environ une vingtaine de partenaires approuvés par le gouvernement américain, en raison d'un seuil informel lié aux capacités de cybersécurité du modèle. De son côté, Claude Fable 5 d'Anthropic a été suspendu par une directive gouvernementale américaine — une première pour un modèle d'IA commercial déployé à grande échelle — après avoir affiché des performances jugées trop élevées sur des benchmarks de cybersécurité offensive.
+
+Dans ce contexte très particulier, Gemini 3.5 Pro se retrouve dans une position presque paradoxale : c'est actuellement le seul grand modèle de frontière à ne faire l'objet d'aucune restriction gouvernementale. Une explication technique avancée pour ce statut repose sur les scores de cybersécurité : Gemini 3.1 Pro, le modèle de production le plus récent de Google avant la sortie de 3.5 Pro, aurait obtenu 70,7 % sur le benchmark Terminal-Bench 2.1, soit plus de dix-huit points de pourcentage en dessous du score obtenu par GPT-5.6 sur son évaluation interne de capture-the-flag.
+
+Ce facteur change en partie la lecture du report de Gemini 3.5 Pro. D'un côté, l'absence de restriction gouvernementale représente un avantage commercial réel pour Google, qui peut continuer à distribuer son modèle le plus avancé sans entrave, là où ses concurrents directs sont freinés par des décisions politiques échappant totalement à leur contrôle. De l'autre, cette situation soulève une question ouverte : que se passera-t-il si Gemini 3.5 Pro, une fois lancé et évalué sur ses propres capacités de cybersécurité, venait à franchir à son tour ce seuil informel encore non écrit officiellement par les autorités américaines ?
+
+Personne, à ce stade, ne peut répondre avec certitude à cette question — pas même, semble-t-il, Google lui-même.
+
+## Un report anodin ou un signal plus profond ?
+
+C'est probablement la question centrale de toute cette histoire, et elle mérite d'être posée avec nuance plutôt qu'avec des conclusions hâtives.
+
+Pris isolément, un report de quelques semaines sur un modèle de fondation n'a strictement rien d'exceptionnel. Gemini Ultra 1.5 avait lui-même connu un report de trois mois en 2026, avant de finir par sortir et de livrer des performances solides. La pratique consistant à promettre une date puis à la manquer légèrement est devenue, il faut bien le reconnaître, un schéma récurrent dans l'industrie tout entière, chez tous les grands laboratoires.
+
+Mais la combinaison des trois éléments — le report, la fuite de talents, et la réaction des marchés — transforme une simple actualité produit en un véritable test de crédibilité pour Google sur la frontière de l'IA.
+
+Si Gemini 3.5 Pro livre effectivement en juillet les capacités promises — fenêtre de contexte de deux millions de tokens, raisonnement Deep Think solide, performances agentiques compétitives face à Claude et GPT — alors juin 2026 restera probablement dans les mémoires comme une mauvaise quinzaine, rapidement oubliée. Si le modèle venait en revanche à décevoir, ou pire, à connaître un nouveau glissement de calendrier, les questions concernant la capacité de Google à retenir ses meilleurs chercheurs et à tenir le rythme de la concurrence deviendraient nettement plus difficiles à balayer d'un revers de main.
+
+## Ce que cela change concrètement pour vous, dès maintenant
+
+Au-delà de l'analyse stratégique, il reste une question très pragmatique : que doit faire, concrètement, un développeur ou un utilisateur qui suit ce dossier ?
+
+La première recommandation, assez évidente, consiste à ne pas construire son calendrier ou son architecture produit en misant sur une date de disponibilité de juillet comme une certitude absolue. Google a déjà manqué deux échéances majeures cette année sur ce dossier précis. Juillet reste, à ce stade, une orientation communiquée en interne — pas un engagement contractuel.
+
+La deuxième recommandation consiste à évaluer honnêtement si vous avez réellement besoin des capacités spécifiques de la version Pro. Pour l'écrasante majorité des usages — rédaction, recherche, support client automatisé, prototypage rapide — Gemini 3.5 Flash, déjà disponible, couvre largement les besoins, à un coût nettement inférieur.
+
+La troisième recommandation concerne la fenêtre de contexte massive annoncée pour Gemini 3.5 Pro. Avant de rebâtir toute une architecture produit autour de ces deux millions de tokens promis, il vaut mieux vérifier que ce besoin est réellement justifié par votre cas d'usage, et que l'équation économique tient la route au tarif annoncé — une charge de travail générant dix millions de tokens de sortie par jour, par exemple, représenterait un coût quotidien de l'ordre de 600 dollars au tarif actuellement évoqué pour la version Pro.
+
+Enfin, il reste utile de surveiller l'actualité des départs de chercheurs chez Google au cours des prochaines semaines. Quatre départs en une semaine constituent un signal notable. Une dizaine de départs supplémentaires sur un mois changerait en revanche complètement la nature de la conversation, et deviendrait un facteur à intégrer sérieusement dans toute réflexion de long terme sur la fiabilité d'une plateforme.
+
+## Ce que cette séquence révèle sur l'industrie de l'IA en 2026
+
+Au-delà du cas spécifique de Google, cette séquence illustre trois transformations structurelles qui touchent désormais l'ensemble de l'industrie de l'IA de frontière.
+
+La première, c'est que la compétition ne se joue plus uniquement sur les benchmarks publiés au moment d'un lancement. Elle se joue aussi, de manière presque continue, sur la rétention des chercheurs capables de produire la prochaine génération de percées. Un laboratoire peut disposer de ressources financières illimitées et perdre malgré tout la course, simplement parce que les personnes qui savent réellement construire ces modèles choisissent d'aller ailleurs.
+
+La deuxième, c'est que la disponibilité d'un modèle dépend désormais de deux couches de décision distinctes : la décision commerciale de l'entreprise qui le développe, et, de plus en plus, la décision réglementaire d'un gouvernement qui évalue ses capacités selon des critères encore largement non écrits. Cette double dépendance introduit un niveau d'incertitude inédit dans la planification produit, pour les entreprises comme pour les développeurs qui construisent au-dessus de ces modèles.
+
+La troisième, enfin, c'est que le narratif compte presque autant que la technologie elle-même sur ce marché. Un report de quelques semaines, en soi, ne change rien aux capacités réelles de Google DeepMind. Mais combiné à une séquence de mauvaises nouvelles, il alimente une perception qui, elle, a des conséquences bien réelles — sur la confiance des investisseurs, sur les choix de plateforme des entreprises clientes, et sur l'attractivité de l'entreprise auprès des meilleurs talents.
+
+## Faut-il vraiment s'inquiéter pour Google ?
+
+La réponse honnête est nuancée, et mérite d'être formulée sans céder ni à la panique ni à la minimisation.
+
+Non, Google ne s'effondre pas. L'entreprise conserve des avantages structurels que ni OpenAI ni Anthropic ne possèdent au même niveau : une puissance de calcul massive et largement internalisée, une distribution sans équivalent à travers Search, Android, Chrome et Workspace, et une activité cloud déjà profondément intégrée chez un nombre considérable d'entreprises clientes. Gemini 3.5 Flash, disponible dès aujourd'hui, démontre par ailleurs que la recherche fondamentale de Google reste solide.
+
+Mais non, il ne s'agit pas non plus d'un non-événement à ignorer complètement. La séquence de juin 2026 constitue le test de crédibilité le plus sérieux que Google ait connu depuis le lancement de la course moderne à l'IA de frontière. Le calendrier a glissé. Des chercheurs emblématiques sont partis vers des concurrents directs. Les marchés ont réagi de manière sévère. Et le lancement de juillet, qui semblait initialement n'être qu'une actualité produit parmi d'autres, est en train de devenir l'un des événements les plus surveillés de toute l'année dans l'industrie de l'IA — non pas tant pour ce que Gemini 3.5 Pro sera capable de faire, mais pour ce que son report a déjà révélé sur la pression que subit actuellement Google.
+
+## FAQ
+
+**Gemini 3.5 Pro est-il déjà disponible en juillet 2026 ?**
+À la date de publication de cet article, non. Google cible une disponibilité générale en juillet 2026, mais aucune date précise n'a été communiquée officiellement, et l'entreprise a déjà manqué son échéance initiale de juin.
+
+**Peut-on tester Gemini 3.5 Pro dès maintenant ?**
+Un accès limité existe via Vertex AI pour certains clients entreprise sélectionnés, ainsi que via les plateformes Antigravity et LMArena. L'accès public grand public n'est en revanche pas encore ouvert.
+
+**Quelle est la différence entre Gemini 3.5 Flash et Gemini 3.5 Pro ?**
+Flash est déjà disponible, plus rapide et moins coûteux, pensé pour le code et les usages agentiques courants. Pro vise des capacités supérieures, avec notamment une fenêtre de contexte de deux millions de tokens et un mode de raisonnement approfondi baptisé Deep Think, destinés aux tâches longues et complexes.
+
+**Pourquoi les départs de chercheurs chez Google font-ils autant parler ?**
+Parce qu'ils concernent des figures particulièrement emblématiques de la recherche en IA — dont un co-auteur du papier fondateur sur l'architecture Transformer et un scientifique associé à un prix Nobel — et qu'ils surviennent au même moment qu'un report de produit et qu'une chute boursière significative.
+
+**Gemini 3.5 Pro risque-t-il d'être restreint par le gouvernement américain, comme d'autres modèles récents ?**
+Aucune restriction n'est actuellement en vigueur sur les modèles Gemini. Le seuil informel appliqué par les autorités américaines semble aujourd'hui lié aux performances en cybersécurité offensive, un domaine sur lequel les modèles Gemini affichent pour l'instant des scores inférieurs à ceux de certains concurrents restreints. Cette situation pourrait toutefois évoluer une fois Gemini 3.5 Pro pleinement évalué.
+
+**Faut-il attendre Gemini 3.5 Pro avant de choisir un modèle IA pour son projet ?**
+Cela dépend entièrement du besoin réel. Pour la majorité des usages courants, les modèles déjà disponibles — Gemini 3.5 Flash inclus — suffisent largement. Attendre ne se justifie que pour des cas d'usage nécessitant spécifiquement une fenêtre de contexte massive ou un raisonnement particulièrement poussé sur des tâches longues.
+
+## Conclusion
+
+Un report de calendrier de quelques semaines n'aurait, à lui seul, jamais mérité une analyse aussi détaillée. Ce qui rend cette histoire réellement intéressante, c'est tout ce qui l'entoure : une fuite de talents vers des concurrents directs, une réaction boursière sévère, et un contexte réglementaire inédit où la disponibilité d'un modèle d'IA dépend désormais autant de décisions gouvernementales que de choix d'ingénierie.
+
+Pour les utilisateurs et les développeurs, le message pratique reste simple : les outils déjà disponibles aujourd'hui couvrent l'immense majorité des besoins, et il n'y a aucune urgence à tout suspendre en attendant un lancement dont la date elle-même reste incertaine. Pour Google, en revanche, l'enjeu dépasse largement Gemini 3.5 Pro. Juillet 2026 est en train de devenir bien plus qu'une date de sortie de produit — c'est le moment où l'entreprise devra démontrer qu'elle reste capable de tenir la frontière de l'IA, sur le terrain technique comme sur le terrain humain.
+
+`,
+  },
+
+  en: {
+    title: "Google Delays Gemini 3.5 Pro to July 2026: Smart Move or Sign of Trouble?",
+
+    desc: "Gemini 3.5 Pro was supposed to ship in June. It's now been pushed to July 2026 — and the delay landed in the same ten-day window as a wave of senior researcher departures to OpenAI and Anthropic and a $225 billion market wipeout. Here's what actually happened, and what it means for the rest of the AI industry.",
+
+    metaTitle: "Gemini 3.5 Pro Delayed to July 2026: Full Breakdown | Neuriflux",
+
+    metaDesc: "Google pushed Gemini 3.5 Pro's launch from June to July 2026. Here's why, what the researcher exodus to OpenAI and Anthropic reveals, and what it means for developers right now.",
+
+    content: `
+
+## The short version: it slipped, and the timing couldn't be worse
+
+Sundar Pichai stood on stage at Google I/O on May 19, 2026, and told the audience Gemini 3.5 Pro would ship "next month." June came. June went. As of the end of the month, there was still no public release.
+
+According to reporting from Business Insider, later confirmed by several other outlets, Google quietly pushed the model's general availability to July 2026, citing the need to fold in more feedback from early testers and sharpen performance on long-horizon and agentic tasks. As of late June, Gemini 3.5 Pro remained locked in a limited Vertex AI enterprise preview, accessible only to a small set of approved customers plus testers on Google's Antigravity platform and the community benchmarking site LMArena.
+
+On its own, a few weeks of slippage on a frontier model launch is genuinely unremarkable. It happens constantly across the industry. What makes this particular delay worth unpacking is everything that happened around it in the same ten-day window: four senior Gemini researchers, including two genuinely historic names in AI research, announced they were leaving for OpenAI and Anthropic — and Alphabet's stock dropped 5% in a single session, wiping out roughly $225 billion in market value.
+
+Individually, none of these three things would be a big story. Stacked together, they raise a much bigger question: can Google actually hold the pace it set for itself at the frontier of AI?
+
+## A precise timeline of what happened
+
+It's worth laying the sequence out cleanly, because the details matter more than the headline.
+
+Google unveiled Gemini 3.5 Pro at I/O on May 19, alongside its faster sibling, Gemini 3.5 Flash. Pichai's framing was unambiguous: Pro was coming in June. Flash, meanwhile, actually shipped to general availability on schedule — and it's been performing well, beating Gemini 3.1 Pro on several coding and agentic benchmarks while running roughly four times faster.
+
+Pro never showed up. It stayed parked in enterprise preview through the entire month. Prediction markets tracking a June 30 release had priced the odds at roughly 50–55%, and by the time the deadline passed with no launch, those bets resolved the other way.
+
+Multiple outlets reported by late June that Google had internally settled on a July target — with no official public statement to that effect. Asked directly about the new timeline, a Google spokesperson "declined to comment." That silence is itself informative: any public confirmation right now would land in the middle of an already uncomfortable news cycle about researcher departures and a market selloff, and Google seems to have decided that saying nothing was the safer option.
+
+## Why Google says the model needs more time
+
+The reasoning behind the delay, as reported, breaks down into three overlapping technical concerns.
+
+First, feedback from early access. The small pool of enterprise customers testing Gemini 3.5 Pro on Vertex AI, along with testers on Antigravity and LMArena, apparently flagged specific gaps in how the model handles long, complex, multi-step tasks — precisely the category of work agentic AI is supposed to be good at.
+
+Second, token efficiency. Some users of the already-shipped Gemini 3.5 Flash reported that the model burns through tokens faster than expected, which can meaningfully inflate costs on long prompts or extended workflows. Google is reportedly working through that issue before it risks compounding it at the larger scale of the Pro tier.
+
+Third, and more structurally important: Gemini 3.5 Pro isn't just a bigger chatbot. It's positioned specifically around long-context reasoning and agentic execution — the exact terrain where competition between frontier labs has become most intense. Shipping a model that underperforms on agent tasks would likely do Google more reputational damage than a few extra weeks of waiting.
+
+That third point is the one worth sitting with. Two years ago, the metric that mattered most was conversational answer quality. Today, the real fight is over whether a model can plan, use tools, hold context across many steps, and actually finish a complex task without constant hand-holding. Seen that way, the delay reads less like a scheduling hiccup and more like an implicit admission: Google would rather lose a few weeks than lose the agentic benchmark race on day one.
+
+## The real story: a researcher exodus with almost no recent precedent
+
+The delay probably wouldn't have become such a big story on its own. What turned it into one was the fact that it landed in the exact same window as an unusually high-profile wave of departures.
+
+Business Insider reported that four senior Gemini researchers announced their exits from Google between June 21 and 27, 2026, headed for OpenAI and Anthropic. Two names in particular stopped the industry in its tracks.
+
+Noam Shazeer — a vice president of engineering on the Gemini team and a co-author of the 2017 paper "Attention Is All You Need," the paper that introduced the Transformer architecture underpinning nearly every large language model in use today — is reportedly leaving for OpenAI.
+
+John Jumper — the Google DeepMind scientist behind AlphaFold, work that helped earn a share of the 2024 Nobel Prize in Chemistry — is reportedly leaving for Anthropic.
+
+Either departure alone would be a headline week for AI research. Both in the same seven days is something else entirely. And it's not an isolated blip: separate reporting indicates Google's AI coding team has lost six researchers over the past five months to Meta, OpenAI, and Anthropic combined.
+
+Losing one well-known researcher is an internal HR conversation. Losing Shazeer and Jumper in the same week is a market event. That's exactly what happened next.
+
+## The market reaction: $225 billion gone in a day
+
+On June 22, 2026, Alphabet shares fell 5% in a single trading session, erasing roughly $225 billion in market value — the stock's sharpest one-day drop in more than a year, according to reporting on the move.
+
+That reaction isn't purely about two resignations. It reflects a broader investor anxiety: that despite its enormous resources, Google may be struggling to hold onto the researchers who have historically defined its position at the front of AI research.
+
+It's worth keeping this in proportion. Google DeepMind still holds real structural advantages — massive in-house compute, distribution through Search, Android, and Workspace that no competitor can match, and a cloud business already embedded across a huge share of enterprises deploying AI. None of that evaporates because of a launch delay or a handful of high-profile exits, however loudly they're covered.
+
+But narrative momentum genuinely matters in this market, and on that front, June 2026 clearly went against Google: Anthropic picked up a Nobel laureate and coding momentum, OpenAI picked up the co-inventor of the Transformer, and Google picked up a delay and a rough couple of weeks of headlines.
+
+## What you can actually use right now: Gemini 3.5 Flash
+
+It would be unfair to reduce Google's current position to bad news alone. While Pro sits in preview, Gemini 3.5 Flash is live, generally available, and by most accounts holding up well.
+
+Flash beats Gemini 3.1 Pro on several coding and agentic benchmarks while running about four times faster. Pricing sits around $1.50 per million input tokens and $9.00 per million output tokens — a rate that tripled compared to the previous Flash tier, a reminder that even the "lightweight" model in this generation isn't cheap to run at scale.
+
+For the vast majority of everyday use cases — writing, research, general Q&A, straightforward automation — Flash already covers what most people and most businesses need. Pro only becomes genuinely necessary for a narrower set of scenarios: massive context windows, deep reasoning over complex multi-step tasks, or analysis across very large codebases or document sets.
+
+In practical terms: if you're not already pushing against those specific limits, the absence of Gemini 3.5 Pro changes essentially nothing about your day-to-day work right now.
+
+## What Gemini 3.5 Pro is actually promising
+
+Some of the anticipation is genuinely earned. Google has confirmed a set of specs for Gemini 3.5 Pro that would be meaningfully differentiated from anything currently on general release.
+
+The headline number is a 2-million-token context window — double what Claude Opus 4.8 offers and larger than nearly every other generally available model. In practice, that means analyzing extremely long documents in one pass, reasoning across an entire codebase rather than isolated snippets, or holding coherent context through multi-session agent workflows that span dozens of steps.
+
+The model also ships with a reasoning mode called Deep Think — Google's answer to the extended-reasoning approach now standard across most frontier labs, conceptually similar to what OpenAI offers with its own deep-reasoning modes.
+
+These aren't just spec-sheet bullet points. They're a direct response to the current ceiling most available models hit on genuinely long, complex work — exactly the kind of task enterprises are trying to hand off to AI agents right now. It's precisely because these promises are ambitious that Google appears to have chosen extra testing time over shipping a shakier version early.
+
+## Where Google actually stands against OpenAI and Anthropic
+
+The delay lands in a market where the competitive picture is shifting fast, and the numbers are worth looking at directly.
+
+According to the "State of AI Report 2026" from market intelligence firm Sensor Tower, ChatGPT held 46% of the global AI assistant market in May 2026, versus 28% for Gemini and 10% for Claude. Sensor Tower's own framing is notable: despite the gap, Gemini has secured more than a quarter of the total market, making it the strongest challenger to ChatGPT — not a distant also-ran.
+
+The more interesting signal is Claude's trajectory in the US specifically, where its share reportedly climbed from 5% last December to 14% by May 2026, driven largely by strength in coding and deep research.
+
+Coding is where the performance gap is most stark right now. A Nikkei report put Claude Mythos 5's score on the SWE-Bench Pro coding benchmark at 80.3%, compared with 58.6% for OpenAI's GPT-5.5 and 55.1% for Google's own Gemini 3.5 Flash — a gap of more than twenty percentage points that Nikkei described as difficult to close in a single model generation.
+
+That context adds real weight to the Gemini 3.5 Pro timeline. The model is meant to be Google's answer on exactly this terrain — complex reasoning and agentic execution — which is currently where the gap with competitors looks widest.
+
+## The regulatory wrinkle nobody's talking about enough
+
+There's another layer to this story that gets far less attention than the researcher exodus, but that's becoming increasingly important in 2026: frontier model availability is no longer purely a business decision. Increasingly, it's a government one.
+
+As of late June 2026, OpenAI's GPT-5.6 remains locked to roughly twenty government-vetted partners, gated by an informal cybersecurity capability threshold. Anthropic's Claude Fable 5 was suspended entirely by a US government directive — the first time a commercially deployed frontier model has been pulled offline this way — after scoring unusually high on offensive cybersecurity benchmarks.
+
+Against that backdrop, Gemini 3.5 Pro currently occupies an almost paradoxical position: it's the only major frontier model not subject to any government restriction at all. The likely technical explanation ties back to cybersecurity scores — Gemini 3.1 Pro, Google's most recent production model, reportedly scored 70.7% on Terminal-Bench 2.1, more than eighteen percentage points below GPT-5.6's score on its internal capture-the-flag evaluation.
+
+This complicates the simple "Google is behind" narrative in an interesting way. On one hand, being free of government gating is a real commercial advantage — Google can keep distributing its most capable model without the friction its direct rivals are currently facing for reasons entirely outside their control. On the other hand, it raises an open question: what happens once Gemini 3.5 Pro actually ships and gets evaluated against the same unwritten cybersecurity threshold that pulled Fable 5 offline and gated GPT-5.6?
+
+Nobody has a confident answer to that yet — including, it seems, Google itself.
+
+## Routine delay, or a deeper signal?
+
+This is probably the central question in the whole story, and it deserves a genuinely balanced answer rather than a hot take in either direction.
+
+Taken in isolation, a few weeks of slippage on a frontier model is nothing unusual. Gemini Ultra 1.5 slipped by three months earlier in 2026 and eventually shipped a strong model. Promising a date and quietly missing it by a bit has become something close to standard practice across every major AI lab at this point.
+
+But stack the delay alongside the researcher departures and the market reaction, and a routine product story becomes something closer to a credibility test. If Gemini 3.5 Pro delivers in July on what's been promised — the 2M context window, solid Deep Think reasoning, agentic performance that's genuinely competitive with Claude and GPT — then June 2026 will likely be remembered as a rough couple of weeks that got quickly forgotten. If it slips again, or underdelivers, the harder questions about Google's ability to retain top research talent and keep pace at the frontier get a lot harder to wave away.
+
+## What this actually means for you, right now
+
+Setting the strategic analysis aside, there's a practical question worth answering directly: what should a developer or everyday user actually do with this information?
+
+First, don't build your roadmap around a July date as a certainty. Google has already missed two major targets on this specific model this year. July is current internal guidance, not a commitment — treat general availability as a bonus event, not a dependency.
+
+Second, be honest about whether you actually need what the Pro tier specifically offers. For the overwhelming majority of use cases — writing, research, customer support automation, quick prototyping — Gemini 3.5 Flash, already available today, covers the need at a meaningfully lower cost.
+
+Third, pressure-test the context-window requirement before you design around it. Before rebuilding a product architecture around the promised 2-million-token window, confirm your use case genuinely needs it and that the economics hold up at the stated pricing — a workload burning 10 million output tokens a day, for instance, would run roughly $600 daily at the currently reported Pro-tier rate.
+
+Fourth, keep an eye on the researcher news over the coming weeks. Four departures in one week is notable. Ten departures over a month would be a fundamentally different conversation, and one worth factoring seriously into any long-term bet on platform reliability.
+
+## What this episode says about the AI industry in 2026
+
+Beyond Google specifically, this sequence points to three structural shifts reshaping the entire frontier AI industry right now.
+
+The first: competition no longer plays out only in benchmark charts at launch time. It plays out continuously in the fight to retain the researchers capable of producing the next breakthrough. A lab can have effectively unlimited capital and still lose ground simply because the people who know how to build these systems choose to build them somewhere else.
+
+The second: model availability now depends on two separate layers of decision-making — the commercial choice made by the company building it, and, increasingly, a regulatory judgment made by a government evaluating capabilities against criteria that remain largely unwritten. That double dependency introduces a genuinely new kind of planning risk, for companies building products on top of these models as much as for the labs themselves.
+
+The third: narrative matters almost as much as the underlying technology in this market. A few weeks of delay doesn't, by itself, change anything about Google DeepMind's actual capabilities. But stacked with a run of bad headlines, it shapes a perception that has real consequences — for investor confidence, for enterprise platform decisions, and for how attractive the company looks to the researchers it's trying to keep.
+
+## So, should you actually be worried about Google?
+
+The honest answer sits in the middle, and it deserves to be stated without tipping into either panic or dismissal.
+
+No, Google isn't collapsing. The company holds structural advantages neither OpenAI nor Anthropic currently matches at the same scale: massive, largely self-owned compute, unmatched distribution through Search, Android, Chrome, and Workspace, and a cloud business already deeply embedded across a huge number of enterprise customers. Gemini 3.5 Flash, live today, is proof the underlying research is still strong.
+
+But no, this isn't a non-event either. The June 2026 sequence is arguably the sharpest credibility test Google has faced since the modern frontier AI race began. The calendar slipped. Emblematic researchers left for direct competitors. Markets reacted hard. And the July launch — which initially looked like just another product update — is quickly becoming one of the most closely watched events in AI this year, not primarily because of what Gemini 3.5 Pro will be able to do, but because of what its delay has already revealed about the pressure Google is currently under.
+
+## FAQ
+
+**Is Gemini 3.5 Pro available yet, as of July 2026?**
+Not to the general public. Google is targeting a July 2026 general availability window, but no exact date has been officially confirmed, and the company already missed its original June target.
+
+**Can I test Gemini 3.5 Pro right now?**
+Limited access exists through Vertex AI for select enterprise customers, plus testing on Google's Antigravity platform and LMArena. Broad public access hasn't opened yet.
+
+**What's the actual difference between Gemini 3.5 Flash and Gemini 3.5 Pro?**
+Flash is already live, faster, and cheaper, built for coding and everyday agentic tasks. Pro targets higher-end capability, with a 2-million-token context window and a Deep Think reasoning mode aimed at long, complex work.
+
+**Why is the Google researcher exodus such a big deal?**
+Because it involves genuinely landmark names in AI research — including a co-author of the paper that introduced the Transformer architecture and a scientist tied to a Nobel Prize — and because it happened in the same window as a product delay and a sharp stock drop.
+
+**Could Gemini 3.5 Pro get restricted by the US government like other recent models?**
+No restrictions currently apply to Gemini models. The informal threshold US authorities appear to be applying is tied to offensive cybersecurity performance, an area where Gemini models currently score lower than some restricted competitors. That could change once Gemini 3.5 Pro is fully evaluated.
+
+**Should I wait for Gemini 3.5 Pro before choosing an AI model for my project?**
+It depends entirely on your actual needs. For most everyday use cases, models already available today — including Gemini 3.5 Flash — are more than sufficient. Waiting only makes sense if you specifically need a massive context window or deep reasoning over genuinely long, complex tasks.
+
+## The bottom line
+
+A few weeks of schedule slippage would never, on its own, deserve this much analysis. What makes this particular story worth understanding is everything wrapped around it: a wave of talent moving to direct competitors, a sharp market reaction, and a genuinely new regulatory backdrop where a frontier model's availability now depends as much on government judgment as on engineering readiness.
+
+For developers and everyday users, the practical takeaway is simple: the tools available today already cover the overwhelming majority of real needs, and there's no reason to put projects on hold waiting for a launch date that remains, by Google's own silence, still uncertain. For Google, though, the stakes go well beyond one model. July 2026 is turning into something bigger than a release date — it's the moment the company will need to prove it can still hold the frontier, on the technical side and on the human one.
+
+`,
+  },
+},
+
 // ─── AI Browser War 2026 ──────────────────────────────────────────────────────
 {
   slug: "ai-browser-war-2026",

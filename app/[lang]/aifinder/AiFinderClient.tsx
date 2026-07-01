@@ -142,6 +142,10 @@ const SCORE = {
   baseUnanswered: 48,
   ratingFactor: 6,
   contextBoost: 14,
+  specializationBoost: 12,
+  semanticOverlapBoost: 8,
+  recencyBoost: 5,
+  frictionPenalty: -10,
   min: 34,
   max: 100,
 } as const;
@@ -159,18 +163,18 @@ const BADGE_BOOST: Record<ToolBadge, number> = {
 const CONTEXTUAL_GOAL_BOOST: Readonly<Record<Goal, ReadonlyArray<string>>> = {
   writing: ["chatgpt", "claude", "jasper", "copyai", "writesonic", "grammarly", "notion"],
   seo: ["semrush", "surferseo", "frase", "perplexity", "jasper", "copyai", "writesonic", "chatgpt", "claude"],
-  video: ["runway", "kling", "pika", "luma", "heygen", "synthesia", "elevenlabs", "descript"],
-  image: ["midjourney", "leonardo", "ideogram", "canva", "firefly", "gemini"],
-  coding: ["cursor", "github-copilot", "replit", "bolt", "v0", "lovable", "chatgpt", "claude", "deepseek", "mistral"],
-  research: ["perplexity", "gemini", "chatgpt", "claude", "deepseek", "grok", "mistral", "huggingface"],
-  automation: ["make", "zapier", "n8n", "chatgpt"],
+  video: ["veo", "runway", "kling", "pika", "luma", "heygen", "synthesia", "elevenlabs", "descript"],
+  image: ["midjourney", "flux", "leonardo", "ideogram", "canva", "firefly", "gemini"],
+  coding: ["claude-code", "cursor", "kilo-code", "cline", "codex-cli", "github-copilot", "replit", "bolt", "v0", "lovable", "chatgpt", "claude", "deepseek", "mistral"],
+  research: ["perplexity", "notebooklm", "gemini", "chatgpt", "claude", "deepseek", "grok", "mistral", "huggingface", "genspark"],
+  automation: ["n8n", "kilo-code", "cline", "codex-cli", "make", "zapier", "chatgpt"],
   business: ["chatgpt", "claude", "gemini", "copilot", "notion", "jasper", "make", "zapier", "canva"],
   social: ["canva", "pika", "suno", "udio", "descript", "midjourney", "heygen", "copyai", "writesonic"],
-  audio: ["elevenlabs", "suno", "udio", "descript"],
+  audio: ["elevenlabs", "cartesia", "suno", "udio", "descript"],
   presentation: ["gamma", "tome", "canva", "copilot", "v0", "lovable", "synthesia"],
   avatar: ["heygen", "synthesia", "runway", "elevenlabs"],
-  local: ["ollama", "huggingface", "n8n", "mistral"],
-  agents: ["n8n", "replit", "bolt", "lovable", "chatgpt", "mistral", "huggingface"],
+  local: ["ollama", "huggingface", "kilo-code", "cline", "n8n", "mistral"],
+  agents: ["claude-code", "kilo-code", "cline", "codex-cli", "n8n", "replit", "bolt", "lovable", "chatgpt", "mistral", "huggingface", "genspark"],
 };
 
 
@@ -1879,6 +1883,382 @@ const TOOLS: Tool[] = [
     fallback: "HF",
     accent: "#facc15",
   },
+  {
+    id: "claude-code",
+    name: "Claude Code",
+    category: "Agentic coding",
+    badge: "Pro Pick",
+    short: {
+      fr: "Le choix premium pour coder avec un agent IA sérieux.",
+      en: "The premium pick for serious agentic coding.",
+    },
+    desc: {
+      fr: "Agent de code pensé pour comprendre un projet, modifier plusieurs fichiers, raisonner sur l’architecture et accélérer les workflows développeur complexes.",
+      en: "A coding agent built to understand projects, modify multiple files, reason about architecture and accelerate complex developer workflows.",
+    },
+    verdict: {
+      fr: "À choisir si vous voulez la meilleure qualité de raisonnement code et que vous acceptez un outil plus orienté développeurs exigeants.",
+      en: "Choose it if you want top-tier coding reasoning quality and accept a tool aimed at demanding developers.",
+    },
+    goals: ["coding", "agents", "automation", "business"],
+    budgets: ["low", "pro", "team"],
+    levels: ["intermediate", "advanced"],
+    priorities: ["quality", "speed", "api", "team"],
+    price: "Paid / Claude plans",
+    rating: 4.8,
+    bestFor: {
+      fr: ["Agents code", "refactor multi-fichiers", "architecture", "debug complexe"],
+      en: ["Coding agents", "multi-file refactors", "architecture", "complex debugging"],
+    },
+    limits: {
+      fr: ["Moins adapté aux débutants complets", "Nécessite de relire les changements"],
+      en: ["Less suited to complete beginners", "Still requires code review"],
+    },
+    review: "/comparatifs/claude-code-vs-cline-vs-kilo-code-2026",
+    affiliate: "https://www.anthropic.com/claude-code",
+    logos: [fav("claude.ai"), fav("anthropic.com"), icon("anthropic")],
+    fallback: "CC",
+    accent: "#d97757",
+    tags: ["agentic coding", "claude", "terminal", "mcp", "refactor", "developer"],
+    popularity: 96,
+    setupMinutes: 12,
+    alternatives: ["Kilo Code", "Cline", "Cursor", "OpenAI Codex CLI"],
+    apiAvailable: true,
+  },
+  {
+    id: "kilo-code",
+    name: "Kilo Code",
+    category: "Open-source coding agent",
+    badge: "Open Source",
+    short: {
+      fr: "L’alternative open source la plus intéressante pour agents de code multi-modèles.",
+      en: "The most interesting open-source alternative for multi-model coding agents.",
+    },
+    desc: {
+      fr: "Agent de code open source orienté IDE, CLI et cloud, avec choix de modèles, logique multi-agents et approche sans lock-in.",
+      en: "An open-source coding agent for IDE, CLI and cloud workflows, with model choice, multi-agent logic and a no-lock-in approach.",
+    },
+    verdict: {
+      fr: "À choisir si vous voulez un agent de code puissant, flexible, open source et plus contrôlable que les solutions fermées.",
+      en: "Choose it if you want a powerful, flexible, open-source coding agent that is more controllable than closed platforms.",
+    },
+    goals: ["coding", "agents", "automation", "local"],
+    budgets: ["free", "low", "pro", "team"],
+    levels: ["intermediate", "advanced"],
+    priorities: ["price", "privacy", "api", "speed"],
+    price: "Open source / BYOK / Cloud",
+    rating: 4.6,
+    bestFor: {
+      fr: ["Agents open source", "VS Code", "JetBrains", "CLI", "multi-modèles"],
+      en: ["Open-source agents", "VS Code", "JetBrains", "CLI", "multi-model workflows"],
+    },
+    limits: {
+      fr: ["Plus technique qu’un assistant grand public", "Qualité dépendante du modèle choisi"],
+      en: ["More technical than consumer assistants", "Quality depends on the selected model"],
+    },
+    review: "/comparatifs/claude-code-vs-cline-vs-kilo-code-2026",
+    affiliate: "https://kilo.ai/",
+    logos: [fav("kilo.ai"), fav("kilocode.ai"), fav("marketplace.visualstudio.com")],
+    fallback: "KC",
+    accent: "#a855f7",
+    tags: ["open source", "agentic coding", "byok", "cli", "jetbrains", "vs code", "local models"],
+    popularity: 91,
+    setupMinutes: 18,
+    alternatives: ["Claude Code", "Cline", "Cursor", "n8n"],
+    freePlan: true,
+    apiAvailable: true,
+  },
+  {
+    id: "cline",
+    name: "Cline",
+    category: "Open-source coding agent",
+    badge: "Open Source",
+    short: {
+      fr: "Un agent open source très solide pour VS Code et terminal.",
+      en: "A very solid open-source agent for VS Code and terminal workflows.",
+    },
+    desc: {
+      fr: "Agent de code capable de lire le projet, éditer des fichiers, lancer des commandes, utiliser le navigateur et travailler avec validation étape par étape.",
+      en: "A coding agent that can read the project, edit files, run commands, use the browser and work with step-by-step approval.",
+    },
+    verdict: {
+      fr: "À choisir si vous voulez garder le contrôle complet sur les actions de l’agent tout en profitant d’un workflow agentique puissant.",
+      en: "Choose it if you want strong control over every agent action while still using a powerful agentic workflow.",
+    },
+    goals: ["coding", "agents", "automation", "local"],
+    budgets: ["free", "low", "pro"],
+    levels: ["intermediate", "advanced"],
+    priorities: ["privacy", "quality", "api", "price"],
+    price: "Open source / Usage billing / BYOK",
+    rating: 4.5,
+    bestFor: {
+      fr: ["VS Code", "terminal", "contrôle manuel", "agents transparents"],
+      en: ["VS Code", "terminal", "manual control", "transparent agents"],
+    },
+    limits: {
+      fr: ["Peut être plus lent qu’un éditeur IA intégré", "Demande une vraie validation utilisateur"],
+      en: ["Can feel slower than integrated AI editors", "Requires real user approval"],
+    },
+    review: "/comparatifs/claude-code-vs-cline-vs-kilo-code-2026",
+    affiliate: "https://cline.bot/",
+    logos: [fav("cline.bot"), fav("github.com")],
+    fallback: "CL",
+    accent: "#10b981",
+    tags: ["open source", "agentic coding", "terminal", "browser", "mcp", "approval"],
+    popularity: 93,
+    setupMinutes: 15,
+    alternatives: ["Kilo Code", "Claude Code", "OpenAI Codex CLI", "Cursor"],
+    freePlan: true,
+    apiAvailable: true,
+  },
+  {
+    id: "codex-cli",
+    name: "OpenAI Codex CLI",
+    category: "Terminal coding agent",
+    badge: "Trending",
+    short: {
+      fr: "L’agent de code OpenAI directement dans le terminal.",
+      en: "OpenAI’s coding agent directly inside the terminal.",
+    },
+    desc: {
+      fr: "Agent local en ligne de commande capable de lire, modifier et exécuter du code dans un répertoire sélectionné.",
+      en: "A local command-line agent that can read, edit and run code inside a selected directory.",
+    },
+    verdict: {
+      fr: "À choisir si vous aimez travailler dans le terminal et voulez un agent rapide, direct et intégré à l’écosystème OpenAI.",
+      en: "Choose it if you like terminal workflows and want a fast, direct agent tied to the OpenAI ecosystem.",
+    },
+    goals: ["coding", "agents", "automation"],
+    budgets: ["low", "pro", "team"],
+    levels: ["intermediate", "advanced"],
+    priorities: ["speed", "quality", "api"],
+    price: "Included in selected ChatGPT plans",
+    rating: 4.6,
+    bestFor: {
+      fr: ["Terminal", "édition locale", "agents code", "workflow développeur"],
+      en: ["Terminal", "local editing", "coding agents", "developer workflow"],
+    },
+    limits: {
+      fr: ["Moins visuel qu’un IDE", "Plan OpenAI requis selon usage"],
+      en: ["Less visual than an IDE", "OpenAI plan required depending on usage"],
+    },
+    review: "/blog/codex-cli-review-2026",
+    affiliate: "https://developers.openai.com/codex/cli",
+    logos: [fav("developers.openai.com"), fav("openai.com"), icon("openai")],
+    fallback: "OX",
+    accent: "#00e6be",
+    tags: ["openai", "codex", "terminal", "rust", "local agent", "developer"],
+    popularity: 90,
+    setupMinutes: 10,
+    alternatives: ["Claude Code", "Cline", "Kilo Code", "Cursor"],
+    apiAvailable: true,
+  },
+  {
+    id: "notebooklm",
+    name: "NotebookLM",
+    category: "AI research",
+    badge: "Best Value",
+    short: {
+      fr: "Excellent pour analyser des documents, sources et notes personnelles.",
+      en: "Excellent for analyzing documents, sources and personal notes.",
+    },
+    desc: {
+      fr: "Très utile pour transformer des PDF, notes, recherches et sources en synthèses, explications et supports réutilisables.",
+      en: "Very useful for turning PDFs, notes, research and sources into summaries, explanations and reusable material.",
+    },
+    verdict: {
+      fr: "À choisir si votre besoin principal est la recherche documentée et la synthèse fiable de sources.",
+      en: "Choose it if your main need is source-grounded research and reliable document synthesis.",
+    },
+    goals: ["research", "writing", "presentation", "business"],
+    budgets: ["free", "low", "pro", "team"],
+    levels: ["beginner", "intermediate", "advanced"],
+    priorities: ["quality", "speed", "price"],
+    price: "Free / Google plans",
+    rating: 4.5,
+    bestFor: {
+      fr: ["Documents", "PDF", "notes", "synthèse", "recherche"],
+      en: ["Documents", "PDFs", "notes", "synthesis", "research"],
+    },
+    limits: {
+      fr: ["Moins adapté à la création visuelle", "Dépend de vos sources"],
+      en: ["Less suited to visual creation", "Depends on your source material"],
+    },
+    review: "/blog/notebooklm-review-2026",
+    affiliate: "https://notebooklm.google/",
+    logos: [fav("notebooklm.google"), fav("google.com"), icon("googlegemini")],
+    fallback: "NL",
+    accent: "#8e75ff",
+    tags: ["research", "documents", "sources", "notes", "google", "summaries"],
+    popularity: 88,
+    setupMinutes: 5,
+    alternatives: ["Perplexity", "Gemini", "Claude", "ChatGPT"],
+    freePlan: true,
+  },
+  {
+    id: "veo",
+    name: "Google Veo",
+    category: "AI video",
+    badge: "Trending",
+    short: {
+      fr: "Le modèle vidéo IA le plus impressionnant pour le réalisme haut de gamme.",
+      en: "The most impressive AI video model for high-end realism.",
+    },
+    desc: {
+      fr: "Très fort pour plans cinématiques, mouvement réaliste, lumière et rendu premium quand la qualité vidéo passe avant tout.",
+      en: "Very strong for cinematic shots, realistic motion, lighting and premium output when video quality matters most.",
+    },
+    verdict: {
+      fr: "À choisir si vous cherchez le potentiel vidéo IA le plus haut de gamme et acceptez un accès plus limité.",
+      en: "Choose it if you want top-end AI video potential and accept more limited access.",
+    },
+    goals: ["video", "social", "business"],
+    budgets: ["pro", "team"],
+    levels: ["intermediate", "advanced"],
+    priorities: ["quality", "creative", "team"],
+    price: "Limited / Google plans",
+    rating: 4.7,
+    bestFor: {
+      fr: ["Vidéo premium", "cinéma", "pub", "réalisme"],
+      en: ["Premium video", "cinema", "ads", "realism"],
+    },
+    limits: {
+      fr: ["Accès encore plus limité", "Pas le meilleur workflow quotidien"],
+      en: ["Still more limited access", "Not the best everyday workflow"],
+    },
+    review: "/comparatifs/kling-vs-veo-vs-runway-2026",
+    affiliate: "https://deepmind.google/technologies/veo/",
+    logos: [fav("deepmind.google"), fav("google.com"), icon("google")],
+    fallback: "V",
+    accent: "#4285f4",
+    tags: ["ai video", "cinematic", "google", "realism", "motion"],
+    popularity: 92,
+    setupMinutes: 20,
+  },
+  {
+    id: "flux",
+    name: "Flux",
+    category: "AI image",
+    badge: "Trending",
+    short: {
+      fr: "Une référence récente pour image IA, photoréalisme et modèles open-weight.",
+      en: "A recent reference for AI image, photorealism and open-weight models.",
+    },
+    desc: {
+      fr: "Très intéressant pour créateurs qui veulent un rendu moderne, flexible et compatible avec de nombreux workflows image.",
+      en: "Very interesting for creators who want modern, flexible output compatible with many image workflows.",
+    },
+    verdict: {
+      fr: "À choisir si vous voulez une alternative puissante à Midjourney avec davantage d’options techniques.",
+      en: "Choose it if you want a strong Midjourney alternative with more technical options.",
+    },
+    goals: ["image", "social", "business", "local"],
+    budgets: ["free", "low", "pro"],
+    levels: ["intermediate", "advanced"],
+    priorities: ["quality", "creative", "privacy", "api"],
+    price: "Free / APIs / Platforms",
+    rating: 4.5,
+    bestFor: {
+      fr: ["Image IA", "photoréalisme", "open-weight", "workflows créatifs"],
+      en: ["AI image", "photorealism", "open-weight", "creative workflows"],
+    },
+    limits: {
+      fr: ["Plus technique selon le mode d’accès", "Moins simple qu’un outil grand public"],
+      en: ["More technical depending on access path", "Less simple than consumer tools"],
+    },
+    review: "/blog/flux-ai-review-2026",
+    affiliate: "https://blackforestlabs.ai/",
+    logos: [fav("blackforestlabs.ai")],
+    fallback: "FX",
+    accent: "#a855f7",
+    tags: ["image", "flux", "open weight", "photorealism", "api"],
+    popularity: 89,
+    setupMinutes: 14,
+    apiAvailable: true,
+  },
+  {
+    id: "cartesia",
+    name: "Cartesia",
+    category: "AI voice",
+    badge: "Trending",
+    short: {
+      fr: "Très fort pour voix IA temps réel, API et applications vocales.",
+      en: "Very strong for real-time AI voice, APIs and voice applications.",
+    },
+    desc: {
+      fr: "Outil à surveiller pour développeurs, agents vocaux, narration rapide, applications audio et workflows temps réel.",
+      en: "A tool to watch for developers, voice agents, fast narration, audio apps and real-time workflows.",
+    },
+    verdict: {
+      fr: "À choisir si votre priorité est la voix rapide, programmable et intégrable dans un produit.",
+      en: "Choose it if your priority is fast, programmable voice that can be integrated into a product.",
+    },
+    goals: ["audio", "avatar", "business", "agents"],
+    budgets: ["free", "low", "pro", "team"],
+    levels: ["intermediate", "advanced"],
+    priorities: ["speed", "api", "quality"],
+    price: "Free / API / Paid",
+    rating: 4.4,
+    bestFor: {
+      fr: ["Voix temps réel", "API", "agents vocaux", "produits audio"],
+      en: ["Real-time voice", "API", "voice agents", "audio products"],
+    },
+    limits: {
+      fr: ["Plus orienté développeurs", "Moins grand public qu’ElevenLabs"],
+      en: ["More developer-oriented", "Less consumer-friendly than ElevenLabs"],
+    },
+    review: "/blog/cartesia-review-2026",
+    affiliate: "https://cartesia.ai/",
+    logos: [fav("cartesia.ai")],
+    fallback: "CA",
+    accent: "#06b6d4",
+    tags: ["voice", "real-time", "api", "agents", "audio"],
+    popularity: 84,
+    setupMinutes: 12,
+    apiAvailable: true,
+  },
+  {
+    id: "genspark",
+    name: "Genspark",
+    category: "AI agents",
+    badge: "New",
+    short: {
+      fr: "Un outil récent à surveiller pour agents, recherche et génération de pages/résultats.",
+      en: "A newer tool to watch for agents, research and generated pages/results.",
+    },
+    desc: {
+      fr: "Intéressant pour explorer l’avenir des agents IA capables de chercher, structurer et produire des résultats plus complets qu’une simple réponse.",
+      en: "Interesting for exploring AI agents that can search, structure and produce richer outputs than a simple answer.",
+    },
+    verdict: {
+      fr: "À choisir si vous voulez tester des workflows agents orientés recherche et production de livrables.",
+      en: "Choose it if you want to test agent workflows focused on research and deliverables.",
+    },
+    goals: ["agents", "research", "business", "automation"],
+    budgets: ["free", "low", "pro"],
+    levels: ["beginner", "intermediate", "advanced"],
+    priorities: ["speed", "quality", "creative"],
+    price: "Free / Paid",
+    rating: 4.2,
+    bestFor: {
+      fr: ["Agents", "recherche", "pages générées", "livrables rapides"],
+      en: ["Agents", "research", "generated pages", "fast deliverables"],
+    },
+    limits: {
+      fr: ["Encore jeune", "À vérifier selon le cas d’usage"],
+      en: ["Still young", "Needs validation depending on use case"],
+    },
+    review: "/blog/genspark-review-2026",
+    affiliate: "https://www.genspark.ai/",
+    logos: [fav("genspark.ai")],
+    fallback: "GS",
+    accent: "#22c55e",
+    tags: ["agents", "research", "generated pages", "automation"],
+    popularity: 78,
+    setupMinutes: 7,
+    freePlan: true,
+  },
+
 ];
 
 /* ============================================================
@@ -1915,7 +2295,7 @@ const COPY = {
     heroSub:
       "Répondez à 4 questions. Neuriflux analyse votre usage, votre budget, votre niveau et votre priorité pour recommander les meilleurs outils IA 2026 — sans bullshit.",
     heroSeoExtra:
-      "Comparez ChatGPT, Claude, Gemini, Midjourney, Runway, n8n, Make, Cursor, ElevenLabs et plus de 50 outils IA en quelques secondes.",
+      "Comparez ChatGPT, Claude, Gemini, Claude Code, Kilo Code, Cline, OpenAI Codex CLI, Midjourney, Veo, Runway, n8n, Make, Cursor, ElevenLabs et plus de 60 outils IA en quelques secondes.",
     heroCta: "Lancer le finder",
     secondaryCta: "Voir les comparatifs",
     proof1: "Sans compte",
@@ -1946,7 +2326,7 @@ const COPY = {
       "Des outils récents, populaires ou en forte croissance à surveiller selon votre profil.",
     methodologyTitle: "Méthode de recommandation",
     methodologyText:
-      "Le score combine l’usage principal, le budget, le niveau, la priorité, la spécialisation réelle de l’outil, sa note éditoriale et quelques bonus contextuels. Le résultat n’est pas une vérité absolue : c’est un raccourci utile pour choisir plus vite.",
+      "Le score combine l’usage principal, le budget, le niveau, la priorité, la spécialisation réelle, le coût de prise en main, les signaux de maturité, les capacités API/open source et la note éditoriale Neuriflux. Le résultat n’est pas une vérité absolue : c’est une recommandation experte pour réduire le bruit et choisir plus vite.",
     independenceTitle: "Indépendance & affiliation",
     independenceText:
       "Certains liens peuvent être affiliés. Cela ne modifie pas le classement : Neuriflux privilégie l’utilité réelle, les limites concrètes, la facilité d’usage et le rapport qualité/prix.",
@@ -2011,7 +2391,7 @@ const COPY = {
       },
       {
         q: "À quelle fréquence la liste est-elle mise à jour ?",
-        a: "Nous mettons la liste à jour à chaque sortie majeure d’un outil et au minimum chaque trimestre. Dernière mise à jour : avril 2026.",
+        a: "Nous mettons la liste à jour à chaque sortie majeure d’un outil et au minimum chaque trimestre. Dernière mise à jour : juillet 2026.",
       },
     ],
   },
@@ -2032,7 +2412,7 @@ const COPY = {
     heroSub:
       "Answer 4 questions. Neuriflux analyzes your use case, budget, skill level and top priority to recommend the best AI tools of 2026 — no bullshit.",
     heroSeoExtra:
-      "Compare ChatGPT, Claude, Gemini, Midjourney, Runway, n8n, Make, Cursor, ElevenLabs and 50+ AI tools in seconds.",
+      "Compare ChatGPT, Claude, Gemini, Claude Code, Kilo Code, Cline, OpenAI Codex CLI, Midjourney, Veo, Runway, n8n, Make, Cursor, ElevenLabs and 60+ AI tools in seconds.",
     heroCta: "Start the finder",
     secondaryCta: "View comparisons",
     proof1: "No account",
@@ -2063,7 +2443,7 @@ const COPY = {
       "Recent, popular or fast-growing tools worth watching depending on your profile.",
     methodologyTitle: "Recommendation method",
     methodologyText:
-      "The score combines your main use case, budget, skill level, top priority, each tool’s real specialization, editorial rating and contextual bonuses. It is not an absolute truth: it is a practical shortcut to choose faster.",
+      "The score combines your main use case, budget, skill level, top priority, real specialization, setup friction, maturity signals, API/open-source capabilities and the Neuriflux editorial rating. It is not an absolute truth: it is an expert shortcut to cut through noise and choose faster.",
     independenceTitle: "Independence & affiliation",
     independenceText:
       "Some links may be affiliate links. This does not change the ranking: Neuriflux prioritizes usefulness, real limitations, ease of use and value for money.",
@@ -2128,7 +2508,7 @@ const COPY = {
       },
       {
         q: "How often is the list updated?",
-        a: "We update the list on every major tool release and at least every quarter. Last update: April 2026.",
+        a: "We update the list on every major tool release and at least every quarter. Last update: July 2026.",
       },
     ],
   },
@@ -2235,52 +2615,129 @@ function getBadgeBoost(badge?: ToolBadge): number {
   return badge ? (BADGE_BOOST[badge] ?? 0) : 0;
 }
 
-/** Pure scoring: only depends on `answers`. */
+const BUDGET_RANK: Record<Budget, number> = { free: 0, low: 1, pro: 2, team: 3 };
+const LEVEL_RANK: Record<Level, number> = { beginner: 0, intermediate: 1, advanced: 2 };
+
+function scoreBudgetFit(tool: Tool, budget?: Budget): number {
+  if (!budget) return 0;
+  if (tool.budgets.includes(budget)) return SCORE.budgetHit;
+  const requested = BUDGET_RANK[budget];
+  const closest = Math.min(...tool.budgets.map((b) => Math.abs(BUDGET_RANK[b] - requested)));
+  if (budget === "free" && !getFreePlan(tool)) return -26;
+  if (closest === 1) return -5;
+  return SCORE.budgetMiss - closest * 3;
+}
+
+function scoreLevelFit(tool: Tool, level?: Level): number {
+  if (!level) return 0;
+  if (tool.levels.includes(level)) return SCORE.levelHit;
+  const requested = LEVEL_RANK[level];
+  const closest = Math.min(...tool.levels.map((l) => Math.abs(LEVEL_RANK[l] - requested)));
+  if (level === "beginner" && closest >= 2) return -16;
+  if (closest === 1) return -4;
+  return SCORE.levelMiss;
+}
+
+function getSemanticOverlap(tool: Tool, goal?: Goal, priority?: Priority): number {
+  const tags = new Set(getToolTags(tool).map((tag) => tag.toLowerCase()));
+  const wanted = [
+    ...(goal ? GOAL_SEMANTIC_TAGS[goal] ?? [] : []),
+    ...(priority ? PRIORITY_SEMANTIC_TAGS[priority] ?? [] : []),
+  ].map((tag) => tag.toLowerCase());
+  const hits = wanted.filter((tag) => tags.has(tag) || Array.from(tags).some((t) => t.includes(tag) || tag.includes(t))).length;
+  return Math.min(SCORE.semanticOverlapBoost, hits * 2);
+}
+
+function getSpecializationBoost(tool: Tool, goal?: Goal): number {
+  if (!goal || !tool.goals.includes(goal)) return 0;
+  const position = tool.goals.indexOf(goal);
+  const narrowness = Math.max(0, 5 - tool.goals.length);
+  return Math.max(2, SCORE.specializationBoost - position * 3 + narrowness);
+}
+
+function getPrioritySynergy(tool: Tool, priority?: Priority): number {
+  if (!priority) return 0;
+  if (priority === "privacy" && (tool.badge === "Open Source" || tool.goals.includes("local"))) return 12;
+  if (priority === "api" && (tool.apiAvailable || tool.priorities.includes("api"))) return 10;
+  if (priority === "price" && getFreePlan(tool)) return 10;
+  if (priority === "team" && tool.budgets.includes("team")) return 8;
+  if (priority === "speed" && (tool.setupMinutes ?? 99) <= 10) return 6;
+  return tool.priorities.includes(priority) ? 4 : 0;
+}
+
+function getFrictionPenalty(tool: Tool, answers: Answers): number {
+  const setup = tool.setupMinutes ?? 12;
+  let penalty = 0;
+  if (answers.level === "beginner" && setup > 20) penalty += 10;
+  if (answers.level === "beginner" && tool.badge === "Open Source" && !tool.levels.includes("beginner")) penalty += 6;
+  if (answers.priority === "speed" && setup > 18) penalty += 6;
+  if (answers.priority === "team" && !tool.budgets.includes("team")) penalty += 8;
+  if (answers.priority === "privacy" && !tool.priorities.includes("privacy") && !tool.goals.includes("local") && tool.badge !== "Open Source") penalty += 8;
+  return -penalty;
+}
+
+/** Pure scoring: only depends on `answers`. Expert v2 ranking engine. */
 function computeScores(answers: Answers): Array<Omit<ScoredTool, "reasons"> & { _contextBoost: number; _matches: Record<StepId, boolean> }> {
   const answered = (Object.values(answers).filter(Boolean) as string[]).length;
 
   return TOOLS.map((tool) => {
     const goalMatch = has<Goal>(answers.goal, tool.goals);
-    const budgetMatch = has<Budget>(answers.budget, tool.budgets);
+    const budgetMatch = has<Budget>(answers.budget, tool.budgets) || (answers.budget === "free" && getFreePlan(tool));
     const levelMatch = has<Level>(answers.level, tool.levels);
     const priorityMatch = has<Priority>(answers.priority, tool.priorities);
 
     const goalScore = !answers.goal ? 0 : goalMatch ? SCORE.goalHit : SCORE.goalMiss;
-    const budgetScore = !answers.budget ? 0 : budgetMatch ? SCORE.budgetHit : SCORE.budgetMiss;
-    const levelScore = !answers.level ? 0 : levelMatch ? SCORE.levelHit : SCORE.levelMiss;
+    const budgetScore = scoreBudgetFit(tool, answers.budget);
+    const levelScore = scoreLevelFit(tool, answers.level);
     const priorityScore = !answers.priority ? 0 : priorityMatch ? SCORE.priorityHit : SCORE.priorityMiss;
 
     const contextBoost = getContextualGoalBoost(tool, answers.goal);
+    const specializationBoost = getSpecializationBoost(tool, answers.goal);
+    const semanticBoost = getSemanticOverlap(tool, answers.goal, answers.priority);
+    const prioritySynergy = getPrioritySynergy(tool, answers.priority);
     const badgeBoost = getBadgeBoost(tool.badge);
     const ratingBoost = Math.round((tool.rating - 4) * SCORE.ratingFactor);
-    const authorityScore = contextBoost + badgeBoost + ratingBoost;
+    const popularityBoost = Math.round(((tool.popularity ?? 72) - 70) / 10);
+    const recencyBoost = tool.badge === "New" || tool.badge === "Trending" ? SCORE.recencyBoost : 0;
+    const frictionPenalty = getFrictionPenalty(tool, answers);
 
+    const authorityScore = contextBoost + specializationBoost + semanticBoost + prioritySynergy + badgeBoost + ratingBoost + popularityBoost + recencyBoost;
     const base = answered === 0 ? SCORE.baseUnanswered + Math.round(tool.rating * SCORE.ratingFactor) + badgeBoost : SCORE.baseAnswered;
-    const rawScore = base + goalScore + budgetScore + levelScore + priorityScore + authorityScore;
+    const rawScore = base + goalScore + budgetScore + levelScore + priorityScore + authorityScore + frictionPenalty;
     const score = Math.max(SCORE.min, Math.min(SCORE.max, rawScore));
+
+    const fitCompleteness = [goalMatch, budgetMatch, levelMatch, priorityMatch].filter(Boolean).length;
+    const confidence = Math.max(58, Math.min(99, Math.round(score - 4 + fitCompleteness * 4 + answered)));
 
     return {
       ...tool,
       score,
-      confidence: Math.max(54, Math.min(98, Math.round(score - 3 + answered * 2))),
+      confidence,
       semanticTags: getToolTags(tool),
       breakdown: {
-        goal: Math.max(0, goalScore + contextBoost),
+        goal: Math.max(0, goalScore + contextBoost + specializationBoost + semanticBoost),
         budget: Math.max(0, budgetScore),
         level: Math.max(0, levelScore),
-        priority: Math.max(0, priorityScore),
-        authority: Math.max(0, badgeBoost + ratingBoost),
+        priority: Math.max(0, priorityScore + prioritySynergy),
+        authority: Math.max(0, badgeBoost + ratingBoost + popularityBoost + recencyBoost),
       },
-      _contextBoost: contextBoost,
+      _contextBoost: contextBoost + specializationBoost + semanticBoost,
       _matches: { goal: goalMatch, budget: budgetMatch, level: levelMatch, priority: priorityMatch },
     };
-  }).sort((a, b) => b.score - a.score || b.rating - a.rating || a.name.localeCompare(b.name));
+  }).sort((a, b) =>
+    b.score - a.score ||
+    b.confidence - a.confidence ||
+    (b.popularity ?? 0) - (a.popularity ?? 0) ||
+    b.rating - a.rating ||
+    a.name.localeCompare(b.name),
+  );
 }
 
 /** Adds localized `reasons` (depends only on `lang`). */
 function attachReasons(
   scored: ReturnType<typeof computeScores>,
   lang: Lang,
+  answers: Answers,
 ): ScoredTool[] {
   return scored.map((tool) => {
     const reasons: string[] = [];
@@ -2295,6 +2752,16 @@ function attachReasons(
       reasons.push(lang === "fr" ? "Aligné avec votre priorité" : "Matches your top priority");
     if (tool._contextBoost > 0)
       reasons.push(lang === "fr" ? "Très spécialisé pour ce cas d’usage" : "Highly specialized for this use case");
+    if (answers.priority === "privacy" && (tool.badge === "Open Source" || tool.goals.includes("local")))
+      reasons.push(lang === "fr" ? "Bon choix si la confidentialité compte" : "Good pick when privacy matters");
+    if (answers.priority === "api" && (tool.apiAvailable || tool.priorities.includes("api")))
+      reasons.push(lang === "fr" ? "Compatible avec des workflows API ou intégrations" : "Fits API and integration workflows");
+    if (answers.budget === "free" && getFreePlan(tool))
+      reasons.push(lang === "fr" ? "Peut démarrer sans budget" : "Can start without a budget");
+    if (answers.budget === "team" && tool.budgets.includes("team"))
+      reasons.push(lang === "fr" ? "Pensé pour les équipes ou usages avancés" : "Built for teams or advanced workflows");
+    if (answers.level === "beginner" && (tool.setupMinutes ?? 99) <= 10)
+      reasons.push(lang === "fr" ? "Prise en main rapide" : "Fast to get started");
 
     const finalReasons = reasons.length
       ? reasons.slice(0, 5)
@@ -2377,11 +2844,11 @@ function Badge({ value, accent }: { value?: ToolBadge; accent: string }) {
 }
 
 
-function DisabledReviewButton({ label }: { label: string }) {
+function ReviewLinkButton({ href, label }: { href: string; label: string }) {
   return (
-    <button type="button" className="btn btn-s btn-small review-disabled" disabled aria-disabled="true">
+    <Link href={href} className="btn btn-s btn-small review-link">
       {label}
-    </button>
+    </Link>
   );
 }
 
@@ -2516,6 +2983,221 @@ function PopularSearches({ lang }: { lang: Lang }) {
   );
 }
 
+
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReduced(media.matches);
+    sync();
+    media.addEventListener?.("change", sync);
+    return () => media.removeEventListener?.("change", sync);
+  }, []);
+
+  return reduced;
+}
+
+function CursorGlow() {
+  const reduced = usePrefersReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (reduced) return;
+    const move = (e: PointerEvent) => {
+      if (!ref.current) return;
+      ref.current.style.setProperty("--mx", `${e.clientX}px`);
+      ref.current.style.setProperty("--my", `${e.clientY}px`);
+    };
+    window.addEventListener("pointermove", move, { passive: true });
+    return () => window.removeEventListener("pointermove", move);
+  }, [reduced]);
+
+  if (reduced) return null;
+  return <div ref={ref} className="cursor-glow" aria-hidden="true" />;
+}
+
+function getAnswerLabels(lang: Lang, answers: Answers) {
+  const steps = getSteps(lang);
+  const labels: Partial<Record<StepId, string>> = {};
+  steps.forEach((step) => {
+    const value = answers[step.id];
+    if (!value) return;
+    const match = step.options.find(([key]) => key === value);
+    if (match) labels[step.id] = match[1];
+  });
+  return labels;
+}
+
+function ExpertPreviewStrip({ lang }: { lang: Lang }) {
+  const items = lang === "fr"
+    ? [
+        ["50+", "outils analysés"],
+        ["4", "critères décisifs"],
+        ["<60s", "pour choisir"],
+        ["100%", "indépendant"],
+      ]
+    : [
+        ["50+", "tools analyzed"],
+        ["4", "decision signals"],
+        ["<60s", "to choose"],
+        ["100%", "independent"],
+      ];
+
+  return (
+    <div className="expert-preview" aria-label={lang === "fr" ? "Résumé AI Finder" : "AI Finder summary"}>
+      {items.map(([value, label]) => (
+        <div key={label}>
+          <strong>{value}</strong>
+          <span>{label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ProfileSummary({ answers, lang }: { answers: Answers; lang: Lang }) {
+  const labels = getAnswerLabels(lang, answers);
+  const rows: Array<[StepId, string]> = [
+    ["goal", lang === "fr" ? "Besoin" : "Goal"],
+    ["budget", lang === "fr" ? "Budget" : "Budget"],
+    ["level", lang === "fr" ? "Niveau" : "Level"],
+    ["priority", lang === "fr" ? "Priorité" : "Priority"],
+  ];
+
+  return (
+    <div className="profile-summary" aria-label={lang === "fr" ? "Profil analysé" : "Analyzed profile"}>
+      <div className="profile-head">
+        <span>{lang === "fr" ? "Profil analysé" : "Analyzed profile"}</span>
+        <strong>{Object.values(answers).filter(Boolean).length}/4</strong>
+      </div>
+      <div className="profile-grid">
+        {rows.map(([key, label]) => (
+          <div key={key} className={labels[key] ? "filled" : ""}>
+            <small>{label}</small>
+            <b>{labels[key] ?? (lang === "fr" ? "À définir" : "Pending")}</b>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MatchRadar({ tool, lang }: { tool: ScoredTool; lang: Lang }) {
+  const items = [
+    [lang === "fr" ? "Usage" : "Use case", tool.breakdown.goal],
+    ["Budget", tool.breakdown.budget],
+    [lang === "fr" ? "Niveau" : "Level", tool.breakdown.level],
+    [lang === "fr" ? "Priorité" : "Priority", tool.breakdown.priority],
+    [lang === "fr" ? "Signal" : "Signal", tool.breakdown.authority],
+  ] as const;
+  const max = Math.max(...items.map(([, value]) => value), 1);
+
+  return (
+    <div className="match-radar" style={{ "--accent": tool.accent } as CSSVars}>
+      <div className="radar-title">
+        <span>{lang === "fr" ? "Analyse expert" : "Expert analysis"}</span>
+        <strong>{tool.confidence}% {lang === "fr" ? "confiance" : "confidence"}</strong>
+      </div>
+      <div className="radar-bars">
+        {items.map(([label, value]) => (
+          <div key={label} className="radar-row">
+            <span>{label}</span>
+            <i><b style={{ width: `${Math.max(8, Math.round((value / max) * 100))}%` }} /></i>
+            <strong>+{value}</strong>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ExpertDecisionPanel({ winner, results, answers, lang }: { winner?: ScoredTool; results: ScoredTool[]; answers: Answers; lang: Lang }) {
+  if (!winner) return null;
+  const runnerUp = results[1];
+  const budgetRisk = answers.budget === "free" && !getFreePlan(winner);
+  const alternatives = results.slice(1, 4).map((tool) => tool.name).join(" · ");
+
+  return (
+    <section className="expert-decision" aria-label={lang === "fr" ? "Décision expert" : "Expert decision"}>
+      <div className="decision-main">
+        <div className="decision-kicker">Neuriflux Intelligence</div>
+        <h3>{lang === "fr" ? "Ce que l’AI Finder vous recommande vraiment" : "What the AI Finder actually recommends"}</h3>
+        <p>
+          {lang === "fr"
+            ? `${winner.name} ressort comme le meilleur choix pour votre profil, mais le résultat tient aussi compte des compromis : budget, niveau, spécialisation et limites réelles.`
+            : `${winner.name} comes out as the strongest pick for your profile, but the result also accounts for trade-offs: budget, skill level, specialization and real limitations.`}
+        </p>
+      </div>
+      <div className="decision-cards">
+        <div>
+          <small>{lang === "fr" ? "Meilleur choix" : "Best match"}</small>
+          <strong>{winner.name}</strong>
+          <span>{winner.score}%</span>
+        </div>
+        {runnerUp ? (
+          <div>
+            <small>{lang === "fr" ? "Alternative sérieuse" : "Strong alternative"}</small>
+            <strong>{runnerUp.name}</strong>
+            <span>{runnerUp.score}%</span>
+          </div>
+        ) : null}
+        <div className={budgetRisk ? "warn" : ""}>
+          <small>{lang === "fr" ? "Risque budget" : "Budget risk"}</small>
+          <strong>{budgetRisk ? (lang === "fr" ? "À vérifier" : "Check pricing") : (lang === "fr" ? "Compatible" : "Compatible")}</strong>
+          <span>{getFreePlan(winner) ? (lang === "fr" ? "gratuit" : "free") : winner.price}</span>
+        </div>
+      </div>
+      <div className="decision-foot">
+        <span>{lang === "fr" ? "Autres options à comparer" : "Other options to compare"}: {alternatives}</span>
+      </div>
+    </section>
+  );
+}
+
+function ExpertPlaybook({ results, answers, lang }: { results: ScoredTool[]; answers: Answers; lang: Lang }) {
+  const winner = results[0];
+  if (!winner) return null;
+  const labels = getAnswerLabels(lang, answers);
+  const steps = lang === "fr"
+    ? [
+        `Testez ${winner.name} sur un vrai cas d’usage ${labels.goal ? `(${labels.goal})` : "prioritaire"}.`,
+        "Comparez le résultat avec l’alternative n°2 avant de payer.",
+        "Vérifiez les limites : confidentialité, coût, workflow et export.",
+        "Gardez seulement l’outil qui vous fait gagner du temps chaque semaine.",
+      ]
+    : [
+        `Test ${winner.name} on one real ${labels.goal ? `(${labels.goal})` : "priority"} workflow.`,
+        "Compare the output with the #2 alternative before paying.",
+        "Check the limits: privacy, cost, workflow and export options.",
+        "Keep only the tool that saves you time every week.",
+      ];
+
+  return (
+    <section className="expert-playbook" aria-labelledby="expert-playbook-heading">
+      <div>
+        <div className="stag">{lang === "fr" ? "Plan d’action" : "Action plan"}</div>
+        <h2 id="expert-playbook-heading" className="stitle">
+          {lang === "fr" ? "Comment valider le bon outil sans perdre une semaine" : "How to validate the right tool without wasting a week"}
+        </h2>
+        <p className="ssub">
+          {lang === "fr"
+            ? "Le score donne une direction. La validation finale doit se faire sur votre vrai workflow."
+            : "The score gives direction. Final validation should happen on your real workflow."}
+        </p>
+      </div>
+      <div className="playbook-grid">
+        {steps.map((step, index) => (
+          <div key={step} className="playbook-step">
+            <span>0{index + 1}</span>
+            <p>{step}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 /* ============================================================
  * Main component
  * ============================================================ */
@@ -2544,7 +3226,7 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
 
   /* --------- Two-stage memo: scoring is lang-independent --------- */
   const rawScored = useMemo(() => computeScores(answers), [answers]);
-  const results = useMemo(() => attachReasons(rawScored, lang), [rawScored, lang]);
+  const results = useMemo(() => attachReasons(rawScored, lang, answers), [rawScored, lang, answers]);
 
   const answeredCount = useMemo(
     () => (Object.values(answers).filter(Boolean) as string[]).length,
@@ -3118,6 +3800,52 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
         button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
         h2:focus-visible { outline: none; }
 
+
+        .bg-noise { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .055; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E"); }
+        .cursor-glow { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 20%), rgba(0,230,190,.065), transparent 44%); mix-blend-mode: screen; }
+        .expert-preview { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: .65rem; width: min(760px, 100%); margin-top: 1.1rem; }
+        .expert-preview div { border: 1px solid var(--border); background: rgba(255,255,255,.035); border-radius: 14px; padding: .85rem .9rem; box-shadow: inset 0 1px 0 rgba(255,255,255,.035); }
+        .expert-preview strong { display: block; font-family: var(--d); font-size: 1.15rem; letter-spacing: -.04em; color: var(--cyan); line-height: 1; }
+        .expert-preview span { display: block; margin-top: .32rem; font-family: var(--m); font-size: .58rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+        @media (max-width: 680px) { .expert-preview { grid-template-columns: repeat(2, 1fr); } }
+        .profile-summary { border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.018)); padding: 1rem; margin-bottom: 1rem; }
+        .profile-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: .8rem; font-family: var(--m); font-size: .62rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+        .profile-head strong { color: var(--cyan); }
+        .profile-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .55rem; }
+        @media (max-width: 760px) { .profile-grid { grid-template-columns: repeat(2, 1fr); } }
+        .profile-grid div { border: 1px solid rgba(255,255,255,.06); background: rgba(8,12,16,.38); border-radius: 12px; padding: .7rem; }
+        .profile-grid div.filled { border-color: rgba(0,230,190,.18); background: rgba(0,230,190,.045); }
+        .profile-grid small { display: block; font-family: var(--m); font-size: .56rem; color: var(--dim); text-transform: uppercase; letter-spacing: .07em; margin-bottom: .22rem; }
+        .profile-grid b { display: block; font-size: .78rem; line-height: 1.3; color: var(--text); }
+        .expert-decision { border: 1px solid rgba(0,230,190,.18); border-radius: 18px; background: radial-gradient(circle at 12% 0%, rgba(0,230,190,.10), transparent 38%), linear-gradient(145deg, rgba(17,24,32,.98), rgba(8,12,16,.92)); padding: 1.15rem; margin: 1rem 0; box-shadow: 0 18px 60px rgba(0,0,0,.28); }
+        .decision-kicker { font-family: var(--m); font-size: .58rem; color: var(--cyan); text-transform: uppercase; letter-spacing: .14em; margin-bottom: .35rem; }
+        .decision-main h3 { font-size: clamp(1.05rem, 2vw, 1.35rem); letter-spacing: -.035em; margin-bottom: .35rem; }
+        .decision-main p, .decision-foot { font-family: var(--m); font-size: .72rem; line-height: 1.75; color: var(--muted); }
+        .decision-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; margin: 1rem 0 .8rem; }
+        @media (max-width: 800px) { .decision-cards { grid-template-columns: 1fr; } }
+        .decision-cards div { border: 1px solid var(--border); border-radius: 14px; background: rgba(255,255,255,.035); padding: .8rem; }
+        .decision-cards div.warn { border-color: rgba(245,158,11,.35); background: rgba(245,158,11,.06); }
+        .decision-cards small { display: block; font-family: var(--m); font-size: .55rem; text-transform: uppercase; letter-spacing: .08em; color: var(--dim); margin-bottom: .22rem; }
+        .decision-cards strong { display: block; font-size: .9rem; color: var(--text); }
+        .decision-cards span { display: inline-block; margin-top: .24rem; font-family: var(--m); font-size: .64rem; color: var(--cyan); }
+        .match-radar { border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent); border-radius: 16px; background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 7%, transparent), rgba(255,255,255,.02)); padding: 1rem; margin: 1rem 0; }
+        .radar-title { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-bottom: .75rem; }
+        .radar-title span { font-family: var(--m); font-size: .58rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+        .radar-title strong { font-family: var(--m); font-size: .68rem; color: var(--accent); }
+        .radar-bars { display: grid; gap: .5rem; }
+        .radar-row { display: grid; grid-template-columns: 88px 1fr 38px; align-items: center; gap: .65rem; }
+        .radar-row span, .radar-row strong { font-family: var(--m); font-size: .62rem; color: var(--muted); }
+        .radar-row strong { color: var(--accent); text-align: right; }
+        .radar-row i { height: 6px; border-radius: 999px; background: rgba(255,255,255,.06); overflow: hidden; }
+        .radar-row b { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 45%, #fff)); box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 30%, transparent); }
+        .expert-playbook { border: 1px solid var(--border); border-radius: 18px; background: var(--bg2); padding: 1.4rem; margin-top: 2rem; }
+        .playbook-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem; margin-top: 1rem; }
+        @media (max-width: 900px) { .playbook-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 560px) { .playbook-grid { grid-template-columns: 1fr; } }
+        .playbook-step { border: 1px solid rgba(255,255,255,.07); background: rgba(255,255,255,.03); border-radius: 14px; padding: .9rem; }
+        .playbook-step span { display: inline-flex; font-family: var(--m); font-size: .58rem; color: #071018; background: var(--cyan); border-radius: 999px; padding: 3px 8px; font-weight: 800; margin-bottom: .6rem; }
+        .playbook-step p { font-family: var(--m); font-size: .69rem; color: var(--muted); line-height: 1.7; }
+
         @media (prefers-reduced-motion: reduce) {
           *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
         }
@@ -3126,6 +3854,8 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
       <a href="#main-content" className="skip-link">{t.skipLink}</a>
       <div className="bg-grid" aria-hidden="true" />
       <div className="bg-glow" aria-hidden="true" />
+      <div className="bg-noise" aria-hidden="true" />
+      <CursorGlow />
 
       <nav className={`site-nav${scrolled ? " scrolled" : ""}`} aria-label={t.menu}>
         <Link
@@ -3212,7 +3942,7 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
               {t.h1a} <em>{t.h1b}</em> {t.h1c}
             </h1>
 
-            <div className="hero-fresh">✦ {lang === "fr" ? "Dernière mise à jour : avril 2026" : "Last updated: April 2026"}</div>
+            <div className="hero-fresh">✦ {lang === "fr" ? "Dernière mise à jour : juillet 2026" : "Last updated: July 2026"}</div>
             <p className="hero-sub">{t.heroSub}</p>
             <p className="sr-only">{t.heroSeoExtra}</p>
 
@@ -3234,6 +3964,8 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
                 <span key={p} role="listitem">✓ {p}</span>
               ))}
             </div>
+
+            <ExpertPreviewStrip lang={lang} />
           </div>
         </section>
 
@@ -3243,6 +3975,7 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
 
           <div className="finder-grid">
             <div className="panel">
+              <ProfileSummary answers={answers} lang={lang} />
               {!finished ? (
                 <div className="question">
                   <div className="topline">
@@ -3316,6 +4049,8 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
                       </button>
                     </div>
                   </div>
+
+                  <ExpertDecisionPanel winner={winner} results={results} answers={answers} lang={lang} />
 
                   {winner && (
                     <article
@@ -3407,10 +4142,12 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
                         >
                           {t.visit} →
                         </a>
-                        <DisabledReviewButton label={lang === "fr" ? "Avis bientôt disponible" : "Review coming soon"} />
+                        <ReviewLinkButton href={l(winner.review)} label={t.review} />
                       </div>
                     </article>
                   )}
+
+                  {winner && <MatchRadar tool={winner} lang={lang} />}
 
                   <div className="alts-tag">{t.alternatives}</div>
 
@@ -3474,7 +4211,7 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
                         >
                           {t.visit}
                         </a>
-                        <DisabledReviewButton label={lang === "fr" ? "Avis bientôt disponible" : "Review coming soon"} />
+                        <ReviewLinkButton href={l(tool.review)} label={t.review} />
                       </div>
                     </article>
                   ))}
@@ -3542,6 +4279,8 @@ export default function AiFinderClient({ lang }: { lang: Lang }) {
           </section>
 
           <ComparisonTable tools={results} lang={lang} />
+
+          <ExpertPlaybook results={results} answers={answers} lang={lang} />
 
           <PopularSearches lang={lang} />
 

@@ -363,6 +363,7 @@ export default async function ArticlePage({
       <Suspense fallback={null}>
         <ArticleClient lang={lang} slug={canonicalSlug} />
       </Suspense>
-    </>
-  );
+
+        </>
+  ); 
 }
