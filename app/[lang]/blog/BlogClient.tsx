@@ -61,6 +61,9 @@ const isNew = (date: string): boolean => {
   return (Date.now() - time) / 86_400_000 <= 12;
 };
 
+type ArticleKind = "Review" | "Comparison" | "Guide" | "News" | "Tutorial" | "Analysis";
+type Difficulty = "Beginner" | "Intermediate" | "Expert";
+
 const TRENDING = new Set([
   "ia-2026",
   "prompts-ia-2026",
@@ -71,12 +74,97 @@ const TRENDING = new Set([
   "grok-review-2026",
 ]);
 
-const FAKE_VIEWS: Record<string, number> = Object.fromEntries(
-  ARTICLES.map((article) => [
-    article.slug,
-    (article.slug.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) % 1800) + 400,
-  ])
-);
+const ENTITY_LOGOS: Record<string, { label: string; color: string; aliases: string[] }> = {
+  chatgpt: { label: "ChatGPT", color: "#00e6be", aliases: ["chatgpt", "openai", "gpt", "dall", "sora", "codex"] },
+  claude: { label: "Claude", color: "#d97757", aliases: ["claude", "anthropic", "opus", "sonnet", "haiku", "claude code"] },
+  gemini: { label: "Gemini", color: "#8e75ff", aliases: ["gemini", "google ai", "veo", "imagen", "notebooklm"] },
+  perplexity: { label: "Perplexity", color: "#20b8cd", aliases: ["perplexity"] },
+  grok: { label: "Grok", color: "#ffffff", aliases: ["grok", "xai", "x.ai"] },
+  deepseek: { label: "DeepSeek", color: "#4d6bff", aliases: ["deepseek"] },
+  cursor: { label: "Cursor", color: "#ffffff", aliases: ["cursor"] },
+  cline: { label: "Cline", color: "#3b82f6", aliases: ["cline"] },
+  kilo: { label: "Kilo Code", color: "#22c55e", aliases: ["kilo code", "kilocode"] },
+  runway: { label: "Runway", color: "#a855f7", aliases: ["runway"] },
+  kling: { label: "Kling", color: "#38bdf8", aliases: ["kling"] },
+  midjourney: { label: "Midjourney", color: "#a855f7", aliases: ["midjourney"] },
+  elevenlabs: { label: "ElevenLabs", color: "#22c55e", aliases: ["elevenlabs", "voice", "tts"] },
+  n8n: { label: "n8n", color: "#ff4a00", aliases: ["n8n"] },
+  make: { label: "Make", color: "#6366f1", aliases: ["make"] },
+  zapier: { label: "Zapier", color: "#ff4f00", aliases: ["zapier"] },
+};
+
+const readMinutes = (article: Article): number => {
+  const value = Number(article.timeMin);
+  return Number.isFinite(value) ? value : 0;
+};
+
+function articleSearchText(article: Article, lang: Lang) {
+  return `${article.slug} ${article.tag} ${article[lang].title} ${article[lang].desc}`.toLowerCase();
+}
+
+function getArticleEntities(article: Article, lang: Lang) {
+  const text = articleSearchText(article, lang);
+  return Object.entries(ENTITY_LOGOS)
+    .filter(([, entity]) => entity.aliases.some((alias) => text.includes(alias)))
+    .map(([id, entity]) => ({ id, ...entity }))
+    .slice(0, 5);
+}
+
+function getArticleKind(article: Article, lang: Lang): ArticleKind {
+  const text = articleSearchText(article, lang);
+  if (text.includes(" vs ") || text.includes("versus") || text.includes("comparatif") || text.includes("comparison")) return "Comparison";
+  if (text.includes("review") || text.includes("avis")) return "Review";
+  if (text.includes("guide") || text.includes("how to") || text.includes("comment ")) return "Guide";
+  if (text.includes("fermeture") || text.includes("shutdown") || text.includes("news") || text.includes("annonce")) return "News";
+  if (text.includes("prompt") || text.includes("tutorial") || text.includes("tutoriel")) return "Tutorial";
+  return "Analysis";
+}
+
+function getDifficulty(article: Article, lang: Lang): Difficulty {
+  const text = articleSearchText(article, lang);
+  if (text.includes("api") || text.includes("code") || text.includes("developer") || text.includes("agent") || text.includes("mcp")) return "Expert";
+  if (readMinutes(article) >= 14 || text.includes("comparatif") || text.includes("comparison")) return "Intermediate";
+  return "Beginner";
+}
+
+function getArticleScore(article: Article, lang: Lang) {
+  const kind = getArticleKind(article, lang);
+  const entityCount = getArticleEntities(article, lang).length;
+  const base = article.featured ? 9.15 : 8.55;
+  const trend = TRENDING.has(article.slug) ? 0.2 : 0;
+  const fresh = isNew(article.date.en) ? 0.18 : 0;
+  const depth = Math.min(readMinutes(article) / 42, 0.35);
+  const entityBoost = Math.min(entityCount * 0.07, 0.28);
+  const kindBoost = kind === "Review" || kind === "Comparison" ? 0.22 : 0.08;
+  return Math.min(9.9, base + trend + fresh + depth + entityBoost + kindBoost);
+}
+
+function getVerdict(article: Article, lang: Lang) {
+  const kind = getArticleKind(article, lang);
+  const main = getArticleEntities(article, lang)[0]?.label;
+  if (lang === "fr") {
+    if (kind === "Review" && main) return `Notre avis clair sur ${main}, ses limites et ses meilleurs cas d’usage.`;
+    if (kind === "Comparison") return "Le choix le plus rationnel selon le prix, la qualité et le workflow réel.";
+    if (kind === "Guide") return "Un guide pratique pour décider vite sans perdre des heures à tester.";
+    if (kind === "News") return "Le contexte important, les conséquences et ce que ça change vraiment.";
+    return "Analyse courte, utile et orientée décision.";
+  }
+  if (kind === "Review" && main) return `Our clear take on ${main}, its limits and best real use cases.`;
+  if (kind === "Comparison") return "The most rational choice based on price, quality and real workflow.";
+  if (kind === "Guide") return "A practical guide to decide faster without wasting hours testing.";
+  if (kind === "News") return "The key context, consequences and what actually changes.";
+  return "Short, useful analysis built for decisions.";
+}
+
+function kindLabel(kind: ArticleKind, lang: Lang) {
+  if (lang === "en") return kind;
+  return ({ Review: "Avis", Comparison: "Comparatif", Guide: "Guide", News: "Actu", Tutorial: "Tutoriel", Analysis: "Analyse" } as Record<ArticleKind, string>)[kind];
+}
+
+function difficultyLabel(level: Difficulty, lang: Lang) {
+  if (lang === "en") return level;
+  return ({ Beginner: "Facile", Intermediate: "Intermédiaire", Expert: "Expert" } as Record<Difficulty, string>)[level];
+}
 
 const T = {
   fr: {
@@ -120,6 +208,9 @@ const T = {
     comparatifsDesc: "Scores détaillés, verdicts clairs.",
     navCta: "Newsletter gratuite",
     views: "vues",
+    aiFinderLabel: "Trouver mon outil IA →",
+    aiFinderDesc: "Pas sûr du bon outil ? L’AI Finder recommande la meilleure IA selon votre usage.",
+    editorPick: "Choix éditorial",
     popularSearchesTitle: "Recherches populaires",
     popularSearchesDesc: "Accédez rapidement aux sujets IA les plus demandés cette semaine.",
     popularSearches: [
@@ -190,6 +281,9 @@ const T = {
     comparatifsDesc: "Detailed scores, clear verdicts.",
     navCta: "Free newsletter",
     views: "views",
+    aiFinderLabel: "Find my AI tool →",
+    aiFinderDesc: "Not sure what to use? AI Finder recommends the best AI for your workflow.",
+    editorPick: "Editor’s pick",
     popularSearchesTitle: "Popular searches",
     popularSearchesDesc: "Jump straight into the AI topics readers are searching for this week.",
     popularSearches: [
@@ -332,6 +426,123 @@ function FadeIn({ children, delay = 0 }: { children: ReactNode; delay?: number }
   );
 }
 
+function ToolLogoRow({ article, lang }: { article: Article; lang: Lang }) {
+  const entities = getArticleEntities(article, lang);
+  if (!entities.length) return null;
+
+  return (
+    <div className="tool-row" aria-label={lang === "fr" ? "Outils cités" : "Mentioned tools"}>
+      {entities.map((entity) => (
+        <span key={entity.id} className="tool-chip" style={{ borderColor: `${entity.color}30`, color: entity.color }} title={entity.label}>
+          <span className="tool-dot" style={{ background: entity.color }} aria-hidden="true">
+            {entity.label.slice(0, 1)}
+          </span>
+          <span>{entity.label}</span>
+        </span>
+      ))}
+    </div>
+  );
+}
+
+
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReduced(media.matches);
+    sync();
+    media.addEventListener?.("change", sync);
+    return () => media.removeEventListener?.("change", sync);
+  }, []);
+
+  return reduced;
+}
+
+function CursorGlow() {
+  const reduced = usePrefersReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (reduced) return;
+
+    let raf = 0;
+    const move = (event: PointerEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        if (!ref.current) return;
+        ref.current.style.setProperty("--mx", `${event.clientX}px`);
+        ref.current.style.setProperty("--my", `${event.clientY}px`);
+      });
+    };
+
+    window.addEventListener("pointermove", move, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", move);
+    };
+  }, [reduced]);
+
+  if (reduced) return null;
+  return <div ref={ref} className="cursor-glow" aria-hidden="true" />;
+}
+
+function EditorialTrustBar({ lang }: { lang: Lang }) {
+  const items = lang === "fr"
+    ? [
+        ["✓", "Humain", "Analyses relues, pas de classement automatique."],
+        ["⚖", "Indépendant", "Verdicts séparés des liens affiliés."],
+        ["↻", "Mis à jour", "Articles conçus pour évoluer avec les outils IA."],
+      ]
+    : [
+        ["✓", "Human-led", "Reviewed analysis, not automated rankings."],
+        ["⚖", "Independent", "Verdicts stay separate from affiliate links."],
+        ["↻", "Updated", "Articles are built to evolve with AI tools."],
+      ];
+
+  return (
+    <section className="trust-lab" aria-label={lang === "fr" ? "Méthode éditoriale" : "Editorial method"}>
+      {items.map(([icon, title, desc]) => (
+        <div key={title} className="trust-lab-item">
+          <span className="trust-lab-icon">{icon}</span>
+          <div>
+            <strong>{title}</strong>
+            <p>{desc}</p>
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+function ClearFiltersButton({ lang, onClick }: { lang: Lang; onClick: () => void }) {
+  return (
+    <button type="button" className="clear-filters" onClick={onClick}>
+      {lang === "fr" ? "Réinitialiser" : "Clear filters"}
+    </button>
+  );
+}
+
+function ArticleIntelligence({ article, lang, compact = false }: { article: Article; lang: Lang; compact?: boolean }) {
+  const kind = getArticleKind(article, lang);
+  const difficulty = getDifficulty(article, lang);
+  const score = getArticleScore(article, lang);
+  const progress = Math.min(100, Math.max(30, readMinutes(article) * 6));
+
+  return (
+    <div className={`article-intel${compact ? " compact" : ""}`}>
+      <div className="intel-top">
+        <span className="kind-badge">{kindLabel(kind, lang)}</span>
+        <span className={`difficulty ${difficulty.toLowerCase()}`}>{difficultyLabel(difficulty, lang)}</span>
+        <span className="nf-mini-score"><span>Neuriflux</span><strong>{score.toFixed(1)}</strong></span>
+      </div>
+      <div className="read-meter" aria-hidden="true"><span style={{ width: `${progress}%` }} /></div>
+      <ToolLogoRow article={article} lang={lang} />
+      {!compact && <p className="nf-verdict">{getVerdict(article, lang)}</p>}
+    </div>
+  );
+}
+
 function CardFeatured({ article, lang, t, l }: {
   article: Article;
   lang: Lang;
@@ -343,8 +554,6 @@ function CardFeatured({ article, lang, t, l }: {
   const [hov, setHov] = useState(false);
   const fresh = isNew(article.date.en);
   const trend = TRENDING.has(article.slug);
-  const views = FAKE_VIEWS[article.slug] ?? 800;
-
   const cardStyle: CSSProperties = {
     position: "relative",
     overflow: "hidden",
@@ -400,6 +609,8 @@ function CardFeatured({ article, lang, t, l }: {
         {a.title}
       </div>
 
+      <ArticleIntelligence article={article} lang={lang} />
+
       <div style={{ fontFamily: "var(--m)", fontSize: ".74rem", color: "var(--muted)", lineHeight: 1.7, fontWeight: 300, flex: 1, display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 4, overflow: "hidden" }}>
         {a.desc}
       </div>
@@ -407,7 +618,6 @@ function CardFeatured({ article, lang, t, l }: {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: ".85rem", borderTop: "1px solid var(--border)", marginTop: "auto", position: "relative", gap: ".9rem", flexWrap: "wrap" }}>
         <div style={{ display: "flex", alignItems: "center", gap: ".75rem", flexWrap: "wrap" }}>
           <span style={{ fontFamily: "var(--m)", fontSize: ".63rem", color: "var(--dim)" }}>{article.date[lang]}</span>
-          <span style={{ fontFamily: "var(--m)", fontSize: ".6rem", color: "var(--dim)" }}>↑ {views.toLocaleString()} {t.views}</span>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
@@ -495,6 +705,8 @@ function Card({ article, lang, t, l, animDelay = 0 }: {
       <div style={{ fontFamily: "var(--d)", fontSize: ".96rem", fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.3, color: "var(--text)", position: "relative" }}>
         {a.title}
       </div>
+
+      <ArticleIntelligence article={article} lang={lang} compact />
 
       <div style={{ fontFamily: "var(--m)", fontSize: ".72rem", color: "var(--muted)", lineHeight: 1.65, fontWeight: 300, flex: 1, display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 3, overflow: "hidden" }}>
         {a.desc}
@@ -609,6 +821,18 @@ function NewsletterCTA({ t }: { t: (typeof T)[Lang]; }) {
   );
 }
 
+function AiFinderCrossLink({ t, l }: { t: (typeof T)[Lang]; l: (p: string) => string }) {
+  return (
+    <a href={l("/aifinder")} className="ai-finder-link">
+      <div>
+        <div className="cross-kicker">✦ AI Finder</div>
+        <div className="cross-title">{t.aiFinderDesc}</div>
+      </div>
+      <span>{t.aiFinderLabel}</span>
+    </a>
+  );
+}
+
 function ComparatifsCrossLink({ t, l }: { t: (typeof T)[Lang]; l: (p: string) => string }) {
   const [hov, setHov] = useState(false);
   const accent = "#00e6be";
@@ -671,6 +895,11 @@ export default function BlogClient({ lang }: { lang: Lang }) {
     if (next === lang) return;
     router.push(pathname.replace(/^\/(fr|en)/, `/${next}`));
   }, [lang, pathname, router]);
+
+  const clearFilters = useCallback(() => {
+    setSearch("");
+    setActiveTag("all");
+  }, []);
 
   useEffect(() => {
     let raf = 0;
@@ -803,6 +1032,8 @@ export default function BlogClient({ lang }: { lang: Lang }) {
         button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
         .bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(0,230,190,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,190,.016) 1px,transparent 1px);background-size:72px 72px;pointer-events:none;z-index:0}
         .bg-glow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:1000px;height:700px;background:radial-gradient(ellipse,rgba(0,230,190,.05) 0%,transparent 68%);pointer-events:none;z-index:0}
+        .bg-noise{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.055;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E")}
+        .cursor-glow{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(520px circle at var(--mx,50%) var(--my,18%),rgba(0,230,190,.075),transparent 42%),radial-gradient(340px circle at var(--mx,50%) var(--my,18%),rgba(59,130,246,.045),transparent 56%);mix-blend-mode:screen}
 
         @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
         @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
@@ -834,6 +1065,12 @@ export default function BlogClient({ lang }: { lang: Lang }) {
         .hero-sub{font-family:var(--m);font-size:.86rem;color:var(--muted);font-weight:300;line-height:1.75;max-width:520px;margin-bottom:2rem;animation:fadeUp .5s .2s ease both}
 
         .stats-strip{display:flex;gap:2.5rem;padding:.5rem 0 2rem;flex-wrap:wrap;border-top:1px solid var(--border)}
+        .trust-lab{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:0 0 1.45rem;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--border);box-shadow:0 18px 60px rgba(0,0,0,.20)}
+        .trust-lab-item{display:flex;gap:.8rem;align-items:flex-start;background:rgba(13,17,23,.82);padding:1rem 1.15rem;transition:background .18s,border-color .18s}
+        .trust-lab-item:hover{background:rgba(17,24,32,.94)}
+        .trust-lab-icon{width:25px;height:25px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:rgba(0,230,190,.09);border:1px solid rgba(0,230,190,.18);color:var(--cyan);font-family:var(--m);font-size:.7rem;flex-shrink:0}
+        .trust-lab-item strong{display:block;font-family:var(--d);font-size:.78rem;letter-spacing:-.015em;color:var(--text);margin-bottom:.12rem}
+        .trust-lab-item p{font-family:var(--m);font-size:.64rem;line-height:1.55;color:var(--muted)}
         .stat-item{display:flex;flex-direction:column;gap:.2rem;padding-top:1.25rem}
         .stat-num{font-family:var(--d);font-size:1.6rem;font-weight:800;letter-spacing:-.04em;color:var(--cyan)}
         .stat-label{font-family:var(--m);font-size:.62rem;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
@@ -847,6 +1084,8 @@ export default function BlogClient({ lang }: { lang: Lang }) {
         .search-input:focus{border-color:rgba(0,230,190,.3)}
         .search-input::placeholder{color:var(--dim)}
         .result-count{font-family:var(--m);font-size:.67rem;color:var(--dim)}
+        .clear-filters{font-family:var(--m);font-size:.67rem;color:var(--cyan);background:rgba(0,230,190,.06);border:1px solid rgba(0,230,190,.18);border-radius:999px;padding:6px 10px;cursor:pointer;transition:background .18s,border-color .18s,transform .18s}
+        .clear-filters:hover{background:rgba(0,230,190,.10);border-color:rgba(0,230,190,.34);transform:translateY(-1px)}
         .filters{display:flex;gap:.4rem;flex-wrap:wrap}
         .ftag{font-family:var(--m);font-size:.69rem;padding:5px 13px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .18s;white-space:nowrap;display:flex;align-items:center;gap:.3rem}
         .ftag:hover{border-color:rgba(0,230,190,.28);color:var(--cyan);background:var(--cdim)}
@@ -859,6 +1098,27 @@ export default function BlogClient({ lang }: { lang: Lang }) {
         .card-image-img{object-fit:cover;transition:transform .35s ease,filter .35s ease}
         .card-image-shade{position:absolute;inset:0;pointer-events:none}
         a:hover .card-image-img{transform:scale(1.035);filter:saturate(1.08)}
+        .article-intel{position:relative;display:flex;flex-direction:column;gap:.55rem;padding:.72rem;border:1px solid rgba(255,255,255,.07);border-radius:12px;background:rgba(255,255,255,.025)}
+        .article-intel.compact{padding:.58rem;gap:.45rem}
+        .intel-top{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap}
+        .kind-badge,.difficulty,.nf-mini-score{font-family:var(--m);font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;border-radius:999px;padding:3px 7px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);color:var(--muted)}
+        .kind-badge{color:var(--cyan);border-color:rgba(0,230,190,.22);background:rgba(0,230,190,.07)}
+        .difficulty.beginner{color:#22c55e;border-color:rgba(34,197,94,.22);background:rgba(34,197,94,.07)}
+        .difficulty.intermediate{color:#f59e0b;border-color:rgba(245,158,11,.22);background:rgba(245,158,11,.07)}
+        .difficulty.expert{color:#ef4444;border-color:rgba(239,68,68,.22);background:rgba(239,68,68,.07)}
+        .nf-mini-score{margin-left:auto;display:inline-flex;align-items:center;gap:.35rem;color:var(--text)}
+        .nf-mini-score strong{color:var(--cyan);font-size:.66rem}
+        .read-meter{height:3px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden}
+        .read-meter span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--cyan),#3b82f6,#a855f7)}
+        .tool-row{display:flex;flex-wrap:wrap;gap:.35rem}
+        .tool-chip{display:inline-flex;align-items:center;gap:.3rem;font-family:var(--m);font-size:.58rem;border:1px solid;border-radius:999px;padding:3px 7px;background:rgba(255,255,255,.025)}
+        .tool-dot{width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#081018;font-family:var(--d);font-size:.55rem;font-weight:900}
+        .nf-verdict{font-family:var(--m);font-size:.66rem;line-height:1.55;color:var(--muted)}
+        .ai-finder-link{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin:0 0 1.3rem;padding:1.05rem 1.2rem;border:1px solid rgba(0,230,190,.18);border-radius:16px;text-decoration:none;background:radial-gradient(circle at 0% 0%,rgba(0,230,190,.13),transparent 38%),linear-gradient(145deg,rgba(17,24,32,.96),rgba(8,12,16,.96));box-shadow:0 18px 54px rgba(0,0,0,.25);transition:transform .18s,border-color .18s,box-shadow .18s}
+        .ai-finder-link:hover{transform:translateY(-2px);border-color:rgba(0,230,190,.34);box-shadow:0 24px 70px rgba(0,0,0,.34)}
+        .cross-kicker{font-family:var(--m);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:.25rem}
+        .cross-title{font-family:var(--d);font-size:.95rem;font-weight:750;letter-spacing:-.025em;color:var(--text)}
+        .ai-finder-link>span{font-family:var(--m);font-size:.7rem;font-weight:800;color:#081018;background:var(--cyan);border-radius:8px;padding:8px 13px;white-space:nowrap}
         .blog-intent{display:grid;grid-template-columns:.9fr 1.1fr;gap:1rem;align-items:center;margin:0 0 1.5rem;padding:1.2rem;border:1px solid rgba(255,255,255,.075);border-radius:16px;background:radial-gradient(circle at 12% 0%,rgba(0,230,190,.12),transparent 36%),rgba(255,255,255,.024)}
         .intent-kicker{font-family:var(--m);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:.45rem}
         .blog-intent h2{font-family:var(--d);font-size:clamp(1.05rem,2.1vw,1.45rem);letter-spacing:-.035em;line-height:1.12;color:var(--text);margin-bottom:.45rem}
@@ -867,6 +1127,7 @@ export default function BlogClient({ lang }: { lang: Lang }) {
         .intent-links a{font-family:var(--m);font-size:.66rem;color:var(--cyan);text-decoration:none;border:1px solid rgba(0,230,190,.16);background:rgba(0,230,190,.055);border-radius:999px;padding:7px 10px;display:inline-flex;align-items:center;gap:.4rem;transition:border-color .18s,background .18s,transform .18s}
         .intent-links a:hover{border-color:rgba(0,230,190,.35);background:rgba(0,230,190,.09);transform:translateY(-1px)}
         @media(max-width:780px){.blog-intent{grid-template-columns:1fr}.intent-links{justify-content:flex-start}}
+        @media(max-width:780px){.trust-lab{grid-template-columns:1fr}}
 
         .sec-tag{font-family:var(--m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.2rem;display:flex;align-items:center;gap:.45rem}
         .sec-tag::before{content:'';width:16px;height:1px;background:var(--cyan);display:inline-block}
@@ -901,6 +1162,7 @@ export default function BlogClient({ lang }: { lang: Lang }) {
         @media(prefers-reduced-motion:reduce){
           html{scroll-behavior:auto}
           .logo-dot,.hero-badge-dot,.nav-cta{animation:none}
+          .cursor-glow{display:none}
           *{transition-duration:.01ms!important;animation-duration:.01ms!important}
           a:hover .card-image-img{transform:none;filter:none}
         }
@@ -909,6 +1171,8 @@ export default function BlogClient({ lang }: { lang: Lang }) {
       <ScrollProgress />
       <div className="bg-grid" />
       <div className="bg-glow" />
+      <div className="bg-noise" />
+      <CursorGlow />
 
       <nav className={scrolled ? "scrolled" : ""} aria-label={lang === "fr" ? "Menu principal" : "Main navigation"}>
         <a href={l("")} className="logo">
@@ -979,6 +1243,11 @@ export default function BlogClient({ lang }: { lang: Lang }) {
           </div>
         </div>
 
+        {!search && activeTag === "all" && (
+          <FadeIn delay={20}>
+            <EditorialTrustBar lang={lang} />
+          </FadeIn>
+        )}
 
         {!search && activeTag === "all" && (
           <FadeIn delay={40}>
@@ -1000,6 +1269,12 @@ export default function BlogClient({ lang }: { lang: Lang }) {
           </FadeIn>
         )}
 
+        {!search && activeTag === "all" && (
+          <FadeIn delay={70}>
+            <AiFinderCrossLink t={t} l={l} />
+          </FadeIn>
+        )}
+
         <div ref={filtersRef} className={`toolbar${filtersSticky ? " sticky" : ""}`}>
           <div className="toolbar-row">
             <div className="search-wrap">
@@ -1015,7 +1290,10 @@ export default function BlogClient({ lang }: { lang: Lang }) {
             </div>
 
             {(search || activeTag !== "all") && (
-              <span className="result-count" aria-live="polite">{filtered.length} {t.resultCount}</span>
+              <>
+                <span className="result-count" aria-live="polite">{filtered.length} {t.resultCount}</span>
+                <ClearFiltersButton lang={lang} onClick={clearFilters} />
+              </>
             )}
           </div>
 
