@@ -53,6 +53,7 @@ type LocaleCopy = {
   mobileShare: string;
   nav: {
     aifinder: string;
+    aitools: string;
     blog: string;
     comparatifs: string;
     newsletter: string;
@@ -117,6 +118,7 @@ const COPY: Record<Lang, LocaleCopy> = {
     mobileShare: "WhatsApp",
     nav: {
       aifinder: "Ai-Finder",
+      aitools:"Ai-Tools",
       blog: "Blog",
       comparatifs: "Comparatifs",
       newsletter: "Newsletter",
@@ -153,6 +155,7 @@ const COPY: Record<Lang, LocaleCopy> = {
     mobileShare: "WhatsApp",
     nav: {
       aifinder: "Ai-Finder",
+      aitools:"Ai-Tools",
       blog: "Blog",
       comparatifs: "Comparisons",
       newsletter: "Newsletter",
@@ -800,6 +803,7 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         <Link href={l("")} className="logo"><div className="logo-dot" />Neuri<em>flux</em></Link>
         <ul className={`nav-links${menuOpen ? " open" : ""}`}>
           <li><Link href={l("/aifinder")}>{locale.nav.aifinder}</Link></li>
+          <li><Link href={l("/aitools")}>{locale.nav.aitools}</Link></li>
           <li><Link href={l("/blog")} className="active">{locale.nav.blog}</Link></li>
           <li><Link href={l("/comparatifs")}>{locale.nav.comparatifs}</Link></li>
           <li><Link href={l("/newsletter")}>{locale.nav.newsletter}</Link></li>
@@ -873,6 +877,8 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
             </figure>
           </div>
 
+          
+
           {relatedCompSlug && <CompCrossLink compSlug={relatedCompSlug} lang={lang} l={l} color={color} />}
 
           <div ref={contentRef}>
@@ -912,6 +918,7 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
               </div>
             </div>
           )}
+
         </main>
 
         <aside className="sidebar">

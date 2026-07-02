@@ -1257,6 +1257,7 @@ export default function ComparatifClient({ lang, slug }: { lang: Lang; slug: str
         <a href={l("")} className="logo"><div className="logo-dot" />Neuri<em>flux</em></a>
         <ul className={`nav-links${menuOpen ? " open" : ""}`}>
           <li><a href={l("/aifinder")}>Ai-Finder</a></li>
+          <li><a href={l("/aitools")}>Ai-Tools</a></li>
           <li><a href={l("/blog")}>Blog</a></li>
           <li><a href={l("/comparatifs")} className="active">{lang === "fr" ? "Comparatifs" : "Comparisons"}</a></li>
           <li><a href={l("/newsletter")}>Newsletter</a></li>
