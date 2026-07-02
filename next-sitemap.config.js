@@ -1,104 +1,120 @@
-/** @type {import('next-sitemap').IConfig} */
+/** @type {import("next-sitemap").IConfig} */
 
-const ARTICLE_SLUGS = [
-  "gemini-3-5-pro-delayed-july-2026",
-  "ai-browser-war-2026",
-  "anthropic-xai-datacenter-2026",
-  "ai-memory-agents-2026",
-  "prompt-errors-2026",
-  "chatgpt-alternatives-2026",
-  "cursor-2026",
-  "midjourney-dalle-2026",
-  "llm-benchmark-2026",
-  "grok-2026",
-  "microsoft-copilot-review-2026",
-  "gemini-review-2026",
-  "ia-seo-2026",
-  "heygen-2026",
-  "best-free-ai-tools-2026",
-  "claude-code-2026",
-  "ai-hallucinations-2026",
-  "prompt-engineering-2026",
-  "openai-852b-2026",
-  "claude-mythos-2026",
-  "ai-income-2026",
-  "vibe-coding-2026",
-  "llm-selection-2026",
-  "sora-end-2026",
-  "grok-2026",
-  "deepseek-2026",
-  "perplexity-ai-2026",
-  "jasper-ai-2026",
-  "chatgpt-claude-gemini-2026",
-  "cursor-ai-2026",
-  "chatgpt-alternatives-2026",
-  "midjourney-dalle-2026",
-  "github-copilot-codeium-2026",
-  "notion-ai-2026",
-  "elevenlabs-2026",
-  "jasper-copyai-2026",
-  "stable-diffusion-2026",
-];
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const COMPARATIF_SLUGS = [
-  "claude-code-vs-cline-vs-kilo-code-2026",
-  "kling-vs-veo-vs-runway-2026",
-  "chatgpt-memory-vs-claude-projects-vs-gemini-workspace-2026",
-  "cursor-vs-windsurf-vs-zed-2026",
-  "gamma-vs-tome-vs-beautiful-ai-2026",
-  "lovable-vs-bolt-vs-v0-2026",
-  "semrush-vs-ahrefs-vs-surfer-seo-2026",
-  "heygen-vs-synthesia-vs-did-2026",
-  "perplexity-vs-chatgpt-vs-gemini-2026",
-  "n8n-vs-make-vs-zapier-2026",
-  "runway-vs-kling-vs-pika-2026",
-  "chatgpt-vs-claude-vs-gemini",
-  "cursor-vs-copilot-vs-codeium",
-  "midjourney-vs-dalle-vs-stable-diffusion",
-  "jasper-vs-copyai-vs-claude",
-  "elevenlabs-vs-openai-tts-vs-playht",
-];
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const LANGS = ["fr", "en"];
 const BASE = "https://neuriflux.com";
-const NOW = new Date().toISOString();
+const LANGS = ["fr", "en"];
+
+const fallbackLastmod = new Date().toISOString();
+
+const CONTENT_FILES = {
+  articles: {
+    file: path.join(__dirname, "app/[lang]/lib/articles.ts"),
+    route: "/blog",
+    priority: 0.8,
+    changefreq: "weekly",
+  },
+  comparatifs: {
+    file: path.join(__dirname, "app/[lang]/lib/comparatifs.ts"),
+    route: "/comparatifs",
+    priority: 0.85,
+    changefreq: "weekly",
+  },
+};
+
+function safeDate(value) {
+  if (!value) return fallbackLastmod;
+
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime())
+    ? fallbackLastmod
+    : parsed.toISOString();
+}
+
+function extractContentEntries(filePath) {
+  if (!fs.existsSync(filePath)) return [];
+
+  const content = fs.readFileSync(filePath, "utf8");
+
+  const entries = [];
+  const regex =
+    /slug:\s*["']([^"']+)["'][\s\S]*?(?:updatedAtIso:\s*["']([^"']+)["']|date:\s*\{[\s\S]*?en:\s*["']([^"']+)["'])/g;
+
+  let match;
+
+  while ((match = regex.exec(content)) !== null) {
+    const slug = match[1];
+    const updatedAtIso = match[2];
+    const englishDate = match[3];
+
+    if (!slug) continue;
+
+    entries.push({
+      slug,
+      lastmod: safeDate(updatedAtIso || englishDate),
+    });
+  }
+
+  return [...new Map(entries.map((entry) => [entry.slug, entry])).values()];
+}
+
+function alternateRefs(route) {
+  return [
+    ...LANGS.map((lang) => ({
+      hreflang: lang,
+      href: `${BASE}/${lang}${route}`,
+    })),
+    {
+      hreflang: "x-default",
+      href: `${BASE}/en${route}`,
+    },
+  ];
+}
+
+function addLocalized(urls, route, priority, changefreq, lastmod = fallbackLastmod) {
+  LANGS.forEach((lang) => {
+    urls.push({
+      loc: `${BASE}/${lang}${route}`,
+      lastmod,
+      priority,
+      changefreq,
+      alternateRefs: alternateRefs(route),
+    });
+  });
+}
 
 const additionalPaths = async () => {
   const urls = [];
 
-  LANGS.forEach((lang) => {
-    urls.push({ loc: `${BASE}/${lang}`, priority: 1.0, changefreq: "daily", lastmod: NOW });
+  addLocalized(urls, "", 1.0, "daily");
+
+  [
+    ["/blog", 0.9, "daily"],
+    ["/comparatifs", 0.9, "daily"],
+    ["/aifinder", 0.9, "daily"],
+    ["/aitools", 0.9, "daily"],
+    ["/newsletter", 0.7, "monthly"],
+    ["/about", 0.5, "monthly"],
+    ["/contact", 0.5, "yearly"],
+  ].forEach(([route, priority, changefreq]) => {
+    addLocalized(urls, route, priority, changefreq);
   });
 
-  LANGS.forEach((lang) => {
-    urls.push({ loc: `${BASE}/${lang}/blog`, priority: 0.9, changefreq: "daily", lastmod: NOW });
-    urls.push({ loc: `${BASE}/${lang}/comparatifs`, priority: 0.9, changefreq: "daily", lastmod: NOW });
-    urls.push({ loc: `${BASE}/${lang}/aifinder`, priority: 0.9, changefreq: "daily", lastmod: NOW });
-    urls.push({ loc: `${BASE}/${lang}/aitools`, priority: 0.9, changefreq: "daily", lastmod: NOW });
-  });
-
-  LANGS.forEach((lang) => {
-    ARTICLE_SLUGS.forEach((slug) => {
-      urls.push({ loc: `${BASE}/${lang}/blog/${slug}`, priority: 0.8, changefreq: "weekly", lastmod: NOW });
+  Object.values(CONTENT_FILES).forEach(({ file, route, priority, changefreq }) => {
+    extractContentEntries(file).forEach(({ slug, lastmod }) => {
+      addLocalized(urls, `${route}/${slug}`, priority, changefreq, lastmod);
     });
-  });
-
-  LANGS.forEach((lang) => {
-    COMPARATIF_SLUGS.forEach((slug) => {
-      urls.push({ loc: `${BASE}/${lang}/comparatifs/${slug}`, priority: 0.85, changefreq: "monthly", lastmod: NOW });
-    });
-  });
-
-  LANGS.forEach((lang) => {
-    urls.push({ loc: `${BASE}/${lang}/newsletter`, priority: 0.7, changefreq: "monthly", lastmod: NOW });
-    urls.push({ loc: `${BASE}/${lang}/about`, priority: 0.5, changefreq: "monthly", lastmod: NOW });
-    urls.push({ loc: `${BASE}/${lang}/contact`, priority: 0.5, changefreq: "yearly", lastmod: NOW });
   });
 
   return urls;
 };
 
-module.exports = {
+const config = {
   siteUrl: BASE,
   generateRobotsTxt: true,
   generateIndexSitemap: false,
@@ -117,3 +133,5 @@ module.exports = {
     ],
   },
 };
+
+export default config;
