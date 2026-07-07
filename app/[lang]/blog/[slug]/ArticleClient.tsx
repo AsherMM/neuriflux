@@ -46,6 +46,9 @@ type LocaleCopy = {
   publishedOn: string;
   lastUpdated: string;
   readCount: string;
+  like: string;
+  liked: string;
+  likeCount: string;
   navCtaLabel: string;
   exitTitle: string;
   exitDesc: string;
@@ -120,6 +123,9 @@ const COPY: Record<Lang, LocaleCopy> = {
     publishedOn: "Publié le",
     lastUpdated: "Dernière mise à jour",
     readCount: "lecteurs",
+    like: "J’aime",
+    liked: "Aimé",
+    likeCount: "likes",
     navCtaLabel: "Essayer",
     exitTitle: "Avant de partir...",
     exitDesc: "Vous n'avez pas encore vu la conclusion de l'article — le meilleur reste à lire.",
@@ -157,6 +163,9 @@ const COPY: Record<Lang, LocaleCopy> = {
     publishedOn: "Published on",
     lastUpdated: "Last updated",
     readCount: "readers",
+    like: "Like",
+    liked: "Liked",
+    likeCount: "likes",
     navCtaLabel: "Try it",
     exitTitle: "Before you leave...",
     exitDesc: "You haven't reached the conclusion yet — the best part is still ahead.",
@@ -228,6 +237,37 @@ const estRead = (content: string) => Math.max(4, Math.ceil(content.split(/\s+/).
 
 const fakeViews = (slug: string) =>
   (slug.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0) % 1800) + 400;
+
+type ArticleStats = {
+  views: number;
+  likes: number;
+};
+
+const EMPTY_STATS: ArticleStats = { views: 0, likes: 0 };
+
+const safeNumber = (value: unknown) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+};
+
+const formatCompactNumber = (value: number, lang: Lang) =>
+  new Intl.NumberFormat(lang === "fr" ? "fr-FR" : "en-US", {
+    notation: value >= 10_000 ? "compact" : "standard",
+    maximumFractionDigits: value >= 10_000 ? 1 : 0,
+  }).format(Math.max(0, Math.round(value)));
+
+const getViewSessionKey = (canonicalSlug: string) => `nf_viewed_${canonicalSlug}`;
+const getLikeStorageKey = (canonicalSlug: string) => `nf_liked_${canonicalSlug}`;
+
+const readLocalLike = (canonicalSlug: string) => {
+  if (typeof window === "undefined") return false;
+  return window.localStorage.getItem(getLikeStorageKey(canonicalSlug)) === "1";
+};
+
+const writeLocalLike = (canonicalSlug: string) => {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(getLikeStorageKey(canonicalSlug), "1");
+};
 
 const getRelatedComp = (slug: string, title: string): string | null => {
   const haystack = `${slug} ${title}`.toLowerCase();
@@ -729,6 +769,10 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
   const [timeOnPageOk, setTimeOnPageOk] = useState(false);
   const [readProgress, setReadProgress] = useState(0);
   const [activeSeconds, setActiveSeconds] = useState(0);
+  const [stats, setStats] = useState<ArticleStats>(EMPTY_STATS);
+  const [statsReady, setStatsReady] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [likePending, setLikePending] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const [tocItems, setTocItems] = useState<TocItem[]>([]);
@@ -739,6 +783,52 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
   const affiliate = articleData?.affiliate;
   const locale = COPY[lang];
   const canonicalSlug = articleData?.slug ?? slug;
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !canonicalSlug) return;
+
+    let cancelled = false;
+    const viewKey = getViewSessionKey(canonicalSlug);
+    const alreadyCountedThisSession = window.sessionStorage.getItem(viewKey) === "1";
+
+    setStatsReady(false);
+    setLiked(readLocalLike(canonicalSlug));
+
+    const registerOrReadStats = async () => {
+      try {
+        const response = await fetch(`/api/articles/${canonicalSlug}/view`, {
+          method: alreadyCountedThisSession ? "GET" : "POST",
+          cache: "no-store",
+        });
+
+        const data = (await response.json()) as Partial<ArticleStats> & { ok?: boolean };
+
+        if (!response.ok || !data.ok || cancelled) return;
+
+        if (!alreadyCountedThisSession) {
+          window.sessionStorage.setItem(viewKey, "1");
+          trackNeurifluxEvent("article_view_registered", { slug: canonicalSlug, lang });
+        }
+
+        setStats({
+          views: safeNumber(data.views),
+          likes: safeNumber(data.likes),
+        });
+        setStatsReady(true);
+      } catch {
+        if (!cancelled) {
+          setStats({ views: fakeViews(canonicalSlug), likes: 0 });
+          setStatsReady(false);
+        }
+      }
+    };
+
+    registerOrReadStats();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [canonicalSlug, lang]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -871,6 +961,35 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
     }
   }, [shareUrl]);
 
+  const handleLike = useCallback(async () => {
+    if (liked || likePending || !canonicalSlug) return;
+
+    writeLocalLike(canonicalSlug);
+    setLiked(true);
+    setLikePending(true);
+    setStats((previous) => ({ ...previous, likes: previous.likes + 1 }));
+    trackNeurifluxEvent("article_like_click", { slug: canonicalSlug, lang });
+
+    try {
+      const response = await fetch(`/api/articles/${canonicalSlug}/like`, {
+        method: "POST",
+        cache: "no-store",
+      });
+      const data = (await response.json()) as Partial<ArticleStats> & { ok?: boolean };
+
+      if (response.ok && data.ok) {
+        setStats((previous) => ({
+          views: safeNumber(data.views) || previous.views,
+          likes: safeNumber(data.likes) || previous.likes,
+        }));
+      }
+    } catch {
+      // Optimistic like is kept locally to avoid punishing the user for a transient network error.
+    } finally {
+      setLikePending(false);
+    }
+  }, [canonicalSlug, lang, likePending, liked]);
+
   const resolvedRelated = useMemo(() => {
     if (!articleData) return [];
     return resolveRelated(articleData[lang].related, lang);
@@ -988,7 +1107,12 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
   const altLang: Lang = lang === "fr" ? "en" : "fr";
   const altUrl = `https://neuriflux.com/${altLang}/blog/${canonicalSlug}`;
   const minRead = articleData?.timeMin || estRead(article?.content || "").toString();
-  const views = useMemo(() => fakeViews(canonicalSlug), [canonicalSlug]);
+  const views = stats.views || fakeViews(canonicalSlug);
+  const likes = stats.likes;
+  const displayViews = formatCompactNumber(views, lang);
+  const displayLikes = formatCompactNumber(likes, lang);
+  const viewsLabel = lang === "fr" ? "vues" : views === 1 ? "view" : "views";
+  const likesLabel = lang === "fr" ? "likes" : likes === 1 ? "like" : "likes";
   const relatedCompSlug = useMemo(() => (articleData ? getRelatedComp(canonicalSlug, article?.title || "") : null), [articleData, canonicalSlug, article]);
   const isReview = articleData ? REVIEW_TAGS.includes(String(articleData.tag)) : false;
   const isFresh = articleData ? isNew(articleData.updatedAt?.en ?? articleData.date?.en) : false;
@@ -1109,7 +1233,8 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         .nav-cta{display:flex;align-items:center;gap:.4rem;font-family:var(--d);font-weight:700;font-size:.75rem;padding:6px 14px;border-radius:7px;text-decoration:none;white-space:nowrap}@media(max-width:560px){.nav-cta-text{display:none}}
         .layout{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:3rem var(--pad) 7rem;display:grid;grid-template-columns:1fr 272px;gap:5rem;align-items:start}@media(max-width:960px){.layout{grid-template-columns:1fr;gap:0}.sidebar{display:none!important}}
         .breadcrumb{display:flex;align-items:center;gap:.4rem;font-family:var(--m);font-size:.67rem;color:var(--dim);flex-wrap:wrap;margin-bottom:1.5rem}.breadcrumb a{color:var(--dim);text-decoration:none}.breadcrumb-sep{color:var(--dim)}
-        .art-header{position:relative;margin-bottom:3rem;padding:2rem 2.25rem;background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden}.art-header::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--ac,var(--cyan)) 30%,var(--ac,var(--cyan)) 70%,transparent)}
+        .art-header{position:relative;margin-bottom:3rem;padding:1.45rem 2.25rem 2rem;background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden}.art-header::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--ac,var(--cyan)) 30%,var(--ac,var(--cyan)) 70%,transparent)}
+        .article-top-actions{position:relative;z-index:5;display:flex;justify-content:flex-end;align-items:center;gap:.55rem;margin:0 0 1rem auto;max-width:100%;pointer-events:auto}.top-stat-pill,.top-like-btn{display:inline-flex;align-items:center;gap:.42rem;min-height:36px;padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.028));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 10px 28px rgba(0,0,0,.18);font-family:var(--m);white-space:nowrap}.top-stat-pill span,.top-like-btn span{font-size:.88rem;color:var(--ac,var(--cyan));line-height:1}.top-stat-pill strong,.top-like-btn strong{font-size:.76rem;color:var(--text);font-weight:850}.top-stat-pill em,.top-like-btn em{font-style:normal;font-size:.55rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}.top-like-btn{cursor:pointer;transition:transform .16s ease,border-color .16s ease,background .16s ease,color .16s ease}.top-like-btn:hover:not(:disabled){transform:translateY(-1px);border-color:rgba(236,72,153,.42);background:linear-gradient(145deg,rgba(236,72,153,.14),rgba(255,255,255,.028))}.top-like-btn.liked{border-color:rgba(236,72,153,.46);background:linear-gradient(145deg,rgba(236,72,153,.16),rgba(255,255,255,.03))}.top-like-btn.liked span,.top-like-btn.liked strong{color:#fb7185}.top-like-btn:disabled{cursor:default}.like-btn.liked{border-color:rgba(236,72,153,.38)!important;background:rgba(236,72,153,.09)!important;color:#fb7185!important}@media(max-width:760px){.art-header{padding:1.25rem 1.25rem 1.55rem}.article-top-actions{justify-content:flex-start;margin-bottom:.9rem;flex-wrap:wrap}.top-stat-pill,.top-like-btn{min-height:34px;padding:7px 10px}.top-stat-pill em,.top-like-btn em{font-size:.5rem}}
         .art-header-glow{position:absolute;top:-40%;right:-10%;width:400px;height:300px;background:radial-gradient(ellipse,var(--ag,rgba(0,230,190,.07)) 0%,transparent 65%);pointer-events:none}
         .meta{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;margin-bottom:1.25rem;position:relative;z-index:1}.tag-badge{font-family:var(--m);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:3px 10px;border-radius:100px}.badge-new{font-family:var(--m);font-size:.58rem;color:#10b981;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);padding:3px 8px;border-radius:100px;font-weight:600}
         .art-date,.art-time,.art-views{font-family:var(--m);font-size:.68rem;color:var(--muted)}.meta-sep{color:var(--dim);font-size:.6rem}
@@ -1117,7 +1242,7 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         .author{display:flex;align-items:center;gap:.75rem;position:relative;z-index:1}.avatar{width:34px;height:34px;background:var(--cdim);border:1px solid rgba(0,230,190,.22);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}.author-name{font-family:var(--m);font-size:.75rem;color:var(--text);font-weight:500}.author-sub{font-family:var(--m);font-size:.62rem;color:var(--dim);font-weight:300;margin-top:.08rem}
         .hero-visual{position:relative;z-index:1;margin-top:1.75rem;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:linear-gradient(135deg,var(--bg3),rgba(255,255,255,.025));box-shadow:0 24px 70px rgba(0,0,0,.28)}.hero-visual::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,12,16,0) 48%,rgba(8,12,16,.78) 100%),radial-gradient(circle at 20% 0%,var(--ag,rgba(0,230,190,.12)),transparent 42%);z-index:2;pointer-events:none}.hero-image-wrap{position:relative;width:100%;aspect-ratio:1200/630;min-height:260px}.hero-image{object-fit:cover;object-position:center;transform:scale(1.01)}.hero-caption{position:absolute;left:1rem;right:1rem;bottom:1rem;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}.hero-caption span{font-family:var(--m);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(237,242,247,.72);background:rgba(8,12,16,.62);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px);border-radius:999px;padding:6px 10px}.hero-caption strong{font-family:var(--m);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ac,var(--cyan));font-weight:700}@media(max-width:720px){.hero-visual{margin-top:1.25rem;border-radius:12px}.hero-image-wrap{min-height:190px}.hero-caption{left:.75rem;right:.75rem;bottom:.75rem}.hero-caption span{font-size:.52rem;padding:5px 8px}}
         .prose{font-family:var(--body);font-size:1.03rem;line-height:1.9;color:#c8d5e0}.prose h2{font-family:var(--d);font-size:1.4rem;font-weight:800;letter-spacing:-.025em;color:var(--text);margin:3rem 0 0;padding:.65rem 0 .65rem 1rem;border-left:3px solid var(--ac,var(--cyan));border-bottom:1px solid var(--border);scroll-margin-top:80px}.prose h3{font-family:var(--d);font-size:1.05rem;font-weight:700;color:var(--text);margin:2rem 0 0;scroll-margin-top:80px}.prose p{margin-bottom:1.35rem}.prose strong{color:var(--text);font-weight:600;font-family:var(--d)}.prose em{color:var(--muted);font-style:italic}.prose ul,.prose ol{padding-left:1.4rem;margin:.75rem 0 1.3rem}.prose ul.emoji-list{list-style:none;padding-left:0}.prose ul.emoji-list li{display:flex;align-items:baseline;gap:.55rem;padding:.3rem 0;border-bottom:1px solid var(--border)}.eli{font-size:.95rem;flex-shrink:0}.li-yes .eli{color:#10b981}.li-no .eli{color:#ef4444}.prose p.bold-title{font-family:var(--d);font-size:1rem;font-weight:700;color:var(--text);letter-spacing:-.01em;margin-top:2rem;margin-bottom:.65rem;padding-left:.85rem;border-left:2px solid var(--ac,var(--cyan))}.prose code{font-family:var(--m);font-size:.79rem;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:2px 6px;color:var(--cyan)}.prose pre{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:1.25rem 1.5rem;margin:1.75rem 0;overflow-x:auto}.prose pre code{background:none;border:none;padding:0;color:#a8c0d6;font-size:.79rem;line-height:1.78}.prose a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(0,230,190,.28)}.prose table{width:100%;border-collapse:collapse;margin:1.75rem 0;font-family:var(--m);font-size:.75rem}.prose th,.prose td{padding:10px 14px;border:1px solid var(--border)}.prose th{color:var(--text);font-weight:600;background:var(--bg3);text-align:left}.prose td{color:var(--muted)}
-        .share{display:flex;align-items:center;gap:.55rem;margin-top:3.5rem;padding:1.25rem 1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:12px;flex-wrap:wrap}.share-label,.share-count,.sbtn{font-family:var(--m)}.share-label{font-size:.62rem;color:var(--dim);letter-spacing:.09em;text-transform:uppercase;margin-right:.25rem}.share-count{font-size:.65rem;color:var(--dim);margin-left:auto;display:flex;align-items:center;gap:.3rem;white-space:nowrap}.sbtn{font-size:.7rem;padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem}.sbtn.done{background:var(--cdim);border-color:rgba(0,230,190,.28);color:var(--cyan)}
+        .share{display:flex;align-items:center;gap:.55rem;margin-top:3.5rem;padding:1.25rem 1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:12px;flex-wrap:wrap}.share-label,.share-count,.sbtn{font-family:var(--m)}.share-label{font-size:.62rem;color:var(--dim);letter-spacing:.09em;text-transform:uppercase;margin-right:.25rem}.share-count{font-size:.65rem;color:var(--dim);margin-left:auto;display:flex;align-items:center;gap:.3rem;white-space:nowrap}.sbtn{font-size:.7rem;padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem}.sbtn.done,.sbtn.liked{background:var(--cdim);border-color:rgba(0,230,190,.28);color:var(--cyan)}.sbtn.like-btn{transition:transform .18s,border-color .18s,background .18s,color .18s}.sbtn.like-btn:not(:disabled):hover{transform:translateY(-1px);border-color:rgba(0,230,190,.32);color:var(--cyan)}.sbtn.like-btn:disabled{cursor:default;opacity:.88}
         .related{margin-top:4.5rem;padding-top:2.5rem;border-top:1px solid var(--border)}.sec-tag{font-family:var(--m);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.25rem;display:flex;align-items:center;gap:.4rem}.sec-tag::before{content:'';width:14px;height:1px;background:var(--cyan);display:inline-block}.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}.rcard{background:var(--bg2);border:1px solid var(--border);border-radius:12px;text-decoration:none;overflow:hidden;display:flex;flex-direction:column}.rcard-stripe{height:2px;width:100%;flex-shrink:0}.rcard-body{padding:1.1rem}.rcard-tag{font-family:var(--m);font-size:.57rem;letter-spacing:.09em;text-transform:uppercase;font-weight:600;margin-bottom:.5rem}.rcard-title{font-size:.85rem;font-weight:700;letter-spacing:-.01em;line-height:1.32;color:var(--text);margin-bottom:.6rem}.rcard-time{font-family:var(--m);font-size:.62rem;color:var(--dim)}
         .sidebar{position:sticky;top:76px;display:flex;flex-direction:column;gap:.8rem}.sbox{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden}.sbox-header{padding:.85rem 1.1rem;border-bottom:1px solid var(--border)}.sbox-title{font-family:var(--m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}.sbox-body{padding:.85rem 1.1rem}.toc-list{list-style:none;display:flex;flex-direction:column}.toc-item a{font-family:var(--m);font-size:.67rem;color:var(--muted);text-decoration:none;font-weight:300;line-height:1.45;display:block;padding:5px 10px 5px 12px;border-left:2px solid transparent}.toc-item.active a{color:var(--cyan);border-left-color:var(--cyan);background:var(--cdim);font-weight:500}.toc-progress{font-family:var(--m);font-size:.6rem;color:var(--dim);padding:.5rem 1.1rem;border-top:1px solid var(--border)}.toc-progress-bar{height:2px;background:var(--bg3);border-radius:1px;margin-top:.35rem;overflow:hidden}.toc-progress-fill{height:100%;background:var(--cyan);border-radius:1px;transition:width .3s ease}
         .nl-title-s{font-family:var(--d);font-size:.85rem;font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:.3rem}.nl-text{font-family:var(--m);font-size:.68rem;color:var(--muted);line-height:1.65;font-weight:300;margin-bottom:.85rem}.nl-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 11px;color:var(--text);font-family:var(--m);font-size:.74rem;outline:none;margin-bottom:.45rem}.nl-btn{width:100%;background:var(--cyan);color:#080c10;font-family:var(--d);font-weight:700;font-size:.76rem;padding:9px;border-radius:6px;border:none;cursor:pointer}.nl-status{text-align:center;font-family:var(--m);font-size:.74rem;padding:6px 0}
@@ -1244,6 +1369,29 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
 
           <div className="art-header" style={{ "--ac": color } as CSSProperties}>
             <div className="art-header-glow" />
+            <div className="article-top-actions" aria-label={lang === "fr" ? "Statistiques de l’article" : "Article stats"}>
+              <span
+                className="top-stat-pill views-pill"
+                title={statsReady ? undefined : (lang === "fr" ? "Estimation en attendant les statistiques" : "Estimated while stats load")}
+              >
+                <span aria-hidden="true">👁</span>
+                <strong>{displayViews}</strong>
+                <em>{viewsLabel}</em>
+              </span>
+              <button
+                type="button"
+                className={`top-like-btn${liked ? " liked" : ""}`}
+                onClick={handleLike}
+                disabled={liked || likePending}
+                aria-pressed={liked}
+                aria-label={liked ? locale.liked : locale.like}
+                title={liked ? locale.liked : locale.like}
+              >
+                <span aria-hidden="true">{liked ? "♥" : "♡"}</span>
+                <strong>{displayLikes}</strong>
+                <em>{likesLabel}</em>
+              </button>
+            </div>
             <div className="meta">
               <span className="tag-badge" style={{ color, background: `${color}18`, border: `1px solid ${color}35` }}>{String(articleData.tag)}</span>
               {isFresh && <span className="badge-new">✦ {locale.newBadge}</span>}
@@ -1253,7 +1401,6 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
               <span className="art-date">{locale.lastUpdated} {updatedLabel}</span>
               <span className="meta-sep">·</span>
               <span className="art-time">⏱ {minRead} {locale.readTime}</span>
-              <span className="art-views">↑ {views.toLocaleString()} {locale.readCount}</span>
             </div>
             <h1 className="art-title">{article.title}</h1>
             <p className="art-desc">{article.desc}</p>
@@ -1309,11 +1456,20 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
           <div className="share">
             <span className="share-label">{locale.shareLabel}</span>
             <button className={`sbtn${copied ? " done" : ""}`} onClick={copy}>{copied ? locale.shareDone : locale.share}</button>
+            <button
+              type="button"
+              className={`sbtn like-btn${liked ? " liked" : ""}`}
+              onClick={handleLike}
+              disabled={liked || likePending}
+              aria-pressed={liked}
+              aria-label={liked ? locale.liked : locale.like}
+            >
+              {liked ? "♥" : "♡"} {liked ? locale.liked : locale.like} · {displayLikes}
+            </button>
             <a className="sbtn" href={shareUrl ? `https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(shareUrl)}&via=NeurifluxCom` : "#"} target="_blank" rel="noopener noreferrer">𝕏 Twitter</a>
             <a className="sbtn" href={shareUrl ? `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}` : "#"} target="_blank" rel="noopener noreferrer">in LinkedIn</a>
             <a className="sbtn" href={shareUrl ? `https://www.reddit.com/submit?url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(article.title)}` : "#"} target="_blank" rel="noopener noreferrer">r/ Reddit</a>
             {isMobile && <a className="sbtn" href={shareUrl ? `https://api.whatsapp.com/send?text=${encodeURIComponent(`${article.title} ${shareUrl}`)}` : "#"} target="_blank" rel="noopener noreferrer">💬 {locale.mobileShare}</a>}
-            <span className="share-count">↑ {views.toLocaleString()} {locale.readCount}</span>
           </div>
 
           {resolvedRelated.length > 0 && (

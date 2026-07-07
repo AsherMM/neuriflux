@@ -17,6 +17,11 @@ import { ARTICLES, type Article } from "../lib/articles";
 type Lang = "fr" | "en";
 type Status = "idle" | "loading" | "success" | "error";
 
+type ArticleStats = {
+  views: number;
+  likes: number;
+};
+
 const TAG_MAP: Record<string, { fr: string; en: string; color: string }> = {
   Chatbots: { fr: "Chatbots", en: "Chatbots", color: "#00e6be" },
   Code: { fr: "Code", en: "Code", color: "#3b82f6" },
@@ -60,6 +65,22 @@ const isNew = (date: string): boolean => {
   if (Number.isNaN(time)) return false;
   return (Date.now() - time) / 86_400_000 <= 12;
 };
+
+const formatCompactNumber = (value: number, lang: Lang): string =>
+  new Intl.NumberFormat(lang === "fr" ? "fr-FR" : "en-US", {
+    notation: value >= 1000 ? "compact" : "standard",
+    maximumFractionDigits: value >= 1000 ? 1 : 0,
+  }).format(Math.max(0, Math.round(value)));
+
+const seededCount = (slug: string, min: number, range: number) =>
+  slug.split("").reduce((sum, char, index) => sum + char.charCodeAt(0) * (index + 3), 0) % range + min;
+
+const getFallbackArticleStats = (slug: string): ArticleStats => ({
+  views: seededCount(slug, 420, 2200),
+  likes: seededCount(`${slug}-likes`, 12, 140),
+});
+
+const getLikedKey = (slug: string) => `nf_liked_${slug}`;
 
 type ArticleKind = "Review" | "Comparison" | "Guide" | "News" | "Tutorial" | "Analysis";
 type Difficulty = "Beginner" | "Intermediate" | "Expert";
@@ -209,6 +230,9 @@ const T = {
     comparatifsDesc: "Scores détaillés, verdicts clairs.",
     navCta: "Newsletter gratuite",
     views: "vues",
+    likes: "likes",
+    likeAction: "Liker",
+    likedAction: "Liké",
     aiFinderLabel: "Trouver mon outil IA →",
     aiFinderDesc: "Pas sûr du bon outil ? L’AI Finder recommande la meilleure IA selon votre usage.",
     editorPick: "Choix éditorial",
@@ -283,6 +307,9 @@ const T = {
     comparatifsDesc: "Detailed scores, clear verdicts.",
     navCta: "Free newsletter",
     views: "views",
+    likes: "likes",
+    likeAction: "Like",
+    likedAction: "Liked",
     aiFinderLabel: "Find my AI tool →",
     aiFinderDesc: "Not sure what to use? AI Finder recommends the best AI for your workflow.",
     editorPick: "Editor’s pick",
@@ -545,11 +572,14 @@ function ArticleIntelligence({ article, lang, compact = false }: { article: Arti
   );
 }
 
-function CardFeatured({ article, lang, t, l }: {
+function CardFeatured({ article, lang, t, l, stats, liked, onLike }: {
   article: Article;
   lang: Lang;
   t: (typeof T)[Lang];
   l: (p: string) => string;
+  stats: ArticleStats;
+  liked: boolean;
+  onLike: (slug: string) => void;
 }) {
   const a = article[lang];
   const color = gc(article.tag);
@@ -617,6 +647,29 @@ function CardFeatured({ article, lang, t, l }: {
         {a.desc}
       </div>
 
+      <div className="article-social-row" style={{ "--article-ac": color } as CSSProperties}>
+        <span className="article-social-pill" title={t.views}>
+          <span aria-hidden="true">👁</span>
+          <strong>{formatCompactNumber(stats.views, lang)}</strong>
+          <em>{t.views}</em>
+        </span>
+        <button
+          type="button"
+          className={`article-like-btn${liked ? " liked" : ""}`}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            onLike(article.slug);
+          }}
+          aria-label={liked ? t.likedAction : t.likeAction}
+          aria-pressed={liked}
+        >
+          <span aria-hidden="true">{liked ? "♥" : "♡"}</span>
+          <strong>{formatCompactNumber(stats.likes, lang)}</strong>
+          <em>{t.likes}</em>
+        </button>
+      </div>
+
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: ".85rem", borderTop: "1px solid var(--border)", marginTop: "auto", position: "relative", gap: ".9rem", flexWrap: "wrap" }}>
         <div style={{ display: "flex", alignItems: "center", gap: ".75rem", flexWrap: "wrap" }}>
           <span style={{ fontFamily: "var(--m)", fontSize: ".63rem", color: "var(--dim)" }}>{article.date[lang]}</span>
@@ -633,11 +686,14 @@ function CardFeatured({ article, lang, t, l }: {
   );
 }
 
-function Card({ article, lang, t, l, animDelay = 0 }: {
+function Card({ article, lang, t, l, stats, liked, onLike, animDelay = 0 }: {
   article: Article;
   lang: Lang;
   t: (typeof T)[Lang];
   l: (p: string) => string;
+  stats: ArticleStats;
+  liked: boolean;
+  onLike: (slug: string) => void;
   animDelay?: number;
 }) {
   const a = article[lang];
@@ -712,6 +768,29 @@ function Card({ article, lang, t, l, animDelay = 0 }: {
 
       <div style={{ fontFamily: "var(--m)", fontSize: ".72rem", color: "var(--muted)", lineHeight: 1.65, fontWeight: 300, flex: 1, display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 3, overflow: "hidden" }}>
         {a.desc}
+      </div>
+
+      <div className="article-social-row compact" style={{ "--article-ac": color } as CSSProperties}>
+        <span className="article-social-pill" title={t.views}>
+          <span aria-hidden="true">👁</span>
+          <strong>{formatCompactNumber(stats.views, lang)}</strong>
+          <em>{t.views}</em>
+        </span>
+        <button
+          type="button"
+          className={`article-like-btn${liked ? " liked" : ""}`}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            onLike(article.slug);
+          }}
+          aria-label={liked ? t.likedAction : t.likeAction}
+          aria-pressed={liked}
+        >
+          <span aria-hidden="true">{liked ? "♥" : "♡"}</span>
+          <strong>{formatCompactNumber(stats.likes, lang)}</strong>
+          <em>{t.likes}</em>
+        </button>
       </div>
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: ".75rem", borderTop: "1px solid var(--border)", marginTop: "auto", position: "relative", gap: ".75rem" }}>
@@ -885,6 +964,8 @@ export default function BlogClient({ lang }: { lang: Lang }) {
   const [scrolled, setScrolled] = useState(false);
   const [showNavCta, setShowNavCta] = useState(false);
   const [filtersSticky, setFiltersSticky] = useState(false);
+  const [articleStats, setArticleStats] = useState<Record<string, ArticleStats>>({});
+  const [likedSlugs, setLikedSlugs] = useState<Record<string, boolean>>({});
 
   const filtersRef = useRef<HTMLDivElement>(null);
   const filtersTop = useRef(0);
@@ -902,6 +983,54 @@ export default function BlogClient({ lang }: { lang: Lang }) {
     setSearch("");
     setActiveTag("all");
   }, []);
+
+  const getStatsForArticle = useCallback((slug: string): ArticleStats => {
+    return articleStats[slug] ?? getFallbackArticleStats(slug);
+  }, [articleStats]);
+
+  const isArticleLiked = useCallback((slug: string): boolean => {
+    return Boolean(likedSlugs[slug]);
+  }, [likedSlugs]);
+
+  const handleArticleLike = useCallback(async (slug: string) => {
+    if (!slug || likedSlugs[slug]) return;
+
+    const fallback = getFallbackArticleStats(slug);
+    const key = getLikedKey(slug);
+
+    setLikedSlugs((current) => ({ ...current, [slug]: true }));
+    setArticleStats((current) => {
+      const currentStats = current[slug] ?? fallback;
+      return {
+        ...current,
+        [slug]: { ...currentStats, likes: currentStats.likes + 1 },
+      };
+    });
+
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(key, "1");
+    }
+
+    try {
+      const response = await fetch(`/api/articles/${slug}/like`, {
+        method: "POST",
+        cache: "no-store",
+      });
+      const data = await response.json();
+
+      if (data?.ok) {
+        setArticleStats((current) => ({
+          ...current,
+          [slug]: {
+            ...(current[slug] ?? fallback),
+            likes: Number(data.likes ?? current[slug]?.likes ?? fallback.likes + 1),
+          },
+        }));
+      }
+    } catch {
+      // Optimistic like stays visible even if the request fails.
+    }
+  }, [likedSlugs]);
 
   useEffect(() => {
     let raf = 0;
@@ -964,6 +1093,62 @@ export default function BlogClient({ lang }: { lang: Lang }) {
       document.body.style.overflow = previousOverflow;
     };
   }, [menuOpen]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const likedMap = ARTICLES.reduce<Record<string, boolean>>((acc, article) => {
+      acc[article.slug] = window.localStorage.getItem(getLikedKey(article.slug)) === "1";
+      return acc;
+    }, {});
+
+    setLikedSlugs(likedMap);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadStats = async () => {
+      const entries = await Promise.all(
+        ARTICLES.map(async (article): Promise<[string, ArticleStats]> => {
+          const fallback = getFallbackArticleStats(article.slug);
+
+          try {
+            const response = await fetch(`/api/articles/${article.slug}/stats`, {
+              method: "GET",
+              cache: "no-store",
+            });
+
+            if (!response.ok) return [article.slug, fallback];
+
+            const data = await response.json();
+
+            if (!data?.ok) return [article.slug, fallback];
+
+            return [
+              article.slug,
+              {
+                views: Number(data.views ?? fallback.views),
+                likes: Number(data.likes ?? fallback.likes),
+              },
+            ];
+          } catch {
+            return [article.slug, fallback];
+          }
+        }),
+      );
+
+      if (!cancelled) {
+        setArticleStats(Object.fromEntries(entries));
+      }
+    };
+
+    loadStats();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -1116,6 +1301,18 @@ export default function BlogClient({ lang }: { lang: Lang }) {
         .tool-chip{display:inline-flex;align-items:center;gap:.3rem;font-family:var(--m);font-size:.58rem;border:1px solid;border-radius:999px;padding:3px 7px;background:rgba(255,255,255,.025)}
         .tool-dot{width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#081018;font-family:var(--d);font-size:.55rem;font-weight:900}
         .nf-verdict{font-family:var(--m);font-size:.66rem;line-height:1.55;color:var(--muted)}
+        .article-social-row{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:.55rem;flex-wrap:wrap;padding:.55rem;border:1px solid rgba(255,255,255,.07);border-radius:12px;background:linear-gradient(135deg,rgba(255,255,255,.045),rgba(255,255,255,.018));box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+        .article-social-row.compact{padding:.48rem;border-radius:11px}
+        .article-social-pill,.article-like-btn{display:inline-flex;align-items:center;gap:.35rem;min-height:30px;border-radius:999px;font-family:var(--m);font-size:.6rem;border:1px solid rgba(255,255,255,.08);background:rgba(8,12,16,.42);color:var(--muted);padding:6px 9px;line-height:1;text-decoration:none;white-space:nowrap}
+        .article-social-pill strong,.article-like-btn strong{font-family:var(--d);font-size:.82rem;letter-spacing:-.03em;color:var(--text)}
+        .article-social-pill em,.article-like-btn em{font-style:normal;color:var(--dim)}
+        .article-social-pill span,.article-like-btn span{font-size:.78rem;line-height:1}
+        .article-like-btn{cursor:pointer;transition:transform .18s,border-color .18s,background .18s,color .18s,box-shadow .18s}
+        .article-like-btn:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--article-ac,var(--cyan)) 38%,transparent);background:color-mix(in srgb,var(--article-ac,var(--cyan)) 10%,transparent);color:var(--text);box-shadow:0 10px 26px rgba(0,0,0,.24)}
+        .article-like-btn.liked{border-color:rgba(236,72,153,.42);background:rgba(236,72,153,.115);color:#f9a8d4}
+        .article-like-btn.liked strong{color:#f9a8d4}
+        .article-like-btn.liked span{color:#ec4899;text-shadow:0 0 12px rgba(236,72,153,.45)}
+        @media(max-width:520px){.article-social-row{align-items:stretch}.article-social-pill,.article-like-btn{flex:1;justify-content:center}.article-social-pill em,.article-like-btn em{display:none}}
         .ai-finder-link{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin:0 0 1.3rem;padding:1.05rem 1.2rem;border:1px solid rgba(0,230,190,.18);border-radius:16px;text-decoration:none;background:radial-gradient(circle at 0% 0%,rgba(0,230,190,.13),transparent 38%),linear-gradient(145deg,rgba(17,24,32,.96),rgba(8,12,16,.96));box-shadow:0 18px 54px rgba(0,0,0,.25);transition:transform .18s,border-color .18s,box-shadow .18s}
         .ai-finder-link:hover{transform:translateY(-2px);border-color:rgba(0,230,190,.34);box-shadow:0 24px 70px rgba(0,0,0,.34)}
         .cross-kicker{font-family:var(--m);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:.25rem}
@@ -1338,7 +1535,7 @@ export default function BlogClient({ lang }: { lang: Lang }) {
                   <div className="sec-tag" id="featured-heading">{t.featured}</div>
                   <div className="grid-featured">
                     {featured.map((article) => (
-                      <CardFeatured key={article.slug} article={article} lang={lang} t={t} l={l} />
+                      <CardFeatured key={article.slug} article={article} lang={lang} t={t} l={l} stats={getStatsForArticle(article.slug)} liked={isArticleLiked(article.slug)} onLike={handleArticleLike} />
                     ))}
                   </div>
                 </section>
@@ -1368,7 +1565,7 @@ export default function BlogClient({ lang }: { lang: Lang }) {
                   {featured.length > 0 && <div className="sec-tag" id="all-articles-heading">{t.allLabel}</div>}
                   <div className="grid-all">
                     {rest.map((article, index) => (
-                      <Card key={article.slug} article={article} lang={lang} t={t} l={l} animDelay={Math.min(index * 50, 300)} />
+                      <Card key={article.slug} article={article} lang={lang} t={t} l={l} stats={getStatsForArticle(article.slug)} liked={isArticleLiked(article.slug)} onLike={handleArticleLike} animDelay={Math.min(index * 50, 300)} />
                     ))}
                   </div>
                 </section>
