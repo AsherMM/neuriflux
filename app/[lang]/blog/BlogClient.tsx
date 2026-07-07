@@ -18,8 +18,13 @@ type Lang = "fr" | "en";
 type Status = "idle" | "loading" | "success" | "error";
 
 type ArticleStats = {
-  views: number;
-  likes: number;
+  views: number | null;
+  likes: number | null;
+};
+
+const EMPTY_ARTICLE_STATS: ArticleStats = {
+  views: null,
+  likes: null,
 };
 
 const TAG_MAP: Record<string, { fr: string; en: string; color: string }> = {
@@ -72,13 +77,8 @@ const formatCompactNumber = (value: number, lang: Lang): string =>
     maximumFractionDigits: value >= 1000 ? 1 : 0,
   }).format(Math.max(0, Math.round(value)));
 
-const seededCount = (slug: string, min: number, range: number) =>
-  slug.split("").reduce((sum, char, index) => sum + char.charCodeAt(0) * (index + 3), 0) % range + min;
-
-const getFallbackArticleStats = (slug: string): ArticleStats => ({
-  views: seededCount(slug, 420, 2200),
-  likes: seededCount(`${slug}-likes`, 12, 140),
-});
+const formatStatNumber = (value: number | null, lang: Lang): string =>
+  value === null ? "—" : formatCompactNumber(value, lang);
 
 const getLikedKey = (slug: string) => `nf_liked_${slug}`;
 
@@ -649,9 +649,11 @@ function CardFeatured({ article, lang, t, l, stats, liked, onLike }: {
 
       <div className="article-social-row" style={{ "--article-ac": color } as CSSProperties}>
         <span className="article-social-pill" title={t.views}>
-          <span aria-hidden="true">👁</span>
-          <strong>{formatCompactNumber(stats.views, lang)}</strong>
-          <em>{t.views}</em>
+          <span className="article-social-icon view" aria-hidden="true">👁</span>
+          <span className="article-social-copy">
+            <strong>{formatStatNumber(stats.views, lang)}</strong>
+            <em>{t.views}</em>
+          </span>
         </span>
         <button
           type="button"
@@ -664,9 +666,11 @@ function CardFeatured({ article, lang, t, l, stats, liked, onLike }: {
           aria-label={liked ? t.likedAction : t.likeAction}
           aria-pressed={liked}
         >
-          <span aria-hidden="true">{liked ? "♥" : "♡"}</span>
-          <strong>{formatCompactNumber(stats.likes, lang)}</strong>
-          <em>{t.likes}</em>
+          <span className="article-social-icon heart" aria-hidden="true">{liked ? "♥" : "♡"}</span>
+          <span className="article-social-copy">
+            <strong>{formatStatNumber(stats.likes, lang)}</strong>
+            <em>{liked ? t.likedAction : t.likes}</em>
+          </span>
         </button>
       </div>
 
@@ -772,9 +776,11 @@ function Card({ article, lang, t, l, stats, liked, onLike, animDelay = 0 }: {
 
       <div className="article-social-row compact" style={{ "--article-ac": color } as CSSProperties}>
         <span className="article-social-pill" title={t.views}>
-          <span aria-hidden="true">👁</span>
-          <strong>{formatCompactNumber(stats.views, lang)}</strong>
-          <em>{t.views}</em>
+          <span className="article-social-icon view" aria-hidden="true">👁</span>
+          <span className="article-social-copy">
+            <strong>{formatStatNumber(stats.views, lang)}</strong>
+            <em>{t.views}</em>
+          </span>
         </span>
         <button
           type="button"
@@ -787,9 +793,11 @@ function Card({ article, lang, t, l, stats, liked, onLike, animDelay = 0 }: {
           aria-label={liked ? t.likedAction : t.likeAction}
           aria-pressed={liked}
         >
-          <span aria-hidden="true">{liked ? "♥" : "♡"}</span>
-          <strong>{formatCompactNumber(stats.likes, lang)}</strong>
-          <em>{t.likes}</em>
+          <span className="article-social-icon heart" aria-hidden="true">{liked ? "♥" : "♡"}</span>
+          <span className="article-social-copy">
+            <strong>{formatStatNumber(stats.likes, lang)}</strong>
+            <em>{liked ? t.likedAction : t.likes}</em>
+          </span>
         </button>
       </div>
 
@@ -985,7 +993,7 @@ export default function BlogClient({ lang }: { lang: Lang }) {
   }, []);
 
   const getStatsForArticle = useCallback((slug: string): ArticleStats => {
-    return articleStats[slug] ?? getFallbackArticleStats(slug);
+    return articleStats[slug] ?? EMPTY_ARTICLE_STATS;
   }, [articleStats]);
 
   const isArticleLiked = useCallback((slug: string): boolean => {
@@ -993,42 +1001,57 @@ export default function BlogClient({ lang }: { lang: Lang }) {
   }, [likedSlugs]);
 
   const handleArticleLike = useCallback(async (slug: string) => {
-    if (!slug || likedSlugs[slug]) return;
+    if (!slug) return;
 
-    const fallback = getFallbackArticleStats(slug);
     const key = getLikedKey(slug);
+    const wasLiked = Boolean(likedSlugs[slug]);
+    const endpoint = wasLiked ? "unlike" : "like";
+    const nextLiked = !wasLiked;
 
-    setLikedSlugs((current) => ({ ...current, [slug]: true }));
+    setLikedSlugs((current) => ({ ...current, [slug]: nextLiked }));
     setArticleStats((current) => {
-      const currentStats = current[slug] ?? fallback;
+      const currentStats = current[slug] ?? EMPTY_ARTICLE_STATS;
+      const currentLikes = currentStats.likes ?? 0;
+
       return {
         ...current,
-        [slug]: { ...currentStats, likes: currentStats.likes + 1 },
+        [slug]: {
+          views: currentStats.views,
+          likes: nextLiked ? currentLikes + 1 : Math.max(currentLikes - 1, 0),
+        },
       };
     });
 
     if (typeof window !== "undefined") {
-      window.localStorage.setItem(key, "1");
+      if (nextLiked) {
+        window.localStorage.setItem(key, "1");
+      } else {
+        window.localStorage.removeItem(key);
+      }
     }
 
     try {
-      const response = await fetch(`/api/articles/${slug}/like`, {
+      const response = await fetch(`/api/articles/${slug}/${endpoint}`, {
         method: "POST",
         cache: "no-store",
       });
+
       const data = await response.json();
 
       if (data?.ok) {
-        setArticleStats((current) => ({
-          ...current,
-          [slug]: {
-            ...(current[slug] ?? fallback),
-            likes: Number(data.likes ?? current[slug]?.likes ?? fallback.likes + 1),
-          },
-        }));
+        setArticleStats((current) => {
+          const currentStats = current[slug] ?? EMPTY_ARTICLE_STATS;
+          return {
+            ...current,
+            [slug]: {
+              views: currentStats.views,
+              likes: Number(data.likes ?? currentStats.likes ?? 0),
+            },
+          };
+        });
       }
     } catch {
-      // Optimistic like stays visible even if the request fails.
+      // Optimistic UI stays visible. A later stats refresh will reconcile.
     }
   }, [likedSlugs]);
 
@@ -1111,29 +1134,27 @@ export default function BlogClient({ lang }: { lang: Lang }) {
     const loadStats = async () => {
       const entries = await Promise.all(
         ARTICLES.map(async (article): Promise<[string, ArticleStats]> => {
-          const fallback = getFallbackArticleStats(article.slug);
-
           try {
             const response = await fetch(`/api/articles/${article.slug}/stats`, {
               method: "GET",
               cache: "no-store",
             });
 
-            if (!response.ok) return [article.slug, fallback];
+            if (!response.ok) return [article.slug, EMPTY_ARTICLE_STATS];
 
             const data = await response.json();
 
-            if (!data?.ok) return [article.slug, fallback];
+            if (!data?.ok) return [article.slug, EMPTY_ARTICLE_STATS];
 
             return [
               article.slug,
               {
-                views: Number(data.views ?? fallback.views),
-                likes: Number(data.likes ?? fallback.likes),
+                views: Number(data.views ?? 0),
+                likes: Number(data.likes ?? 0),
               },
             ];
           } catch {
-            return [article.slug, fallback];
+            return [article.slug, EMPTY_ARTICLE_STATS];
           }
         }),
       );
@@ -1301,18 +1322,29 @@ export default function BlogClient({ lang }: { lang: Lang }) {
         .tool-chip{display:inline-flex;align-items:center;gap:.3rem;font-family:var(--m);font-size:.58rem;border:1px solid;border-radius:999px;padding:3px 7px;background:rgba(255,255,255,.025)}
         .tool-dot{width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#081018;font-family:var(--d);font-size:.55rem;font-weight:900}
         .nf-verdict{font-family:var(--m);font-size:.66rem;line-height:1.55;color:var(--muted)}
-        .article-social-row{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:.55rem;flex-wrap:wrap;padding:.55rem;border:1px solid rgba(255,255,255,.07);border-radius:12px;background:linear-gradient(135deg,rgba(255,255,255,.045),rgba(255,255,255,.018));box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
-        .article-social-row.compact{padding:.48rem;border-radius:11px}
-        .article-social-pill,.article-like-btn{display:inline-flex;align-items:center;gap:.35rem;min-height:30px;border-radius:999px;font-family:var(--m);font-size:.6rem;border:1px solid rgba(255,255,255,.08);background:rgba(8,12,16,.42);color:var(--muted);padding:6px 9px;line-height:1;text-decoration:none;white-space:nowrap}
-        .article-social-pill strong,.article-like-btn strong{font-family:var(--d);font-size:.82rem;letter-spacing:-.03em;color:var(--text)}
-        .article-social-pill em,.article-like-btn em{font-style:normal;color:var(--dim)}
-        .article-social-pill span,.article-like-btn span{font-size:.78rem;line-height:1}
-        .article-like-btn{cursor:pointer;transition:transform .18s,border-color .18s,background .18s,color .18s,box-shadow .18s}
-        .article-like-btn:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--article-ac,var(--cyan)) 38%,transparent);background:color-mix(in srgb,var(--article-ac,var(--cyan)) 10%,transparent);color:var(--text);box-shadow:0 10px 26px rgba(0,0,0,.24)}
-        .article-like-btn.liked{border-color:rgba(236,72,153,.42);background:rgba(236,72,153,.115);color:#f9a8d4}
-        .article-like-btn.liked strong{color:#f9a8d4}
-        .article-like-btn.liked span{color:#ec4899;text-shadow:0 0 12px rgba(236,72,153,.45)}
-        @media(max-width:520px){.article-social-row{align-items:stretch}.article-social-pill,.article-like-btn{flex:1;justify-content:center}.article-social-pill em,.article-like-btn em{display:none}}
+        .article-social-row{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:.62rem;padding:.62rem;border:1px solid rgba(255,255,255,.075);border-radius:16px;background:radial-gradient(circle at 12% 0%,color-mix(in srgb,var(--article-ac,var(--cyan)) 13%,transparent),transparent 42%),linear-gradient(145deg,rgba(255,255,255,.052),rgba(255,255,255,.018));box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 14px 36px rgba(0,0,0,.18);overflow:hidden}
+        .article-social-row::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,color-mix(in srgb,var(--article-ac,var(--cyan)) 32%,transparent),transparent 38%,rgba(255,255,255,.055));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;opacity:.75}
+        .article-social-row.compact{gap:.5rem;padding:.52rem;border-radius:14px}
+        .article-social-pill,.article-like-btn{position:relative;display:flex;align-items:center;gap:.56rem;min-height:42px;border-radius:13px;font-family:var(--m);border:1px solid rgba(255,255,255,.075);background:linear-gradient(145deg,rgba(8,12,16,.70),rgba(17,24,32,.48));color:var(--muted);padding:7px 10px;line-height:1;text-decoration:none;white-space:nowrap;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.045);transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease}
+        .article-social-pill::after,.article-like-btn::after{content:"";position:absolute;inset:auto -30% -70% -30%;height:90%;background:radial-gradient(ellipse,color-mix(in srgb,var(--article-ac,var(--cyan)) 16%,transparent),transparent 62%);opacity:.55;pointer-events:none;transition:opacity .18s ease}
+        .article-social-icon{width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;flex-shrink:0;font-size:.82rem;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.06);box-shadow:inset 0 1px 0 rgba(255,255,255,.045)}
+        .article-social-icon.view{color:var(--article-ac,var(--cyan));background:color-mix(in srgb,var(--article-ac,var(--cyan)) 10%,rgba(255,255,255,.02));border-color:color-mix(in srgb,var(--article-ac,var(--cyan)) 18%,transparent)}
+        .article-social-icon.heart{color:#f472b6;background:rgba(236,72,153,.075);border-color:rgba(236,72,153,.16)}
+        .article-social-copy{position:relative;z-index:1;display:flex;flex-direction:column;gap:.16rem;min-width:0}
+        .article-social-copy strong{font-family:var(--d);font-size:.92rem;letter-spacing:-.04em;color:var(--text);line-height:1}
+        .article-social-copy em{font-style:normal;font-size:.52rem;line-height:1;color:var(--dim);text-transform:uppercase;letter-spacing:.11em;font-weight:700}
+        .article-social-row.compact .article-social-pill,.article-social-row.compact .article-like-btn{min-height:38px;padding:6px 9px;border-radius:12px;gap:.48rem}
+        .article-social-row.compact .article-social-icon{width:25px;height:25px;border-radius:9px;font-size:.75rem}
+        .article-social-row.compact .article-social-copy strong{font-size:.82rem}
+        .article-social-row.compact .article-social-copy em{font-size:.47rem}
+        .article-like-btn{cursor:pointer}
+        .article-like-btn:hover{transform:translateY(-1px);border-color:rgba(236,72,153,.34);background:linear-gradient(145deg,rgba(236,72,153,.105),rgba(17,24,32,.52));box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.28)}
+        .article-like-btn:hover::after{opacity:.9}
+        .article-like-btn.liked{border-color:rgba(236,72,153,.42);background:linear-gradient(145deg,rgba(236,72,153,.145),rgba(17,24,32,.50));box-shadow:inset 0 1px 0 rgba(255,255,255,.065),0 0 0 1px rgba(236,72,153,.08),0 12px 30px rgba(236,72,153,.09)}
+        .article-like-btn.liked .article-social-icon.heart{color:#fff;background:linear-gradient(135deg,#fb7185,#ec4899);border-color:rgba(255,255,255,.14);text-shadow:0 0 12px rgba(255,255,255,.55);box-shadow:0 0 22px rgba(236,72,153,.28)}
+        .article-like-btn.liked .article-social-copy strong{color:#f9a8d4}
+        .article-like-btn.liked .article-social-copy em{color:#fb7185}
+        @media(max-width:520px){.article-social-row{grid-template-columns:1fr;gap:.48rem}.article-social-pill,.article-like-btn{justify-content:flex-start}.article-social-copy{flex-direction:row;align-items:baseline;gap:.35rem}.article-social-copy em{font-size:.48rem}}
         .ai-finder-link{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin:0 0 1.3rem;padding:1.05rem 1.2rem;border:1px solid rgba(0,230,190,.18);border-radius:16px;text-decoration:none;background:radial-gradient(circle at 0% 0%,rgba(0,230,190,.13),transparent 38%),linear-gradient(145deg,rgba(17,24,32,.96),rgba(8,12,16,.96));box-shadow:0 18px 54px rgba(0,0,0,.25);transition:transform .18s,border-color .18s,box-shadow .18s}
         .ai-finder-link:hover{transform:translateY(-2px);border-color:rgba(0,230,190,.34);box-shadow:0 24px 70px rgba(0,0,0,.34)}
         .cross-kicker{font-family:var(--m);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:.25rem}

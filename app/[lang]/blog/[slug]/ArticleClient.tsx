@@ -235,9 +235,6 @@ const slugify = (value: string) =>
 
 const estRead = (content: string) => Math.max(4, Math.ceil(content.split(/\s+/).length / 200));
 
-const fakeViews = (slug: string) =>
-  (slug.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0) % 1800) + 400;
-
 type ArticleStats = {
   views: number;
   likes: number;
@@ -267,6 +264,11 @@ const readLocalLike = (canonicalSlug: string) => {
 const writeLocalLike = (canonicalSlug: string) => {
   if (typeof window === "undefined") return;
   window.localStorage.setItem(getLikeStorageKey(canonicalSlug), "1");
+};
+
+const removeLocalLike = (canonicalSlug: string) => {
+  if (typeof window === "undefined") return;
+  window.localStorage.removeItem(getLikeStorageKey(canonicalSlug));
 };
 
 const getRelatedComp = (slug: string, title: string): string | null => {
@@ -817,7 +819,7 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
         setStatsReady(true);
       } catch {
         if (!cancelled) {
-          setStats({ views: fakeViews(canonicalSlug), likes: 0 });
+          setStats(EMPTY_STATS);
           setStatsReady(false);
         }
       }
@@ -962,16 +964,29 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
   }, [shareUrl]);
 
   const handleLike = useCallback(async () => {
-    if (liked || likePending || !canonicalSlug) return;
+    if (likePending || !canonicalSlug) return;
 
-    writeLocalLike(canonicalSlug);
-    setLiked(true);
+    const nextLiked = !liked;
+    const endpoint = nextLiked ? "like" : "unlike";
+
+    if (nextLiked) {
+      writeLocalLike(canonicalSlug);
+    } else {
+      removeLocalLike(canonicalSlug);
+    }
+
+    setLiked(nextLiked);
     setLikePending(true);
-    setStats((previous) => ({ ...previous, likes: previous.likes + 1 }));
-    trackNeurifluxEvent("article_like_click", { slug: canonicalSlug, lang });
+    setStatsReady((current) => current || true);
+    setStats((previous) => ({
+      ...previous,
+      likes: nextLiked ? previous.likes + 1 : Math.max(previous.likes - 1, 0),
+    }));
+
+    trackNeurifluxEvent(nextLiked ? "article_like_click" : "article_unlike_click", { slug: canonicalSlug, lang });
 
     try {
-      const response = await fetch(`/api/articles/${canonicalSlug}/like`, {
+      const response = await fetch(`/api/articles/${canonicalSlug}/${endpoint}`, {
         method: "POST",
         cache: "no-store",
       });
@@ -979,12 +994,12 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
 
       if (response.ok && data.ok) {
         setStats((previous) => ({
-          views: safeNumber(data.views) || previous.views,
-          likes: safeNumber(data.likes) || previous.likes,
+          views: data.views === undefined ? previous.views : safeNumber(data.views),
+          likes: data.likes === undefined ? previous.likes : safeNumber(data.likes),
         }));
       }
     } catch {
-      // Optimistic like is kept locally to avoid punishing the user for a transient network error.
+      // Optimistic UI stays visible. The user can click again if the network comes back.
     } finally {
       setLikePending(false);
     }
@@ -1107,10 +1122,10 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
   const altLang: Lang = lang === "fr" ? "en" : "fr";
   const altUrl = `https://neuriflux.com/${altLang}/blog/${canonicalSlug}`;
   const minRead = articleData?.timeMin || estRead(article?.content || "").toString();
-  const views = stats.views || fakeViews(canonicalSlug);
+  const views = stats.views;
   const likes = stats.likes;
-  const displayViews = formatCompactNumber(views, lang);
-  const displayLikes = formatCompactNumber(likes, lang);
+  const displayViews = statsReady ? formatCompactNumber(views, lang) : "—";
+  const displayLikes = statsReady ? formatCompactNumber(likes, lang) : "—";
   const viewsLabel = lang === "fr" ? "vues" : views === 1 ? "view" : "views";
   const likesLabel = lang === "fr" ? "likes" : likes === 1 ? "like" : "likes";
   const relatedCompSlug = useMemo(() => (articleData ? getRelatedComp(canonicalSlug, article?.title || "") : null), [articleData, canonicalSlug, article]);
@@ -1372,7 +1387,7 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
             <div className="article-top-actions" aria-label={lang === "fr" ? "Statistiques de l’article" : "Article stats"}>
               <span
                 className="top-stat-pill views-pill"
-                title={statsReady ? undefined : (lang === "fr" ? "Estimation en attendant les statistiques" : "Estimated while stats load")}
+                title={statsReady ? undefined : (lang === "fr" ? "Chargement des statistiques" : "Loading stats")}
               >
                 <span aria-hidden="true">👁</span>
                 <strong>{displayViews}</strong>
@@ -1382,10 +1397,10 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
                 type="button"
                 className={`top-like-btn${liked ? " liked" : ""}`}
                 onClick={handleLike}
-                disabled={liked || likePending}
+                disabled={likePending}
                 aria-pressed={liked}
-                aria-label={liked ? locale.liked : locale.like}
-                title={liked ? locale.liked : locale.like}
+                aria-label={liked ? (lang === "fr" ? "Retirer le like" : "Remove like") : locale.like}
+                title={liked ? (lang === "fr" ? "Retirer le like" : "Remove like") : locale.like}
               >
                 <span aria-hidden="true">{liked ? "♥" : "♡"}</span>
                 <strong>{displayLikes}</strong>
@@ -1460,9 +1475,9 @@ export default function ArticleClient({ lang, slug }: { lang: Lang; slug: string
               type="button"
               className={`sbtn like-btn${liked ? " liked" : ""}`}
               onClick={handleLike}
-              disabled={liked || likePending}
+              disabled={likePending}
               aria-pressed={liked}
-              aria-label={liked ? locale.liked : locale.like}
+              aria-label={liked ? (lang === "fr" ? "Retirer le like" : "Remove like") : locale.like}
             >
               {liked ? "♥" : "♡"} {liked ? locale.liked : locale.like} · {displayLikes}
             </button>
