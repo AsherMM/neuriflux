@@ -33,13 +33,15 @@ type HomeArticle = {
   time: string;
   star: boolean;
   isNew?: boolean;
+  rank?: number;
+  signal?: string;
   updated?: { fr: string; en: string };
 };
 
 const ARTICLE_IMAGE_FALLBACK = "/articles/article00.png";
 
 function getArticleImage(article: HomeArticle): string {
-  return article.image ?? `/images/blog/${article.slug}.webp`;
+  return article.image || ARTICLE_IMAGE_FALLBACK;
 }
 
 function getArticleImageAlt(article: HomeArticle, lang: Lang): string {
@@ -68,25 +70,25 @@ const COMPARATIFS_EN: HomeComparatif[] = [
 ];
 
 const ARTICLES_FR: HomeArticle[] = [
-  { slug: "deepseek-review-2026", image: "/articles/article18.png", tag: "Chatbots", color: "#00e6be", t: "DeepSeek : avis 2026, le meilleur ChatGPT gratuit venu de Chine ?", d: "DeepSeek a bouleversé le marché IA. Performances, vie privée, vrais cas d'usage et limites : notre verdict complet.", time: "12", star: true, isNew: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "grok-review-2026", image: "/articles/article17.png", tag: "Chatbots", color: "#00e6be", t: "Grok : avis 2026, l'IA d'Elon Musk vaut-elle vraiment le coup ?", d: "Grok 3 et 4 promettent données temps réel, contexte géant et ton plus brut. On a tout testé pendant 3 semaines.", time: "13", star: true, isNew: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "perplexity-ai-review-2026", image: "/articles/article19.png", tag: "Chatbots", color: "#00e6be", t: "Perplexity AI : vaut-il mieux que ChatGPT et Google ?", d: "Recherche sourcée, Perplexity Pro, Perplexity Computer et limites réelles : notre verdict complet.", time: "13", star: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "chatgpt-vs-claude-vs-gemini-2026", image: "/articles/article21.png", tag: "Chatbots", color: "#00e6be", t: "ChatGPT perd-il du terrain face à Claude et Gemini en 2026 ?", d: "ChatGPT reste massif, Claude monte chez les profils exigeants, Gemini pousse via Google. L'analyse complète.", time: "16", star: false, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "sora-fermeture-openai-2026", image: "/articles/article16.png", tag: "Chatbots", color: "#00e6be", t: "Sora est mort : OpenAI abandonne son générateur vidéo IA", d: "La fermeture de Sora racontée sans filtre : coûts, revenus, stratégie et pourquoi l'échec compte pour tout le marché.", time: "13", star: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "jasper-ai-review-2026", image: "/articles/article20.png", tag: "Rédaction", color: "#f59e0b", t: "Jasper AI : avis 2026, faut-il encore le payer ?", d: "3 semaines de tests sur des projets réels. Notre verdict honnête sur Jasper face à Claude et Copy.ai.", time: "10", star: false, updated: { fr: "mars 2026", en: "March 2026" } },
+  { slug: "deepseek-review-2026", image: "/articles/article18.png", tag: "Chatbots", color: "#00e6be", t: "DeepSeek : avis 2026, la meilleure alternative gratuite à ChatGPT ?", d: "L’article le plus consulté de Neuriflux : performances, limites, confidentialité et vrai verdict après tests.", time: "14", star: true, isNew: true, rank: 1, signal: "Le plus lu", updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "grok-review-2026", image: "/articles/article17.png", tag: "Chatbots", color: "#00e6be", t: "Grok Review 2026 : 4 agents live, acquisition SpaceX et Grok 5 incoming", d: "Un sujet très cliqué : agents, temps réel, stratégie xAI et tout ce qui change face à ChatGPT et Claude.", time: "12", star: true, isNew: true, rank: 2, signal: "Très populaire", updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "claude-code-review-2026", image: "/articles/article07.png", tag: "Code", color: "#3b82f6", t: "Claude Code : avis complet 2026, l’outil qui a retourné le marché dev", d: "Un article stratégique pour attirer les développeurs : terminal, VS Code, multi-fichiers, tarifs et verdict face à Cursor.", time: "15", star: true, rank: 3, signal: "Fort potentiel SEO", updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "perplexity-ai-review-2026", image: "/articles/article19.png", tag: "Chatbots", color: "#00e6be", t: "Perplexity AI : Comet Browser, Model Council et alternative à ChatGPT", d: "Recherche sourcée, navigateur Comet, choix des modèles et comparaison avec ChatGPT : l’article parfait pour capter l’intention review.", time: "13", star: true, rank: 4, signal: "Review chaude", updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "chatgpt-vs-claude-vs-gemini-2026", image: "/articles/article21.png", tag: "Chatbots", color: "#00e6be", t: "ChatGPT vs Claude vs Gemini : lequel choisir en 2026 ?", d: "Un sujet evergreen : 50 cas d’usage, forces, faiblesses et choix clair selon le profil du lecteur.", time: "12", star: true, rank: 5, signal: "Evergreen", updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "vibe-coding-tools-2026", image: "/articles/article20.png", tag: "Code", color: "#3b82f6", t: "5 meilleurs outils pour créer une app sans coder en 2026", d: "Lovable, Bolt.new, v0, Base44, Replit : un sujet très vendeur pour les lecteurs qui veulent construire vite.", time: "16", star: false, rank: 6, signal: "Très monétisable", updated: { fr: "mars 2026", en: "March 2026" } },
 ];
 
 const ARTICLES_EN: HomeArticle[] = [
-  { slug: "deepseek-review-2026", image: "/articles/article18.png", tag: "Chatbots", color: "#00e6be", t: "DeepSeek Review 2026: the best free ChatGPT alternative?", d: "DeepSeek shook the AI industry. Performance, privacy, real use cases and limits: our complete verdict.", time: "12", star: true, isNew: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "grok-review-2026", image: "/articles/article17.png", tag: "Chatbots", color: "#00e6be", t: "Grok Review 2026: is Elon Musk's AI actually worth it?", d: "Grok 3 and 4 promise real-time data, giant context and a rougher tone. We tested everything for three weeks.", time: "13", star: true, isNew: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "perplexity-ai-review-2026", image: "/articles/article19.png", tag: "Chatbots", color: "#00e6be", t: "Perplexity AI: is it worth it vs ChatGPT and Google?", d: "Sourced search, Perplexity Pro, Perplexity Computer and the real limits: our complete verdict.", time: "13", star: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "chatgpt-vs-claude-vs-gemini-2026", image: "/articles/article21.png", tag: "Chatbots", color: "#00e6be", t: "ChatGPT vs Claude vs Gemini: which should you pick in 2026?", d: "50 real-world use cases. The results are more nuanced than most people think.", time: "12", star: false, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "sora-fermeture-openai-2026", image: "/articles/article16.png", tag: "Chatbots", color: "#00e6be", t: "Sora is dead: OpenAI kills its AI video app", d: "The shutdown of Sora explained without fluff: costs, revenue, strategy and why this failure matters across AI.", time: "12", star: true, updated: { fr: "avril 2026", en: "April 2026" } },
-  { slug: "vibe-coding-tools-2026", image: "/articles/article20.png", tag: "Code", color: "#3b82f6", t: "5 best tools to build an app without coding in 2026", d: "Lovable, Bolt.new, v0, Base44, Replit: we tested the leading vibe coding tools on real projects.", time: "16", star: false, updated: { fr: "mars 2026", en: "March 2026" } },
+  { slug: "deepseek-review-2026", image: "/articles/article18x.png", tag: "Chatbots", color: "#00e6be", t: "DeepSeek Review 2026: The Best Free ChatGPT Alternative?", d: "The most-read Neuriflux review: performance, privacy, real use cases, limits and a clear verdict after testing.", time: "14", star: true, isNew: true, rank: 1, signal: "Most read", updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "grok-review-2026", image: "/articles/article17x.png", tag: "Chatbots", color: "#00e6be", t: "Grok Review 2026: 4 Agents Live, SpaceX Acquisition, and Grok 5 Incoming", d: "A high-interest topic around real-time AI, xAI strategy, agents and how Grok compares with ChatGPT and Claude.", time: "12", star: true, isNew: true, rank: 2, signal: "Trending", updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "claude-code-review-2026", image: "/articles/article07x.png", tag: "Code", color: "#3b82f6", t: "Claude Code Review 2026: The Tool That Flipped the Dev Market", d: "A strategic article for developer traffic: terminal, VS Code, multi-file workflows, pricing and the verdict vs Cursor.", time: "15", star: true, rank: 3, signal: "SEO priority", updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "perplexity-ai-review-2026", image: "/articles/article19x.png", tag: "Chatbots", color: "#00e6be", t: "Perplexity AI Review 2026: Comet Browser, Model Council & ChatGPT Rival", d: "Sourced search, Comet Browser, model selection and the real comparison with ChatGPT: strong review intent.", time: "13", star: true, rank: 4, signal: "Hot review", updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "chatgpt-vs-claude-vs-gemini-2026", image: "/articles/article21x.png", tag: "Chatbots", color: "#00e6be", t: "ChatGPT vs Claude vs Gemini: Which Should You Choose in 2026?", d: "Evergreen search intent: real workflows, clear strengths, weaknesses and a practical choice by user profile.", time: "12", star: true, rank: 5, signal: "Evergreen", updated: { fr: "avril 2026", en: "April 2026" } },
+  { slug: "vibe-coding-tools-2026", image: "/articles/article20x.png", tag: "Code", color: "#3b82f6", t: "5 Best Tools to Build an App Without Coding in 2026", d: "Lovable, Bolt.new, v0, Base44 and Replit tested on real projects: a very monetizable builder topic.", time: "16", star: false, rank: 6, signal: "High value", updated: { fr: "mars 2026", en: "March 2026" } },
 ];
 
-const SPOTLIGHT_FR = ARTICLES_FR.find((a) => a.isNew) ?? ARTICLES_FR[0];
-const SPOTLIGHT_EN = ARTICLES_EN.find((a) => a.isNew) ?? ARTICLES_EN[0];
+const SPOTLIGHT_FR = ARTICLES_FR.find((a) => a.rank === 1) ?? ARTICLES_FR[0];
+const SPOTLIGHT_EN = ARTICLES_EN.find((a) => a.rank === 1) ?? ARTICLES_EN[0];
 
 const T = {
   fr: {
@@ -105,6 +107,7 @@ const T = {
       tickerItems: [
         { label: "AI Finder gratuit", href: "/aifinder" },
         { label: "Grok review 2026", href: "/blog/grok-review-2026" },
+        { label: "Claude Code review", href: "/blog/claude-code-review-2026" },
         { label: "Runway vs Kling vs Pika", href: "/comparatifs/runway-vs-kling-vs-pika-2026" },
         { label: "DeepSeek V4 analysé", href: "/blog/deepseek-review-2026" },
       ],
@@ -141,9 +144,9 @@ const T = {
     compFeat: "À la une",
     compAll: "Tous les comparatifs →",
     compFresh: "Mis à jour",
-    artTag: "Populaire",
-    artTitle: "Articles les plus lus",
-    artSub: "Cette semaine sur Neuriflux",
+    artTag: "Articles populaires",
+    artTitle: "Les articles à pousser en priorité",
+    artSub: "Les plus lus, les plus forts SEO et les plus utiles pour faire visiter plus de pages",
     read: "min",
     readMore: "Lire →",
     featured: "À la une",
@@ -217,6 +220,7 @@ const T = {
       tickerItems: [
         { label: "Free AI Finder", href: "/aifinder" },
         { label: "Grok review 2026", href: "/blog/grok-review-2026" },
+        { label: "Claude Code review", href: "/blog/claude-code-review-2026" },
         { label: "Runway vs Kling vs Pika", href: "/comparatifs/runway-vs-kling-vs-pika-2026" },
         { label: "DeepSeek V4 analyzed", href: "/blog/deepseek-review-2026" },
       ],
@@ -253,9 +257,9 @@ const T = {
     compFeat: "Featured",
     compAll: "All comparisons →",
     compFresh: "Updated",
-    artTag: "Popular",
-    artTitle: "Most read articles",
-    artSub: "This week on Neuriflux",
+    artTag: "Popular articles",
+    artTitle: "Priority articles to push",
+    artSub: "Most-read, high-interest and high-SEO pages selected for deeper sessions",
     read: "min",
     readMore: "Read →",
     featured: "Featured",
@@ -804,6 +808,7 @@ h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:2px;b
 @media(max-width:560px){.comp-grid,.art-grid{grid-template-columns:1fr}}
 .cmp,.art{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;display:flex;flex-direction:column;gap:.65rem;text-decoration:none;transition:border-color .2s,transform .2s,box-shadow .2s;overflow:hidden;position:relative;min-height:100%}
 .cmp.feat,.art.star{border-color:rgba(0,230,190,.16);background:linear-gradient(140deg,rgba(0,230,190,.04),var(--bg2) 65%)}
+.art.hot{border-color:rgba(0,230,190,.30);box-shadow:0 0 0 1px rgba(0,230,190,.08),0 18px 44px rgba(0,0,0,.26)}
 .cmp:hover,.art:hover{border-color:var(--glow);transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.38)}
 .cmp-bar,.art-bar{position:absolute;top:0;left:0;right:0;height:2px;opacity:.6;transition:opacity .2s}
 .cmp:hover .cmp-bar,.art:hover .art-bar{opacity:1}
@@ -812,6 +817,8 @@ h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:2px;b
 .cmp-badges,.art-badges{display:flex;align-items:center;gap:.3rem;flex-wrap:wrap}
 .cmp-badge,.feat-badge{font-family:var(--m);font-size:.54rem;letter-spacing:.06em;text-transform:uppercase;color:var(--bg);background:var(--cyan);padding:2px 7px;border-radius:100px;font-weight:700;white-space:nowrap}
 .badge-new{font-family:var(--m);font-size:.54rem;letter-spacing:.06em;text-transform:uppercase;color:#10b981;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);padding:2px 7px;border-radius:100px;font-weight:700;white-space:nowrap}
+.rank-badge{font-family:var(--m);font-size:.54rem;letter-spacing:.06em;text-transform:uppercase;color:#080c10;background:var(--cyan);border:1px solid rgba(0,230,190,.65);padding:2px 7px;border-radius:100px;font-weight:900;white-space:nowrap}
+.art-signal{font-family:var(--m);font-size:.56rem;color:var(--cyan);background:rgba(0,230,190,.055);border:1px solid rgba(0,230,190,.14);border-radius:999px;padding:2px 7px;width:max-content}
 .art-time-pill{font-family:var(--m);font-size:.56rem;color:var(--dim);background:var(--bg3);border:1px solid var(--border);border-radius:100px;padding:2px 7px;white-space:nowrap}
 .cmp-title,.art-title{font-family:var(--d);font-size:.92rem;font-weight:700;letter-spacing:-.015em;line-height:1.34;color:var(--text)}
 .cmp-sub,.art-desc{font-family:var(--m);font-size:.68rem;color:var(--muted);line-height:1.7;font-weight:300;flex:1}
@@ -1194,7 +1201,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
 
             <div className="art-grid">
               {articles.map((a) => (
-                <Link key={a.slug} href={l(`/blog/${a.slug}`)} className={`art${a.star ? " star" : ""}`} aria-label={a.t} onClick={() => trackEvent("homepage_card_click", { type: "article", slug: a.slug, lang })}>
+                <Link key={a.slug} href={l(`/blog/${a.slug}`)} className={`art${a.star ? " star" : ""}${a.rank === 1 ? " hot" : ""}`} aria-label={a.t} onClick={() => trackEvent("homepage_card_click", { type: "article", slug: a.slug, lang })}>
                   <div className="art-bar" style={{ background: a.color }} aria-hidden="true" />
                   <div className="art-cover">
                     <Image
@@ -1210,6 +1217,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
                     <div className="art-tag" style={{ color: a.color }}>{a.tag}</div>
                     <div className="art-badges">
                       <span className="art-time-pill"><span aria-hidden="true">⏱</span> {a.time} {t.read}</span>
+                      {a.rank && <span className="rank-badge">#{a.rank}</span>}
                       {a.star && <span className="feat-badge">{t.featured}</span>}
                       {a.isNew && <span className="badge-new">{t.badgeNew}</span>}
                     </div>
@@ -1218,6 +1226,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.
                   <div className="art-desc">{a.d}</div>
                   <div className="art-foot">
                     <div className="art-meta">
+                      {a.signal && <span className="art-signal">{a.signal}</span>}
                       {a.updated && <span className="art-updated">{t.artFresh} {a.updated[lang]}</span>}
                     </div>
                     <span className="art-more" style={{ color: a.color }}>{t.readMore}</span>
