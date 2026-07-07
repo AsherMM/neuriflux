@@ -1,20 +1,26 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono, Syne, JetBrains_Mono } from "next/font/google";
-import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import "./globals.css";
+
+const SITE_URL = "https://neuriflux.com";
+const SITE_NAME = "Neuriflux";
+const DEFAULT_OG = "/og-image-v4.png";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
-// ─── Syne — police du logo et titres Neuriflux ────────────────────────────────
 const syne = Syne({
   variable: "--font-syne",
   subsets: ["latin"],
@@ -22,7 +28,6 @@ const syne = Syne({
   display: "swap",
 });
 
-// ─── JetBrains Mono — police monospace UI ─────────────────────────────────────
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
@@ -31,36 +36,119 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  applicationName: "Neuriflux",
+  generator: "Next.js",
+  referrer: "origin-when-cross-origin",
+
   title: {
     default: "Neuriflux — Honest AI Tools Comparisons",
     template: "%s | Neuriflux",
   },
+
   description:
-    "Neuriflux tests and compares the best AI tools on the market. Honest comparisons, detailed scores, clear verdicts — no bullshit.",
+    "Neuriflux tests and compares the best AI tools with real-world reviews, transparent scores, practical benchmarks and clear verdicts.",
 
   keywords: [
-    "AI tools", "AI comparison", "ChatGPT", "Claude", "Gemini",
-    "Cursor AI", "artificial intelligence", "best AI tool",
-    "outils IA", "comparatif IA",
-  ],
+  // Global
+  "AI",
+  "Artificial Intelligence",
+  "AI tools",
+  "AI software",
+  "AI apps",
+  "AI platform",
 
-  metadataBase: new URL("https://neuriflux.com"),
-  authors: [{ name: "Neuriflux", url: "https://neuriflux.com" }],
-  creator: "Neuriflux",
-  publisher: "Neuriflux",
-  
+  // Intent
+  "AI reviews",
+  "AI comparisons",
+  "AI benchmarks",
+  "best AI tools",
+  "best AI software",
+  "AI buying guide",
+  "AI tutorial",
+  "AI guide",
+
+  // Chatbots
+  "ChatGPT",
+  "Claude",
+  "Gemini",
+  "Grok",
+  "Perplexity",
+  "DeepSeek",
+
+  // Coding
+  "Cursor",
+  "Claude Code",
+  "GitHub Copilot",
+  "Windsurf",
+  "Cline",
+  "Codeium",
+  "Lovable",
+  "Bolt.new",
+  "v0",
+
+  // Image
+  "Midjourney",
+  "DALL-E",
+  "Stable Diffusion",
+  "Flux AI",
+  "Ideogram",
+
+  // Video
+  "Runway",
+  "Kling",
+  "Sora",
+  "Pika",
+  "HeyGen",
+
+  // Voice
+  "ElevenLabs",
+  "PlayHT",
+
+  // Automation
+  "Zapier",
+  "Make",
+  "n8n",
+
+  // Productivity
+  "Notion AI",
+  "Jasper",
+  "Copy.ai",
+
+  // French
+  "outils IA",
+  "comparatif IA",
+  "meilleure IA",
+  "avis IA",
+  "intelligence artificielle",
+],
+
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: "technology",
+
+  alternates: {
+    canonical: "/en",
+    languages: {
+      en: "/en",
+      fr: "/fr",
+      "x-default": "/en",
+    },
+  },
+
   openGraph: {
     type: "website",
-    siteName: "Neuriflux",
+    siteName: SITE_NAME,
     title: "Neuriflux — Honest AI Tools Comparisons",
     description:
-      "Neuriflux tests and compares the best AI tools. Honest comparisons, detailed scores, clear verdicts.",
-    url: "https://neuriflux.com",
+      "Real-world AI tools reviews, transparent scores, practical benchmarks and clear verdicts.",
+    url: "/en",
     locale: "en_US",
     alternateLocale: "fr_FR",
     images: [
       {
-        url: "https://neuriflux.com/og-image-v4.png",
+        url: DEFAULT_OG,
         width: 1200,
         height: 630,
         alt: "Neuriflux — Honest AI Tools Comparisons",
@@ -74,8 +162,8 @@ export const metadata: Metadata = {
     creator: "@NeurifluxCom",
     title: "Neuriflux — Honest AI Tools Comparisons",
     description:
-      "Honest comparisons, detailed scores, clear verdicts on the best AI tools.",
-    images: ["https://neuriflux.com/og-image-v4.png"],
+      "Real-world AI tools reviews, transparent scores, practical benchmarks and clear verdicts.",
+    images: [DEFAULT_OG],
   },
 
   robots: {
@@ -96,7 +184,38 @@ export const metadata: Metadata = {
   },
 
   manifest: "/site.webmanifest",
-  category: "technology",
+
+  other: {
+  "theme-color": "#080c10",
+  "color-scheme": "dark",
+  },
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: `${SITE_URL}/logo.png`,
+  description:
+    "Independent media testing and comparing the best AI tools on the market.",
+  sameAs: ["https://twitter.com/NeurifluxCom"],
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: SITE_URL,
+  inLanguage: ["en", "fr"],
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${SITE_URL}/en/blog?q={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
 };
 
 export default function RootLayout({
@@ -110,65 +229,53 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${syne.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <head>
-        {/* ─── Impact Verification ──────────────────────────────────────────── */}
         <meta
           name="impact-site-verification"
           content="9f80294a-9aa2-488e-8537-06ae286b64b8"
         />
 
-        {/* ─── Google Tag Manager ──────────────────────────────────────────── */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MZ8VRX38');`,}}
-        />
+        <Script id="gtm" strategy="afterInteractive">
+          {`
+            (function(w,d,s,l,i){
+              w[l]=w[l]||[];
+              w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+              var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),
+              dl=l!='dataLayer'?'&l='+l:'';
+              j.async=true;
+              j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+              f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-MZ8VRX38');
+          `}
+        </Script>
 
-        {/* ─── Schema.org — Organisation ───────────────────────────────────── */}
-        <script
+        <Script
+          id="schema-organization"
           type="application/ld+json"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "Neuriflux",
-              url: "https://neuriflux.com",
-              logo: "https://neuriflux.com/logo.png",
-              description:
-                "Independent media testing and comparing the best AI tools on the market.",
-              sameAs: ["https://twitter.com/NeurifluxCom"],
-            }),
+            __html: JSON.stringify(organizationSchema),
           }}
         />
 
-        {/* ─── Schema.org — WebSite + SearchAction ─────────────────────────── */}
-        <script
+        <Script
+          id="schema-website"
           type="application/ld+json"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "Neuriflux",
-              url: "https://neuriflux.com",
-              potentialAction: {
-                "@type": "SearchAction",
-                target: {
-                  "@type": "EntryPoint",
-                  urlTemplate:
-                    "https://neuriflux.com/en/blog?q={search_term_string}",
-                },
-                "query-input": "required name=search_term_string",
-              },
-            }),
+            __html: JSON.stringify(websiteSchema),
           }}
         />
 
-          <script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4277358857919775"
-            crossOrigin="anonymous"
+        <Script
+          async
+          strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4277358857919775"
+          crossOrigin="anonymous"
         />
       </head>
+
       <body className="min-h-full flex flex-col">
-        {/* ─── GTM noscript fallback ────────────────────────────────────────── */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-MZ8VRX38"
@@ -179,6 +286,7 @@ export default function RootLayout({
         </noscript>
 
         {children}
+
         <Analytics />
         <SpeedInsights />
       </body>

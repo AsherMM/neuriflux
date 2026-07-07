@@ -1,108 +1,141 @@
-import { use } from "react";
 import type { Metadata } from "next";
 import ComparatifsClient from "./ComparatifsClient";
 import { COMPARATIFS, getAllComparatifTags } from "../lib/comparatifs";
 
 type Lang = "fr" | "en";
 
-const SITE_URL = "https://neuriflux.com";
-const OG_DEFAULT = `${SITE_URL}/og-image-v4.png`;
-
-// ─── generateMetadata ─────────────────────────────────────────────────────────
-export async function generateMetadata({
-  params,
-}: {
+type PageProps = {
   params: Promise<{ lang: Lang }>;
-}): Promise<Metadata> {
-  const { lang } = await params;
+};
 
-  const url = `${SITE_URL}/${lang}/comparatifs`;
-  const frUrl = `${SITE_URL}/fr/comparatifs`;
-  const enUrl = `${SITE_URL}/en/comparatifs`;
+const SITE_URL = "https://neuriflux.com";
+const SITE_NAME = "Neuriflux";
+const DEFAULT_LANG: Lang = "en";
+const OG_IMAGE = "/og-image-v4.png";
 
-  const title = lang === "fr"
+const getLang = (lang?: string): Lang => (lang === "fr" ? "fr" : "en");
+const getUrl = (lang: Lang, path = "") => `${SITE_URL}/${lang}${path}`;
+const getComparatifUrl = (lang: Lang, slug: string) => getUrl(lang, `/comparatifs/${slug}`);
+
+const unique = <T,>(items: T[]) => [...new Set(items.filter(Boolean))];
+
+const toIsoDate = (value?: string) => {
+  if (!value) return undefined;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? undefined : date.toISOString();
+};
+
+const getPublishedDate = (comp: (typeof COMPARATIFS)[number]) =>
+  toIsoDate(comp.publishedAt ?? comp.date?.en);
+
+const getModifiedDate = (comp: (typeof COMPARATIFS)[number]) =>
+  toIsoDate(comp.updatedAtIso ?? comp.publishedAt ?? comp.date?.en);
+
+const getComparisonDescription = (comp: (typeof COMPARATIFS)[number], lang: Lang) =>
+  comp[lang].desc ?? comp[lang].intro?.slice(0, 160) ?? "";
+
+const getBestTool = (comp: (typeof COMPARATIFS)[number]) => {
+  const winner = comp.tools.find((tool) => tool.name === comp.winner);
+  return winner ?? [...comp.tools].sort((a, b) => b.globalScore - a.globalScore)[0];
+};
+
+const getToolNames = (comp: (typeof COMPARATIFS)[number]) =>
+  comp.tools.map((tool) => tool.name).join(" vs ");
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { lang: rawLang } = await params;
+  const lang = getLang(rawLang);
+  const isFR = lang === "fr";
+
+  const url = getUrl(lang, "/comparatifs");
+  const frUrl = getUrl("fr", "/comparatifs");
+  const enUrl = getUrl("en", "/comparatifs");
+
+  const title = isFR
     ? "Comparatifs IA 2026 — Tests réels, scores détaillés & verdicts | Neuriflux"
     : "AI Comparisons 2026 — Real Tests, Detailed Scores & Verdicts | Neuriflux";
 
-  const description = lang === "fr"
-    ? "Comparatifs complets d'outils IA : ChatGPT vs Claude vs Gemini, Cursor vs Windsurf, Midjourney vs DALL·E, n8n vs Make vs Zapier et plus. Scores objectifs, tests réels, verdicts sans filtre."
-    : "Complete AI tool comparisons: ChatGPT vs Claude vs Gemini, Cursor vs Windsurf, Midjourney vs DALL·E, n8n vs Make vs Zapier and more. Objective scores, real-world tests, unfiltered verdicts.";
+  const description = isFR
+    ? "Comparez les meilleurs outils IA en 2026 : ChatGPT, Claude, Gemini, Cursor, Midjourney, Runway, n8n, Make, Zapier et plus. Tests réels, scores objectifs, verdicts clairs."
+    : "Compare the best AI tools in 2026: ChatGPT, Claude, Gemini, Cursor, Midjourney, Runway, n8n, Make, Zapier and more. Real tests, objective scores, clear verdicts.";
 
-  // Keywords dynamiques depuis le catalogue réel
   const featuredTools = COMPARATIFS
-    .filter((c) => c.featured)
-    .flatMap((c) => c.tools.map((t) => t.name))
-    .slice(0, 20);
+    .filter((comparatif) => comparatif.featured)
+    .flatMap((comparatif) => comparatif.tools.map((tool) => tool.name))
+    .slice(0, 24);
 
-  const tags = getAllComparatifTags(lang).slice(0, 8);
+  const tags = getAllComparatifTags(lang).slice(0, 12);
 
-  const keywords = [
+  const keywords = unique([
     ...featuredTools,
     ...tags,
-    lang === "fr" ? "comparatif IA 2026" : "AI comparison 2026",
-    lang === "fr" ? "meilleur outil IA" : "best AI tool",
-    lang === "fr" ? "test IA" : "AI review",
-    lang === "fr" ? "avis outil IA" : "AI tool review",
-    "Neuriflux",
+    isFR ? "comparatifs IA" : "AI comparisons",
+    isFR ? "comparatif IA 2026" : "AI comparison 2026",
+    isFR ? "meilleurs outils IA" : "best AI tools",
+    isFR ? "meilleur outil IA" : "best AI tool",
+    isFR ? "tests outils IA" : "AI tool testing",
+    isFR ? "avis outils IA" : "AI tool reviews",
+    isFR ? "benchmark IA" : "AI benchmarks",
+    "ChatGPT vs Claude vs Gemini",
+    "Cursor vs Copilot",
+    "Midjourney vs DALL-E",
+    "Runway vs Kling",
+    "n8n vs Make vs Zapier",
+    SITE_NAME,
     "2026",
-  ];
+  ]);
 
   return {
+    metadataBase: new URL(SITE_URL),
     title,
     description,
-
-    // ── Canonique + hrefLang ────────────────────────────────────────────────
+    applicationName: SITE_NAME,
+    authors: [{ name: SITE_NAME, url: SITE_URL }],
+    creator: SITE_NAME,
+    publisher: SITE_NAME,
+    category: isFR ? "Comparatifs IA" : "AI Comparisons",
+    classification: "Technology",
+    keywords,
     alternates: {
       canonical: url,
       languages: {
         fr: frUrl,
         en: enUrl,
-        "x-default": frUrl, // FR = version principale
+        "x-default": enUrl,
       },
     },
-
-    // ── Open Graph ──────────────────────────────────────────────────────────
     openGraph: {
-      title: lang === "fr"
+      type: "website",
+      url,
+      title: isFR
         ? "Comparatifs IA 2026 — Tests & Scores | Neuriflux"
         : "AI Comparisons 2026 — Tests & Scores | Neuriflux",
       description,
-      url,
-      type: "website",
-      locale: lang === "fr" ? "fr_FR" : "en_US",
-      alternateLocale: lang === "fr" ? "en_US" : "fr_FR",
-      siteName: "Neuriflux",
+      siteName: SITE_NAME,
+      locale: isFR ? "fr_FR" : "en_US",
+      alternateLocale: isFR ? "en_US" : "fr_FR",
       images: [
         {
-          url: OG_DEFAULT,
+          url: OG_IMAGE,
           width: 1200,
           height: 630,
-          alt: lang === "fr"
-            ? "Neuriflux — Comparatifs IA 2026"
-            : "Neuriflux — AI Comparisons 2026",
+          alt: isFR
+            ? "Neuriflux — Comparatifs des meilleurs outils IA"
+            : "Neuriflux — Best AI tools comparisons",
           type: "image/png",
         },
       ],
     },
-
-    // ── Twitter / X Card ────────────────────────────────────────────────────
     twitter: {
       card: "summary_large_image",
       site: "@NeurifluxCom",
       creator: "@NeurifluxCom",
-      title: lang === "fr"
-        ? "Comparatifs IA 2026 | Neuriflux"
-        : "AI Comparisons 2026 | Neuriflux",
-      description: lang === "fr"
-        ? "Tests réels, scores objectifs, verdicts sans filtre sur les meilleurs outils IA."
-        : "Real-world tests, objective scores, unfiltered verdicts on the best AI tools.",
-      images: [OG_DEFAULT],
+      title: isFR ? "Comparatifs IA 2026 | Neuriflux" : "AI Comparisons 2026 | Neuriflux",
+      description: isFR
+        ? "Tests réels, scores objectifs et verdicts clairs sur les meilleurs outils IA."
+        : "Real-world tests, objective scores and clear verdicts on the best AI tools.",
+      images: [OG_IMAGE],
     },
-
-    // ── Keywords ────────────────────────────────────────────────────────────
-    keywords,
-
-    // ── Robots ──────────────────────────────────────────────────────────────
     robots: {
       index: true,
       follow: true,
@@ -114,213 +147,230 @@ export async function generateMetadata({
         "max-video-preview": -1,
       },
     },
-
-    authors: [{ name: "Neuriflux", url: SITE_URL }],
-    category: lang === "fr" ? "Comparatifs IA" : "AI Comparisons",
   };
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-export default function ComparatifsPage({
-  params,
-}: {
-  params: Promise<{ lang: string }>;
-}) {
-  const { lang } = use(params);
-  const resolvedLang: Lang = lang === "en" ? "en" : "fr";
+export default async function ComparatifsPage({ params }: PageProps) {
+  const { lang: rawLang } = await params;
+  const lang = getLang(rawLang);
+  const isFR = lang === "fr";
 
-  // Données pour les schemas — calculées côté serveur
-  const featured = COMPARATIFS.filter((c) => c.featured);
-  const totalCount = COMPARATIFS.length;
+  const collectionUrl = getUrl(lang, "/comparatifs");
+  const featured = COMPARATIFS.filter((comparatif) => comparatif.featured);
+  const highlighted = featured.length > 0 ? featured : COMPARATIFS.slice(0, 8);
 
-  // ── Schemas JSON-LD ──────────────────────────────────────────────────────
-  const collectionUrl = `${SITE_URL}/${resolvedLang}/comparatifs`;
+  const organization = {
+    "@type": "Organization",
+    name: SITE_NAME,
+    url: SITE_URL,
+    logo: {
+      "@type": "ImageObject",
+      url: `${SITE_URL}/logo.png`,
+    },
+    sameAs: ["https://twitter.com/NeurifluxCom"],
+  };
 
-  // 1. CollectionPage — page de liste
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: resolvedLang === "fr"
-      ? "Comparatifs IA 2026 — Neuriflux"
-      : "AI Comparisons 2026 — Neuriflux",
-    description: resolvedLang === "fr"
-      ? "Tous les comparatifs d'outils IA de Neuriflux — scores détaillés, tests réels, verdicts honnêtes."
-      : "All Neuriflux AI tool comparisons — detailed scores, real-world tests, honest verdicts.",
+    name: isFR ? "Comparatifs IA 2026 — Neuriflux" : "AI Comparisons 2026 — Neuriflux",
+    description: isFR
+      ? "Tous les comparatifs d'outils IA de Neuriflux : scores détaillés, tests réels et verdicts honnêtes."
+      : "All Neuriflux AI tool comparisons: detailed scores, real-world tests and honest verdicts.",
     url: collectionUrl,
-    inLanguage: resolvedLang,
-    numberOfItems: totalCount,
-    publisher: {
-      "@type": "Organization",
-      name: "Neuriflux",
+    inLanguage: lang,
+    isPartOf: {
+      "@type": "WebSite",
+      name: SITE_NAME,
       url: SITE_URL,
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` },
-      sameAs: ["https://twitter.com/NeurifluxCom"],
     },
-    // Liste des comparatifs featured dans le schema
-    hasPart: featured.map((comp) => ({
-      "@type": "Article",
-      headline: comp[resolvedLang].title,
-      url: `${SITE_URL}/${resolvedLang}/comparatifs/${comp.slug}`,
-      datePublished: comp.publishedAt ?? comp.date?.en,
-      dateModified: comp.updatedAtIso ?? comp.publishedAt ?? comp.date?.en,
-      description: comp[resolvedLang].desc ?? comp[resolvedLang].intro?.slice(0, 160),
-    })),
+    publisher: organization,
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: COMPARATIFS.length,
+      itemListElement: COMPARATIFS.map((comparatif, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: getComparatifUrl(lang, comparatif.slug),
+        name: comparatif[lang].title,
+      })),
+    },
   };
 
-  // 2. BreadcrumbList
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Neuriflux", item: `${SITE_URL}/${resolvedLang}` },
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: SITE_NAME,
+        item: getUrl(lang),
+      },
       {
         "@type": "ListItem",
         position: 2,
-        name: resolvedLang === "fr" ? "Comparatifs" : "Comparisons",
+        name: isFR ? "Comparatifs" : "Comparisons",
         item: collectionUrl,
       },
     ],
   };
 
-  // 3. ItemList — les comparatifs featured (rich snippets liste)
   const itemListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: resolvedLang === "fr"
-      ? "Meilleurs comparatifs d'outils IA 2026"
-      : "Best AI Tool Comparisons 2026",
+    name: isFR ? "Meilleurs comparatifs d'outils IA 2026" : "Best AI tool comparisons 2026",
     url: collectionUrl,
-    numberOfItems: featured.length,
-    itemListElement: featured.map((comp, index) => ({
+    numberOfItems: highlighted.length,
+    itemListElement: highlighted.map((comparatif, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      name: comp[resolvedLang].title,
-      url: `${SITE_URL}/${resolvedLang}/comparatifs/${comp.slug}`,
+      name: comparatif[lang].title,
+      url: getComparatifUrl(lang, comparatif.slug),
       item: {
         "@type": "Article",
-        headline: comp[resolvedLang].title,
-        description: comp[resolvedLang].desc ?? comp[resolvedLang].intro?.slice(0, 160),
-        url: `${SITE_URL}/${resolvedLang}/comparatifs/${comp.slug}`,
-        datePublished: comp.publishedAt ?? comp.date?.en,
-        author: { "@type": "Organization", name: "Neuriflux" },
+        headline: comparatif[lang].title,
+        description: getComparisonDescription(comparatif, lang),
+        url: getComparatifUrl(lang, comparatif.slug),
+        datePublished: getPublishedDate(comparatif),
+        dateModified: getModifiedDate(comparatif),
+        author: organization,
+        publisher: organization,
       },
     })),
   };
 
-  // 4. WebSite SearchAction
-  const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Neuriflux",
-    url: SITE_URL,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${SITE_URL}/${resolvedLang}/comparatifs?q={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
-    },
-  };
-
-  // 5. FAQPage — questions fréquentes sur les comparatifs (static, haute valeur SEO)
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: resolvedLang === "fr"
+    mainEntity: isFR
       ? [
           {
             "@type": "Question",
-            name: "ChatGPT ou Claude — lequel est le meilleur en 2026 ?",
+            name: "Comment choisir le meilleur outil IA en 2026 ?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: `Claude 3.7 Sonnet domine sur la rédaction et l'analyse avec un score de 9.2/10. ChatGPT reste le plus polyvalent avec son écosystème de plugins. Notre comparatif complet teste les deux sur 50 cas d'usage réels. Voir notre comparatif ChatGPT vs Claude vs Gemini sur ${SITE_URL}/fr/comparatifs/chatgpt-vs-claude-vs-gemini`,
+              text: "Le meilleur outil IA dépend du cas d'usage : rédaction, code, image, vidéo, automatisation ou productivité. Neuriflux compare les outils avec des tests réels, des scores détaillés et un verdict clair pour chaque catégorie.",
             },
           },
           {
             "@type": "Question",
-            name: "Quel outil d'automatisation choisir entre n8n, Make et Zapier ?",
+            name: "Les comparatifs Neuriflux sont-ils indépendants ?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: `Make remporte notre comparatif avec un score de 8.9/10 pour son meilleur rapport qualité/prix. n8n est idéal pour les équipes techniques qui veulent le self-hosting. Zapier reste le plus simple mais le plus cher. Voir notre comparatif n8n vs Make vs Zapier sur ${SITE_URL}/fr/comparatifs/n8n-vs-make-vs-zapier-2026`,
+              text: "Oui. Les comparatifs sont construits autour de tests pratiques, de critères visibles et de limites clairement expliquées. Les liens affiliés peuvent exister, mais ils ne déterminent pas le verdict éditorial.",
             },
           },
           {
             "@type": "Question",
-            name: "Midjourney ou DALL·E pour générer des images IA ?",
+            name: "Quels types d'outils IA sont comparés ?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: `Midjourney obtient 9.1/10 pour la qualité artistique et reste la référence créative. DALL·E 3 (8.0/10) est plus accessible via ChatGPT et suit mieux les instructions précises. Stable Diffusion est gratuit et open source. Voir notre comparatif complet sur ${SITE_URL}/fr/comparatifs/midjourney-vs-dalle-vs-stable-diffusion`,
+              text: "Neuriflux compare des chatbots IA, assistants de code, générateurs d'images, outils vidéo, outils vocaux, plateformes d'automatisation, outils de rédaction et solutions de productivité.",
             },
           },
           {
             "@type": "Question",
-            name: "Comment Neuriflux note-t-il les outils IA dans ses comparatifs ?",
+            name: "Comment Neuriflux note-t-il les outils IA ?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Neuriflux teste chaque outil pendant minimum 3 semaines sur des projets réels. Les scores sont calculés sur 6 critères pondérés spécifiques à chaque catégorie, notés de 0 à 10. Aucun éditeur ne finance nos verdicts — nous sommes 100% indépendants avec des liens affiliés toujours signalés.",
+              text: "Chaque comparaison repose sur des critères adaptés à la catégorie : qualité des résultats, facilité d'utilisation, prix, fiabilité, intégrations, confidentialité et limites réelles observées pendant les tests.",
             },
           },
         ]
       : [
           {
             "@type": "Question",
-            name: "ChatGPT or Claude — which is better in 2026?",
+            name: "How do I choose the best AI tool in 2026?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: `Claude 3.7 Sonnet leads on writing and analysis with a score of 9.2/10. ChatGPT remains the most versatile with its plugin ecosystem. Our full comparison tests both across 50 real-world use cases. See our ChatGPT vs Claude vs Gemini comparison at ${SITE_URL}/en/comparatifs/chatgpt-vs-claude-vs-gemini`,
+              text: "The best AI tool depends on the use case: writing, coding, image generation, video, automation or productivity. Neuriflux compares tools with real-world tests, detailed scores and clear verdicts for each category.",
             },
           },
           {
             "@type": "Question",
-            name: "Which automation tool to choose between n8n, Make, and Zapier?",
+            name: "Are Neuriflux comparisons independent?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: `Make wins our comparison with a score of 8.9/10 for its best value for money. n8n is ideal for technical teams wanting self-hosting. Zapier is simplest but most expensive. See our n8n vs Make vs Zapier comparison at ${SITE_URL}/en/comparatifs/n8n-vs-make-vs-zapier-2026`,
+              text: "Yes. Comparisons are based on practical tests, visible criteria and clearly explained limitations. Affiliate links may exist, but they do not determine the editorial verdict.",
             },
           },
           {
             "@type": "Question",
-            name: "Midjourney or DALL·E for AI image generation?",
+            name: "What types of AI tools does Neuriflux compare?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: `Midjourney scores 9.1/10 for artistic quality and remains the creative reference. DALL·E 3 (8.0/10) is more accessible via ChatGPT and follows precise instructions better. Stable Diffusion is free and open source. See our full comparison at ${SITE_URL}/en/comparatifs/midjourney-vs-dalle-vs-stable-diffusion`,
+              text: "Neuriflux compares AI chatbots, coding assistants, image generators, video tools, voice tools, automation platforms, writing tools and productivity solutions.",
             },
           },
           {
             "@type": "Question",
-            name: "How does Neuriflux score AI tools in its comparisons?",
+            name: "How does Neuriflux score AI tools?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Neuriflux tests each tool for a minimum of 3 weeks on real projects. Scores are calculated across 6 weighted criteria specific to each category, rated 0 to 10. No publisher funds our verdicts — we are 100% independent with affiliate links always disclosed.",
+              text: "Each comparison uses criteria adapted to the category: output quality, ease of use, pricing, reliability, integrations, privacy and real limitations observed during testing.",
             },
           },
         ],
   };
 
-  const fontUrl =
-    "https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap";
+  const comparisonSchema = highlighted.slice(0, 6).map((comparatif) => {
+    const bestTool = getBestTool(comparatif);
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "Review",
+      itemReviewed: {
+        "@type": "SoftwareApplication",
+        name: getToolNames(comparatif),
+        applicationCategory: "AIApplication",
+        operatingSystem: "Web",
+      },
+      name: comparatif[lang].title,
+      reviewBody: getComparisonDescription(comparatif, lang),
+      url: getComparatifUrl(lang, comparatif.slug),
+      author: organization,
+      publisher: organization,
+      datePublished: getPublishedDate(comparatif),
+      dateModified: getModifiedDate(comparatif),
+      reviewRating: bestTool
+        ? {
+            "@type": "Rating",
+            ratingValue: bestTool.globalScore.toFixed(1),
+            bestRating: "10",
+            worstRating: "1",
+          }
+        : undefined,
+    };
+  });
 
   return (
     <>
-      {/* Schemas JSON-LD côté serveur */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-
-      {/* Fonts non-bloquants */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link rel="preload" as="style" href={fontUrl} />
       <script
-        dangerouslySetInnerHTML={{
-          __html: `(function(){var l=document.createElement('link');l.rel='stylesheet';l.href='${fontUrl}';document.head.appendChild(l);})();`,
-        }}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      {comparisonSchema.map((schema) => (
+        <script
+          key={schema.url}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
 
-      <ComparatifsClient lang={resolvedLang} />
+      <ComparatifsClient lang={lang} />
     </>
   );
 }

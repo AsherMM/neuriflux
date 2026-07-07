@@ -1,8 +1,11 @@
-import { use } from "react";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import HomeClient from "./HomeClient";
 
 type Lang = "fr" | "en";
+
+const SITE_URL = "https://neuriflux.com";
+const SITE_NAME = "Neuriflux";
+const OG_IMAGE = "/og-image-v4.png";
 
 export async function generateMetadata({
   params,
@@ -10,100 +13,112 @@ export async function generateMetadata({
   params: Promise<{ lang: Lang }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-
   const isFR = lang === "fr";
 
   const title = isFR
-    ? "Neuriflux — Meilleurs outils IA 2026 comparés (tests réels)"
-    : "Neuriflux — Best AI Tools 2026 Compared (Real Tests)";
+    ? "Neuriflux — Meilleurs outils IA 2026 comparés avec tests réels"
+    : "Neuriflux — Best AI Tools 2026 Compared With Real Tests";
 
   const description = isFR
-    ? "Comparatif des meilleurs outils IA en 2026 : ChatGPT, Claude, Gemini, Midjourney, Runway. Tests réels, scores détaillés, verdicts honnêtes."
-    : "Compare the best AI tools in 2026: ChatGPT, Claude, Gemini, Midjourney, Runway. Real tests, detailed scores, honest verdicts.";
+    ? "Comparez les meilleurs outils IA en 2026 : ChatGPT, Claude, Gemini, Midjourney, Runway, Cursor et plus. Tests réels, scores détaillés, verdicts honnêtes."
+    : "Compare the best AI tools in 2026: ChatGPT, Claude, Gemini, Midjourney, Runway, Cursor and more. Real tests, detailed scores, honest verdicts.";
+
+  const url = `${SITE_URL}/${lang}`;
 
   return {
-    metadataBase: new URL("https://neuriflux.com"),
-
+    metadataBase: new URL(SITE_URL),
     title,
     description,
-
     keywords: [
       "AI tools",
-      "comparatif IA",
-      "ChatGPT vs Claude",
-      "meilleur outil IA",
-      "AI comparison 2026",
-      "Midjourney vs DALL-E",
+      "AI tools 2026",
+      "AI comparison",
       "AI reviews",
+      "best AI tools",
+      "ChatGPT",
+      "Claude",
+      "Gemini",
+      "Midjourney",
+      "Runway",
+      "Cursor AI",
+      "outils IA",
+      "comparatif IA",
+      "meilleurs outils IA",
+      "avis IA",
     ],
-
-    authors: [{ name: "Neuriflux" }],
-
+    authors: [{ name: SITE_NAME, url: SITE_URL }],
+    creator: SITE_NAME,
+    publisher: SITE_NAME,
+    alternates: {
+      canonical: url,
+      languages: {
+        fr: `${SITE_URL}/fr`,
+        en: `${SITE_URL}/en`,
+        "x-default": `${SITE_URL}/en`,
+      },
+    },
+    openGraph: {
+      type: "website",
+      url,
+      title,
+      description,
+      siteName: SITE_NAME,
+      locale: isFR ? "fr_FR" : "en_US",
+      alternateLocale: isFR ? "en_US" : "fr_FR",
+      images: [
+        {
+          url: OG_IMAGE,
+          width: 1200,
+          height: 630,
+          alt: isFR
+            ? "Neuriflux — Comparatifs d'outils IA"
+            : "Neuriflux — AI tools comparisons",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@NeurifluxCom",
+      creator: "@NeurifluxCom",
+      title,
+      description,
+      images: [OG_IMAGE],
+    },
     robots: {
       index: true,
       follow: true,
     },
-
-    alternates: {
-      canonical: `https://neuriflux.com/${lang}`,
-      languages: {
-        fr: "https://neuriflux.com/fr",
-        en: "https://neuriflux.com/en",
-        "x-default": "https://neuriflux.com/en",
-      },
-    },
-
-    openGraph: {
-      type: "website",
-      url: `https://neuriflux.com/${lang}`,
-      title,
-      description,
-      siteName: "Neuriflux",
-      locale: isFR ? "fr_FR" : "en_US",
-      images: [
-        {
-          url: "https://neuriflux.com/og-image.png",
-          width: 1200,
-          height: 630,
-          alt: "Neuriflux AI Comparisons",
-        },
-      ],
-    },
-
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: ["https://neuriflux.com/og-image.png"],
-    },
   };
 }
 
-export default function HomePage({
+export default async function HomePage({
   params,
 }: {
-  params: Promise<{ lang: string }>;
+  params: Promise<{ lang: Lang }>;
 }) {
-  const { lang } = use(params);
+  const { lang } = await params;
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_NAME,
+    url: SITE_URL,
+    inLanguage: ["en", "fr"],
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}/${lang}/blog?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
 
   return (
     <>
-      {/* 🔥 STRUCTURED DATA SEO */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "Neuriflux",
-            url: "https://neuriflux.com",
-            potentialAction: {
-              "@type": "SearchAction",
-              target: "https://neuriflux.com/search?q={search_term_string}",
-              "query-input": "required name=search_term_string",
-            },
-          }),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
 
       <HomeClient lang={lang === "en" ? "en" : "fr"} />

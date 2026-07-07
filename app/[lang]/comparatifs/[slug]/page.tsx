@@ -30,6 +30,16 @@ const extractPrice = (price?: string) => {
   return value ?? "0";
 };
 
+const getIsoDate = (value?: string | null) => {
+  if (!value) return undefined;
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? undefined : parsed.toISOString();
+};
+
+const getPublishedTime = (value?: string | null) => getIsoDate(value);
+const getModifiedTime = (updated?: string | null, published?: string | null) =>
+  getIsoDate(updated) ?? getIsoDate(published);
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -123,7 +133,7 @@ export async function generateMetadata({
         "fr-FR": frUrl,
         en: enUrl,
         "en-US": enUrl,
-        "x-default": frUrl,
+        "x-default": enUrl,
       },
     },
 
@@ -135,8 +145,8 @@ export async function generateMetadata({
       locale: lang === "fr" ? "fr_FR" : "en_US",
       alternateLocale: lang === "fr" ? "en_US" : "fr_FR",
       siteName: SITE_NAME,
-      publishedTime: data.publishedAt ?? data.date?.en,
-      modifiedTime: data.updatedAtIso ?? data.publishedAt ?? data.date?.en,
+      publishedTime: getPublishedTime(data.publishedAt ?? data.date?.en),
+      modifiedTime: getModifiedTime(data.updatedAtIso, data.publishedAt ?? data.date?.en),
       authors: [SITE_NAME],
       section: data.tag,
       tags: keywords,
@@ -168,10 +178,10 @@ export async function generateMetadata({
     },
 
     robots: {
-      index: true,
+      index: slug === canonicalSlug,
       follow: true,
       googleBot: {
-        index: true,
+        index: slug === canonicalSlug,
         follow: true,
         "max-snippet": -1,
         "max-image-preview": "large",
@@ -187,7 +197,10 @@ export default async function ComparatifPage({
   params: Promise<PageParams>;
 }) {
   const { lang: rawLang, slug } = await params;
-  const lang = resolveLang(rawLang);
+
+  if (!isLang(rawLang)) notFound();
+
+  const lang = rawLang;
 
   const data = getComparatifBySlug(slug);
   if (!data) notFound();
@@ -206,20 +219,21 @@ export default async function ComparatifPage({
 
   const title = cleanText(comp.metaTitle ?? comp.title, 70);
   const description = cleanText(comp.metaDesc ?? comp.desc ?? comp.intro, 160);
-  const publishedTime = data.publishedAt ?? data.date?.en;
-  const modifiedTime = data.updatedAtIso ?? data.publishedAt ?? data.date?.en;
+  const publishedTime = getPublishedTime(data.publishedAt ?? data.date?.en);
+  const modifiedTime = getModifiedTime(data.updatedAtIso, data.publishedAt ?? data.date?.en);
   const winner = data.tools.find((tool) => tool.name === data.winner);
 
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
+    "@id": `${canonicalUrl}#article`,
     headline: title,
     description,
     url: canonicalUrl,
     image: [ogImage, OG_DEFAULT],
     datePublished: publishedTime,
     dateModified: modifiedTime,
-    inLanguage: lang,
+    inLanguage: lang === "fr" ? "fr-FR" : "en-US",
     articleSection: data.tag,
     mainEntityOfPage: {
       "@type": "WebPage",
@@ -252,6 +266,7 @@ export default async function ComparatifPage({
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": `${canonicalUrl}#breadcrumb`,
     itemListElement: [
       {
         "@type": "ListItem",
@@ -277,6 +292,7 @@ export default async function ComparatifPage({
   const itemListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    "@id": `${canonicalUrl}#ranking`,
     name: title,
     description,
     url: canonicalUrl,
@@ -371,8 +387,10 @@ export default async function ComparatifPage({
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${SITE_URL}#website`,
     name: SITE_NAME,
     url: SITE_URL,
+    inLanguage: ["fr-FR", "en-US"],
     potentialAction: {
       "@type": "SearchAction",
       target: {
@@ -401,13 +419,6 @@ export default async function ComparatifPage({
           dangerouslySetInnerHTML={{ __html: jsonLd(schema) }}
         />
       ))}
-
-      <link rel="canonical" href={canonicalUrl} />
-      <link rel="alternate" hrefLang="fr" href={frUrl} />
-      <link rel="alternate" hrefLang="fr-FR" href={frUrl} />
-      <link rel="alternate" hrefLang="en" href={enUrl} />
-      <link rel="alternate" hrefLang="en-US" href={enUrl} />
-      <link rel="alternate" hrefLang="x-default" href={frUrl} />
 
       <Suspense fallback={null}>
         <ComparatifClient lang={lang} slug={canonicalSlug} />

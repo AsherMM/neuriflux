@@ -122,6 +122,9 @@ const config = {
   exclude: ["/*"],
   additionalPaths,
   robotsTxtOptions: {
+    additionalSitemaps: [
+      "https://neuriflux.com/sitemap.xml",
+     ],
     policies: [
       { userAgent: "*", allow: "/" },
       { userAgent: "GPTBot", disallow: "/" },
