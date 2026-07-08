@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <radialGradient id="g1" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#102c4a"/>
+      <stop offset="55%" stop-color="#07121f"/>
+      <stop offset="100%" stop-color="#03070c"/>
+    </radialGradient>
+    <linearGradient id="cyan" x1="0" x2="1">
+      <stop offset="0%" stop-color="#00e6be"/>
+      <stop offset="55%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <style>
+      .title{font:800 58px Arial, sans-serif;fill:#edf2f7;letter-spacing:-2px}
+      .sub{font:500 24px Arial, sans-serif;fill:#8ba3b8}
+      .label{font:700 25px Arial, sans-serif;fill:#edf2f7}
+      .small{font:500 18px Arial, sans-serif;fill:#8ba3b8}
+      .micro{font:700 14px Arial, sans-serif;fill:#00e6be;letter-spacing:2px}
+      .card{fill:rgba(13,17,23,.78);stroke:rgba(255,255,255,.12);stroke-width:1.5}
+      .line{stroke:url(#cyan);stroke-width:4;fill:none;filter:url(#glow);opacity:.9}
+      .dot{fill:#00e6be;filter:url(#glow)}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="url(#g1)"/>
+  <g opacity=".22">
+    <line x1="0" y1="0" x2="0" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="80" y1="0" x2="80" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="160" y1="0" x2="160" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="240" y1="0" x2="240" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="320" y1="0" x2="320" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="400" y1="0" x2="400" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="480" y1="0" x2="480" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="560" y1="0" x2="560" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="640" y1="0" x2="640" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="720" y1="0" x2="720" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="800" y1="0" x2="800" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="880" y1="0" x2="880" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="960" y1="0" x2="960" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="1040" y1="0" x2="1040" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="1120" y1="0" x2="1120" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="1200" y1="0" x2="1200" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="1280" y1="0" x2="1280" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="1360" y1="0" x2="1360" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="1440" y1="0" x2="1440" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="1520" y1="0" x2="1520" y2="900" stroke="#00e6be" stroke-width=".5"/><line x1="1600" y1="0" x2="1600" y2="900" stroke="#00e6be" stroke-width=".5"/>
+    <line x1="0" y1="0" x2="1600" y2="0" stroke="#00e6be" stroke-width=".5"/><line x1="0" y1="80" x2="1600" y2="80" stroke="#00e6be" stroke-width=".5"/><line x1="0" y1="160" x2="1600" y2="160" stroke="#00e6be" stroke-width=".5"/><line x1="0" y1="240" x2="1600" y2="240" stroke="#00e6be" stroke-width=".5"/><line x1="0" y1="320" x2="1600" y2="320" stroke="#00e6be" stroke-width=".5"/><line x1="0" y1="400" x2="1600" y2="400" stroke="#00e6be" stroke-width=".5"/><line x1="0" y1="480" x2="1600" y2="480" stroke="#00e6be" stroke-width=".5"/><line x1="0" y1="560" x2="1600" y2="560" stroke="#00e6be" stroke-width=".5"/><line x1="0" y1="640" x2="1600" y2="640" stroke="#00e6be" stroke-width=".5"/><line x1="0" y1="720" x2="1600" y2="720" stroke="#00e6be" stroke-width=".5"/><line x1="0" y1="800" x2="1600" y2="800" stroke="#00e6be" stroke-width=".5"/><line x1="0" y1="880" x2="1600" y2="880" stroke="#00e6be" stroke-width=".5"/>
+  </g>
+  <text x="80" y="100" class="micro">NEURIFLUX EDITORIAL</text>
+  <text x="80" y="165" class="title">ChatGPT vs Claude vs Gemini</text>
+  <text x="80" y="205" class="sub">Le choix dépend du vrai usage, pas d&#x27;un classement absolu</text>
+  
+  <g transform="translate(80 285)">
+    <rect class="card" x="0" y="0" width="430" height="455" rx="28"/>
+    <circle cx="80" cy="80" r="42" fill="#10a37f" filter="url(#glow)"/>
+    <text x="140" y="75" class="label">ChatGPT</text>
+    <text x="140" y="108" class="small">polyvalence • images • agents</text>
+    <path class="line" d="M70 185 H350"/>
+    <text x="55" y="235" class="small">Code</text><rect x="150" y="216" width="220" height="16" rx="8" fill="#00e6be"/>
+    <text x="55" y="285" class="small">Image</text><rect x="150" y="266" width="250" height="16" rx="8" fill="#3b82f6"/>
+    <text x="55" y="335" class="small">Écosystème</text><rect x="150" y="316" width="235" height="16" rx="8" fill="#a855f7"/>
+  </g>
+  <g transform="translate(585 285)">
+    <rect class="card" x="0" y="0" width="430" height="455" rx="28"/>
+    <circle cx="80" cy="80" r="42" fill="#a855f7" filter="url(#glow)"/>
+    <text x="140" y="75" class="label">Claude</text>
+    <text x="140" y="108" class="small">rédaction • analyse • code</text>
+    <path class="line" d="M70 185 H350"/>
+    <text x="55" y="235" class="small">Écriture</text><rect x="150" y="216" width="255" height="16" rx="8" fill="#00e6be"/>
+    <text x="55" y="285" class="small">Analyse</text><rect x="150" y="266" width="245" height="16" rx="8" fill="#3b82f6"/>
+    <text x="55" y="335" class="small">Code</text><rect x="150" y="316" width="235" height="16" rx="8" fill="#a855f7"/>
+  </g>
+  <g transform="translate(1090 285)">
+    <rect class="card" x="0" y="0" width="430" height="455" rx="28"/>
+    <circle cx="80" cy="80" r="42" fill="#4285f4" filter="url(#glow)"/>
+    <text x="140" y="75" class="label">Gemini</text>
+    <text x="140" y="108" class="small">Google • contexte • multimodal</text>
+    <path class="line" d="M70 185 H350"/>
+    <text x="55" y="235" class="small">Contexte</text><rect x="150" y="216" width="255" height="16" rx="8" fill="#00e6be"/>
+    <text x="55" y="285" class="small">Workspace</text><rect x="150" y="266" width="240" height="16" rx="8" fill="#3b82f6"/>
+    <text x="55" y="335" class="small">Multimodal</text><rect x="150" y="316" width="225" height="16" rx="8" fill="#a855f7"/>
+  </g>
+
+</svg>

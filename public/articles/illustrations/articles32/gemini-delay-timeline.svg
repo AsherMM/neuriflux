@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#00e6be"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient>
+    <radialGradient id="r" cx="50%" cy="35%" r="70%"><stop offset="0" stop-color="#12233d"/><stop offset="1" stop-color="#071019"/></radialGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#r)"/>
+  <g opacity="0.12"><path d="M0 620 H1400 M0 300 H1400 M220 0 V800 M535 0 V800 M850 0 V800 M1165 0 V800" stroke="#00e6be"/></g>
+  <text x="70" y="95" font-family="Arial, sans-serif" font-size="56" font-weight="900" fill="#edf2f7">Gemini 3.5 Pro: delay timeline</text>
+  <text x="72" y="140" font-family="Arial, sans-serif" font-size="24" fill="#8aa0b8">From Google I/O to the July target window</text>
+  <line x1="140" y1="590" x2="1260" y2="590" stroke="url(#g)" stroke-width="6" filter="url(#glow)"/>
+  <g transform="translate(90,250)">
+  <rect width="260" height="230" rx="26" fill="#0d1724" stroke="#00e6be" stroke-opacity="0.6"/>
+  <circle cx="130" cy="72" r="44" fill="#00e6be" fill-opacity="0.18" stroke="#00e6be"/>
+  <text x="130" y="84" text-anchor="middle" font-size="34" font-weight="800" fill="#00e6be">I/O</text>
+  <text x="130" y="150" text-anchor="middle" font-size="24" font-weight="700" fill="#edf2f7">May 19</text>
+  <line x1="130" y1="230" x2="130" y2="286" stroke="#00e6be" stroke-width="4" stroke-linecap="round"/>
+</g><g transform="translate(405,250)">
+  <rect width="260" height="230" rx="26" fill="#0d1724" stroke="#60a5fa" stroke-opacity="0.6"/>
+  <circle cx="130" cy="72" r="44" fill="#60a5fa" fill-opacity="0.18" stroke="#60a5fa"/>
+  <text x="130" y="84" text-anchor="middle" font-size="34" font-weight="800" fill="#60a5fa">Flash</text>
+  <text x="130" y="150" text-anchor="middle" font-size="24" font-weight="700" fill="#edf2f7">Available</text>
+  <line x1="130" y1="230" x2="130" y2="286" stroke="#60a5fa" stroke-width="4" stroke-linecap="round"/>
+</g><g transform="translate(720,250)">
+  <rect width="260" height="230" rx="26" fill="#0d1724" stroke="#f59e0b" stroke-opacity="0.6"/>
+  <circle cx="130" cy="72" r="44" fill="#f59e0b" fill-opacity="0.18" stroke="#f59e0b"/>
+  <text x="130" y="84" text-anchor="middle" font-size="34" font-weight="800" fill="#f59e0b">Pro</text>
+  <text x="130" y="150" text-anchor="middle" font-size="24" font-weight="700" fill="#edf2f7">Delayed</text>
+  <line x1="130" y1="230" x2="130" y2="286" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+</g><g transform="translate(1035,250)">
+  <rect width="260" height="230" rx="26" fill="#0d1724" stroke="#ef4444" stroke-opacity="0.6"/>
+  <circle cx="130" cy="72" r="44" fill="#ef4444" fill-opacity="0.18" stroke="#ef4444"/>
+  <text x="130" y="84" text-anchor="middle" font-size="34" font-weight="800" fill="#ef4444">July</text>
+  <text x="130" y="150" text-anchor="middle" font-size="24" font-weight="700" fill="#edf2f7">Test</text>
+  <line x1="130" y1="230" x2="130" y2="286" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
+</g>
+  <circle cx="220" cy="590" r="18" fill="#0b111a" stroke="#00e6be" stroke-width="5"/><circle cx="535" cy="590" r="18" fill="#0b111a" stroke="#60a5fa" stroke-width="5"/><circle cx="850" cy="590" r="18" fill="#0b111a" stroke="#f59e0b" stroke-width="5"/><circle cx="1165" cy="590" r="18" fill="#0b111a" stroke="#ef4444" stroke-width="5"/>
+  <text x="70" y="720" font-family="Arial, sans-serif" font-size="22" fill="#00e6be" font-weight="700">NEURIFLUX EDITORIAL</text>
+  <text x="1220" y="720" text-anchor="end" font-family="Arial, sans-serif" font-size="22" fill="#8b5cf6" font-weight="700">AI WATCH</text>
+</svg>
